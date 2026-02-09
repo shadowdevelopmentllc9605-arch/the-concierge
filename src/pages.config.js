@@ -57,6 +57,7 @@ import Closet from './pages/Closet';
 import Profile from './pages/Profile';
 import TryOn from './pages/TryOn';
 import InStoreMode from './pages/InStoreMode';
+import Feedback from './pages/Feedback';
 import __Layout from './Layout.jsx';
 
 
@@ -71,6 +72,7 @@ export const PAGES = {
     "Profile": Profile,
     "TryOn": TryOn,
     "InStoreMode": InStoreMode,
+    "Feedback": Feedback,
 }
 
 export const pagesConfig = {

@@ -5,7 +5,7 @@ import { createPageUrl } from '@/utils';
 import { motion } from 'framer-motion';
 import { 
   User, ShoppingBag, CreditCard, Heart, Users, Settings, 
-  HelpCircle, MessageCircle, LogOut, ChevronRight, Edit2 
+  HelpCircle, MessageCircle, LogOut, ChevronRight, Edit2, Star 
 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 
@@ -46,6 +46,7 @@ export default function Profile() {
         { icon: ShoppingBag, label: 'My Closet', description: 'Previous purchases', path: 'Closet' },
         { icon: Heart, label: 'Wishlist', description: 'Saved items', path: 'Wishlist' },
         { icon: CreditCard, label: 'Payment Methods', description: 'Manage cards', path: 'PaymentMethods' },
+        { icon: Star, label: 'Reviews & Feedback', description: 'Rate your purchases', path: 'Feedback' },
       ]
     },
     {
