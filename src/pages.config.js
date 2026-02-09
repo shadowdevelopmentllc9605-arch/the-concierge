@@ -56,6 +56,7 @@ import Wishlist from './pages/Wishlist';
 import Closet from './pages/Closet';
 import Profile from './pages/Profile';
 import TryOn from './pages/TryOn';
+import InStoreMode from './pages/InStoreMode';
 
 
 export const PAGES = {
@@ -68,6 +69,7 @@ export const PAGES = {
     "Closet": Closet,
     "Profile": Profile,
     "TryOn": TryOn,
+    "InStoreMode": InStoreMode,
 }
 
 export const pagesConfig = {
