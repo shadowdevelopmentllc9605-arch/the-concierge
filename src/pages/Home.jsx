@@ -90,7 +90,7 @@ export default function Home() {
             transition={{ delay: 0.3 }}
             className="text-white text-4xl md:text-5xl font-light tracking-tight"
           >
-            {user?.full_name?.split(' ')[0] || 'There'}
+            The Concierge
           </motion.h1>
           <motion.p 
             initial={{ y: 20, opacity: 0 }}
@@ -98,7 +98,7 @@ export default function Home() {
             transition={{ delay: 0.4 }}
             className="text-white/70 mt-2 text-lg font-light"
           >
-            Your personal style awaits
+            Welcome back, {user?.full_name?.split(' ')[0] || 'there'}
           </motion.p>
         </div>
       </motion.div>

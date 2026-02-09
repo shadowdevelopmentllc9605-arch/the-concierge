@@ -57,6 +57,7 @@ import Closet from './pages/Closet';
 import Profile from './pages/Profile';
 import TryOn from './pages/TryOn';
 import InStoreMode from './pages/InStoreMode';
+import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
@@ -75,4 +76,5 @@ export const PAGES = {
 export const pagesConfig = {
     mainPage: "Home",
     Pages: PAGES,
+    Layout: __Layout,
 };
