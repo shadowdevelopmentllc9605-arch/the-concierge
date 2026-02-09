@@ -1,0 +1,285 @@
+import React, { useState, useEffect } from 'react';
+import { base44 } from '@/api/base44Client';
+import { useNavigate } from 'react-router-dom';
+import { createPageUrl } from '@/utils';
+import { motion } from 'framer-motion';
+import { ArrowLeft, Heart, ShoppingBag, Sparkles, Check, Loader2 } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+
+export default function ProductDetail() {
+  const navigate = useNavigate();
+  const urlParams = new URLSearchParams(window.location.search);
+  const productId = urlParams.get('id');
+
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [selectedSize, setSelectedSize] = useState('');
+  const [selectedColor, setSelectedColor] = useState('');
+  const [isWishlisted, setIsWishlisted] = useState(false);
+  const [addingToCart, setAddingToCart] = useState(false);
+  const [addedToCart, setAddedToCart] = useState(false);
+  const [user, setUser] = useState(null);
+  const [suggestedSize, setSuggestedSize] = useState('');
+
+  useEffect(() => {
+    loadData();
+  }, [productId]);
+
+  const loadData = async () => {
+    if (!productId) return;
+    setLoading(true);
+    try {
+      const currentUser = await base44.auth.me();
+      setUser(currentUser);
+
+      const products = await base44.entities.Product.filter({ id: productId });
+      if (products.length > 0) {
+        setProduct(products[0]);
+        if (products[0].colors?.length > 0) {
+          setSelectedColor(products[0].colors[0]);
+        }
+      }
+
+      // Get user profile for suggested size
+      const profiles = await base44.entities.UserProfile.filter({ user_id: currentUser.id });
+      if (profiles.length > 0 && profiles[0].suggested_sizes) {
+        const category = products[0]?.category;
+        if (['suits', 'vests', 'dress_shirts', 'blouse', 'tshirts', 'polos', 'jackets', 'pattern_shirts', 'graphic_tees'].includes(category)) {
+          setSuggestedSize(profiles[0].suggested_sizes.tops);
+        } else if (['pants', 'jeans', 'shorts', 'khakis'].includes(category)) {
+          setSuggestedSize(profiles[0].suggested_sizes.bottoms);
+        } else if (['dresses', 'dress_skirts', 'skirts', 'evening_dresses'].includes(category)) {
+          setSuggestedSize(profiles[0].suggested_sizes.dresses);
+        }
+      }
+
+      // Check wishlist
+      const wishlistItems = await base44.entities.WishlistItem.filter({
+        user_id: currentUser.id,
+        product_id: productId
+      });
+      setIsWishlisted(wishlistItems.length > 0);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const toggleWishlist = async () => {
+    try {
+      if (isWishlisted) {
+        const items = await base44.entities.WishlistItem.filter({
+          user_id: user.id,
+          product_id: productId
+        });
+        if (items.length > 0) {
+          await base44.entities.WishlistItem.delete(items[0].id);
+        }
+      } else {
+        await base44.entities.WishlistItem.create({
+          user_id: user.id,
+          product_id: product.id,
+          product_name: product.name,
+          product_image: product.images?.[0],
+          product_price: product.price,
+          vendor_id: product.vendor_id,
+          is_public: false
+        });
+      }
+      setIsWishlisted(!isWishlisted);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const addToCart = async () => {
+    if (!selectedSize) return;
+    setAddingToCart(true);
+    try {
+      await base44.entities.CartItem.create({
+        user_id: user.id,
+        product_id: product.id,
+        product_name: product.name,
+        product_image: product.images?.[0],
+        product_price: product.price,
+        size: selectedSize,
+        color: selectedColor,
+        quantity: 1
+      });
+      setAddedToCart(true);
+      setTimeout(() => setAddedToCart(false), 2000);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setAddingToCart(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#fafafa] flex items-center justify-center">
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+          className="w-8 h-8 border-2 border-[#1a1a1a] border-t-transparent rounded-full"
+        />
+      </div>
+    );
+  }
+
+  if (!product) {
+    return (
+      <div className="min-h-screen bg-[#fafafa] flex items-center justify-center">
+        <p className="text-[#64748b]">Product not found</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-[#fafafa] pb-32">
+      {/* Header */}
+      <div className="fixed top-0 left-0 right-0 z-50 px-4 py-4 flex items-center justify-between">
+        <button
+          onClick={() => navigate(-1)}
+          className="w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center"
+        >
+          <ArrowLeft className="w-5 h-5 text-[#1a1a1a]" />
+        </button>
+        <button
+          onClick={toggleWishlist}
+          className={`w-10 h-10 rounded-full shadow-lg flex items-center justify-center transition-colors ${
+            isWishlisted ? 'bg-[#c9a962]' : 'bg-white'
+          }`}
+        >
+          <Heart className={`w-5 h-5 ${isWishlisted ? 'text-[#1a1a1a] fill-current' : 'text-[#1a1a1a]'}`} />
+        </button>
+      </div>
+
+      {/* Product Image */}
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="aspect-square bg-[#e5e5e5]"
+      >
+        {product.images?.[0] ? (
+          <img 
+            src={product.images[0]}
+            alt={product.name}
+            className="w-full h-full object-cover"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center text-[#64748b]">
+            No image
+          </div>
+        )}
+      </motion.div>
+
+      {/* Product Info */}
+      <motion.div 
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        className="px-6 pt-6"
+      >
+        <div className="flex justify-between items-start mb-2">
+          <div>
+            <p className="text-sm text-[#64748b] mb-1">{product.brand}</p>
+            <h1 className="text-2xl font-medium text-[#1a1a1a]">{product.name}</h1>
+          </div>
+          <p className="text-2xl font-semibold text-[#1a1a1a]">${product.price?.toFixed(2)}</p>
+        </div>
+
+        {product.description && (
+          <p className="text-[#64748b] text-sm mt-4 leading-relaxed">{product.description}</p>
+        )}
+
+        {/* Try On Button */}
+        <button
+          onClick={() => navigate(createPageUrl(`TryOn?product=${product.id}`))}
+          className="w-full mt-6 h-12 bg-[#f5f5f0] rounded-xl flex items-center justify-center gap-2 text-[#1a1a1a] font-medium"
+        >
+          <Sparkles className="w-5 h-5 text-[#c9a962]" />
+          Virtual Try-On
+        </button>
+
+        {/* Size Selection */}
+        {product.sizes?.length > 0 && (
+          <div className="mt-8">
+            <div className="flex justify-between items-center mb-3">
+              <p className="text-sm font-medium text-[#1a1a1a]">Select Size</p>
+              {suggestedSize && (
+                <span className="text-xs text-[#c9a962] flex items-center gap-1">
+                  <Sparkles className="w-3 h-3" />
+                  Recommended: {suggestedSize}
+                </span>
+              )}
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {product.sizes.map(size => (
+                <button
+                  key={size}
+                  onClick={() => setSelectedSize(size)}
+                  className={`h-12 min-w-[48px] px-4 rounded-xl border-2 font-medium text-sm transition-colors ${
+                    selectedSize === size
+                      ? 'border-[#1a1a1a] bg-[#1a1a1a] text-white'
+                      : size === suggestedSize
+                        ? 'border-[#c9a962] text-[#1a1a1a]'
+                        : 'border-[#e5e5e5] text-[#1a1a1a]'
+                  }`}
+                >
+                  {size}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Color Selection */}
+        {product.colors?.length > 0 && (
+          <div className="mt-6">
+            <p className="text-sm font-medium text-[#1a1a1a] mb-3">Color</p>
+            <div className="flex gap-3">
+              {product.colors.map(color => (
+                <button
+                  key={color}
+                  onClick={() => setSelectedColor(color)}
+                  className={`w-10 h-10 rounded-full border-2 transition-all ${
+                    selectedColor === color ? 'border-[#1a1a1a] scale-110' : 'border-transparent'
+                  }`}
+                  style={{ backgroundColor: color.toLowerCase() }}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+      </motion.div>
+
+      {/* Bottom Action */}
+      <div className="fixed bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-[#fafafa] via-[#fafafa] to-transparent">
+        <Button
+          onClick={addToCart}
+          disabled={!selectedSize || addingToCart}
+          className={`w-full h-14 rounded-xl font-medium text-base transition-colors ${
+            addedToCart
+              ? 'bg-green-500 hover:bg-green-500'
+              : 'bg-[#1a1a1a] hover:bg-[#2a2a2a]'
+          }`}
+        >
+          {addingToCart ? (
+            <Loader2 className="w-5 h-5 animate-spin" />
+          ) : addedToCart ? (
+            <>
+              <Check className="w-5 h-5 mr-2" />
+              Added to Cart
+            </>
+          ) : (
+            <>
+              <ShoppingBag className="w-5 h-5 mr-2" />
+              Add to Cart
+            </>
+          )}
+        </Button>
+      </div>
+    </div>
+  );
+}
