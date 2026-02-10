@@ -56,17 +56,21 @@ export default function ClosetUpload({ profile, concierge, onComplete }) {
   const handleContinue = async () => {
     setAnalyzing(true);
     try {
-      // Store closet items for style analysis
-      const closetData = {
-        owned_items: items.map(item => ({
+      // Save each item to ClosetItem entity
+      const user = await base44.auth.me();
+      for (const item of items) {
+        await base44.entities.ClosetItem.create({
+          user_id: user.id,
           image: item.image,
           item_type: item.item_type,
           color: item.color,
-          style_category: item.style_category
-        }))
-      };
+          style_category: item.style_category || 'other',
+          description: item.description,
+          source: 'uploaded'
+        });
+      }
       
-      await onComplete(closetData);
+      await onComplete({});
     } catch (error) {
       console.error(error);
       await onComplete({});
