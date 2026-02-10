@@ -1,0 +1,218 @@
+import React, { useState, useRef } from 'react';
+import { base44 } from '@/api/base44Client';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Button } from "@/components/ui/button";
+import { Upload, X, Plus, ArrowRight, Loader2, Shirt, Camera } from 'lucide-react';
+import ConciergeGuide from './ConciergeGuide';
+
+export default function ClosetUpload({ profile, concierge, onComplete }) {
+  const [items, setItems] = useState([]);
+  const [uploading, setUploading] = useState(false);
+  const [analyzing, setAnalyzing] = useState(false);
+  const fileInputRef = useRef(null);
+
+  const guideMessage = "Now let's see what's already in your closet! Upload photos of your favorite pieces so I can learn your style.";
+
+  const handleFileChange = async (e) => {
+    const files = Array.from(e.target.files);
+    if (files.length === 0) return;
+
+    setUploading(true);
+    try {
+      for (const file of files) {
+        const { file_url } = await base44.integrations.Core.UploadFile({ file });
+        
+        // Analyze each item
+        const analysis = await base44.integrations.Core.InvokeLLM({
+          prompt: "Analyze this clothing item. Identify the type of clothing, color, style category (business/casual/nightlife/trendy), and any notable features.",
+          file_urls: [file_url],
+          response_json_schema: {
+            type: "object",
+            properties: {
+              item_type: { type: "string" },
+              color: { type: "string" },
+              style_category: { type: "string" },
+              description: { type: "string" }
+            }
+          }
+        });
+
+        setItems(prev => [...prev, {
+          image: file_url,
+          ...analysis
+        }]);
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const removeItem = (index) => {
+    setItems(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const handleContinue = async () => {
+    setAnalyzing(true);
+    try {
+      // Store closet items for style analysis
+      const closetData = {
+        owned_items: items.map(item => ({
+          image: item.image,
+          item_type: item.item_type,
+          color: item.color,
+          style_category: item.style_category
+        }))
+      };
+      
+      await onComplete(closetData);
+    } catch (error) {
+      console.error(error);
+      await onComplete({});
+    } finally {
+      setAnalyzing(false);
+    }
+  };
+
+  return (
+    <div className="max-w-md mx-auto">
+      <ConciergeGuide concierge={concierge} message={guideMessage} />
+
+      <motion.h1 
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        className="text-4xl font-light text-[#2d2d2d] mb-2"
+      >
+        Your Closet
+      </motion.h1>
+      <motion.p 
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.1 }}
+        className="text-[#6b7280] mb-8"
+      >
+        Upload items you already own to personalize recommendations
+      </motion.p>
+
+      {/* Upload Area */}
+      <motion.div
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.2 }}
+        className="mb-6"
+      >
+        <button
+          onClick={() => fileInputRef.current?.click()}
+          disabled={uploading}
+          className="w-full aspect-video bg-white border-2 border-dashed border-[#d1d5db] rounded-2xl flex flex-col items-center justify-center gap-3 hover:border-[#c9a962] hover:bg-[#faf8f5] transition-colors"
+        >
+          {uploading ? (
+            <>
+              <Loader2 className="w-8 h-8 text-[#c9a962] animate-spin" />
+              <span className="text-[#6b7280]">Analyzing...</span>
+            </>
+          ) : (
+            <>
+              <div className="w-14 h-14 rounded-full bg-[#f8f5f0] flex items-center justify-center">
+                <Camera className="w-6 h-6 text-[#c9a962]" />
+              </div>
+              <div className="text-center">
+                <p className="text-[#2d2d2d] font-medium">Add from your closet</p>
+                <p className="text-[#9ca3af] text-sm">Take photos or upload images</p>
+              </div>
+            </>
+          )}
+        </button>
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          multiple
+          onChange={handleFileChange}
+          className="hidden"
+        />
+      </motion.div>
+
+      {/* Uploaded Items Grid */}
+      {items.length > 0 && (
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          className="mb-8"
+        >
+          <p className="text-sm text-[#6b7280] mb-3">{items.length} items added</p>
+          <div className="grid grid-cols-3 gap-3">
+            <AnimatePresence>
+              {items.map((item, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0.8, opacity: 0 }}
+                  className="relative aspect-square rounded-xl overflow-hidden bg-[#f3f4f6] group"
+                >
+                  <img 
+                    src={item.image}
+                    alt={item.item_type}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="absolute bottom-2 left-2 right-2">
+                      <p className="text-white text-xs font-medium truncate">{item.item_type}</p>
+                      <p className="text-white/70 text-xs capitalize">{item.style_category}</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => removeItem(idx)}
+                    className="absolute top-2 right-2 w-6 h-6 bg-black/50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                  >
+                    <X className="w-4 h-4 text-white" />
+                  </button>
+                </motion.div>
+              ))}
+              
+              {/* Add More Button */}
+              <motion.button
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                onClick={() => fileInputRef.current?.click()}
+                disabled={uploading}
+                className="aspect-square rounded-xl border-2 border-dashed border-[#d1d5db] flex items-center justify-center hover:border-[#c9a962] hover:bg-[#faf8f5] transition-colors"
+              >
+                <Plus className="w-6 h-6 text-[#9ca3af]" />
+              </motion.button>
+            </AnimatePresence>
+          </div>
+        </motion.div>
+      )}
+
+      {/* Continue Button */}
+      <motion.div
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.3 }}
+      >
+        <Button
+          onClick={handleContinue}
+          disabled={analyzing}
+          className="w-full h-14 bg-[#c9a962] hover:bg-[#b8944d] text-white rounded-xl font-medium text-base"
+        >
+          {analyzing ? (
+            <Loader2 className="w-5 h-5 animate-spin" />
+          ) : (
+            <>
+              {items.length > 0 ? 'Continue' : 'Skip for now'}
+              <ArrowRight className="ml-2 w-5 h-5" />
+            </>
+          )}
+        </Button>
+        {items.length === 0 && (
+          <p className="text-center text-[#9ca3af] text-xs mt-3">
+            You can always add items later
+          </p>
+        )}
+      </motion.div>
+    </div>
+  );
+}

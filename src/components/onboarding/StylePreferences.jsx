@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Check, Loader2 } from 'lucide-react';
+import ConciergeGuide from './ConciergeGuide';
 
-export default function StylePreferences({ profile, onComplete }) {
+export default function StylePreferences({ profile, concierge, onComplete }) {
   const [selected, setSelected] = useState(profile?.style_preferences || []);
   const [saving, setSaving] = useState(false);
 
@@ -52,12 +53,16 @@ export default function StylePreferences({ profile, onComplete }) {
     }
   };
 
+  const guideMessage = "Excellent! Now tell me about your style preferences. What looks speak to you?";
+
   return (
     <div className="max-w-md mx-auto">
+      <ConciergeGuide concierge={concierge} message={guideMessage} />
+      
       <motion.h1 
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        className="text-4xl font-light text-white mb-2"
+        className="text-4xl font-light text-[#2d2d2d] mb-2"
       >
         Your Style
       </motion.h1>
@@ -65,7 +70,7 @@ export default function StylePreferences({ profile, onComplete }) {
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.1 }}
-        className="text-white/60 mb-8"
+        className="text-[#6b7280] mb-8"
       >
         Select all styles that match your taste
       </motion.p>
@@ -124,7 +129,7 @@ export default function StylePreferences({ profile, onComplete }) {
         <Button
           onClick={handleSubmit}
           disabled={selected.length === 0 || saving}
-          className="w-full h-14 bg-[#c9a962] hover:bg-[#b8944d] text-[#1a1a1a] rounded-xl font-medium text-base disabled:opacity-40"
+          className="w-full h-14 bg-[#c9a962] hover:bg-[#b8944d] text-white rounded-xl font-medium text-base disabled:opacity-40"
         >
           {saving ? (
             <Loader2 className="w-5 h-5 animate-spin" />
@@ -136,7 +141,7 @@ export default function StylePreferences({ profile, onComplete }) {
           )}
         </Button>
         {selected.length === 0 && (
-          <p className="text-center text-white/40 text-xs mt-3">
+          <p className="text-center text-[#9ca3af] text-xs mt-3">
             Select at least one style to continue
           </p>
         )}

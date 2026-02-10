@@ -3,17 +3,20 @@ import { base44 } from '@/api/base44Client';
 import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { motion, AnimatePresence } from 'framer-motion';
+import ConciergeIntro from '@/components/onboarding/ConciergeIntro';
 import ProfileSetup from '@/components/onboarding/ProfileSetup';
 import BodyScan from '@/components/onboarding/BodyScan';
 import StylePreferences from '@/components/onboarding/StylePreferences';
+import ClosetUpload from '@/components/onboarding/ClosetUpload';
 import AddFriends from '@/components/onboarding/AddFriends';
 
 export default function Onboarding() {
   const navigate = useNavigate();
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(0); // Start at 0 for intro
   const [user, setUser] = useState(null);
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [selectedConcierge, setSelectedConcierge] = useState(null);
 
   useEffect(() => {
     loadUser();
@@ -27,11 +30,13 @@ export default function Onboarding() {
       const profiles = await base44.entities.UserProfile.filter({ user_id: currentUser.id });
       if (profiles.length > 0) {
         setProfile(profiles[0]);
-        setStep(profiles[0].onboarding_step || 1);
-        
         if (profiles[0].onboarding_completed) {
           navigate(createPageUrl('Home'));
           return;
+        }
+        // If returning user, skip intro
+        if (profiles[0].onboarding_step > 0) {
+          setStep(profiles[0].onboarding_step);
         }
       }
     } catch (error) {
@@ -41,10 +46,14 @@ export default function Onboarding() {
     }
   };
 
+  const handleIntroComplete = () => {
+    setStep(1);
+  };
+
   const handleStepComplete = async (stepData) => {
     try {
       const nextStep = step + 1;
-      const isComplete = nextStep > 4;
+      const isComplete = nextStep > 5;
       
       const updateData = {
         ...stepData,
@@ -75,7 +84,7 @@ export default function Onboarding() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#1a1a1a] flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-b from-[#faf8f5] to-[#f5f0ea] flex items-center justify-center">
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
@@ -86,30 +95,47 @@ export default function Onboarding() {
   }
 
   const steps = [
-    { component: ProfileSetup, title: 'Your Profile' },
-    { component: BodyScan, title: 'Body Scan' },
-    { component: StylePreferences, title: 'Your Style' },
-    { component: AddFriends, title: 'Add Friends' },
+    { component: ProfileSetup, title: 'Your Profile', guideMessage: "Perfect! Let's start with the basics. Tell me a bit about yourself." },
+    { component: BodyScan, title: 'Body Scan', guideMessage: "Now I'll need to see how clothes will fit you. Let's capture your measurements." },
+    { component: StylePreferences, title: 'Your Style', guideMessage: "Excellent! Now tell me about your style preferences. What looks speak to you?" },
+    { component: ClosetUpload, title: 'Your Closet', guideMessage: "Let's see what you already have! This helps me understand your taste better." },
+    { component: AddFriends, title: 'Add Friends', guideMessage: "Almost done! Would you like to connect with friends to share style inspiration?" },
   ];
 
+  // Handle intro step
+  if (step === 0) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-[#faf8f5] to-[#f5f0ea]">
+        <div className="pt-20 pb-8 px-6">
+          <ConciergeIntro 
+            user={user}
+            onComplete={handleIntroComplete}
+            onSelectConcierge={setSelectedConcierge}
+          />
+        </div>
+      </div>
+    );
+  }
+
   const CurrentStepComponent = steps[step - 1].component;
+  const currentGuideMessage = steps[step - 1].guideMessage;
 
   return (
-    <div className="min-h-screen bg-[#1a1a1a]">
+    <div className="min-h-screen bg-gradient-to-b from-[#faf8f5] to-[#f5f0ea]">
       {/* Progress Bar */}
-      <div className="fixed top-0 left-0 right-0 z-50 px-6 pt-6">
+      <div className="fixed top-0 left-0 right-0 z-50 px-6 pt-6 bg-gradient-to-b from-[#faf8f5] to-transparent pb-4">
         <div className="flex gap-2">
-          {[1, 2, 3, 4].map((s) => (
+          {[1, 2, 3, 4, 5].map((s) => (
             <div 
               key={s}
               className={`h-1 flex-1 rounded-full transition-colors ${
-                s <= step ? 'bg-[#c9a962]' : 'bg-white/20'
+                s <= step ? 'bg-[#c9a962]' : 'bg-[#d1d5db]/50'
               }`}
             />
           ))}
         </div>
-        <p className="text-white/60 text-xs mt-4 tracking-[0.2em] uppercase">
-          Step {step} of 4 • {steps[step - 1].title}
+        <p className="text-[#6b7280] text-xs mt-4 tracking-[0.2em] uppercase">
+          Step {step} of 5 • {steps[step - 1].title}
         </p>
       </div>
 
@@ -126,6 +152,8 @@ export default function Onboarding() {
           <CurrentStepComponent 
             user={user}
             profile={profile}
+            concierge={selectedConcierge}
+            guideMessage={currentGuideMessage}
             onComplete={handleStepComplete}
           />
         </motion.div>

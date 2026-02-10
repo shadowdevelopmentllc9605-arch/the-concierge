@@ -47,32 +47,32 @@
  *
  * The mainPage value must match a key in the PAGES object exactly.
  */
-import Home from './pages/Home';
-import Onboarding from './pages/Onboarding';
-import Shop from './pages/Shop';
-import ProductDetail from './pages/ProductDetail';
 import Cart from './pages/Cart';
-import Wishlist from './pages/Wishlist';
 import Closet from './pages/Closet';
-import Profile from './pages/Profile';
-import TryOn from './pages/TryOn';
-import InStoreMode from './pages/InStoreMode';
 import Feedback from './pages/Feedback';
+import Home from './pages/Home';
+import InStoreMode from './pages/InStoreMode';
+import Onboarding from './pages/Onboarding';
+import ProductDetail from './pages/ProductDetail';
+import Profile from './pages/Profile';
+import Shop from './pages/Shop';
+import TryOn from './pages/TryOn';
+import Wishlist from './pages/Wishlist';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
-    "Home": Home,
-    "Onboarding": Onboarding,
-    "Shop": Shop,
-    "ProductDetail": ProductDetail,
     "Cart": Cart,
-    "Wishlist": Wishlist,
     "Closet": Closet,
-    "Profile": Profile,
-    "TryOn": TryOn,
-    "InStoreMode": InStoreMode,
     "Feedback": Feedback,
+    "Home": Home,
+    "InStoreMode": InStoreMode,
+    "Onboarding": Onboarding,
+    "ProductDetail": ProductDetail,
+    "Profile": Profile,
+    "Shop": Shop,
+    "TryOn": TryOn,
+    "Wishlist": Wishlist,
 }
 
 export const pagesConfig = {

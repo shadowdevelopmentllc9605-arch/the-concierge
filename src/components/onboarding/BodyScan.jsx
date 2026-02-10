@@ -3,8 +3,9 @@ import { base44 } from '@/api/base44Client';
 import { motion } from 'framer-motion';
 import { Button } from "@/components/ui/button";
 import { Camera, Check, ArrowRight, Loader2, RotateCcw } from 'lucide-react';
+import ConciergeGuide from './ConciergeGuide';
 
-export default function BodyScan({ profile, onComplete }) {
+export default function BodyScan({ profile, concierge, onComplete }) {
   const [scans, setScans] = useState({
     front: profile?.body_scan_front || null,
     side: profile?.body_scan_side || null,
@@ -101,13 +102,16 @@ export default function BodyScan({ profile, onComplete }) {
   };
 
   const allScansComplete = scans.front && scans.side && scans.back;
+  const guideMessage = "Now I'll need to see how clothes will fit you. Let's capture your measurements with three quick photos.";
 
   return (
     <div className="max-w-md mx-auto">
+      <ConciergeGuide concierge={concierge} message={guideMessage} />
+      
       <motion.h1 
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        className="text-4xl font-light text-white mb-2"
+        className="text-4xl font-light text-[#2d2d2d] mb-2"
       >
         Body Scan
       </motion.h1>
@@ -115,7 +119,7 @@ export default function BodyScan({ profile, onComplete }) {
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.1 }}
-        className="text-white/60 mb-8"
+        className="text-[#6b7280] mb-8"
       >
         Capture three poses for accurate size recommendations
       </motion.p>
@@ -139,16 +143,16 @@ export default function BodyScan({ profile, onComplete }) {
               scans[step.key] 
                 ? 'bg-[#c9a962]' 
                 : currentScan === step.key 
-                  ? 'bg-white/20 ring-2 ring-[#c9a962]' 
-                  : 'bg-white/10'
+                  ? 'bg-white ring-2 ring-[#c9a962] shadow-sm' 
+                  : 'bg-[#e5e7eb]'
             }`}>
               {scans[step.key] ? (
-                <Check className="w-6 h-6 text-[#1a1a1a]" />
+                <Check className="w-6 h-6 text-white" />
               ) : (
-                <Camera className="w-6 h-6 text-white/60" />
+                <Camera className="w-6 h-6 text-[#6b7280]" />
               )}
             </div>
-            <span className="text-white/60 text-xs">{step.label}</span>
+            <span className="text-[#6b7280] text-xs">{step.label}</span>
           </button>
         ))}
       </motion.div>
@@ -158,7 +162,7 @@ export default function BodyScan({ profile, onComplete }) {
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.3 }}
-        className="relative aspect-[3/4] bg-white/5 rounded-2xl overflow-hidden mb-6"
+        className="relative aspect-[3/4] bg-white rounded-2xl overflow-hidden mb-6 shadow-sm border border-[#e5e7eb]"
       >
         {scans[currentScan] ? (
           <>
@@ -175,14 +179,14 @@ export default function BodyScan({ profile, onComplete }) {
             </button>
           </>
         ) : (
-          <div className="w-full h-full flex flex-col items-center justify-center p-6">
+          <div className="w-full h-full flex flex-col items-center justify-center p-6 bg-[#faf8f5]">
             {/* Pose Guide Silhouette */}
-            <div className="w-32 h-48 border-2 border-dashed border-white/20 rounded-lg mb-6 flex items-center justify-center">
-              <span className="text-white/30 text-6xl">
+            <div className="w-32 h-48 border-2 border-dashed border-[#d1d5db] rounded-lg mb-6 flex items-center justify-center">
+              <span className="text-[#9ca3af] text-6xl">
                 {currentScan === 'front' ? '🧍' : currentScan === 'side' ? '🚶' : '🧍'}
               </span>
             </div>
-            <p className="text-white/60 text-center text-sm">
+            <p className="text-[#6b7280] text-center text-sm">
               {scanSteps.find(s => s.key === currentScan)?.instruction}
             </p>
           </div>
@@ -199,7 +203,7 @@ export default function BodyScan({ profile, onComplete }) {
           <Button
             onClick={() => fileInputRef.current?.click()}
             disabled={uploading}
-            className="w-full h-14 bg-white/10 hover:bg-white/20 text-white rounded-xl font-medium text-base border border-white/20"
+            className="w-full h-14 bg-white hover:bg-[#f5f5f5] text-[#2d2d2d] rounded-xl font-medium text-base border border-[#e5e7eb] shadow-sm"
           >
             {uploading ? (
               <Loader2 className="w-5 h-5 animate-spin" />
@@ -211,14 +215,14 @@ export default function BodyScan({ profile, onComplete }) {
             )}
           </Button>
         ) : !allScansComplete ? (
-          <p className="text-center text-white/40 text-sm">
+          <p className="text-center text-[#9ca3af] text-sm">
             Tap on the next view above to continue
           </p>
         ) : (
           <Button
             onClick={handleComplete}
             disabled={analyzing}
-            className="w-full h-14 bg-[#c9a962] hover:bg-[#b8944d] text-[#1a1a1a] rounded-xl font-medium text-base"
+            className="w-full h-14 bg-[#c9a962] hover:bg-[#b8944d] text-white rounded-xl font-medium text-base"
           >
             {analyzing ? (
               <>
