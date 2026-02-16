@@ -12,6 +12,7 @@ export default function ClosetUpload({ profile, concierge, onComplete }) {
   const [analyzing, setAnalyzing] = useState(false);
   const [editingIndex, setEditingIndex] = useState(null);
   const fileInputRef = useRef(null);
+  const cameraInputRef = useRef(null);
 
   const guideMessage = "Now let's see what's already in your closet! Upload photos of your favorite pieces so I can learn your style.";
 
@@ -125,28 +126,41 @@ export default function ClosetUpload({ profile, concierge, onComplete }) {
         transition={{ delay: 0.2 }}
         className="mb-6"
       >
-        <button
-          onClick={() => fileInputRef.current?.click()}
-          disabled={uploading}
-          className="w-full aspect-video bg-white border-2 border-dashed border-[#d1d5db] rounded-2xl flex flex-col items-center justify-center gap-3 hover:border-[#c9a962] hover:bg-[#faf8f5] transition-colors"
-        >
-          {uploading ? (
-            <>
-              <Loader2 className="w-8 h-8 text-[#c9a962] animate-spin" />
-              <span className="text-[#6b7280]">Analyzing...</span>
-            </>
-          ) : (
-            <>
-              <div className="w-14 h-14 rounded-full bg-[#f8f5f0] flex items-center justify-center">
-                <Camera className="w-6 h-6 text-[#c9a962]" />
+        {uploading ? (
+          <div className="w-full aspect-video bg-white border-2 border-dashed border-[#d1d5db] rounded-2xl flex flex-col items-center justify-center gap-3">
+            <Loader2 className="w-8 h-8 text-[#c9a962] animate-spin" />
+            <span className="text-[#6b7280]">Analyzing...</span>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 gap-3">
+            <button
+              onClick={() => cameraInputRef.current?.click()}
+              className="aspect-square bg-white border-2 border-dashed border-[#d1d5db] rounded-2xl flex flex-col items-center justify-center gap-2 hover:border-[#c9a962] hover:bg-[#faf8f5] transition-colors"
+            >
+              <div className="w-12 h-12 rounded-full bg-[#f8f5f0] flex items-center justify-center">
+                <Camera className="w-5 h-5 text-[#c9a962]" />
               </div>
-              <div className="text-center">
-                <p className="text-[#2d2d2d] font-medium">Add from your closet</p>
-                <p className="text-[#9ca3af] text-sm">Take photos or upload images</p>
+              <p className="text-[#2d2d2d] font-medium text-sm">Take Photo</p>
+            </button>
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              className="aspect-square bg-white border-2 border-dashed border-[#d1d5db] rounded-2xl flex flex-col items-center justify-center gap-2 hover:border-[#c9a962] hover:bg-[#faf8f5] transition-colors"
+            >
+              <div className="w-12 h-12 rounded-full bg-[#f8f5f0] flex items-center justify-center">
+                <Upload className="w-5 h-5 text-[#c9a962]" />
               </div>
-            </>
-          )}
-        </button>
+              <p className="text-[#2d2d2d] font-medium text-sm">Upload Image</p>
+            </button>
+          </div>
+        )}
+        <input
+          ref={cameraInputRef}
+          type="file"
+          accept="image/*"
+          capture="environment"
+          onChange={handleFileChange}
+          className="hidden"
+        />
         <input
           ref={fileInputRef}
           type="file"

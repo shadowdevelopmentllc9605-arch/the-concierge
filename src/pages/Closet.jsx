@@ -17,7 +17,9 @@ export default function Closet() {
   const [activeTab, setActiveTab] = useState('all');
   const [editingItem, setEditingItem] = useState(null);
   const [savingEdit, setSavingEdit] = useState(false);
+  const [showUploadOptions, setShowUploadOptions] = useState(false);
   const fileInputRef = useRef(null);
+  const cameraInputRef = useRef(null);
 
   useEffect(() => {
     loadData();
@@ -139,17 +141,53 @@ export default function Closet() {
               <p className="text-sm text-[#64748b]">{totalItems} items</p>
             </div>
           </div>
-          <button
-            onClick={() => fileInputRef.current?.click()}
-            disabled={uploading}
-            className="w-10 h-10 rounded-full bg-[#c9a962] flex items-center justify-center shadow-sm"
-          >
-            {uploading ? (
-              <Loader2 className="w-5 h-5 text-white animate-spin" />
-            ) : (
-              <Plus className="w-5 h-5 text-white" />
-            )}
-          </button>
+          <div className="relative">
+            <button
+              onClick={() => setShowUploadOptions(!showUploadOptions)}
+              disabled={uploading}
+              className="w-10 h-10 rounded-full bg-[#c9a962] flex items-center justify-center shadow-sm"
+            >
+              {uploading ? (
+                <Loader2 className="w-5 h-5 text-white animate-spin" />
+              ) : (
+                <Plus className="w-5 h-5 text-white" />
+              )}
+            </button>
+            
+            <AnimatePresence>
+              {showUploadOptions && !uploading && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9, y: -10 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.9, y: -10 }}
+                  className="absolute right-0 top-12 bg-white rounded-xl shadow-lg border border-[#e5e7eb] overflow-hidden z-50"
+                >
+                  <button
+                    onClick={() => { cameraInputRef.current?.click(); setShowUploadOptions(false); }}
+                    className="flex items-center gap-3 px-4 py-3 hover:bg-[#f5f5f5] w-full text-left"
+                  >
+                    <Camera className="w-5 h-5 text-[#c9a962]" />
+                    <span className="text-[#1a1a1a] text-sm font-medium">Take Photo</span>
+                  </button>
+                  <button
+                    onClick={() => { fileInputRef.current?.click(); setShowUploadOptions(false); }}
+                    className="flex items-center gap-3 px-4 py-3 hover:bg-[#f5f5f5] w-full text-left border-t border-[#f0f0f0]"
+                  >
+                    <ShoppingBag className="w-5 h-5 text-[#c9a962]" />
+                    <span className="text-[#1a1a1a] text-sm font-medium">Upload Image</span>
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+          <input
+            ref={cameraInputRef}
+            type="file"
+            accept="image/*"
+            capture="environment"
+            onChange={handleUpload}
+            className="hidden"
+          />
           <input
             ref={fileInputRef}
             type="file"
