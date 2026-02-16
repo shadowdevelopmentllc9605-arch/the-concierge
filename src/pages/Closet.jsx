@@ -138,9 +138,10 @@ export default function Closet() {
             <div>
               <h1 className="text-2xl font-light text-[#1a1a1a]">My Closet</h1>
               <p className="text-sm text-[#64748b]">{totalItems} items</p>
-              </div>
-              </div>
-              <input
+            </div>
+          </div>
+        </div>
+        <input
           ref={cameraInputRef}
           type="file"
           accept="image/*"
@@ -156,7 +157,6 @@ export default function Closet() {
           onChange={handleUpload}
           className="hidden"
         />
-      </div>
 
       {/* Tabs */}
       <div className="px-6 pt-4">
