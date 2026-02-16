@@ -3,9 +3,10 @@ import { base44 } from '@/api/base44Client';
 import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, ShoppingBag, Package, Calendar, Store, MapPin, Plus, Camera, Loader2, X, Shirt } from 'lucide-react';
+import { ArrowLeft, ShoppingBag, Package, Calendar, Store, MapPin, Plus, Camera, Loader2, X, Shirt, Pencil } from 'lucide-react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { format } from 'date-fns';
+import ClosetItemEditor from '@/components/closet/ClosetItemEditor';
 
 export default function Closet() {
   const navigate = useNavigate();
@@ -14,6 +15,8 @@ export default function Closet() {
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
   const [activeTab, setActiveTab] = useState('all');
+  const [editingItem, setEditingItem] = useState(null);
+  const [savingEdit, setSavingEdit] = useState(false);
   const fileInputRef = useRef(null);
 
   useEffect(() => {
@@ -63,14 +66,17 @@ export default function Closet() {
         const newItem = await base44.entities.ClosetItem.create({
           user_id: user.id,
           image: file_url,
-          item_type: analysis.item_type,
-          color: analysis.color,
+          item_type: analysis.item_type || '',
+          color: analysis.color || '',
+          size: '',
           style_category: analysis.style_category || 'other',
-          description: analysis.description,
+          description: analysis.description || '',
           source: 'uploaded'
         });
         
         setOwnedItems(prev => [newItem, ...prev]);
+        // Open editor for the new item
+        setEditingItem(newItem);
       }
     } catch (error) {
       console.error(error);
@@ -85,6 +91,20 @@ export default function Closet() {
       setOwnedItems(prev => prev.filter(i => i.id !== itemId));
     } catch (error) {
       console.error(error);
+    }
+  };
+
+  const updateItem = async (data) => {
+    if (!editingItem) return;
+    setSavingEdit(true);
+    try {
+      await base44.entities.ClosetItem.update(editingItem.id, data);
+      setOwnedItems(prev => prev.map(i => i.id === editingItem.id ? { ...i, ...data } : i));
+      setEditingItem(null);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setSavingEdit(false);
     }
   };
 
@@ -175,7 +195,7 @@ export default function Closet() {
                     <h3 className="text-sm font-medium text-[#64748b] mb-3">My Items</h3>
                     <div className="grid grid-cols-3 gap-3">
                       {ownedItems.map((item, idx) => (
-                        <OwnedItemCard key={item.id} item={item} idx={idx} onRemove={removeItem} />
+                        <OwnedItemCard key={item.id} item={item} idx={idx} onRemove={removeItem} onEdit={setEditingItem} />
                       ))}
                     </div>
                   </div>
@@ -200,7 +220,7 @@ export default function Closet() {
             ) : (
               <div className="grid grid-cols-3 gap-3">
                 {ownedItems.map((item, idx) => (
-                  <OwnedItemCard key={item.id} item={item} idx={idx} onRemove={removeItem} />
+                  <OwnedItemCard key={item.id} item={item} idx={idx} onRemove={removeItem} onEdit={setEditingItem} />
                 ))}
               </div>
             )}
@@ -219,6 +239,18 @@ export default function Closet() {
           </TabsContent>
         </Tabs>
       </div>
+
+      {/* Edit Modal */}
+      <AnimatePresence>
+        {editingItem && (
+          <ClosetItemEditor
+            item={editingItem}
+            onSave={updateItem}
+            onCancel={() => setEditingItem(null)}
+            saving={savingEdit}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
@@ -249,7 +281,7 @@ function EmptyState({ onUpload, uploading, type = 'all' }) {
   );
 }
 
-function OwnedItemCard({ item, idx, onRemove }) {
+function OwnedItemCard({ item, idx, onRemove, onEdit }) {
   return (
     <motion.div
       initial={{ scale: 0.9, opacity: 0 }}
@@ -264,16 +296,24 @@ function OwnedItemCard({ item, idx, onRemove }) {
       />
       <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
         <div className="absolute bottom-2 left-2 right-2">
-          <p className="text-white text-xs font-medium truncate">{item.item_type}</p>
-          <p className="text-white/70 text-xs capitalize">{item.style_category}</p>
+          <p className="text-white text-xs font-medium truncate">{item.item_type || 'Untitled'}</p>
+          <p className="text-white/70 text-xs capitalize">{item.size && `${item.size} • `}{item.style_category || 'No category'}</p>
         </div>
       </div>
-      <button
-        onClick={() => onRemove(item.id)}
-        className="absolute top-2 right-2 w-6 h-6 bg-black/50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-      >
-        <X className="w-4 h-4 text-white" />
-      </button>
+      <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+        <button
+          onClick={() => onEdit(item)}
+          className="w-6 h-6 bg-black/50 rounded-full flex items-center justify-center"
+        >
+          <Pencil className="w-3 h-3 text-white" />
+        </button>
+        <button
+          onClick={() => onRemove(item.id)}
+          className="w-6 h-6 bg-black/50 rounded-full flex items-center justify-center"
+        >
+          <X className="w-4 h-4 text-white" />
+        </button>
+      </div>
     </motion.div>
   );
 }

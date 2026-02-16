@@ -2,13 +2,15 @@ import React, { useState, useRef } from 'react';
 import { base44 } from '@/api/base44Client';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from "@/components/ui/button";
-import { Upload, X, Plus, ArrowRight, Loader2, Shirt, Camera } from 'lucide-react';
+import { Upload, X, Plus, ArrowRight, Loader2, Shirt, Camera, Pencil } from 'lucide-react';
 import ConciergeGuide from './ConciergeGuide';
+import ClosetItemEditor from '@/components/closet/ClosetItemEditor';
 
 export default function ClosetUpload({ profile, concierge, onComplete }) {
   const [items, setItems] = useState([]);
   const [uploading, setUploading] = useState(false);
   const [analyzing, setAnalyzing] = useState(false);
+  const [editingIndex, setEditingIndex] = useState(null);
   const fileInputRef = useRef(null);
 
   const guideMessage = "Now let's see what's already in your closet! Upload photos of your favorite pieces so I can learn your style.";
@@ -37,10 +39,21 @@ export default function ClosetUpload({ profile, concierge, onComplete }) {
           }
         });
 
-        setItems(prev => [...prev, {
+        const newItem = {
           image: file_url,
-          ...analysis
-        }]);
+          item_type: analysis.item_type || '',
+          color: analysis.color || '',
+          style_category: analysis.style_category || '',
+          size: '',
+          description: analysis.description || ''
+        };
+        
+        setItems(prev => {
+          const newItems = [...prev, newItem];
+          // Open editor for the new item
+          setEditingIndex(newItems.length - 1);
+          return newItems;
+        });
       }
     } catch (error) {
       console.error(error);
@@ -51,6 +64,11 @@ export default function ClosetUpload({ profile, concierge, onComplete }) {
 
   const removeItem = (index) => {
     setItems(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const updateItem = (index, data) => {
+    setItems(prev => prev.map((item, i) => i === index ? { ...item, ...data } : item));
+    setEditingIndex(null);
   };
 
   const handleContinue = async () => {
@@ -64,6 +82,7 @@ export default function ClosetUpload({ profile, concierge, onComplete }) {
           image: item.image,
           item_type: item.item_type,
           color: item.color,
+          size: item.size,
           style_category: item.style_category || 'other',
           description: item.description,
           source: 'uploaded'
@@ -163,16 +182,24 @@ export default function ClosetUpload({ profile, concierge, onComplete }) {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
                     <div className="absolute bottom-2 left-2 right-2">
-                      <p className="text-white text-xs font-medium truncate">{item.item_type}</p>
-                      <p className="text-white/70 text-xs capitalize">{item.style_category}</p>
+                      <p className="text-white text-xs font-medium truncate">{item.item_type || 'Untitled'}</p>
+                      <p className="text-white/70 text-xs capitalize">{item.size && `${item.size} • `}{item.style_category || 'No category'}</p>
                     </div>
                   </div>
-                  <button
-                    onClick={() => removeItem(idx)}
-                    className="absolute top-2 right-2 w-6 h-6 bg-black/50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-                  >
-                    <X className="w-4 h-4 text-white" />
-                  </button>
+                  <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <button
+                      onClick={() => setEditingIndex(idx)}
+                      className="w-6 h-6 bg-black/50 rounded-full flex items-center justify-center"
+                    >
+                      <Pencil className="w-3 h-3 text-white" />
+                    </button>
+                    <button
+                      onClick={() => removeItem(idx)}
+                      className="w-6 h-6 bg-black/50 rounded-full flex items-center justify-center"
+                    >
+                      <X className="w-4 h-4 text-white" />
+                    </button>
+                  </div>
                 </motion.div>
               ))}
               
@@ -217,6 +244,17 @@ export default function ClosetUpload({ profile, concierge, onComplete }) {
           </p>
         )}
       </motion.div>
+
+      {/* Item Editor Modal */}
+      <AnimatePresence>
+        {editingIndex !== null && items[editingIndex] && (
+          <ClosetItemEditor
+            item={items[editingIndex]}
+            onSave={(data) => updateItem(editingIndex, data)}
+            onCancel={() => setEditingIndex(null)}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
