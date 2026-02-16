@@ -3,7 +3,7 @@ import { base44 } from '@/api/base44Client';
 import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, ShoppingBag, Package, Calendar, Store, MapPin, Plus, Camera, Loader2, X, Shirt, Pencil } from 'lucide-react';
+import { ArrowLeft, ShoppingBag, Package, Calendar, Store, MapPin, Camera, Loader2, X, Shirt, Pencil, ImagePlus } from 'lucide-react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { format } from 'date-fns';
 import ClosetItemEditor from '@/components/closet/ClosetItemEditor';
@@ -17,7 +17,6 @@ export default function Closet() {
   const [activeTab, setActiveTab] = useState('all');
   const [editingItem, setEditingItem] = useState(null);
   const [savingEdit, setSavingEdit] = useState(false);
-  const [showUploadOptions, setShowUploadOptions] = useState(false);
   const fileInputRef = useRef(null);
   const cameraInputRef = useRef(null);
 
@@ -139,64 +138,24 @@ export default function Closet() {
             <div>
               <h1 className="text-2xl font-light text-[#1a1a1a]">My Closet</h1>
               <p className="text-sm text-[#64748b]">{totalItems} items</p>
-            </div>
-          </div>
-          <div className="relative">
-            <button
-              onClick={() => setShowUploadOptions(!showUploadOptions)}
-              disabled={uploading}
-              className="w-10 h-10 rounded-full bg-[#c9a962] flex items-center justify-center shadow-sm"
-            >
-              {uploading ? (
-                <Loader2 className="w-5 h-5 text-white animate-spin" />
-              ) : (
-                <Plus className="w-5 h-5 text-white" />
-              )}
-            </button>
-            
-            <AnimatePresence>
-              {showUploadOptions && !uploading && (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.9, y: -10 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.9, y: -10 }}
-                  className="absolute right-0 top-12 bg-white rounded-xl shadow-lg border border-[#e5e7eb] overflow-hidden z-50"
-                >
-                  <button
-                    onClick={() => { cameraInputRef.current?.click(); setShowUploadOptions(false); }}
-                    className="flex items-center gap-3 px-4 py-3 hover:bg-[#f5f5f5] w-full text-left"
-                  >
-                    <Camera className="w-5 h-5 text-[#c9a962]" />
-                    <span className="text-[#1a1a1a] text-sm font-medium">Take Photo</span>
-                  </button>
-                  <button
-                    onClick={() => { fileInputRef.current?.click(); setShowUploadOptions(false); }}
-                    className="flex items-center gap-3 px-4 py-3 hover:bg-[#f5f5f5] w-full text-left border-t border-[#f0f0f0]"
-                  >
-                    <ShoppingBag className="w-5 h-5 text-[#c9a962]" />
-                    <span className="text-[#1a1a1a] text-sm font-medium">Upload Image</span>
-                  </button>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-          <input
-            ref={cameraInputRef}
-            type="file"
-            accept="image/*"
-            capture="environment"
-            onChange={handleUpload}
-            className="hidden"
-          />
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept="image/*"
-            multiple
-            onChange={handleUpload}
-            className="hidden"
-          />
-        </div>
+              </div>
+              </div>
+              <input
+          ref={cameraInputRef}
+          type="file"
+          accept="image/*"
+          capture="environment"
+          onChange={handleUpload}
+          className="hidden"
+        />
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          multiple
+          onChange={handleUpload}
+          className="hidden"
+        />
       </div>
 
       {/* Tabs */}
@@ -221,11 +180,31 @@ export default function Closet() {
             >
               Purchased ({purchases.length})
             </TabsTrigger>
+            
+            {/* Add Items Button */}
+            <div className="ml-auto flex gap-2">
+              <button
+                onClick={() => cameraInputRef.current?.click()}
+                disabled={uploading}
+                className="flex items-center gap-2 px-4 py-2 bg-[#1a1a1a] text-white rounded-full text-sm font-medium"
+              >
+                {uploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Camera className="w-4 h-4" />}
+                Take Photo
+              </button>
+              <button
+                onClick={() => fileInputRef.current?.click()}
+                disabled={uploading}
+                className="flex items-center gap-2 px-4 py-2 bg-[#1a1a1a] text-white rounded-full text-sm font-medium"
+              >
+                {uploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <ImagePlus className="w-4 h-4" />}
+                Upload
+              </button>
+            </div>
           </TabsList>
 
           <TabsContent value="all">
             {totalItems === 0 ? (
-              <EmptyState onUpload={() => fileInputRef.current?.click()} uploading={uploading} />
+              <EmptyState onTakePhoto={() => cameraInputRef.current?.click()} onUploadImage={() => fileInputRef.current?.click()} uploading={uploading} />
             ) : (
               <>
                 {ownedItems.length > 0 && (
@@ -254,7 +233,7 @@ export default function Closet() {
 
           <TabsContent value="owned">
             {ownedItems.length === 0 ? (
-              <EmptyState onUpload={() => fileInputRef.current?.click()} uploading={uploading} type="owned" />
+              <EmptyState onTakePhoto={() => cameraInputRef.current?.click()} onUploadImage={() => fileInputRef.current?.click()} uploading={uploading} type="owned" />
             ) : (
               <div className="grid grid-cols-3 gap-3">
                 {ownedItems.map((item, idx) => (
@@ -293,7 +272,7 @@ export default function Closet() {
   );
 }
 
-function EmptyState({ onUpload, uploading, type = 'all' }) {
+function EmptyState({ onTakePhoto, onUploadImage, uploading, type = 'all' }) {
   return (
     <div className="flex flex-col items-center justify-center py-20 px-6">
       <div className="w-20 h-20 rounded-full bg-[#f5f5f0] flex items-center justify-center mb-6">
@@ -305,15 +284,25 @@ function EmptyState({ onUpload, uploading, type = 'all' }) {
       <p className="text-[#64748b] text-center mb-6">
         {type === 'purchased' ? 'Items you buy will appear here' : 'Add items from your wardrobe'}
       </p>
-      {type !== 'purchased' && onUpload && (
-        <button
-          onClick={onUpload}
-          disabled={uploading}
-          className="flex items-center gap-2 px-6 py-3 bg-[#1a1a1a] text-white rounded-xl font-medium"
-        >
-          {uploading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Camera className="w-5 h-5" />}
-          Add Items
-        </button>
+      {type !== 'purchased' && onTakePhoto && onUploadImage && (
+        <div className="flex gap-3">
+          <button
+            onClick={onTakePhoto}
+            disabled={uploading}
+            className="flex items-center gap-2 px-5 py-3 bg-[#1a1a1a] text-white rounded-xl font-medium"
+          >
+            {uploading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Camera className="w-5 h-5" />}
+            Take Photo
+          </button>
+          <button
+            onClick={onUploadImage}
+            disabled={uploading}
+            className="flex items-center gap-2 px-5 py-3 bg-[#1a1a1a] text-white rounded-xl font-medium"
+          >
+            {uploading ? <Loader2 className="w-5 h-5 animate-spin" /> : <ImagePlus className="w-5 h-5" />}
+            Upload
+          </button>
+        </div>
       )}
     </div>
   );
