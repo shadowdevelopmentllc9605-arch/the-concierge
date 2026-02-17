@@ -157,6 +157,7 @@ export default function Closet() {
           onChange={handleUpload}
           className="hidden"
         />
+      </div>
 
       {/* Tabs */}
       <div className="px-6 pt-4">
