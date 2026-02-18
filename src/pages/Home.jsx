@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { Sparkles, TrendingUp, Heart, ShoppingBag } from 'lucide-react';
 import { motion } from 'framer-motion';
+import PullToRefresh from '@/components/PullToRefresh';
 
 export default function Home() {
   const navigate = useNavigate();
@@ -35,13 +36,17 @@ export default function Home() {
     }
   };
 
+  const handleRefresh = useCallback(async () => {
+    await checkOnboarding();
+  }, []);
+
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#fafafa] flex items-center justify-center">
+      <div className="min-h-screen bg-[var(--color-background)] flex items-center justify-center">
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-          className="w-8 h-8 border-2 border-[#1a1a1a] border-t-transparent rounded-full"
+          className="w-8 h-8 border-2 border-[var(--color-text-primary)] border-t-transparent rounded-full"
         />
       </div>
     );
@@ -62,7 +67,7 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#fafafa]">
+    <PullToRefresh onRefresh={handleRefresh} className="min-h-screen bg-[var(--color-background)]">
       {/* Hero Section */}
       <motion.div 
         initial={{ opacity: 0 }}
@@ -80,7 +85,7 @@ export default function Home() {
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="text-[#c9a962] text-sm tracking-[0.3em] uppercase mb-2"
+            className="text-[var(--color-accent)] text-sm tracking-[0.3em] uppercase mb-2"
           >
             Welcome back
           </motion.p>
@@ -113,10 +118,10 @@ export default function Home() {
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.5 + idx * 0.1 }}
               onClick={() => navigate(createPageUrl(cat.path))}
-              className="bg-white rounded-2xl p-4 shadow-lg shadow-black/5 flex flex-col items-center gap-2 hover:shadow-xl transition-shadow"
+              className="bg-[var(--color-surface)] rounded-2xl p-4 shadow-lg shadow-black/5 flex flex-col items-center gap-2 hover:shadow-xl transition-shadow select-none"
             >
-              <cat.icon className="w-5 h-5 text-[#1a1a1a]" />
-              <span className="text-xs text-[#1a1a1a] font-medium">{cat.name}</span>
+              <cat.icon className="w-5 h-5 text-[var(--color-text-primary)]" />
+              <span className="text-xs text-[var(--color-text-primary)] font-medium">{cat.name}</span>
             </motion.button>
           ))}
         </div>
@@ -125,10 +130,10 @@ export default function Home() {
       {/* Shop by Style */}
       <div className="px-6 mt-12">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl font-light text-[#1a1a1a] tracking-tight">Shop by Style</h2>
+          <h2 className="text-xl font-light text-[var(--color-text-primary)] tracking-tight">Shop by Style</h2>
           <button 
             onClick={() => navigate(createPageUrl('Shop'))}
-            className="text-sm text-[#64748b] hover:text-[#1a1a1a] transition-colors"
+            className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors select-none"
           >
             View all
           </button>
@@ -141,7 +146,7 @@ export default function Home() {
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.7 + idx * 0.1 }}
               onClick={() => navigate(createPageUrl(style.path))}
-              className="relative aspect-[3/4] rounded-2xl overflow-hidden group"
+              className="relative aspect-[3/4] rounded-2xl overflow-hidden group select-none"
             >
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10" />
               <img 
@@ -166,17 +171,17 @@ export default function Home() {
       >
         <button 
           onClick={() => navigate(createPageUrl('TryOn'))}
-          className="w-full bg-[#1a1a1a] text-white rounded-2xl p-6 flex items-center justify-between group"
+          className="w-full bg-[var(--color-text-primary)] text-[var(--color-background)] rounded-2xl p-6 flex items-center justify-between group select-none"
         >
           <div className="text-left">
-            <p className="text-[#c9a962] text-xs tracking-[0.2em] uppercase mb-1">Experience</p>
+            <p className="text-[var(--color-accent)] text-xs tracking-[0.2em] uppercase mb-1">Experience</p>
             <p className="text-xl font-light">Virtual Try-On</p>
           </div>
           <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-colors">
-            <Sparkles className="w-5 h-5 text-[#c9a962]" />
+            <Sparkles className="w-5 h-5 text-[var(--color-accent)]" />
           </div>
         </button>
       </motion.div>
-    </div>
+    </PullToRefresh>
   );
 }

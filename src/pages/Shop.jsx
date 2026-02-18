@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
@@ -7,6 +7,7 @@ import { Search, SlidersHorizontal, X, Heart, ShoppingBag, ChevronDown } from 'l
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import PullToRefresh from '@/components/PullToRefresh';
 
 export default function Shop() {
   const navigate = useNavigate();
@@ -33,6 +34,10 @@ export default function Shop() {
 
   useEffect(() => {
     loadData();
+  }, [filters]);
+
+  const handleRefresh = useCallback(async () => {
+    await loadData();
   }, [filters]);
 
   const loadData = async () => {
@@ -113,7 +118,7 @@ export default function Shop() {
   );
 
   return (
-    <div className="min-h-screen bg-[var(--color-background)] pb-24">
+    <PullToRefresh onRefresh={handleRefresh} className="min-h-screen bg-[var(--color-background)] pb-24">
       {/* Header */}
       <div className="sticky top-0 z-40 bg-[var(--color-background)]/95 backdrop-blur-lg">
         <div className="px-6 py-4">
@@ -296,6 +301,6 @@ export default function Shop() {
           </div>
         )}
       </div>
-    </div>
+    </PullToRefresh>
   );
 }

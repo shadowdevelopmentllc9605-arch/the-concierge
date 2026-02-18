@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, Heart, Trash2, ShoppingBag, Eye, EyeOff, Share2 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
+import PullToRefresh from '@/components/PullToRefresh';
 
 export default function Wishlist() {
   const navigate = useNavigate();
@@ -15,6 +16,10 @@ export default function Wishlist() {
 
   useEffect(() => {
     loadWishlist();
+  }, []);
+
+  const handleRefresh = useCallback(async () => {
+    await loadWishlist();
   }, []);
 
   const loadWishlist = async () => {
@@ -104,7 +109,7 @@ export default function Wishlist() {
   }
 
   return (
-    <div className="min-h-screen bg-[var(--color-background)] pb-24">
+    <PullToRefresh onRefresh={handleRefresh} className="min-h-screen bg-[var(--color-background)] pb-24">
       {/* Header */}
       <div className="sticky top-0 z-40 bg-[var(--color-background)]/95 backdrop-blur-lg px-6 py-4">
         <div className="flex items-center justify-between">
@@ -217,6 +222,6 @@ export default function Wishlist() {
           </div>
         </div>
       )}
-    </div>
+    </PullToRefresh>
   );
 }

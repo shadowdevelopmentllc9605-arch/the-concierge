@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
@@ -7,6 +7,7 @@ import { ArrowLeft, ShoppingBag, Package, Calendar, Store, MapPin, Camera, Loade
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { format } from 'date-fns';
 import ClosetItemEditor from '@/components/closet/ClosetItemEditor';
+import PullToRefresh from '@/components/PullToRefresh';
 
 function EmptyState({ onTakePhoto, onUploadImage, uploading, type = 'all' }) {
   return (
@@ -161,6 +162,10 @@ export default function Closet() {
     loadData();
   }, []);
 
+  const handleRefresh = useCallback(async () => {
+    await loadData();
+  }, []);
+
   const loadData = async () => {
     try {
       const user = await base44.auth.me();
@@ -260,7 +265,7 @@ export default function Closet() {
   }
 
   return (
-    <div className="min-h-screen bg-[#fafafa] pb-24">
+    <PullToRefresh onRefresh={handleRefresh} className="min-h-screen bg-[var(--color-background)] pb-24">
       {/* Header */}
       <div className="sticky top-0 z-40 bg-[#fafafa]/95 backdrop-blur-lg px-6 py-4">
         <div className="flex items-center justify-between">
@@ -405,6 +410,6 @@ export default function Closet() {
           />
         )}
       </AnimatePresence>
-    </div>
+    </PullToRefresh>
   );
 }
