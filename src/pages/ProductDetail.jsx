@@ -124,11 +124,11 @@ export default function ProductDetail() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#fafafa] flex items-center justify-center">
+      <div className="min-h-screen bg-[var(--color-background)] flex items-center justify-center">
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-          className="w-8 h-8 border-2 border-[#1a1a1a] border-t-transparent rounded-full"
+          className="w-8 h-8 border-2 border-[var(--color-text-primary)] border-t-transparent rounded-full"
         />
       </div>
     );
@@ -136,29 +136,29 @@ export default function ProductDetail() {
 
   if (!product) {
     return (
-      <div className="min-h-screen bg-[#fafafa] flex items-center justify-center">
-        <p className="text-[#64748b]">Product not found</p>
+      <div className="min-h-screen bg-[var(--color-background)] flex items-center justify-center">
+        <p className="text-[var(--color-text-secondary)]">Product not found</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#fafafa] pb-32">
+    <div className="min-h-screen bg-[var(--color-background)] pb-32">
       {/* Header */}
-      <div className="fixed top-0 left-0 right-0 z-50 px-4 py-4 flex items-center justify-between">
+      <div className="fixed top-0 left-0 right-0 z-50 px-4 py-4 flex items-center justify-between safe-area-top">
         <button
           onClick={() => navigate(-1)}
-          className="w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center"
+          className="w-10 h-10 rounded-full bg-[var(--color-surface)] shadow-lg flex items-center justify-center select-none"
         >
-          <ArrowLeft className="w-5 h-5 text-[#1a1a1a]" />
+          <ArrowLeft className="w-5 h-5 text-[var(--color-text-primary)]" />
         </button>
         <button
           onClick={toggleWishlist}
-          className={`w-10 h-10 rounded-full shadow-lg flex items-center justify-center transition-colors ${
-            isWishlisted ? 'bg-[#c9a962]' : 'bg-white'
+          className={`w-10 h-10 rounded-full shadow-lg flex items-center justify-center transition-colors select-none ${
+            isWishlisted ? 'bg-[var(--color-accent)]' : 'bg-[var(--color-surface)]'
           }`}
         >
-          <Heart className={`w-5 h-5 ${isWishlisted ? 'text-[#1a1a1a] fill-current' : 'text-[#1a1a1a]'}`} />
+          <Heart className={`w-5 h-5 ${isWishlisted ? 'text-[var(--color-text-primary)] fill-current' : 'text-[var(--color-text-primary)]'}`} />
         </button>
       </div>
 
@@ -166,7 +166,7 @@ export default function ProductDetail() {
       <motion.div 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="aspect-square bg-[#e5e5e5]"
+        className="aspect-square bg-[var(--color-placeholder)]"
       >
         {product.images?.[0] ? (
           <img 
@@ -175,7 +175,7 @@ export default function ProductDetail() {
             className="w-full h-full object-cover"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-[#64748b]">
+          <div className="w-full h-full flex items-center justify-center text-[var(--color-text-secondary)]">
             No image
           </div>
         )}
@@ -189,22 +189,22 @@ export default function ProductDetail() {
       >
         <div className="flex justify-between items-start mb-2">
           <div>
-            <p className="text-sm text-[#64748b] mb-1">{product.brand}</p>
-            <h1 className="text-2xl font-medium text-[#1a1a1a]">{product.name}</h1>
+            <p className="text-sm text-[var(--color-text-secondary)] mb-1">{product.brand}</p>
+            <h1 className="text-2xl font-medium text-[var(--color-text-primary)]">{product.name}</h1>
           </div>
-          <p className="text-2xl font-semibold text-[#1a1a1a]">${product.price?.toFixed(2)}</p>
+          <p className="text-2xl font-semibold text-[var(--color-text-primary)]">${product.price?.toFixed(2)}</p>
         </div>
 
         {product.description && (
-          <p className="text-[#64748b] text-sm mt-4 leading-relaxed">{product.description}</p>
+          <p className="text-[var(--color-text-secondary)] text-sm mt-4 leading-relaxed">{product.description}</p>
         )}
 
         {/* Try On Button */}
         <button
           onClick={() => navigate(createPageUrl(`TryOn?product=${product.id}`))}
-          className="w-full mt-6 h-12 bg-[#f5f5f0] rounded-xl flex items-center justify-center gap-2 text-[#1a1a1a] font-medium"
+          className="w-full mt-6 h-12 bg-[var(--color-background-secondary)] rounded-xl flex items-center justify-center gap-2 text-[var(--color-text-primary)] font-medium select-none"
         >
-          <Sparkles className="w-5 h-5 text-[#c9a962]" />
+          <Sparkles className="w-5 h-5 text-[var(--color-accent)]" />
           Virtual Try-On
         </button>
 
@@ -212,9 +212,9 @@ export default function ProductDetail() {
         {product.sizes?.length > 0 && (
           <div className="mt-8">
             <div className="flex justify-between items-center mb-3">
-              <p className="text-sm font-medium text-[#1a1a1a]">Select Size</p>
+              <p className="text-sm font-medium text-[var(--color-text-primary)]">Select Size</p>
               {suggestedSize && (
-                <span className="text-xs text-[#c9a962] flex items-center gap-1">
+                <span className="text-xs text-[var(--color-accent)] flex items-center gap-1">
                   <Sparkles className="w-3 h-3" />
                   Recommended: {suggestedSize}
                 </span>
@@ -225,12 +225,12 @@ export default function ProductDetail() {
                 <button
                   key={size}
                   onClick={() => setSelectedSize(size)}
-                  className={`h-12 min-w-[48px] px-4 rounded-xl border-2 font-medium text-sm transition-colors ${
+                  className={`h-12 min-w-[48px] px-4 rounded-xl border-2 font-medium text-sm transition-colors select-none ${
                     selectedSize === size
-                      ? 'border-[#1a1a1a] bg-[#1a1a1a] text-white'
+                      ? 'border-[var(--color-text-primary)] bg-[var(--color-text-primary)] text-[var(--color-background)]'
                       : size === suggestedSize
-                        ? 'border-[#c9a962] text-[#1a1a1a]'
-                        : 'border-[#e5e5e5] text-[#1a1a1a]'
+                        ? 'border-[var(--color-accent)] text-[var(--color-text-primary)]'
+                        : 'border-[var(--color-border)] text-[var(--color-text-primary)]'
                   }`}
                 >
                   {size}
@@ -243,14 +243,14 @@ export default function ProductDetail() {
         {/* Color Selection */}
         {product.colors?.length > 0 && (
           <div className="mt-6">
-            <p className="text-sm font-medium text-[#1a1a1a] mb-3">Color</p>
+            <p className="text-sm font-medium text-[var(--color-text-primary)] mb-3">Color</p>
             <div className="flex gap-3">
               {product.colors.map(color => (
                 <button
                   key={color}
                   onClick={() => setSelectedColor(color)}
-                  className={`w-10 h-10 rounded-full border-2 transition-all ${
-                    selectedColor === color ? 'border-[#1a1a1a] scale-110' : 'border-transparent'
+                  className={`w-10 h-10 rounded-full border-2 transition-all select-none ${
+                    selectedColor === color ? 'border-[var(--color-text-primary)] scale-110' : 'border-transparent'
                   }`}
                   style={{ backgroundColor: color.toLowerCase() }}
                 />
@@ -261,14 +261,14 @@ export default function ProductDetail() {
       </motion.div>
 
       {/* Bottom Action */}
-      <div className="fixed bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-[#fafafa] via-[#fafafa] to-transparent">
+      <div className="fixed bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-[var(--color-background)] via-[var(--color-background)] to-transparent safe-area-bottom">
         <Button
           onClick={addToCart}
           disabled={!selectedSize || addingToCart}
-          className={`w-full h-14 rounded-xl font-medium text-base transition-colors ${
+          className={`w-full h-14 rounded-xl font-medium text-base transition-colors select-none ${
             addedToCart
               ? 'bg-green-500 hover:bg-green-500'
-              : 'bg-[#1a1a1a] hover:bg-[#2a2a2a]'
+              : 'bg-[var(--color-text-primary)] hover:bg-[var(--color-text-primary)]/90'
           }`}
         >
           {addingToCart ? (
