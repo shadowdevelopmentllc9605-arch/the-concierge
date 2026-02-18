@@ -36,11 +36,11 @@ export default function Layout({ children, currentPageName }) {
   ];
 
   return (
-    <div className="min-h-screen bg-[#fafafa]">
+    <div className="min-h-screen bg-[var(--color-background)]">
       {children}
       
       {!hideNav && (
-        <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-[#f0f0f0] px-4 pb-6 pt-2 z-50">
+        <nav className="fixed bottom-0 left-0 right-0 bg-[var(--color-surface)] border-t border-[var(--color-border-light)] px-4 pt-2 z-50" style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 16px)' }}>
           <div className="flex justify-around items-center max-w-md mx-auto">
             {navItems.map((item) => {
               const isActive = currentPageName === item.path;
@@ -48,14 +48,14 @@ export default function Layout({ children, currentPageName }) {
                 <Link
                   key={item.path}
                   to={createPageUrl(item.path)}
-                  className={`flex flex-col items-center gap-1 py-2 px-3 rounded-xl transition-colors ${
-                    isActive ? 'text-[#1a1a1a]' : 'text-[#94a3b8]'
+                  className={`flex flex-col items-center gap-1 py-2 px-3 rounded-xl transition-colors select-none ${
+                    isActive ? 'text-[var(--color-text-primary)]' : 'text-[var(--color-text-muted)]'
                   }`}
                 >
                   <div className="relative">
                     <item.icon className={`w-6 h-6 ${isActive ? 'stroke-[2.5px]' : ''}`} />
                     {item.path === 'Cart' && cartCount > 0 && (
-                      <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#c9a962] text-[#1a1a1a] text-[10px] rounded-full flex items-center justify-center font-medium">
+                      <span className="absolute -top-1 -right-1 w-4 h-4 bg-[var(--color-accent)] text-[var(--color-text-primary)] text-[10px] rounded-full flex items-center justify-center font-medium">
                         {cartCount}
                       </span>
                     )}
