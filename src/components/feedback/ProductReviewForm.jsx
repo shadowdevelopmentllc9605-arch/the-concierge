@@ -84,21 +84,21 @@ export default function ProductReviewForm({ purchase, user, onComplete, onSkip }
       className="space-y-6"
     >
       {/* Product Info */}
-      <div className="flex items-center gap-4 bg-white rounded-2xl p-4">
-        <div className="w-16 h-16 rounded-xl bg-[#e5e5e5] overflow-hidden">
+      <div className="flex items-center gap-4 bg-[var(--color-surface)] rounded-2xl p-4">
+        <div className="w-16 h-16 rounded-xl bg-[var(--color-placeholder)] overflow-hidden">
           {purchase.product_image && (
             <img src={purchase.product_image} alt="" className="w-full h-full object-cover" />
           )}
         </div>
         <div>
-          <h3 className="font-medium text-[#1a1a1a]">{purchase.product_name}</h3>
-          <p className="text-sm text-[#64748b]">Size: {purchase.size}</p>
+          <h3 className="font-medium text-[var(--color-text-primary)]">{purchase.product_name}</h3>
+          <p className="text-sm text-[var(--color-text-secondary)]">Size: {purchase.size}</p>
         </div>
       </div>
 
       {/* Overall Rating */}
-      <div className="bg-white rounded-2xl p-6">
-        <h3 className="font-medium text-[#1a1a1a] mb-4">Overall Rating</h3>
+      <div className="bg-[var(--color-surface)] rounded-2xl p-6">
+        <h3 className="font-medium text-[var(--color-text-primary)] mb-4">Overall Rating</h3>
         <div className="flex justify-center gap-2">
           {[1, 2, 3, 4, 5].map(star => (
             <button
@@ -106,35 +106,35 @@ export default function ProductReviewForm({ purchase, user, onComplete, onSkip }
               onMouseEnter={() => setHoverRating(star)}
               onMouseLeave={() => setHoverRating(0)}
               onClick={() => setRating(star)}
-              className="p-1"
+              className="p-1 select-none"
             >
               <Star 
                 className={`w-10 h-10 transition-colors ${
                   star <= (hoverRating || rating)
-                    ? 'text-[#c9a962] fill-current'
-                    : 'text-[#e5e5e5]'
+                    ? 'text-[var(--color-accent)] fill-current'
+                    : 'text-[var(--color-border)]'
                 }`}
               />
             </button>
           ))}
         </div>
-        <p className="text-center text-sm text-[#64748b] mt-2">
+        <p className="text-center text-sm text-[var(--color-text-secondary)] mt-2">
           {rating === 0 ? 'Tap to rate' : ['', 'Poor', 'Fair', 'Good', 'Very Good', 'Excellent'][rating]}
         </p>
       </div>
 
       {/* Fit Rating */}
-      <div className="bg-white rounded-2xl p-6">
-        <h3 className="font-medium text-[#1a1a1a] mb-4">How did it fit?</h3>
+      <div className="bg-[var(--color-surface)] rounded-2xl p-6">
+        <h3 className="font-medium text-[var(--color-text-primary)] mb-4">How did it fit?</h3>
         <div className="flex flex-wrap gap-2">
           {fitOptions.map(opt => (
             <button
               key={opt.value}
               onClick={() => setFitRating(opt.value)}
-              className={`px-4 py-2 rounded-full text-sm transition-colors ${
+              className={`px-4 py-2 rounded-full text-sm transition-colors select-none ${
                 fitRating === opt.value
-                  ? 'bg-[#1a1a1a] text-white'
-                  : 'bg-[#f5f5f0] text-[#1a1a1a]'
+                  ? 'bg-[var(--color-text-primary)] text-[var(--color-background)]'
+                  : 'bg-[var(--color-background-secondary)] text-[var(--color-text-primary)]'
               }`}
             >
               {opt.label}
@@ -144,14 +144,14 @@ export default function ProductReviewForm({ purchase, user, onComplete, onSkip }
       </div>
 
       {/* Quality & Value */}
-      <div className="bg-white rounded-2xl p-6 space-y-4">
+      <div className="bg-[var(--color-surface)] rounded-2xl p-6 space-y-4">
         <div>
           <div className="flex justify-between items-center mb-2">
-            <span className="text-sm text-[#64748b]">Quality</span>
+            <span className="text-sm text-[var(--color-text-secondary)]">Quality</span>
             <div className="flex gap-1">
               {[1, 2, 3, 4, 5].map(star => (
-                <button key={star} onClick={() => setQualityRating(star)}>
-                  <Star className={`w-5 h-5 ${star <= qualityRating ? 'text-[#c9a962] fill-current' : 'text-[#e5e5e5]'}`} />
+                <button key={star} onClick={() => setQualityRating(star)} className="select-none">
+                  <Star className={`w-5 h-5 ${star <= qualityRating ? 'text-[var(--color-accent)] fill-current' : 'text-[var(--color-border)]'}`} />
                 </button>
               ))}
             </div>
@@ -159,11 +159,11 @@ export default function ProductReviewForm({ purchase, user, onComplete, onSkip }
         </div>
         <div>
           <div className="flex justify-between items-center mb-2">
-            <span className="text-sm text-[#64748b]">Value for Money</span>
+            <span className="text-sm text-[var(--color-text-secondary)]">Value for Money</span>
             <div className="flex gap-1">
               {[1, 2, 3, 4, 5].map(star => (
-                <button key={star} onClick={() => setValueRating(star)}>
-                  <Star className={`w-5 h-5 ${star <= valueRating ? 'text-[#c9a962] fill-current' : 'text-[#e5e5e5]'}`} />
+                <button key={star} onClick={() => setValueRating(star)} className="select-none">
+                  <Star className={`w-5 h-5 ${star <= valueRating ? 'text-[var(--color-accent)] fill-current' : 'text-[var(--color-border)]'}`} />
                 </button>
               ))}
             </div>
@@ -172,13 +172,13 @@ export default function ProductReviewForm({ purchase, user, onComplete, onSkip }
       </div>
 
       {/* Would Recommend */}
-      <div className="bg-white rounded-2xl p-6">
-        <h3 className="font-medium text-[#1a1a1a] mb-4">Would you recommend this?</h3>
+      <div className="bg-[var(--color-surface)] rounded-2xl p-6">
+        <h3 className="font-medium text-[var(--color-text-primary)] mb-4">Would you recommend this?</h3>
         <div className="flex gap-3">
           <button
             onClick={() => setWouldRecommend(true)}
-            className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl transition-colors ${
-              wouldRecommend === true ? 'bg-green-100 text-green-700' : 'bg-[#f5f5f0] text-[#64748b]'
+            className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl transition-colors select-none ${
+              wouldRecommend === true ? 'bg-green-100 text-green-700' : 'bg-[var(--color-background-secondary)] text-[var(--color-text-secondary)]'
             }`}
           >
             <ThumbsUp className="w-5 h-5" />
@@ -186,8 +186,8 @@ export default function ProductReviewForm({ purchase, user, onComplete, onSkip }
           </button>
           <button
             onClick={() => setWouldRecommend(false)}
-            className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl transition-colors ${
-              wouldRecommend === false ? 'bg-red-100 text-red-700' : 'bg-[#f5f5f0] text-[#64748b]'
+            className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl transition-colors select-none ${
+              wouldRecommend === false ? 'bg-red-100 text-red-700' : 'bg-[var(--color-background-secondary)] text-[var(--color-text-secondary)]'
             }`}
           >
             <ThumbsDown className="w-5 h-5" />
@@ -197,26 +197,26 @@ export default function ProductReviewForm({ purchase, user, onComplete, onSkip }
       </div>
 
       {/* Written Review */}
-      <div className="bg-white rounded-2xl p-6">
-        <h3 className="font-medium text-[#1a1a1a] mb-4">Write a Review (Optional)</h3>
+      <div className="bg-[var(--color-surface)] rounded-2xl p-6">
+        <h3 className="font-medium text-[var(--color-text-primary)] mb-4">Write a Review (Optional)</h3>
         <Textarea
           value={reviewText}
           onChange={(e) => setReviewText(e.target.value)}
           placeholder="Share your experience with this product..."
-          className="min-h-[120px] resize-none"
+          className="min-h-[120px] resize-none bg-[var(--color-background)] border-[var(--color-border)] text-[var(--color-text-primary)]"
         />
       </div>
 
       {/* Photo Upload */}
-      <div className="bg-white rounded-2xl p-6">
-        <h3 className="font-medium text-[#1a1a1a] mb-4">Add Photos (Optional)</h3>
+      <div className="bg-[var(--color-surface)] rounded-2xl p-6">
+        <h3 className="font-medium text-[var(--color-text-primary)] mb-4">Add Photos (Optional)</h3>
         <div className="flex flex-wrap gap-3">
           {photos.map((photo, idx) => (
             <div key={idx} className="relative w-20 h-20 rounded-xl overflow-hidden">
               <img src={photo} alt="" className="w-full h-full object-cover" />
               <button
                 onClick={() => removePhoto(idx)}
-                className="absolute top-1 right-1 w-6 h-6 bg-black/50 rounded-full flex items-center justify-center"
+                className="absolute top-1 right-1 w-6 h-6 bg-black/50 rounded-full flex items-center justify-center select-none"
               >
                 <X className="w-4 h-4 text-white" />
               </button>
@@ -225,12 +225,12 @@ export default function ProductReviewForm({ purchase, user, onComplete, onSkip }
           <button
             onClick={() => fileInputRef.current?.click()}
             disabled={uploading}
-            className="w-20 h-20 rounded-xl border-2 border-dashed border-[#e5e5e5] flex items-center justify-center"
+            className="w-20 h-20 rounded-xl border-2 border-dashed border-[var(--color-border)] flex items-center justify-center select-none"
           >
             {uploading ? (
-              <Loader2 className="w-6 h-6 animate-spin text-[#64748b]" />
+              <Loader2 className="w-6 h-6 animate-spin text-[var(--color-text-secondary)]" />
             ) : (
-              <Camera className="w-6 h-6 text-[#64748b]" />
+              <Camera className="w-6 h-6 text-[var(--color-text-secondary)]" />
             )}
           </button>
         </div>
@@ -249,14 +249,14 @@ export default function ProductReviewForm({ purchase, user, onComplete, onSkip }
         <Button
           variant="outline"
           onClick={onSkip}
-          className="flex-1 h-14 rounded-xl"
+          className="flex-1 h-14 rounded-xl border-[var(--color-border)] select-none"
         >
           Skip
         </Button>
         <Button
           onClick={handleSubmit}
           disabled={rating === 0 || submitting}
-          className="flex-1 h-14 rounded-xl bg-[#1a1a1a] hover:bg-[#2a2a2a]"
+          className="flex-1 h-14 rounded-xl bg-[var(--color-text-primary)] hover:bg-[var(--color-text-primary)]/90 text-[var(--color-background)] select-none"
         >
           {submitting ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Submit Review'}
         </Button>
