@@ -254,11 +254,11 @@ export default function Closet() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#fafafa] flex items-center justify-center">
+      <div className="min-h-screen bg-[var(--color-background)] flex items-center justify-center">
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-          className="w-8 h-8 border-2 border-[#1a1a1a] border-t-transparent rounded-full"
+          className="w-8 h-8 border-2 border-[var(--color-text-primary)] border-t-transparent rounded-full"
         />
       </div>
     );
@@ -267,18 +267,18 @@ export default function Closet() {
   return (
     <PullToRefresh onRefresh={handleRefresh} className="min-h-screen bg-[var(--color-background)] pb-24">
       {/* Header */}
-      <div className="sticky top-0 z-40 bg-[#fafafa]/95 backdrop-blur-lg px-6 py-4">
+      <div className="sticky top-0 z-40 bg-[var(--color-background)]/95 backdrop-blur-lg px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
             <button
               onClick={() => navigate(-1)}
-              className="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center"
+              className="w-10 h-10 rounded-full bg-[var(--color-surface)] shadow-sm flex items-center justify-center select-none"
             >
-              <ArrowLeft className="w-5 h-5 text-[#1a1a1a]" />
+              <ArrowLeft className="w-5 h-5 text-[var(--color-text-primary)]" />
             </button>
             <div>
-              <h1 className="text-2xl font-light text-[#1a1a1a]">My Closet</h1>
-              <p className="text-sm text-[#64748b]">{totalItems} items</p>
+              <h1 className="text-2xl font-light text-[var(--color-text-primary)]">My Closet</h1>
+              <p className="text-sm text-[var(--color-text-secondary)]">{totalItems} items</p>
             </div>
           </div>
         </div>
@@ -306,19 +306,19 @@ export default function Closet() {
           <TabsList className="w-full justify-start gap-2 bg-transparent h-auto mb-6 overflow-x-auto no-scrollbar">
             <TabsTrigger 
               value="all"
-              className="rounded-full px-4 py-2 data-[state=active]:bg-[#1a1a1a] data-[state=active]:text-white"
+              className="rounded-full px-4 py-2 data-[state=active]:bg-[var(--color-text-primary)] data-[state=active]:text-[var(--color-background)]"
             >
               All ({totalItems})
             </TabsTrigger>
             <TabsTrigger 
               value="owned"
-              className="rounded-full px-4 py-2 data-[state=active]:bg-[#1a1a1a] data-[state=active]:text-white"
+              className="rounded-full px-4 py-2 data-[state=active]:bg-[var(--color-text-primary)] data-[state=active]:text-[var(--color-background)]"
             >
               My Items ({ownedItems.length})
             </TabsTrigger>
             <TabsTrigger 
               value="purchased"
-              className="rounded-full px-4 py-2 data-[state=active]:bg-[#1a1a1a] data-[state=active]:text-white"
+              className="rounded-full px-4 py-2 data-[state=active]:bg-[var(--color-text-primary)] data-[state=active]:text-[var(--color-background)]"
             >
               Purchased ({purchases.length})
             </TabsTrigger>
@@ -328,7 +328,7 @@ export default function Closet() {
               <button
                 onClick={() => cameraInputRef.current?.click()}
                 disabled={uploading}
-                className="flex items-center gap-2 px-4 py-2 bg-[#1a1a1a] text-white rounded-full text-sm font-medium"
+                className="flex items-center gap-2 px-4 py-2 bg-[var(--color-text-primary)] text-[var(--color-background)] rounded-full text-sm font-medium select-none"
               >
                 {uploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Camera className="w-4 h-4" />}
                 Take Photo
@@ -336,7 +336,7 @@ export default function Closet() {
               <button
                 onClick={() => fileInputRef.current?.click()}
                 disabled={uploading}
-                className="flex items-center gap-2 px-4 py-2 bg-[#1a1a1a] text-white rounded-full text-sm font-medium"
+                className="flex items-center gap-2 px-4 py-2 bg-[var(--color-text-primary)] text-[var(--color-background)] rounded-full text-sm font-medium select-none"
               >
                 {uploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <ImagePlus className="w-4 h-4" />}
                 Upload
@@ -351,7 +351,7 @@ export default function Closet() {
               <>
                 {ownedItems.length > 0 && (
                   <div className="mb-6">
-                    <h3 className="text-sm font-medium text-[#64748b] mb-3">My Items</h3>
+                    <h3 className="text-sm font-medium text-[var(--color-text-secondary)] mb-3">My Items</h3>
                     <div className="grid grid-cols-3 gap-3">
                       {ownedItems.map((item, idx) => (
                         <OwnedItemCard key={item.id} item={item} idx={idx} onRemove={removeItem} onEdit={setEditingItem} />
@@ -361,7 +361,7 @@ export default function Closet() {
                 )}
                 {purchases.length > 0 && (
                   <div>
-                    <h3 className="text-sm font-medium text-[#64748b] mb-3">Purchased</h3>
+                    <h3 className="text-sm font-medium text-[var(--color-text-secondary)] mb-3">Purchased</h3>
                     <div className="space-y-4">
                       {purchases.map((item, idx) => (
                         <PurchaseCard key={item.id} item={item} idx={idx} />
