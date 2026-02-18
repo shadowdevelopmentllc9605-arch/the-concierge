@@ -113,31 +113,31 @@ export default function Shop() {
   );
 
   return (
-    <div className="min-h-screen bg-[#fafafa] pb-24">
+    <div className="min-h-screen bg-[var(--color-background)] pb-24">
       {/* Header */}
-      <div className="sticky top-0 z-40 bg-[#fafafa]/95 backdrop-blur-lg">
+      <div className="sticky top-0 z-40 bg-[var(--color-background)]/95 backdrop-blur-lg">
         <div className="px-6 py-4">
           <div className="flex items-center justify-between mb-4">
-            <h1 className="text-2xl font-light text-[#1a1a1a]">Shop</h1>
+            <h1 className="text-2xl font-light text-[var(--color-text-primary)]">Shop</h1>
             <div className="flex items-center gap-3">
               <button 
                 onClick={() => navigate(createPageUrl('Wishlist'))}
-                className="relative"
+                className="relative select-none"
               >
-                <Heart className="w-6 h-6 text-[#1a1a1a]" />
+                <Heart className="w-6 h-6 text-[var(--color-text-primary)]" />
                 {wishlist.length > 0 && (
-                  <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#c9a962] text-[#1a1a1a] text-[10px] rounded-full flex items-center justify-center font-medium">
+                  <span className="absolute -top-1 -right-1 w-4 h-4 bg-[var(--color-accent)] text-[var(--color-text-primary)] text-[10px] rounded-full flex items-center justify-center font-medium">
                     {wishlist.length}
                   </span>
                 )}
               </button>
               <button 
                 onClick={() => navigate(createPageUrl('Cart'))}
-                className="relative"
+                className="relative select-none"
               >
-                <ShoppingBag className="w-6 h-6 text-[#1a1a1a]" />
+                <ShoppingBag className="w-6 h-6 text-[var(--color-text-primary)]" />
                 {cartCount > 0 && (
-                  <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#c9a962] text-[#1a1a1a] text-[10px] rounded-full flex items-center justify-center font-medium">
+                  <span className="absolute -top-1 -right-1 w-4 h-4 bg-[var(--color-accent)] text-[var(--color-text-primary)] text-[10px] rounded-full flex items-center justify-center font-medium">
                     {cartCount}
                   </span>
                 )}
@@ -147,12 +147,12 @@ export default function Shop() {
 
           {/* Search */}
           <div className="relative mb-4">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#64748b]" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--color-text-secondary)]" />
             <Input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search products, brands..."
-              className="h-12 pl-12 pr-4 rounded-xl bg-white border-0 shadow-sm"
+              className="h-12 pl-12 pr-4 rounded-xl bg-[var(--color-surface)] border-0 shadow-sm text-[var(--color-text-primary)]"
             />
           </div>
 
@@ -160,28 +160,28 @@ export default function Shop() {
           <div className="flex gap-2 overflow-x-auto no-scrollbar pb-2">
             <Sheet>
               <SheetTrigger asChild>
-                <Button variant="outline" className="h-9 rounded-full px-4 border-[#e5e5e5] bg-white shrink-0">
+                <Button variant="outline" className="h-9 rounded-full px-4 border-[var(--color-border)] bg-[var(--color-surface)] shrink-0 select-none">
                   <SlidersHorizontal className="w-4 h-4 mr-2" />
                   Filters
                 </Button>
               </SheetTrigger>
-              <SheetContent side="bottom" className="h-[70vh] rounded-t-3xl">
+              <SheetContent side="bottom" className="h-[70vh] rounded-t-3xl bg-[var(--color-surface)]">
                 <SheetHeader>
-                  <SheetTitle>Filters</SheetTitle>
+                  <SheetTitle className="text-[var(--color-text-primary)]">Filters</SheetTitle>
                 </SheetHeader>
                 <div className="mt-6 space-y-6">
                   {/* Style Filter */}
                   <div>
-                    <p className="text-sm font-medium text-[#1a1a1a] mb-3">Style</p>
+                    <p className="text-sm font-medium text-[var(--color-text-primary)] mb-3">Style</p>
                     <div className="flex flex-wrap gap-2">
                       {['business', 'casual', 'nightlife', 'trendy'].map(style => (
                         <button
                           key={style}
                           onClick={() => setFilters(prev => ({ ...prev, style: prev.style === style ? '' : style }))}
-                          className={`px-4 py-2 rounded-full text-sm capitalize transition-colors ${
+                          className={`px-4 py-2 rounded-full text-sm capitalize transition-colors select-none ${
                             filters.style === style
-                              ? 'bg-[#1a1a1a] text-white'
-                              : 'bg-[#f5f5f5] text-[#1a1a1a]'
+                              ? 'bg-[var(--color-text-primary)] text-[var(--color-background)]'
+                              : 'bg-[var(--color-background-secondary)] text-[var(--color-text-primary)]'
                           }`}
                         >
                           {style}
@@ -192,16 +192,16 @@ export default function Shop() {
 
                   {/* Category Filter */}
                   <div>
-                    <p className="text-sm font-medium text-[#1a1a1a] mb-3">Category</p>
+                    <p className="text-sm font-medium text-[var(--color-text-primary)] mb-3">Category</p>
                     <div className="flex flex-wrap gap-2 max-h-48 overflow-y-auto">
                       {Object.values(categories).flat().map(cat => (
                         <button
                           key={cat}
                           onClick={() => setFilters(prev => ({ ...prev, category: prev.category === cat ? '' : cat }))}
-                          className={`px-4 py-2 rounded-full text-sm capitalize transition-colors ${
+                          className={`px-4 py-2 rounded-full text-sm capitalize transition-colors select-none ${
                             filters.category === cat
-                              ? 'bg-[#1a1a1a] text-white'
-                              : 'bg-[#f5f5f5] text-[#1a1a1a]'
+                              ? 'bg-[var(--color-text-primary)] text-[var(--color-background)]'
+                              : 'bg-[var(--color-background-secondary)] text-[var(--color-text-primary)]'
                           }`}
                         >
                           {cat.replace(/_/g, ' ')}
@@ -216,7 +216,7 @@ export default function Shop() {
             {filters.style && (
               <button
                 onClick={() => setFilters(prev => ({ ...prev, style: '' }))}
-                className="h-9 rounded-full px-4 bg-[#1a1a1a] text-white text-sm flex items-center gap-2 shrink-0"
+                className="h-9 rounded-full px-4 bg-[var(--color-text-primary)] text-[var(--color-background)] text-sm flex items-center gap-2 shrink-0 select-none"
               >
                 {filters.style}
                 <X className="w-3 h-3" />
@@ -225,7 +225,7 @@ export default function Shop() {
             {filters.category && (
               <button
                 onClick={() => setFilters(prev => ({ ...prev, category: '' }))}
-                className="h-9 rounded-full px-4 bg-[#1a1a1a] text-white text-sm flex items-center gap-2 shrink-0"
+                className="h-9 rounded-full px-4 bg-[var(--color-text-primary)] text-[var(--color-background)] text-sm flex items-center gap-2 shrink-0 select-none"
               >
                 {filters.category.replace(/_/g, ' ')}
                 <X className="w-3 h-3" />
@@ -240,12 +240,12 @@ export default function Shop() {
         {loading ? (
           <div className="grid grid-cols-2 gap-4">
             {[1, 2, 3, 4].map(i => (
-              <div key={i} className="aspect-[3/4] rounded-2xl bg-[#e5e5e5] animate-pulse" />
+              <div key={i} className="aspect-[3/4] rounded-2xl bg-[var(--color-placeholder)] animate-pulse" />
             ))}
           </div>
         ) : filteredProducts.length === 0 ? (
           <div className="text-center py-20">
-            <p className="text-[#64748b]">No products found</p>
+            <p className="text-[var(--color-text-secondary)]">No products found</p>
           </div>
         ) : (
           <div className="grid grid-cols-2 gap-4">
@@ -257,9 +257,9 @@ export default function Shop() {
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: idx * 0.05 }}
                   onClick={() => navigate(createPageUrl(`ProductDetail?id=${product.id}`))}
-                  className="text-left group"
+                  className="text-left group select-none"
                 >
-                  <div className="relative aspect-[3/4] rounded-2xl overflow-hidden bg-[#e5e5e5] mb-3">
+                  <div className="relative aspect-[3/4] rounded-2xl overflow-hidden bg-[var(--color-placeholder)] mb-3">
                     {product.images?.[0] ? (
                       <img 
                         src={product.images[0]}
@@ -267,29 +267,29 @@ export default function Shop() {
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center text-[#64748b]">
+                      <div className="w-full h-full flex items-center justify-center text-[var(--color-text-secondary)]">
                         No image
                       </div>
                     )}
                     <button
                       onClick={(e) => toggleWishlist(product, e)}
-                      className={`absolute top-3 right-3 w-9 h-9 rounded-full flex items-center justify-center transition-colors ${
+                      className={`absolute top-3 right-3 w-9 h-9 rounded-full flex items-center justify-center transition-colors select-none ${
                         wishlist.includes(product.id)
-                          ? 'bg-[#c9a962] text-[#1a1a1a]'
-                          : 'bg-white/80 backdrop-blur text-[#1a1a1a]'
+                          ? 'bg-[var(--color-accent)] text-[var(--color-text-primary)]'
+                          : 'bg-[var(--color-surface)]/80 backdrop-blur text-[var(--color-text-primary)]'
                       }`}
                     >
                       <Heart className={`w-4 h-4 ${wishlist.includes(product.id) ? 'fill-current' : ''}`} />
                     </button>
                     {product.is_new && (
-                      <span className="absolute top-3 left-3 px-3 py-1 bg-[#1a1a1a] text-white text-xs rounded-full">
+                      <span className="absolute top-3 left-3 px-3 py-1 bg-[var(--color-text-primary)] text-[var(--color-background)] text-xs rounded-full">
                         New
                       </span>
                     )}
                   </div>
-                  <p className="text-sm font-medium text-[#1a1a1a] truncate">{product.name}</p>
-                  <p className="text-xs text-[#64748b] mb-1">{product.brand}</p>
-                  <p className="text-sm font-semibold text-[#1a1a1a]">${product.price?.toFixed(2)}</p>
+                  <p className="text-sm font-medium text-[var(--color-text-primary)] truncate">{product.name}</p>
+                  <p className="text-xs text-[var(--color-text-secondary)] mb-1">{product.brand}</p>
+                  <p className="text-sm font-semibold text-[var(--color-text-primary)]">${product.price?.toFixed(2)}</p>
                 </motion.button>
               ))}
             </AnimatePresence>

@@ -93,49 +93,49 @@ export default function Wishlist() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#fafafa] flex items-center justify-center">
+      <div className="min-h-screen bg-[var(--color-background)] flex items-center justify-center">
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-          className="w-8 h-8 border-2 border-[#1a1a1a] border-t-transparent rounded-full"
+          className="w-8 h-8 border-2 border-[var(--color-text-primary)] border-t-transparent rounded-full"
         />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#fafafa] pb-24">
+    <div className="min-h-screen bg-[var(--color-background)] pb-24">
       {/* Header */}
-      <div className="sticky top-0 z-40 bg-[#fafafa]/95 backdrop-blur-lg px-6 py-4">
+      <div className="sticky top-0 z-40 bg-[var(--color-background)]/95 backdrop-blur-lg px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
             <button
               onClick={() => navigate(-1)}
-              className="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center"
+              className="w-10 h-10 rounded-full bg-[var(--color-surface)] shadow-sm flex items-center justify-center select-none"
             >
-              <ArrowLeft className="w-5 h-5 text-[#1a1a1a]" />
+              <ArrowLeft className="w-5 h-5 text-[var(--color-text-primary)]" />
             </button>
             <div>
-              <h1 className="text-2xl font-light text-[#1a1a1a]">Wishlist</h1>
-              <p className="text-sm text-[#64748b]">{items.length} items saved</p>
+              <h1 className="text-2xl font-light text-[var(--color-text-primary)]">Wishlist</h1>
+              <p className="text-sm text-[var(--color-text-secondary)]">{items.length} items saved</p>
             </div>
           </div>
-          <button className="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center">
-            <Share2 className="w-5 h-5 text-[#1a1a1a]" />
+          <button className="w-10 h-10 rounded-full bg-[var(--color-surface)] shadow-sm flex items-center justify-center select-none">
+            <Share2 className="w-5 h-5 text-[var(--color-text-primary)]" />
           </button>
         </div>
       </div>
 
       {items.length === 0 ? (
         <div className="flex flex-col items-center justify-center h-[60vh] px-6">
-          <div className="w-20 h-20 rounded-full bg-[#f5f5f0] flex items-center justify-center mb-6">
-            <Heart className="w-8 h-8 text-[#64748b]" />
+          <div className="w-20 h-20 rounded-full bg-[var(--color-background-secondary)] flex items-center justify-center mb-6">
+            <Heart className="w-8 h-8 text-[var(--color-text-secondary)]" />
           </div>
-          <h2 className="text-xl font-medium text-[#1a1a1a] mb-2">Your wishlist is empty</h2>
-          <p className="text-[#64748b] text-center mb-8">Save items you love for later</p>
+          <h2 className="text-xl font-medium text-[var(--color-text-primary)] mb-2">Your wishlist is empty</h2>
+          <p className="text-[var(--color-text-secondary)] text-center mb-8">Save items you love for later</p>
           <Button
             onClick={() => navigate(createPageUrl('Shop'))}
-            className="bg-[#1a1a1a] text-white rounded-xl h-12 px-8"
+            className="bg-[var(--color-text-primary)] text-[var(--color-background)] rounded-xl h-12 px-8 select-none"
           >
             Start Shopping
           </Button>
@@ -151,13 +151,13 @@ export default function Wishlist() {
                   animate={{ y: 0, opacity: 1 }}
                   exit={{ scale: 0.8, opacity: 0 }}
                   transition={{ delay: idx * 0.05 }}
-                  className="bg-white rounded-2xl overflow-hidden shadow-sm"
+                  className="bg-[var(--color-surface)] rounded-2xl overflow-hidden shadow-sm"
                 >
                   <button
                     onClick={() => navigate(createPageUrl(`ProductDetail?id=${item.product_id}`))}
-                    className="w-full"
+                    className="w-full select-none"
                   >
-                    <div className="relative aspect-square bg-[#e5e5e5]">
+                    <div className="relative aspect-square bg-[var(--color-placeholder)]">
                       {item.product_image ? (
                         <img 
                           src={item.product_image}
@@ -165,15 +165,15 @@ export default function Wishlist() {
                           className="w-full h-full object-cover"
                         />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center text-[#64748b]">
+                        <div className="w-full h-full flex items-center justify-center text-[var(--color-text-secondary)]">
                           No image
                         </div>
                       )}
                       {/* Visibility Badge */}
                       <div className={`absolute top-2 left-2 px-2 py-1 rounded-full text-xs flex items-center gap-1 ${
                         item.is_public 
-                          ? 'bg-[#c9a962] text-[#1a1a1a]' 
-                          : 'bg-white/80 text-[#64748b]'
+                          ? 'bg-[var(--color-accent)] text-[var(--color-text-primary)]' 
+                          : 'bg-[var(--color-surface)]/80 text-[var(--color-text-secondary)]'
                       }`}>
                         {item.is_public ? <Eye className="w-3 h-3" /> : <EyeOff className="w-3 h-3" />}
                         {item.is_public ? 'Public' : 'Private'}
@@ -182,13 +182,13 @@ export default function Wishlist() {
                   </button>
                   
                   <div className="p-3">
-                    <h3 className="font-medium text-[#1a1a1a] text-sm truncate">{item.product_name}</h3>
-                    <p className="font-semibold text-[#1a1a1a] mt-1">${item.product_price?.toFixed(2)}</p>
+                    <h3 className="font-medium text-[var(--color-text-primary)] text-sm truncate">{item.product_name}</h3>
+                    <p className="font-semibold text-[var(--color-text-primary)] mt-1">${item.product_price?.toFixed(2)}</p>
                     
                     <div className="flex items-center justify-between mt-3">
                       <button
                         onClick={() => toggleVisibility(item)}
-                        className="flex items-center gap-2"
+                        className="flex items-center gap-2 select-none"
                       >
                         <Switch 
                           checked={item.is_public}
@@ -198,13 +198,13 @@ export default function Wishlist() {
                       <div className="flex gap-2">
                         <button
                           onClick={() => addToCart(item)}
-                          className="w-8 h-8 rounded-full bg-[#1a1a1a] flex items-center justify-center"
+                          className="w-8 h-8 rounded-full bg-[var(--color-text-primary)] flex items-center justify-center select-none"
                         >
-                          <ShoppingBag className="w-4 h-4 text-white" />
+                          <ShoppingBag className="w-4 h-4 text-[var(--color-background)]" />
                         </button>
                         <button
                           onClick={() => removeItem(item)}
-                          className="w-8 h-8 rounded-full bg-red-50 flex items-center justify-center"
+                          className="w-8 h-8 rounded-full bg-red-50 flex items-center justify-center select-none"
                         >
                           <Trash2 className="w-4 h-4 text-red-500" />
                         </button>
