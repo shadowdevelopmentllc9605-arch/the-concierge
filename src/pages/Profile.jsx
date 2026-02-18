@@ -5,15 +5,17 @@ import { createPageUrl } from '@/utils';
 import { motion } from 'framer-motion';
 import { 
   User, ShoppingBag, CreditCard, Heart, Users, Settings, 
-  HelpCircle, MessageCircle, LogOut, ChevronRight, Edit2, Star 
+  HelpCircle, MessageCircle, LogOut, ChevronRight, Edit2, Star, Trash2 
 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
+import DeleteAccountDialog from '@/components/DeleteAccountDialog';
 
 export default function Profile() {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
   useEffect(() => {
     loadProfile();
@@ -37,6 +39,33 @@ export default function Profile() {
 
   const handleLogout = () => {
     base44.auth.logout();
+  };
+
+  const handleDeleteAccount = async () => {
+    // Delete user-related data
+    try {
+      const [closetItems, wishlistItems, cartItems, purchases] = await Promise.all([
+        base44.entities.ClosetItem.filter({ user_id: user.id }),
+        base44.entities.WishlistItem.filter({ user_id: user.id }),
+        base44.entities.CartItem.filter({ user_id: user.id }),
+        base44.entities.Purchase.filter({ user_id: user.id })
+      ]);
+      
+      await Promise.all([
+        ...closetItems.map(item => base44.entities.ClosetItem.delete(item.id)),
+        ...wishlistItems.map(item => base44.entities.WishlistItem.delete(item.id)),
+        ...cartItems.map(item => base44.entities.CartItem.delete(item.id)),
+        ...purchases.map(item => base44.entities.Purchase.delete(item.id))
+      ]);
+
+      if (profile?.id) {
+        await base44.entities.UserProfile.delete(profile.id);
+      }
+
+      base44.auth.logout();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const menuItems = [
@@ -197,17 +226,33 @@ export default function Profile() {
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.5 }}
+          className="space-y-3"
         >
           <Button
             onClick={handleLogout}
             variant="outline"
-            className="w-full h-14 rounded-2xl border-red-200 text-red-600 hover:bg-red-50 hover:text-red-700"
+            className="w-full h-14 rounded-2xl border-[var(--color-border)] text-[var(--color-text-primary)] hover:bg-[var(--color-surface-hover)] select-none"
           >
             <LogOut className="w-5 h-5 mr-2" />
             Log Out
           </Button>
+          <Button
+            onClick={() => setShowDeleteDialog(true)}
+            variant="outline"
+            className="w-full h-14 rounded-2xl border-red-200 bg-red-50 text-red-600 hover:bg-red-100 hover:text-red-700 select-none"
+          >
+            <Trash2 className="w-5 h-5 mr-2" />
+            Delete Account
+          </Button>
         </motion.div>
       </div>
+
+      <DeleteAccountDialog
+        isOpen={showDeleteDialog}
+        onClose={() => setShowDeleteDialog(false)}
+        onConfirm={handleDeleteAccount}
+        userEmail={user?.email}
+      />
     </div>
   );
 }

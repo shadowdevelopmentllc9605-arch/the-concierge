@@ -67,8 +67,13 @@ export default function ProductDetail() {
   };
 
   const toggleWishlist = async () => {
+    const wasWishlisted = isWishlisted;
+    
+    // Optimistic update
+    setIsWishlisted(!wasWishlisted);
+    
     try {
-      if (isWishlisted) {
+      if (wasWishlisted) {
         const items = await base44.entities.WishlistItem.filter({
           user_id: user.id,
           product_id: productId
@@ -87,8 +92,9 @@ export default function ProductDetail() {
           is_public: false
         });
       }
-      setIsWishlisted(!isWishlisted);
     } catch (error) {
+      // Revert on error
+      setIsWishlisted(wasWishlisted);
       console.error(error);
     }
   };

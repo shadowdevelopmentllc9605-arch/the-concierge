@@ -32,10 +32,21 @@ export default function Wishlist() {
   };
 
   const removeItem = async (item) => {
+    const removedItem = item;
+    const itemIndex = items.findIndex(i => i.id === item.id);
+    
+    // Optimistic update
+    setItems(prev => prev.filter(i => i.id !== item.id));
+    
     try {
       await base44.entities.WishlistItem.delete(item.id);
-      setItems(prev => prev.filter(i => i.id !== item.id));
     } catch (error) {
+      // Revert on error
+      setItems(prev => {
+        const newItems = [...prev];
+        newItems.splice(itemIndex, 0, removedItem);
+        return newItems;
+      });
       console.error(error);
     }
   };
@@ -52,6 +63,12 @@ export default function Wishlist() {
   };
 
   const addToCart = async (item) => {
+    const removedItem = item;
+    const itemIndex = items.findIndex(i => i.id === item.id);
+    
+    // Optimistic update - remove from wishlist immediately
+    setItems(prev => prev.filter(i => i.id !== item.id));
+    
     try {
       await base44.entities.CartItem.create({
         user_id: user.id,
@@ -59,12 +76,17 @@ export default function Wishlist() {
         product_name: item.product_name,
         product_image: item.product_image,
         product_price: item.product_price,
-        size: 'M', // Default size - user can change in cart
+        size: 'M',
         quantity: 1
       });
-      // Remove from wishlist
-      await removeItem(item);
+      await base44.entities.WishlistItem.delete(item.id);
     } catch (error) {
+      // Revert on error
+      setItems(prev => {
+        const newItems = [...prev];
+        newItems.splice(itemIndex, 0, removedItem);
+        return newItems;
+      });
       console.error(error);
     }
   };

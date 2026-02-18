@@ -67,8 +67,17 @@ export default function Shop() {
 
   const toggleWishlist = async (product, e) => {
     e.stopPropagation();
+    const wasWishlisted = wishlist.includes(product.id);
+    
+    // Optimistic update
+    if (wasWishlisted) {
+      setWishlist(prev => prev.filter(id => id !== product.id));
+    } else {
+      setWishlist(prev => [...prev, product.id]);
+    }
+    
     try {
-      if (wishlist.includes(product.id)) {
+      if (wasWishlisted) {
         const items = await base44.entities.WishlistItem.filter({ 
           user_id: user.id, 
           product_id: product.id 
@@ -76,7 +85,6 @@ export default function Shop() {
         if (items.length > 0) {
           await base44.entities.WishlistItem.delete(items[0].id);
         }
-        setWishlist(prev => prev.filter(id => id !== product.id));
       } else {
         await base44.entities.WishlistItem.create({
           user_id: user.id,
@@ -87,9 +95,14 @@ export default function Shop() {
           vendor_id: product.vendor_id,
           is_public: false
         });
-        setWishlist(prev => [...prev, product.id]);
       }
     } catch (error) {
+      // Revert on error
+      if (wasWishlisted) {
+        setWishlist(prev => [...prev, product.id]);
+      } else {
+        setWishlist(prev => prev.filter(id => id !== product.id));
+      }
       console.error(error);
     }
   };
