@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import DeleteAccountDialog from '@/components/DeleteAccountDialog';
+import MeasurementsEditor from '@/components/profile/MeasurementsEditor';
 
 export default function Profile() {
   const navigate = useNavigate();
