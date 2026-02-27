@@ -187,6 +187,15 @@ export default function Profile() {
         </div>
       )}
 
+      {/* Measurements */}
+      <div className="px-6 mt-6">
+        <p className="text-xs text-[var(--color-text-secondary)] uppercase tracking-wider mb-3">Measurements</p>
+        <MeasurementsEditor
+          profile={profile}
+          onSaved={(updatedProfile) => setProfile(updatedProfile)}
+        />
+      </div>
+
       {/* Menu Sections */}
       <div className="px-6 mt-8 space-y-6">
         {menuItems.map((section, idx) => (
