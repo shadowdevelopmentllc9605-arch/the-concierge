@@ -108,8 +108,20 @@ export default function Home() {
         </div>
       </motion.div>
 
+      {/* App Description */}
+      <motion.div
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.45 }}
+        className="px-6 pt-6 pb-2 relative z-30"
+      >
+        <p className="text-[var(--color-text-secondary)] text-sm leading-relaxed text-center">
+          Your AI-powered personal style concierge — discover curated looks, virtually try on clothes, get personalized size recommendations, and shop seamlessly in-store or online.
+        </p>
+      </motion.div>
+
       {/* Quick Actions */}
-      <div className="px-6 -mt-8 relative z-30">
+      <div className="px-6 mt-4 relative z-30">
         <div className="grid grid-cols-4 gap-3">
           {categories.map((cat, idx) => (
             <motion.button
