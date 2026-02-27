@@ -127,7 +127,10 @@ export default function ConciergeIntro({ user, onComplete, onSelectConcierge }) 
         <h2 className="text-3xl font-medium text-[#2d2d2d] mb-4">
           The Concierge
         </h2>
-        <p className="text-[#6b7280]">
+        <p className="text-[#6b7280] leading-relaxed mb-4">
+          Your AI-powered personal style concierge. Discover curated fashion, virtually try on clothes, get personalized size recommendations, and enjoy a seamless in-store or online shopping experience — all in one place.
+        </p>
+        <p className="text-[#6b7280] font-medium">
           Choose your personal style assistant
         </p>
       </motion.div>
