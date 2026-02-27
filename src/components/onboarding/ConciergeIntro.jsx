@@ -7,34 +7,87 @@ export default function ConciergeIntro({ user, onComplete, onSelectConcierge }) 
   const [selectedConcierge, setSelectedConcierge] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [showContinue, setShowContinue] = useState(false);
+  const [voices, setVoices] = useState([]);
 
   const concierges = [
     {
       id: 'tyler',
       name: 'Tyler',
+      gender: 'male',
       image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face',
-      greeting: `Hi, I'm Tyler. I'll be your personal concierge. Let's get started building your profile.`
+      greeting: `Hey there, I'm Tyler. I'll be your personal style concierge. I'm here to help you look your best every day. Let's build your profile and get started!`
     },
     {
       id: 'megan',
       name: 'Megan',
+      gender: 'female',
       image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop&crop=face',
-      greeting: `Hi, I'm Megan. I'll be your personal concierge. Let's get started building your profile.`
+      greeting: `Hi! I'm Megan, your personal style concierge. I'm so excited to help you discover your perfect look. Let's create your profile and get started!`
     }
   ];
+
+  useEffect(() => {
+    const loadVoices = () => {
+      const available = window.speechSynthesis?.getVoices() || [];
+      setVoices(available);
+    };
+    loadVoices();
+    window.speechSynthesis?.addEventListener('voiceschanged', loadVoices);
+    return () => window.speechSynthesis?.removeEventListener('voiceschanged', loadVoices);
+  }, []);
+
+  const pickVoice = (gender) => {
+    // Prefer American English voices matching the gender
+    const americanVoices = voices.filter(v => v.lang === 'en-US');
+    const maleKeywords = ['male', 'man', 'guy', 'david', 'alex', 'daniel', 'mark', 'james', 'thomas', 'tyler', 'evan', 'google us english'];
+    const femaleKeywords = ['female', 'woman', 'girl', 'samantha', 'susan', 'karen', 'victoria', 'zira', 'moira', 'fiona', 'lisa', 'emily', 'megan'];
+
+    let match = americanVoices.find(v => {
+      const name = v.name.toLowerCase();
+      const keywords = gender === 'male' ? maleKeywords : femaleKeywords;
+      return keywords.some(k => name.includes(k));
+    });
+
+    // Fallback: pick any American voice and adjust pitch
+    if (!match && americanVoices.length > 0) {
+      match = americanVoices[gender === 'male' ? 0 : americanVoices.length - 1];
+    }
+
+    // Final fallback: any English voice
+    if (!match) {
+      const engVoices = voices.filter(v => v.lang.startsWith('en'));
+      match = engVoices[0] || null;
+    }
+
+    return match;
+  };
 
   const handleSelect = (concierge) => {
     setSelectedConcierge(concierge);
     setIsPlaying(true);
     
-    // Use Web Speech API for voice
     if ('speechSynthesis' in window) {
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(concierge.greeting);
-      utterance.rate = 0.9;
-      utterance.pitch = concierge.id === 'megan' ? 1.1 : 0.9;
-      
+      utterance.rate = 0.92;
+      utterance.lang = 'en-US';
+
+      if (concierge.gender === 'male') {
+        utterance.pitch = 0.85;
+        utterance.volume = 1;
+      } else {
+        utterance.pitch = 1.15;
+        utterance.volume = 1;
+      }
+
+      const voice = pickVoice(concierge.gender);
+      if (voice) utterance.voice = voice;
+
       utterance.onend = () => {
+        setIsPlaying(false);
+        setShowContinue(true);
+      };
+      utterance.onerror = () => {
         setIsPlaying(false);
         setShowContinue(true);
       };
