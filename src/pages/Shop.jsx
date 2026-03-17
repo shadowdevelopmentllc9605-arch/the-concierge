@@ -3,7 +3,7 @@ import { base44 } from '@/api/base44Client';
 import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, SlidersHorizontal, X, Heart, ShoppingBag, ChevronDown } from 'lucide-react';
+import { Search, SlidersHorizontal, X, Heart, ShoppingBag, ChevronDown, Store } from 'lucide-react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -294,7 +294,16 @@ export default function Shop() {
                   </div>
                   <p className="text-sm font-medium text-[var(--color-text-primary)] truncate">{product.name}</p>
                   <p className="text-xs text-[var(--color-text-secondary)] mb-1">{product.brand}</p>
-                  <p className="text-sm font-semibold text-[var(--color-text-primary)]">${product.price?.toFixed(2)}</p>
+                  <div className="flex items-center gap-2 mb-1">
+                    <p className="text-sm font-semibold text-[var(--color-text-primary)]">${product.price?.toFixed(2)}</p>
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-700 font-medium">Fit: 92%</span>
+                  </div>
+                  <p className="text-xs text-[var(--color-accent)] font-medium">Rec. Size: M · True to fit</p>
+                  {product.vendor_id && (
+                    <p className="text-xs text-[var(--color-text-muted)] flex items-center gap-1 mt-1">
+                      <Store className="w-3 h-3" /> Available in-store
+                    </p>
+                  )}
                 </motion.button>
               ))}
             </AnimatePresence>
