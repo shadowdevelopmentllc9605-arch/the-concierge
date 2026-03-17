@@ -36,6 +36,13 @@ export default function Home() {
     }
   };
 
+  const outfitSuggestions = [
+    { name: 'Business Look', image: 'https://images.unsplash.com/photo-1521341957697-b93449760f30?w=400&h=400&fit=crop', style: 'business' },
+    { name: 'Casual Fit', image: 'https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?w=400&h=400&fit=crop', style: 'casual' },
+    { name: 'Date Night', image: 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=400&h=400&fit=crop', style: 'nightlife' },
+    { name: 'Weekend Style', image: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=400&h=400&fit=crop', style: 'trendy' },
+  ];
+
   const recommendedItems = [
     { id: 1, name: 'Slim Fit Suit', brand: 'Hugo Boss', price: '349', image: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=400&h=533&fit=crop', fitScore: 96, size: 'M (40R)', fitNote: 'True to size', store: 'Nordstrom' },
     { id: 2, name: 'Oxford Dress Shirt', brand: 'Ralph Lauren', price: '89', image: 'https://images.unsplash.com/photo-1620012253295-c15cc3e65df4?w=400&h=533&fit=crop', fitScore: 94, size: 'M (15.5)', fitNote: 'Runs slim – size up', store: 'Macy\'s' },
@@ -255,12 +262,40 @@ export default function Home() {
         </div>
       </div>
 
+      {/* Outfit Builder */}
+      <div className="px-6 mt-10">
+        <div className="flex justify-between items-center mb-4">
+          <div>
+            <h2 className="text-xl font-light text-[var(--color-text-primary)] tracking-tight">Complete the Look</h2>
+            <p className="text-xs text-[var(--color-text-secondary)] mt-0.5">Pair with these items</p>
+          </div>
+        </div>
+        <div className="flex gap-3 overflow-x-auto no-scrollbar pb-2">
+          {outfitSuggestions.map((outfit, idx) => (
+            <motion.button
+              key={outfit.name}
+              initial={{ x: 20, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: 1.0 + idx * 0.1 }}
+              onClick={() => navigate(createPageUrl(`Shop?style=${outfit.style}`))}
+              className="shrink-0 w-36 select-none group text-left"
+            >
+              <div className="relative aspect-square rounded-2xl overflow-hidden mb-2">
+                <img src={outfit.image} alt={outfit.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                <span className="absolute bottom-2 left-2 right-2 text-white text-xs font-medium">{outfit.name}</span>
+              </div>
+            </motion.button>
+          ))}
+        </div>
+      </div>
+
       {/* Virtual Try-On CTA */}
       <motion.div 
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 1.1 }}
-        className="px-6 mt-12 mb-24"
+        transition={{ delay: 1.2 }}
+        className="px-6 mt-10 mb-24"
       >
         <button 
           onClick={() => navigate(createPageUrl('TryOn'))}
@@ -268,7 +303,8 @@ export default function Home() {
         >
           <div className="text-left">
             <p className="text-[var(--color-accent)] text-xs tracking-[0.2em] uppercase mb-1">Experience</p>
-            <p className="text-xl font-light">Virtual Try-On</p>
+            <p className="text-xl font-light">See it on your body</p>
+            <p className="text-[var(--color-background)]/60 text-sm font-light">Virtual Try-On</p>
           </div>
           <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-colors">
             <Sparkles className="w-5 h-5 text-[var(--color-accent)]" />
