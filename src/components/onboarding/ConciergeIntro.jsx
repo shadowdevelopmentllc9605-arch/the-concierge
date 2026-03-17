@@ -3,6 +3,65 @@ import { motion } from 'framer-motion';
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Volume2, VolumeX } from 'lucide-react';
 
+const TylerTTS = {
+  voices: [],
+  selectedVoice: null,
+
+  async init() {
+    this.voices = await this.loadVoices();
+    this.selectedVoice = this.pickBestVoice(this.voices);
+  },
+
+  loadVoices() {
+    return new Promise((resolve) => {
+      const synth = window.speechSynthesis;
+      const tryLoad = () => {
+        const voices = synth.getVoices();
+        if (voices && voices.length > 0) { resolve(voices); return true; }
+        return false;
+      };
+      if (tryLoad()) return;
+      synth.onvoiceschanged = () => resolve(synth.getVoices());
+      setTimeout(() => resolve(synth.getVoices() || []), 1200);
+    });
+  },
+
+  pickBestVoice(voices) {
+    if (!voices || !voices.length) return null;
+    const englishVoices = voices.filter(v => (v.lang || '').toLowerCase().startsWith('en'));
+    const preferredOrder = [
+      'Google UK English Male', 'Microsoft Guy Online (Natural)',
+      'Microsoft Ryan Online (Natural)', 'Microsoft Davis Online (Natural)',
+      'Samsung English (United States)', 'Alex', 'Daniel', 'Thomas', 'Aaron', 'Arthur', 'Fred'
+    ];
+    for (const preferred of preferredOrder) {
+      const match = englishVoices.find(v => v.name.toLowerCase().includes(preferred.toLowerCase()));
+      if (match) return match;
+    }
+    const masculineKeywords = ['male', 'guy', 'david', 'davis', 'ryan', 'alex', 'daniel', 'thomas', 'aaron', 'arthur', 'fred', 'samsung'];
+    const keywordMatch = englishVoices.find(v => masculineKeywords.some(k => v.name.toLowerCase().includes(k)));
+    return keywordMatch || englishVoices[0] || voices[0] || null;
+  },
+
+  speak(text, callbacks = {}) {
+    const synth = window.speechSynthesis;
+    synth.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    if (this.selectedVoice) {
+      utterance.voice = this.selectedVoice;
+      utterance.lang = this.selectedVoice.lang || 'en-US';
+    } else {
+      utterance.lang = 'en-US';
+    }
+    utterance.rate = 0.92;
+    utterance.pitch = 0.72;
+    utterance.volume = 1.0;
+    if (callbacks.onend) utterance.onend = callbacks.onend;
+    if (callbacks.onerror) utterance.onerror = callbacks.onerror;
+    synth.speak(utterance);
+  }
+};
+
 export default function ConciergeIntro({ user, onComplete, onSelectConcierge }) {
   const [selectedConcierge, setSelectedConcierge] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
