@@ -219,7 +219,7 @@ export default function ConciergeIntro({ user, onComplete, onSelectConcierge }) 
             onClick={handleContinue}
             className="w-full h-14 bg-[#c9a962] hover:bg-[#b8944d] text-white rounded-xl font-medium text-base"
           >
-            Let's Begin
+            Find Your Fit
             <ArrowRight className="ml-2 w-5 h-5" />
           </Button>
         </motion.div>

@@ -3,7 +3,7 @@ import { base44 } from '@/api/base44Client';
 import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, SlidersHorizontal, X, Heart, ShoppingBag, ChevronDown, Store } from 'lucide-react';
+import { Search, SlidersHorizontal, X, Heart, ShoppingBag, ChevronDown, Store, Sparkles } from 'lucide-react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -250,7 +250,9 @@ export default function Shop() {
           </div>
         ) : filteredProducts.length === 0 ? (
           <div className="text-center py-20">
-            <p className="text-[var(--color-text-secondary)]">No products found</p>
+            <Sparkles className="w-12 h-12 text-[var(--color-text-muted)] mx-auto mb-4" />
+            <p className="text-[var(--color-text-primary)] font-medium mb-1">No products found</p>
+            <p className="text-[var(--color-text-secondary)] text-sm">Try adjusting your filters or search</p>
           </div>
         ) : (
           <div className="grid grid-cols-2 gap-4">
