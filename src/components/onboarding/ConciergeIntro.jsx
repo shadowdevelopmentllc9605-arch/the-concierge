@@ -36,71 +36,86 @@ export default function ConciergeIntro({ user, onComplete, onSelectConcierge }) 
     return () => window.speechSynthesis?.removeEventListener('voiceschanged', loadVoices);
   }, []);
 
-  const pickVoice = (gender) => {
-    const allVoices = voices;
-    const americanVoices = allVoices.filter(v => v.lang === 'en-US');
-    const engVoices = allVoices.filter(v => v.lang.startsWith('en'));
-
-    // Prioritized male voice names (known deep/masculine browser voices)
-    const malePriority = ['google us english', 'microsoft guy', 'microsoft david', 'alex', 'daniel', 'fred', 'ralph', 'reed', 'thomas', 'mark', 'james', 'evan'];
-    const femaleKeywords = ['samantha', 'susan', 'karen', 'victoria', 'zira', 'moira', 'fiona', 'lisa', 'emily', 'ava', 'allison', 'kate', 'serena', 'tessa'];
-
-    if (gender === 'male') {
-      // Try priority male voices first
-      for (const keyword of malePriority) {
-        const found = americanVoices.find(v => v.name.toLowerCase().includes(keyword));
-        if (found) return found;
-      }
-      // Fallback: first American voice (tends to be male on most platforms)
-      if (americanVoices.length > 0) return americanVoices[0];
-      // Final fallback: first English voice
-      return engVoices[0] || null;
-    } else {
-      const match = (americanVoices.length > 0 ? americanVoices : engVoices)
-        .find(v => femaleKeywords.some(k => v.name.toLowerCase().includes(k)));
-      return match || (americanVoices.length > 0 ? americanVoices[americanVoices.length - 1] : engVoices[0]) || null;
-    }
+  const loadVoicesAsync = () => {
+    return new Promise((resolve) => {
+      const v = window.speechSynthesis.getVoices();
+      if (v.length > 0) { resolve(v); return; }
+      window.speechSynthesis.onvoiceschanged = () => resolve(window.speechSynthesis.getVoices());
+    });
   };
 
-  const handleSelect = (concierge) => {
+  const getBestMasculineVoice = (availableVoices) => {
+    if (!availableVoices.length) return null;
+    const preferredNames = [
+      'Google UK English Male', 'Microsoft Guy Online (Natural)',
+      'Microsoft Ryan Online (Natural)', 'Microsoft Davis Online (Natural)',
+      'Alex', 'Daniel', 'Thomas', 'Fred', 'Aaron', 'Arthur'
+    ];
+    for (const preferred of preferredNames) {
+      const match = availableVoices.find(v => v.name.toLowerCase().includes(preferred.toLowerCase()));
+      if (match) return match;
+    }
+    const maleKeywords = ['male', 'guy', 'david', 'davis', 'ryan', 'alex', 'daniel', 'thomas', 'arthur', 'aaron', 'fred'];
+    const keywordMatch = availableVoices.find(v => {
+      const name = v.name.toLowerCase();
+      return v.lang.toLowerCase().startsWith('en') && maleKeywords.some(k => name.includes(k));
+    });
+    if (keywordMatch) return keywordMatch;
+    return availableVoices.find(v => v.lang.toLowerCase().startsWith('en')) || availableVoices[0];
+  };
+
+  const getBestFeminineVoice = (availableVoices) => {
+    const femaleKeywords = ['samantha', 'susan', 'karen', 'victoria', 'zira', 'moira', 'fiona', 'lisa', 'emily', 'ava', 'allison', 'kate', 'serena', 'tessa', 'female'];
+    const engVoices = availableVoices.filter(v => v.lang.toLowerCase().startsWith('en'));
+    return engVoices.find(v => femaleKeywords.some(k => v.name.toLowerCase().includes(k)))
+      || engVoices[engVoices.length - 1] || availableVoices[0];
+  };
+
+  const speakAsTyler = async (text) => {
+    if (!('speechSynthesis' in window)) return;
+    const availableVoices = await loadVoicesAsync();
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    const selectedVoice = getBestMasculineVoice(availableVoices);
+    if (selectedVoice) {
+      utterance.voice = selectedVoice;
+      utterance.lang = selectedVoice.lang || 'en-US';
+    } else {
+      utterance.lang = 'en-US';
+    }
+    utterance.rate = 0.96;
+    utterance.pitch = 0.82;
+    utterance.volume = 1.0;
+    return utterance;
+  };
+
+  const handleSelect = async (concierge) => {
     setSelectedConcierge(concierge);
     setIsPlaying(true);
-    
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(concierge.greeting);
-      utterance.rate = 0.92;
-      utterance.lang = 'en-US';
 
-      if (concierge.gender === 'male') {
-        utterance.pitch = 0.6;   // noticeably lower/masculine
-        utterance.rate = 0.9;    // slightly relaxed, confident pace
-        utterance.volume = 1;
-      } else {
-        utterance.pitch = 1.2;
-        utterance.rate = 0.92;
-        utterance.volume = 1;
-      }
-
-      const voice = pickVoice(concierge.gender);
-      if (voice) utterance.voice = voice;
-
-      utterance.onend = () => {
-        setIsPlaying(false);
-        setShowContinue(true);
-      };
-      utterance.onerror = () => {
-        setIsPlaying(false);
-        setShowContinue(true);
-      };
-      
-      window.speechSynthesis.speak(utterance);
-    } else {
-      setTimeout(() => {
-        setIsPlaying(false);
-        setShowContinue(true);
-      }, 3000);
+    if (!('speechSynthesis' in window)) {
+      setTimeout(() => { setIsPlaying(false); setShowContinue(true); }, 3000);
+      return;
     }
+
+    let utterance;
+    if (concierge.gender === 'male') {
+      utterance = await speakAsTyler(concierge.greeting);
+    } else {
+      const availableVoices = await loadVoicesAsync();
+      window.speechSynthesis.cancel();
+      utterance = new SpeechSynthesisUtterance(concierge.greeting);
+      const voice = getBestFeminineVoice(availableVoices);
+      if (voice) { utterance.voice = voice; utterance.lang = voice.lang || 'en-US'; }
+      else { utterance.lang = 'en-US'; }
+      utterance.rate = 0.92;
+      utterance.pitch = 1.2;
+      utterance.volume = 1.0;
+    }
+
+    utterance.onend = () => { setIsPlaying(false); setShowContinue(true); };
+    utterance.onerror = () => { setIsPlaying(false); setShowContinue(true); };
+    window.speechSynthesis.speak(utterance);
   };
 
   const toggleMute = () => {
