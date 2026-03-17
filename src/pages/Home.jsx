@@ -36,6 +36,13 @@ export default function Home() {
     }
   };
 
+  const recommendedItems = [
+    { id: 1, name: 'Slim Fit Suit', brand: 'Hugo Boss', price: '349', image: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=400&h=533&fit=crop', fitScore: 96, size: 'M (40R)', fitNote: 'True to size', store: 'Nordstrom' },
+    { id: 2, name: 'Oxford Dress Shirt', brand: 'Ralph Lauren', price: '89', image: 'https://images.unsplash.com/photo-1620012253295-c15cc3e65df4?w=400&h=533&fit=crop', fitScore: 94, size: 'M (15.5)', fitNote: 'Runs slim – size up', store: 'Macy\'s' },
+    { id: 3, name: 'Classic Chinos', brand: 'J.Crew', price: '79', image: 'https://images.unsplash.com/photo-1594938298603-c8148c4b4357?w=400&h=533&fit=crop', fitScore: 91, size: '32×32', fitNote: 'True to size', store: 'J.Crew' },
+    { id: 4, name: 'Chelsea Boots', brand: 'Thursday Boot', price: '199', image: 'https://images.unsplash.com/photo-1638247025967-b4e38f787b76?w=400&h=533&fit=crop', fitScore: 98, size: '10', fitNote: 'Perfect fit', store: 'Online' },
+  ];
+
   const handleRefresh = useCallback(async () => {
     await checkOnboarding();
   }, []);
@@ -108,20 +115,8 @@ export default function Home() {
         </div>
       </motion.div>
 
-      {/* App Description */}
-      <motion.div
-        initial={{ y: 20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.45 }}
-        className="px-6 pt-6 pb-2 relative z-30"
-      >
-        <p className="text-[var(--color-text-secondary)] text-sm leading-relaxed text-center">
-          Your AI-powered personal style concierge — discover curated looks, virtually try on clothes, get personalized size recommendations, and shop seamlessly in-store or online.
-        </p>
-      </motion.div>
-
       {/* Quick Actions */}
-      <div className="px-6 mt-4 relative z-30">
+      <div className="px-6 mt-6 relative z-30">
         <div className="grid grid-cols-4 gap-3">
           {categories.map((cat, idx) => (
             <motion.button
@@ -139,8 +134,94 @@ export default function Home() {
         </div>
       </div>
 
+      {/* Recommended For You */}
+      <div className="px-6 mt-10">
+        <div className="flex justify-between items-center mb-4">
+          <div>
+            <h2 className="text-xl font-light text-[var(--color-text-primary)] tracking-tight">Recommended for You</h2>
+            <p className="text-xs text-[var(--color-text-secondary)] mt-0.5">Perfect fit for your body</p>
+          </div>
+          <button onClick={() => navigate(createPageUrl('Shop'))} className="text-sm text-[var(--color-accent)] select-none flex items-center gap-1">
+            See all <ChevronRight className="w-4 h-4" />
+          </button>
+        </div>
+        <div className="flex gap-4 overflow-x-auto no-scrollbar pb-2">
+          {recommendedItems.map((item, idx) => (
+            <motion.button
+              key={item.id}
+              initial={{ x: 20, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: 0.6 + idx * 0.1 }}
+              onClick={() => navigate(createPageUrl('Shop'))}
+              className="shrink-0 w-44 text-left select-none group"
+            >
+              <div className="relative aspect-[3/4] rounded-2xl overflow-hidden bg-[var(--color-placeholder)] mb-2">
+                <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <div className="absolute bottom-2 left-2 right-2">
+                  <div className="bg-white/90 backdrop-blur-sm rounded-xl px-2 py-1.5">
+                    <div className="flex items-center justify-between mb-0.5">
+                      <span className="text-[10px] font-semibold text-green-700">Fit Score: {item.fitScore}%</span>
+                      <Zap className="w-3 h-3 text-[var(--color-accent)]" />
+                    </div>
+                    <p className="text-[10px] text-gray-600">Rec. Size: {item.size}</p>
+                    <p className="text-[10px] text-gray-500">{item.fitNote}</p>
+                  </div>
+                </div>
+                <button
+                  onClick={(e) => { e.stopPropagation(); navigate(createPageUrl('TryOn')); }}
+                  className="absolute top-2 right-2 bg-[var(--color-text-primary)]/80 backdrop-blur text-[var(--color-background)] text-[10px] px-2 py-1 rounded-full font-medium"
+                >
+                  Try On
+                </button>
+              </div>
+              <p className="text-sm font-medium text-[var(--color-text-primary)] truncate">{item.name}</p>
+              <p className="text-xs text-[var(--color-text-secondary)]">{item.brand}</p>
+              <div className="flex items-center justify-between mt-1">
+                <p className="text-sm font-semibold text-[var(--color-text-primary)]">${item.price}</p>
+                {item.store && (
+                  <span className="text-[10px] text-[var(--color-text-muted)] flex items-center gap-0.5">
+                    <Store className="w-2.5 h-2.5" />{item.store}
+                  </span>
+                )}
+              </div>
+            </motion.button>
+          ))}
+        </div>
+      </div>
+
+      {/* AI Concierge CTA */}
+      <motion.div
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.9 }}
+        className="px-6 mt-8"
+      >
+        <div className="bg-[var(--color-surface)] rounded-2xl p-5 border border-[var(--color-border-light)]">
+          <div className="flex items-start gap-3 mb-3">
+            <div className="w-10 h-10 rounded-full bg-[var(--color-accent)]/20 flex items-center justify-center shrink-0">
+              <Sparkles className="w-5 h-5 text-[var(--color-accent)]" />
+            </div>
+            <div>
+              <p className="font-medium text-[var(--color-text-primary)] text-sm">Your Style Concierge</p>
+              <p className="text-xs text-[var(--color-text-secondary)] mt-0.5 italic">"What are you shopping for today?"</p>
+            </div>
+          </div>
+          <div className="flex gap-2 flex-wrap">
+            {['Build an outfit', 'Date night look', 'Work attire', 'Something casual'].map(prompt => (
+              <button
+                key={prompt}
+                onClick={() => navigate(createPageUrl('Shop'))}
+                className="text-xs px-3 py-1.5 rounded-full bg-[var(--color-background-secondary)] text-[var(--color-text-primary)] hover:bg-[var(--color-border)] transition-colors select-none"
+              >
+                {prompt}
+              </button>
+            ))}
+          </div>
+        </div>
+      </motion.div>
+
       {/* Shop by Style */}
-      <div className="px-6 mt-12">
+      <div className="px-6 mt-10">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-xl font-light text-[var(--color-text-primary)] tracking-tight">Shop by Style</h2>
           <button 

@@ -16,10 +16,10 @@ function EmptyState({ onTakePhoto, onUploadImage, uploading, type = 'all' }) {
         {type === 'owned' ? <Shirt className="w-8 h-8 text-[var(--color-text-secondary)]" /> : <Package className="w-8 h-8 text-[var(--color-text-secondary)]" />}
       </div>
       <h2 className="text-xl font-medium text-[var(--color-text-primary)] mb-2">
-        {type === 'purchased' ? 'No purchases yet' : 'Your closet is empty'}
+        {type === 'purchased' ? 'No purchases yet' : 'Start building your digital wardrobe'}
       </h2>
       <p className="text-[var(--color-text-secondary)] text-center mb-6">
-        {type === 'purchased' ? 'Items you buy will appear here' : 'Add items from your wardrobe'}
+        {type === 'purchased' ? 'Items you buy will appear here' : 'Add your clothes to get AI-powered outfit suggestions and perfect-fit recommendations'}
       </p>
       {type !== 'purchased' && onTakePhoto && onUploadImage && (
         <div className="flex gap-3">

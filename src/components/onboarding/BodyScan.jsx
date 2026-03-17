@@ -113,16 +113,44 @@ export default function BodyScan({ profile, concierge, onComplete }) {
         animate={{ y: 0, opacity: 1 }}
         className="text-4xl font-light text-[#2d2d2d] mb-2"
       >
-        Body Scan
+        Let's Find Your Perfect Fit
       </motion.h1>
       <motion.p 
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.1 }}
-        className="text-[#6b7280] mb-8"
+        className="text-[#6b7280] mb-4"
       >
-        Capture three poses for accurate size recommendations
+        Capture three quick poses for personalized size recommendations
       </motion.p>
+      <motion.div
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.15 }}
+        className="flex gap-3 mb-6"
+      >
+        <div className="flex-1 bg-[#f8f5f0] rounded-xl p-3 text-center">
+          <p className="text-[#c9a962] text-lg font-semibold">30s</p>
+          <p className="text-[#6b7280] text-xs">Takes 30 seconds</p>
+        </div>
+        <div className="flex-1 bg-[#f8f5f0] rounded-xl p-3 text-center">
+          <p className="text-[#c9a962] text-lg font-semibold">AI</p>
+          <p className="text-[#6b7280] text-xs">Powered analysis</p>
+        </div>
+        <div className="flex-1 bg-[#f8f5f0] rounded-xl p-3 text-center">
+          <p className="text-[#c9a962] text-lg font-semibold">98%</p>
+          <p className="text-[#6b7280] text-xs">Fit accuracy</p>
+        </div>
+      </motion.div>
+      <motion.div
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.2 }}
+        className="bg-blue-50 border border-blue-100 rounded-xl p-4 mb-6 text-left"
+      >
+        <p className="text-blue-800 text-sm font-medium mb-1">✨ Why this matters</p>
+        <p className="text-blue-700 text-xs leading-relaxed">We use your body scan to calculate exact measurements, suggest your perfect size across brands, and give every product a personal Fit Score — so you shop with total confidence.</p>
+      </motion.div>
 
       {/* Scan Steps Indicator */}
       <motion.div 
