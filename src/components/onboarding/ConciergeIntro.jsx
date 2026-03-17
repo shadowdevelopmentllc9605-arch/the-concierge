@@ -86,67 +86,8 @@ export default function ConciergeIntro({ user, onComplete, onSelectConcierge }) 
   ];
 
   useEffect(() => {
-    const loadVoices = () => {
-      const available = window.speechSynthesis?.getVoices() || [];
-      setVoices(available);
-    };
-    loadVoices();
-    window.speechSynthesis?.addEventListener('voiceschanged', loadVoices);
-    return () => window.speechSynthesis?.removeEventListener('voiceschanged', loadVoices);
+    if ('speechSynthesis' in window) TylerTTS.init();
   }, []);
-
-  const loadVoicesAsync = () => {
-    return new Promise((resolve) => {
-      const v = window.speechSynthesis.getVoices();
-      if (v.length > 0) { resolve(v); return; }
-      window.speechSynthesis.onvoiceschanged = () => resolve(window.speechSynthesis.getVoices());
-    });
-  };
-
-  const getBestMasculineVoice = (availableVoices) => {
-    if (!availableVoices.length) return null;
-    const preferredNames = [
-      'Google UK English Male', 'Microsoft Guy Online (Natural)',
-      'Microsoft Ryan Online (Natural)', 'Microsoft Davis Online (Natural)',
-      'Alex', 'Daniel', 'Thomas', 'Fred', 'Aaron', 'Arthur'
-    ];
-    for (const preferred of preferredNames) {
-      const match = availableVoices.find(v => v.name.toLowerCase().includes(preferred.toLowerCase()));
-      if (match) return match;
-    }
-    const maleKeywords = ['male', 'guy', 'david', 'davis', 'ryan', 'alex', 'daniel', 'thomas', 'arthur', 'aaron', 'fred'];
-    const keywordMatch = availableVoices.find(v => {
-      const name = v.name.toLowerCase();
-      return v.lang.toLowerCase().startsWith('en') && maleKeywords.some(k => name.includes(k));
-    });
-    if (keywordMatch) return keywordMatch;
-    return availableVoices.find(v => v.lang.toLowerCase().startsWith('en')) || availableVoices[0];
-  };
-
-  const getBestFeminineVoice = (availableVoices) => {
-    const femaleKeywords = ['samantha', 'susan', 'karen', 'victoria', 'zira', 'moira', 'fiona', 'lisa', 'emily', 'ava', 'allison', 'kate', 'serena', 'tessa', 'female'];
-    const engVoices = availableVoices.filter(v => v.lang.toLowerCase().startsWith('en'));
-    return engVoices.find(v => femaleKeywords.some(k => v.name.toLowerCase().includes(k)))
-      || engVoices[engVoices.length - 1] || availableVoices[0];
-  };
-
-  const speakAsTyler = async (text) => {
-    if (!('speechSynthesis' in window)) return;
-    const availableVoices = await loadVoicesAsync();
-    window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(text);
-    const selectedVoice = getBestMasculineVoice(availableVoices);
-    if (selectedVoice) {
-      utterance.voice = selectedVoice;
-      utterance.lang = selectedVoice.lang || 'en-US';
-    } else {
-      utterance.lang = 'en-US';
-    }
-    utterance.rate = 0.96;
-    utterance.pitch = 0.82;
-    utterance.volume = 1.0;
-    return utterance;
-  };
 
   const handleSelect = async (concierge) => {
     setSelectedConcierge(concierge);
@@ -157,24 +98,24 @@ export default function ConciergeIntro({ user, onComplete, onSelectConcierge }) 
       return;
     }
 
-    let utterance;
-    if (concierge.gender === 'male') {
-      utterance = await speakAsTyler(concierge.greeting);
-    } else {
-      const availableVoices = await loadVoicesAsync();
-      window.speechSynthesis.cancel();
-      utterance = new SpeechSynthesisUtterance(concierge.greeting);
-      const voice = getBestFeminineVoice(availableVoices);
-      if (voice) { utterance.voice = voice; utterance.lang = voice.lang || 'en-US'; }
-      else { utterance.lang = 'en-US'; }
-      utterance.rate = 0.92;
-      utterance.pitch = 1.2;
-      utterance.volume = 1.0;
-    }
+    const done = () => { setIsPlaying(false); setShowContinue(true); };
 
-    utterance.onend = () => { setIsPlaying(false); setShowContinue(true); };
-    utterance.onerror = () => { setIsPlaying(false); setShowContinue(true); };
-    window.speechSynthesis.speak(utterance);
+    if (concierge.gender === 'male') {
+      await TylerTTS.init();
+      TylerTTS.speak(concierge.greeting, { onend: done, onerror: done });
+    } else {
+      // Megan: simple feminine voice
+      const voices = await TylerTTS.loadVoices();
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(concierge.greeting);
+      const femaleKeywords = ['samantha', 'susan', 'karen', 'victoria', 'zira', 'moira', 'fiona', 'lisa', 'emily', 'ava', 'allison', 'kate', 'female'];
+      const engVoices = voices.filter(v => v.lang.toLowerCase().startsWith('en'));
+      const voice = engVoices.find(v => femaleKeywords.some(k => v.name.toLowerCase().includes(k))) || engVoices[engVoices.length - 1] || null;
+      if (voice) { utterance.voice = voice; utterance.lang = voice.lang || 'en-US'; } else { utterance.lang = 'en-US'; }
+      utterance.rate = 0.92; utterance.pitch = 1.2; utterance.volume = 1.0;
+      utterance.onend = done; utterance.onerror = done;
+      window.speechSynthesis.speak(utterance);
+    }
   };
 
   const toggleMute = () => {
