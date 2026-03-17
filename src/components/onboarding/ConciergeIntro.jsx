@@ -3,11 +3,54 @@ import { motion } from 'framer-motion';
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Volume2, VolumeX } from 'lucide-react';
 
+let availableVoices = [];
+
+function loadVoices() {
+  return new Promise((resolve) => {
+    const voices = window.speechSynthesis?.getVoices() || [];
+    if (voices.length > 0) {
+      availableVoices = voices;
+      resolve(voices);
+      return;
+    }
+    window.speechSynthesis.onvoiceschanged = () => {
+      availableVoices = window.speechSynthesis.getVoices();
+      resolve(availableVoices);
+    };
+  });
+}
+
+function getBestMasculineVoice() {
+  const voices = availableVoices.length ? availableVoices : (window.speechSynthesis?.getVoices() || []);
+  if (!voices.length) return null;
+
+  const preferredNames = [
+    "Google UK English Male",
+    "Microsoft Guy Online (Natural)",
+    "Microsoft Ryan Online (Natural)",
+    "Microsoft Davis Online (Natural)",
+    "Alex", "Daniel", "Thomas", "Fred", "Aaron", "Arthur"
+  ];
+
+  for (const preferred of preferredNames) {
+    const match = voices.find(v => v.name.toLowerCase().includes(preferred.toLowerCase()));
+    if (match) return match;
+  }
+
+  const maleKeywords = ["male", "guy", "david", "davis", "ryan", "alex", "daniel", "thomas", "arthur", "aaron", "fred"];
+  const keywordMatch = voices.find(v => {
+    const name = v.name.toLowerCase();
+    return v.lang.toLowerCase().startsWith("en") && maleKeywords.some(k => name.includes(k));
+  });
+  if (keywordMatch) return keywordMatch;
+
+  return voices.find(v => v.lang.toLowerCase().startsWith("en")) || voices[0];
+}
+
 export default function ConciergeIntro({ user, onComplete, onSelectConcierge }) {
   const [selectedConcierge, setSelectedConcierge] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [showContinue, setShowContinue] = useState(false);
-  const [voices, setVoices] = useState([]);
 
   const concierges = [
     {
