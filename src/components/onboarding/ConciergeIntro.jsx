@@ -10,6 +10,8 @@ const TylerTTS = {
   async init() {
     this.voices = await this.loadVoices();
     this.selectedVoice = this.pickBestVoice(this.voices);
+    console.log('Available voices:', this.voices.map(v => `${v.name} | ${v.lang}`).join(' || '));
+    console.log('Selected Tyler voice:', this.selectedVoice ? `${this.selectedVoice.name} | ${this.selectedVoice.lang}` : 'none');
   },
 
   loadVoices() {
@@ -43,7 +45,7 @@ const TylerTTS = {
     return keywordMatch || englishVoices[0] || voices[0] || null;
   },
 
-  speak(text, callbacks = {}) {
+  speak(text, options = {}) {
     const synth = window.speechSynthesis;
     synth.cancel();
     const utterance = new SpeechSynthesisUtterance(text);
@@ -53,11 +55,12 @@ const TylerTTS = {
     } else {
       utterance.lang = 'en-US';
     }
-    utterance.rate = 0.92;
-    utterance.pitch = 0.72;
-    utterance.volume = 1.0;
-    if (callbacks.onend) utterance.onend = callbacks.onend;
-    if (callbacks.onerror) utterance.onerror = callbacks.onerror;
+    utterance.rate = options.rate ?? 0.92;
+    utterance.pitch = options.pitch ?? 0.72;
+    utterance.volume = options.volume ?? 1.0;
+    utterance.onstart = () => console.log('Tyler speaking...');
+    utterance.onend = () => { console.log('Tyler done.'); if (options.onend) options.onend(); };
+    utterance.onerror = (e) => { console.error('Tyler TTS error:', e); if (options.onerror) options.onerror(e); };
     synth.speak(utterance);
   }
 };
