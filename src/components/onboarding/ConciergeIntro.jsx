@@ -37,29 +37,29 @@ export default function ConciergeIntro({ user, onComplete, onSelectConcierge }) 
   }, []);
 
   const pickVoice = (gender) => {
-    // Prefer American English voices matching the gender
-    const americanVoices = voices.filter(v => v.lang === 'en-US');
-    const maleKeywords = ['male', 'man', 'guy', 'david', 'alex', 'daniel', 'mark', 'james', 'thomas', 'tyler', 'evan', 'google us english'];
-    const femaleKeywords = ['female', 'woman', 'girl', 'samantha', 'susan', 'karen', 'victoria', 'zira', 'moira', 'fiona', 'lisa', 'emily', 'megan'];
+    const allVoices = voices;
+    const americanVoices = allVoices.filter(v => v.lang === 'en-US');
+    const engVoices = allVoices.filter(v => v.lang.startsWith('en'));
 
-    let match = americanVoices.find(v => {
-      const name = v.name.toLowerCase();
-      const keywords = gender === 'male' ? maleKeywords : femaleKeywords;
-      return keywords.some(k => name.includes(k));
-    });
+    // Prioritized male voice names (known deep/masculine browser voices)
+    const malePriority = ['google us english', 'microsoft guy', 'microsoft david', 'alex', 'daniel', 'fred', 'ralph', 'reed', 'thomas', 'mark', 'james', 'evan'];
+    const femaleKeywords = ['samantha', 'susan', 'karen', 'victoria', 'zira', 'moira', 'fiona', 'lisa', 'emily', 'ava', 'allison', 'kate', 'serena', 'tessa'];
 
-    // Fallback: pick any American voice and adjust pitch
-    if (!match && americanVoices.length > 0) {
-      match = americanVoices[gender === 'male' ? 0 : americanVoices.length - 1];
+    if (gender === 'male') {
+      // Try priority male voices first
+      for (const keyword of malePriority) {
+        const found = americanVoices.find(v => v.name.toLowerCase().includes(keyword));
+        if (found) return found;
+      }
+      // Fallback: first American voice (tends to be male on most platforms)
+      if (americanVoices.length > 0) return americanVoices[0];
+      // Final fallback: first English voice
+      return engVoices[0] || null;
+    } else {
+      const match = (americanVoices.length > 0 ? americanVoices : engVoices)
+        .find(v => femaleKeywords.some(k => v.name.toLowerCase().includes(k)));
+      return match || (americanVoices.length > 0 ? americanVoices[americanVoices.length - 1] : engVoices[0]) || null;
     }
-
-    // Final fallback: any English voice
-    if (!match) {
-      const engVoices = voices.filter(v => v.lang.startsWith('en'));
-      match = engVoices[0] || null;
-    }
-
-    return match;
   };
 
   const handleSelect = (concierge) => {
@@ -73,10 +73,12 @@ export default function ConciergeIntro({ user, onComplete, onSelectConcierge }) 
       utterance.lang = 'en-US';
 
       if (concierge.gender === 'male') {
-        utterance.pitch = 0.85;
+        utterance.pitch = 0.6;   // noticeably lower/masculine
+        utterance.rate = 0.9;    // slightly relaxed, confident pace
         utterance.volume = 1;
       } else {
-        utterance.pitch = 1.15;
+        utterance.pitch = 1.2;
+        utterance.rate = 0.92;
         utterance.volume = 1;
       }
 
