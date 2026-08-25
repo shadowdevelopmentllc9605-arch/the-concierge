@@ -1,0 +1,52 @@
+{
+  "name": "VendorEmployee",
+  "type": "object",
+  "properties": {
+    "vendor_id": {
+      "type": "string"
+    },
+    "user_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "picture": {
+      "type": "string"
+    },
+    "role": {
+      "type": "string",
+      "enum": [
+        "manager",
+        "employee"
+      ],
+      "default": "employee"
+    },
+    "permissions": {
+      "type": "object",
+      "properties": {
+        "view_metrics": {
+          "type": "boolean",
+          "default": false
+        },
+        "view_payroll": {
+          "type": "boolean",
+          "default": false
+        },
+        "edit_floor_plan": {
+          "type": "boolean",
+          "default": false
+        },
+        "open_close": {
+          "type": "boolean",
+          "default": false
+        }
+      }
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": []
+}

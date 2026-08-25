@@ -1,0 +1,52 @@
+{
+  "name": "AIFeedback",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string"
+    },
+    "feedback_type": {
+      "type": "string",
+      "enum": [
+        "recommendation",
+        "try_on",
+        "size_suggestion",
+        "style_match"
+      ],
+      "description": "Type of AI feature being rated"
+    },
+    "product_id": {
+      "type": "string"
+    },
+    "rating": {
+      "type": "number",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "accuracy_rating": {
+      "type": "number",
+      "minimum": 1,
+      "maximum": 5,
+      "description": "How accurate was the AI prediction"
+    },
+    "feedback_text": {
+      "type": "string"
+    },
+    "was_helpful": {
+      "type": "boolean"
+    },
+    "actual_outcome": {
+      "type": "string",
+      "description": "What actually happened vs prediction"
+    },
+    "suggested_size": {
+      "type": "string",
+      "description": "Size AI suggested"
+    },
+    "actual_size_needed": {
+      "type": "string",
+      "description": "Size user actually needed"
+    }
+  },
+  "required": []
+}

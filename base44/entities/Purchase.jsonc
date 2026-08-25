@@ -1,0 +1,51 @@
+{
+  "name": "Purchase",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string"
+    },
+    "product_id": {
+      "type": "string"
+    },
+    "product_name": {
+      "type": "string"
+    },
+    "product_image": {
+      "type": "string"
+    },
+    "product_price": {
+      "type": "number"
+    },
+    "size": {
+      "type": "string"
+    },
+    "color": {
+      "type": "string"
+    },
+    "vendor_id": {
+      "type": "string"
+    },
+    "vendor_name": {
+      "type": "string"
+    },
+    "purchase_type": {
+      "type": "string",
+      "enum": [
+        "online",
+        "in_store"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "processing",
+        "shipped",
+        "delivered",
+        "completed"
+      ],
+      "default": "processing"
+    }
+  },
+  "required": []
+}

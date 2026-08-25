@@ -1,0 +1,51 @@
+{
+  "name": "ClosetItem",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string"
+    },
+    "image": {
+      "type": "string"
+    },
+    "item_type": {
+      "type": "string"
+    },
+    "size": {
+      "type": "string",
+      "enum": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ]
+    },
+    "color": {
+      "type": "string"
+    },
+    "style_category": {
+      "type": "string",
+      "enum": [
+        "business",
+        "casual",
+        "nightlife",
+        "trendy",
+        "other"
+      ]
+    },
+    "description": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string",
+      "enum": [
+        "uploaded",
+        "purchased"
+      ],
+      "default": "uploaded"
+    }
+  },
+  "required": []
+}

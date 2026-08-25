@@ -1,0 +1,69 @@
+{
+  "name": "ProductReview",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string"
+    },
+    "user_name": {
+      "type": "string"
+    },
+    "user_picture": {
+      "type": "string"
+    },
+    "product_id": {
+      "type": "string"
+    },
+    "product_name": {
+      "type": "string"
+    },
+    "purchase_id": {
+      "type": "string"
+    },
+    "vendor_id": {
+      "type": "string"
+    },
+    "rating": {
+      "type": "number",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "review_text": {
+      "type": "string"
+    },
+    "fit_rating": {
+      "type": "string",
+      "enum": [
+        "too_small",
+        "slightly_small",
+        "perfect",
+        "slightly_large",
+        "too_large"
+      ]
+    },
+    "quality_rating": {
+      "type": "number",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "value_rating": {
+      "type": "number",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "would_recommend": {
+      "type": "boolean"
+    },
+    "photos": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "helpful_count": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": []
+}

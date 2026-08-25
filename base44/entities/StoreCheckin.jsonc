@@ -1,0 +1,42 @@
+{
+  "name": "StoreCheckin",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string"
+    },
+    "user_name": {
+      "type": "string"
+    },
+    "user_picture": {
+      "type": "string"
+    },
+    "vendor_id": {
+      "type": "string"
+    },
+    "assigned_employee_id": {
+      "type": "string"
+    },
+    "assigned_employee_name": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "browsing",
+        "assisted",
+        "fitting_room",
+        "checkout",
+        "completed"
+      ],
+      "default": "browsing"
+    },
+    "wishlist_items": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": []
+}

@@ -1,0 +1,101 @@
+{
+  "name": "Product",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "brand": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "suits",
+        "vests",
+        "dress_shirts",
+        "pants",
+        "blouse",
+        "dress_skirts",
+        "polos",
+        "tshirts",
+        "jackets",
+        "jeans",
+        "shorts",
+        "khakis",
+        "dresses",
+        "skirts",
+        "jumpers",
+        "pattern_shirts",
+        "graphic_tees",
+        "sports_jackets",
+        "evening_dresses",
+        "hats",
+        "glasses",
+        "earrings",
+        "necklaces",
+        "bracelets",
+        "watches",
+        "belts",
+        "socks",
+        "shoes",
+        "collar_stays",
+        "cufflinks",
+        "tie_bar",
+        "tie_chain",
+        "tie_pin",
+        "pocket_square",
+        "lapel_pin"
+      ]
+    },
+    "style_type": {
+      "type": "string",
+      "enum": [
+        "business",
+        "casual",
+        "nightlife",
+        "trendy"
+      ]
+    },
+    "price": {
+      "type": "number"
+    },
+    "description": {
+      "type": "string"
+    },
+    "images": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "tryOn_image": {
+      "type": "string",
+      "description": "Transparent image for virtual try-on"
+    },
+    "sizes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "colors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "vendor_id": {
+      "type": "string"
+    },
+    "in_stock": {
+      "type": "boolean",
+      "default": true
+    },
+    "is_new": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": []
+}

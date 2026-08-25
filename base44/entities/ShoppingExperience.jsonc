@@ -1,0 +1,55 @@
+{
+  "name": "ShoppingExperience",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string"
+    },
+    "vendor_id": {
+      "type": "string"
+    },
+    "vendor_name": {
+      "type": "string"
+    },
+    "experience_type": {
+      "type": "string",
+      "enum": [
+        "online",
+        "in_store"
+      ]
+    },
+    "overall_rating": {
+      "type": "number",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "service_rating": {
+      "type": "number",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "app_experience_rating": {
+      "type": "number",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "employee_name": {
+      "type": "string"
+    },
+    "employee_rating": {
+      "type": "number",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "feedback_text": {
+      "type": "string"
+    },
+    "would_return": {
+      "type": "boolean"
+    },
+    "purchase_id": {
+      "type": "string"
+    }
+  },
+  "required": []
+}

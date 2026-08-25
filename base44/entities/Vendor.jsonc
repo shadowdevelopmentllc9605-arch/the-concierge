@@ -1,0 +1,49 @@
+{
+  "name": "Vendor",
+  "type": "object",
+  "properties": {
+    "owner_id": {
+      "type": "string"
+    },
+    "business_name": {
+      "type": "string"
+    },
+    "business_picture": {
+      "type": "string"
+    },
+    "floor_plan_image": {
+      "type": "string"
+    },
+    "style_categories": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "locations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "lat": {
+            "type": "number"
+          },
+          "lng": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "setup_completed": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": []
+}

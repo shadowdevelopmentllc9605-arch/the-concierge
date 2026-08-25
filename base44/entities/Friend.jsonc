@@ -1,0 +1,28 @@
+{
+  "name": "Friend",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string"
+    },
+    "friend_user_id": {
+      "type": "string"
+    },
+    "friend_name": {
+      "type": "string"
+    },
+    "friend_picture": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "accepted",
+        "blocked"
+      ],
+      "default": "pending"
+    }
+  },
+  "required": []
+}

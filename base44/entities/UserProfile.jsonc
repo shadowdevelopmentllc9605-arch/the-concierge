@@ -1,0 +1,109 @@
+{
+  "name": "UserProfile",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string",
+      "description": "Reference to the user"
+    },
+    "birthday": {
+      "type": "string",
+      "format": "date"
+    },
+    "gender": {
+      "type": "string",
+      "enum": [
+        "male",
+        "female",
+        "prefer_not_to_say"
+      ]
+    },
+    "profile_picture": {
+      "type": "string",
+      "description": "URL to profile picture"
+    },
+    "body_scan_front": {
+      "type": "string",
+      "description": "URL to front body scan image"
+    },
+    "body_scan_side": {
+      "type": "string",
+      "description": "URL to side body scan image"
+    },
+    "body_scan_back": {
+      "type": "string",
+      "description": "URL to back body scan image"
+    },
+    "measurements": {
+      "type": "object",
+      "properties": {
+        "chest": {
+          "type": "string"
+        },
+        "bust": {
+          "type": "string"
+        },
+        "waist": {
+          "type": "string"
+        },
+        "hips": {
+          "type": "string"
+        },
+        "inseam": {
+          "type": "string"
+        },
+        "shoulders": {
+          "type": "string"
+        },
+        "arm_length": {
+          "type": "string"
+        },
+        "height": {
+          "type": "string"
+        },
+        "weight": {
+          "type": "string"
+        },
+        "neck": {
+          "type": "string"
+        },
+        "shoe_size": {
+          "type": "string"
+        }
+      }
+    },
+    "suggested_sizes": {
+      "type": "object",
+      "properties": {
+        "tops": {
+          "type": "string"
+        },
+        "bottoms": {
+          "type": "string"
+        },
+        "dresses": {
+          "type": "string"
+        },
+        "suits": {
+          "type": "string"
+        }
+      }
+    },
+    "style_preferences": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "business, casual, nightlife, trendy"
+    },
+    "onboarding_completed": {
+      "type": "boolean",
+      "default": false
+    },
+    "onboarding_step": {
+      "type": "number",
+      "default": 1
+    }
+  },
+  "required": []
+}
