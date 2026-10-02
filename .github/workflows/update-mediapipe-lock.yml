@@ -1,0 +1,35 @@
+name: Update MediaPipe lockfile
+
+on:
+  push:
+    branches:
+      - feat/body-measurement-engine
+
+permissions:
+  contents: write
+
+jobs:
+  update-lock:
+    if: github.event.head_commit.message != 'chore: update package lock for MediaPipe'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/body-measurement-engine
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - name: Refresh package lock
+        run: npm install --package-lock-only --ignore-scripts
+      - name: Commit lockfile
+        run: |
+          if git diff --quiet -- package-lock.json; then
+            echo "No lockfile changes."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add package-lock.json
+          git commit -m "chore: update package lock for MediaPipe"
+          git push origin HEAD:feat/body-measurement-engine
