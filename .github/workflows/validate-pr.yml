@@ -1,6 +1,9 @@
 name: Validate Concierge PR
 
 on:
+  push:
+    branches:
+      - fix/launch-readiness-audit
   pull_request:
     branches:
       - main
