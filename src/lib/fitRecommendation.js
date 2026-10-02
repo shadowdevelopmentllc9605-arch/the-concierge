@@ -21,24 +21,48 @@ export function getCategoryGroup(category) {
 export function recommendFromSizeChart(sizeChart = [], measurementsCm = {}) {
   if (!Array.isArray(sizeChart) || sizeChart.length === 0) return null;
 
-  const chest = Number(measurementsCm.chest);
-  const waist = Number(measurementsCm.waist);
-  const hips = Number(measurementsCm.hips);
-  const inseam = Number(measurementsCm.inseam);
+  const user = {
+    chest: Number(measurementsCm.chest),
+    waist: Number(measurementsCm.waist),
+    hips: Number(measurementsCm.hips),
+    inseam: Number(measurementsCm.inseam),
+  };
 
-  const matches = sizeChart.filter(row =>
-    within(chest, Number(row.chest_min_cm), Number(row.chest_max_cm)) &&
-    within(waist, Number(row.waist_min_cm), Number(row.waist_max_cm)) &&
-    within(hips, Number(row.hips_min_cm), Number(row.hips_max_cm)) &&
-    within(inseam, Number(row.inseam_min_cm), Number(row.inseam_max_cm))
-  );
+  const candidates = sizeChart
+    .map(row => {
+      let criteria = 0;
+      let distance = 0;
 
-  if (matches.length === 0) return null;
+      for (const key of ['chest', 'waist', 'hips', 'inseam']) {
+        const value = user[key];
+        const min = Number(row[`${key}_min_cm`]);
+        const max = Number(row[`${key}_max_cm`]);
+        const hasBounds = Number.isFinite(min) || Number.isFinite(max);
+
+        if (!Number.isFinite(value) || !hasBounds) continue;
+        criteria += 1;
+
+        if (!within(value, min, max)) return null;
+
+        if (Number.isFinite(min) && Number.isFinite(max)) {
+          const midpoint = (min + max) / 2;
+          const span = Math.max(1, max - min);
+          distance += Math.abs(value - midpoint) / span;
+        }
+      }
+
+      return criteria > 0 ? { row, criteria, distance } : null;
+    })
+    .filter(Boolean)
+    .sort((a, b) => b.criteria - a.criteria || a.distance - b.distance);
+
+  if (candidates.length === 0) return null;
 
   return {
-    size: matches[0].size,
+    size: candidates[0].row.size,
     source: 'product_size_chart',
-    matched: matches[0],
+    matched: candidates[0].row,
+    criteriaMatched: candidates[0].criteria,
   };
 }
 
