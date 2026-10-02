@@ -3,7 +3,7 @@ import { base44 } from '@/api/base44Client';
 import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, SlidersHorizontal, X, Heart, ShoppingBag, ChevronDown, Store, Sparkles } from 'lucide-react';
+import { Search, SlidersHorizontal, X, Heart, ShoppingBag, Store, Sparkles } from 'lucide-react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";

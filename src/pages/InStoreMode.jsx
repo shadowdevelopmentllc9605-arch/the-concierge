@@ -5,10 +5,9 @@ import { createPageUrl } from '@/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   MapPin, Store, X, Navigation, Loader2, Heart, 
-  ShoppingBag, Shirt, Bell, Check, ChevronRight 
+  ShoppingBag, Shirt, Bell, Check 
 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import StoreSelector from '@/components/instore/StoreSelector';
 import InStoreWishlist from '@/components/instore/InStoreWishlist';
 import TryOnRequest from '@/components/instore/TryOnRequest';

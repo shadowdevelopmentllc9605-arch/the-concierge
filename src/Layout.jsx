@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { base44 } from '@/api/base44Client';
-import { Home, Search, Heart, ShoppingBag, User, Store } from 'lucide-react';
+import { Home, Search, Heart, User, Store } from 'lucide-react';
 
 // Tab root pages
 const TAB_ROOTS = {

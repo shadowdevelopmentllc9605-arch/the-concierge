@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { base44 } from '@/api/base44Client';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from "@/components/ui/button";
-import { Upload, X, Plus, ArrowRight, Loader2, Shirt, Camera, Pencil } from 'lucide-react';
+import { Upload, X, Plus, ArrowRight, Loader2, Camera, Pencil } from 'lucide-react';
 import ConciergeGuide from './ConciergeGuide';
 import ClosetItemEditor from '@/components/closet/ClosetItemEditor';
 

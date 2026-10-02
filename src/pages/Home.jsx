@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
-import { Sparkles, TrendingUp, Heart, ShoppingBag, Ruler, Star, ChevronRight, Store, Zap } from 'lucide-react';
+import { Sparkles, TrendingUp, Heart, ShoppingBag, ChevronRight, Store, Zap } from 'lucide-react';
 import { motion } from 'framer-motion';
 import PullToRefresh from '@/components/PullToRefresh';
 
