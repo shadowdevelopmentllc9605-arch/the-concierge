@@ -4,8 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { motion } from 'framer-motion';
 import { 
-  User, ShoppingBag, CreditCard, Heart, Users, Settings, 
-  HelpCircle, MessageCircle, LogOut, ChevronRight, Edit2, Star, Trash2 
+  User, ShoppingBag, CreditCard, Heart, Users, 
+  HelpCircle, MessageCircle, LogOut, ChevronRight, Star, Trash2 
 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import DeleteAccountDialog from '@/components/DeleteAccountDialog';
@@ -43,20 +43,48 @@ export default function Profile() {
   };
 
   const handleDeleteAccount = async () => {
-    // Delete user-related data
     try {
-      const [closetItems, wishlistItems, cartItems, purchases] = await Promise.all([
+      const [
+        closetItems,
+        wishlistItems,
+        cartItems,
+        purchases,
+        checkins,
+        paymentMethods,
+        productReviews,
+        aiFeedback,
+        shoppingExperiences,
+        outgoingFriends,
+        incomingFriends
+      ] = await Promise.all([
         base44.entities.ClosetItem.filter({ user_id: user.id }),
         base44.entities.WishlistItem.filter({ user_id: user.id }),
         base44.entities.CartItem.filter({ user_id: user.id }),
-        base44.entities.Purchase.filter({ user_id: user.id })
+        base44.entities.Purchase.filter({ user_id: user.id }),
+        base44.entities.StoreCheckin.filter({ user_id: user.id }),
+        base44.entities.PaymentMethod.filter({ user_id: user.id }),
+        base44.entities.ProductReview.filter({ user_id: user.id }),
+        base44.entities.AIFeedback.filter({ user_id: user.id }),
+        base44.entities.ShoppingExperience.filter({ user_id: user.id }),
+        base44.entities.Friend.filter({ user_id: user.id }),
+        base44.entities.Friend.filter({ friend_user_id: user.id })
       ]);
-      
+
+      const friendRecords = Array.from(
+        new Map([...outgoingFriends, ...incomingFriends].map(record => [record.id, record])).values()
+      );
+
       await Promise.all([
-        ...closetItems.map(item => base44.entities.ClosetItem.delete(item.id)),
-        ...wishlistItems.map(item => base44.entities.WishlistItem.delete(item.id)),
-        ...cartItems.map(item => base44.entities.CartItem.delete(item.id)),
-        ...purchases.map(item => base44.entities.Purchase.delete(item.id))
+        ...closetItems.map(record => base44.entities.ClosetItem.delete(record.id)),
+        ...wishlistItems.map(record => base44.entities.WishlistItem.delete(record.id)),
+        ...cartItems.map(record => base44.entities.CartItem.delete(record.id)),
+        ...purchases.map(record => base44.entities.Purchase.delete(record.id)),
+        ...checkins.map(record => base44.entities.StoreCheckin.delete(record.id)),
+        ...paymentMethods.map(record => base44.entities.PaymentMethod.delete(record.id)),
+        ...productReviews.map(record => base44.entities.ProductReview.delete(record.id)),
+        ...aiFeedback.map(record => base44.entities.AIFeedback.delete(record.id)),
+        ...shoppingExperiences.map(record => base44.entities.ShoppingExperience.delete(record.id)),
+        ...friendRecords.map(record => base44.entities.Friend.delete(record.id))
       ]);
 
       if (profile?.id) {
@@ -75,21 +103,21 @@ export default function Profile() {
       items: [
         { icon: ShoppingBag, label: 'My Closet', description: 'Previous purchases', path: 'Closet' },
         { icon: Heart, label: 'Wishlist', description: 'Saved items', path: 'Wishlist' },
-        { icon: CreditCard, label: 'Payment Methods', description: 'Manage cards', path: 'PaymentMethods' },
+        { icon: CreditCard, label: 'Payment Methods', description: 'Available after secure payments are connected', path: null },
         { icon: Star, label: 'Reviews & Feedback', description: 'Rate your purchases', path: 'Feedback' },
       ]
     },
     {
       section: 'Social',
       items: [
-        { icon: Users, label: 'Friends', description: 'Manage connections', path: 'Friends' },
+        { icon: Users, label: 'Friends', description: 'Temporarily unavailable while privacy controls are added', path: null },
       ]
     },
     {
       section: 'Support',
       items: [
-        { icon: HelpCircle, label: 'FAQ', description: 'Common questions', path: 'FAQ' },
-        { icon: MessageCircle, label: 'Customer Service', description: 'Get help', path: 'Support' },
+        { icon: HelpCircle, label: 'FAQ', description: 'Help articles are being prepared', path: null },
+        { icon: MessageCircle, label: 'Customer Service', description: 'Send feedback or request help', path: 'Feedback' },
       ]
     }
   ];
@@ -129,12 +157,6 @@ export default function Profile() {
                 </div>
               )}
             </div>
-            <button 
-              onClick={() => navigate(createPageUrl('EditProfile'))}
-              className="absolute -bottom-1 -right-1 w-8 h-8 rounded-full bg-[#c9a962] flex items-center justify-center"
-            >
-              <Edit2 className="w-4 h-4 text-[#1a1a1a]" />
-            </button>
           </div>
           <div>
             <h1 className="text-2xl font-medium text-white">{user?.full_name || 'Guest'}</h1>
@@ -210,9 +232,10 @@ export default function Profile() {
               {section.items.map((item, itemIdx) => (
                 <button
                   key={item.label}
-                  onClick={() => navigate(createPageUrl(item.path))}
+                  onClick={() => item.path && navigate(createPageUrl(item.path))}
+                  disabled={!item.path}
                   className={`w-full flex items-center justify-between p-4 hover:bg-[var(--color-surface-hover)] transition-colors select-none ${
-                    itemIdx !== section.items.length - 1 ? 'border-b border-[var(--color-border-light)]' : ''
+                    (itemIdx !== section.items.length - 1 ? 'border-b border-[var(--color-border-light)] ' : '') + (!item.path ? 'opacity-60 cursor-not-allowed' : '')
                   }`}
                 >
                   <div className="flex items-center gap-4">
@@ -224,7 +247,11 @@ export default function Profile() {
                       <p className="text-xs text-[var(--color-text-secondary)]">{item.description}</p>
                     </div>
                   </div>
-                  <ChevronRight className="w-5 h-5 text-[var(--color-text-secondary)]" />
+                  {item.path ? (
+                    <ChevronRight className="w-5 h-5 text-[var(--color-text-secondary)]" />
+                  ) : (
+                    <span className="text-xs text-[var(--color-text-secondary)]">Coming soon</span>
+                  )}
                 </button>
               ))}
             </div>
