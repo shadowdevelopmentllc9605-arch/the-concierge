@@ -54,3 +54,20 @@ export function parseHeightToCm(value, unit = 'imperial') {
   if (!Number.isFinite(numeric)) return null;
   return unit === 'metric' ? numeric : inchesToCm(numeric);
 }
+
+
+export function parseLengthToCm(value, unit = 'imperial') {
+  if (value == null || value === '') return null;
+  if (typeof value === 'number') return unit === 'metric' ? value : inchesToCm(value);
+
+  const text = String(value).trim().toLowerCase();
+  const cmMatch = text.match(/([\d.]+)\s*cm/);
+  if (cmMatch) return Number(cmMatch[1]);
+
+  const inchMatch = text.match(/([\d.]+)\s*(?:in|inches|"|″)/);
+  if (inchMatch) return inchesToCm(Number(inchMatch[1]));
+
+  const numeric = Number(text.replace(/[^0-9.]/g, ''));
+  if (!Number.isFinite(numeric)) return null;
+  return unit === 'metric' ? numeric : inchesToCm(numeric);
+}
