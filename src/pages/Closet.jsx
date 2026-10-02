@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useNavigate } from 'react-router-dom';
-import { createPageUrl } from '@/utils';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, ShoppingBag, Package, Calendar, Store, MapPin, Camera, Loader2, X, Shirt, Pencil, ImagePlus } from 'lucide-react';
+import { ArrowLeft, Package, Calendar, Store, MapPin, Camera, Loader2, X, Shirt, Pencil, ImagePlus } from 'lucide-react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { format } from 'date-fns';
 import ClosetItemEditor from '@/components/closet/ClosetItemEditor';
