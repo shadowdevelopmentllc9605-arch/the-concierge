@@ -49,6 +49,7 @@
  */
 import Cart from './pages/Cart';
 import Closet from './pages/Closet';
+import Checkout from './pages/Checkout';
 import Feedback from './pages/Feedback';
 import Home from './pages/Home';
 import InStoreMode from './pages/InStoreMode';
@@ -64,6 +65,7 @@ import __Layout from './Layout.jsx';
 export const PAGES = {
     "Cart": Cart,
     "Closet": Closet,
+    "Checkout": Checkout,
     "Feedback": Feedback,
     "Home": Home,
     "InStoreMode": InStoreMode,

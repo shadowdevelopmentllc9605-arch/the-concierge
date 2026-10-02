@@ -3,8 +3,20 @@ import { base44 } from '@/api/base44Client';
 import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, ChevronLeft, ChevronRight, Heart, ShoppingBag, Sparkles, X } from 'lucide-react';
+import { ArrowLeft, ChevronLeft, ChevronRight, Heart, ShoppingBag, Sparkles } from 'lucide-react';
 import { Button } from "@/components/ui/button";
+
+const TOP_CATEGORIES = ['suits', 'vests', 'dress_shirts', 'blouse', 'tshirts', 'polos', 'jackets', 'sports_jackets', 'pattern_shirts', 'graphic_tees'];
+const BOTTOM_CATEGORIES = ['pants', 'jeans', 'shorts', 'khakis'];
+const DRESS_CATEGORIES = ['dresses', 'dress_skirts', 'skirts', 'evening_dresses'];
+
+function getSuggestedSize(category, suggestedSizes) {
+  if (!suggestedSizes) return '';
+  if (TOP_CATEGORIES.includes(category)) return suggestedSizes.tops || '';
+  if (BOTTOM_CATEGORIES.includes(category)) return suggestedSizes.bottoms || '';
+  if (DRESS_CATEGORIES.includes(category)) return suggestedSizes.dresses || '';
+  return '';
+}
 
 export default function TryOn() {
   const navigate = useNavigate();
@@ -56,10 +68,12 @@ export default function TryOn() {
   const currentProduct = products[currentIndex];
 
   const goNext = () => {
+    if (products.length === 0) return;
     setCurrentIndex(prev => (prev + 1) % products.length);
   };
 
   const goPrev = () => {
+    if (products.length === 0) return;
     setCurrentIndex(prev => (prev - 1 + products.length) % products.length);
   };
 
@@ -92,22 +106,9 @@ export default function TryOn() {
     }
   };
 
-  const addToCart = async () => {
+  const handleCartAction = () => {
     if (!currentProduct) return;
-    try {
-      await base44.entities.CartItem.create({
-        user_id: user.id,
-        product_id: currentProduct.id,
-        product_name: currentProduct.name,
-        product_image: currentProduct.images?.[0],
-        product_price: currentProduct.price,
-        size: userProfile?.suggested_sizes?.tops || 'M',
-        quantity: 1
-      });
-      navigate(createPageUrl('Cart'));
-    } catch (error) {
-      console.error(error);
-    }
+    navigate(createPageUrl('ProductDetail?id=' + currentProduct.id));
   };
 
   if (loading) {
@@ -122,12 +123,26 @@ export default function TryOn() {
     );
   }
 
+  if (products.length === 0) {
+    return (
+      <div className="min-h-screen bg-[#1a1a1a] flex flex-col items-center justify-center px-6 text-center">
+        <Sparkles className="w-10 h-10 text-[#c9a962] mb-4" />
+        <h1 className="text-white text-xl font-medium mb-2">No products available to try on</h1>
+        <p className="text-white/60 mb-6">Check the shop again after products have been added.</p>
+        <Button onClick={() => navigate(createPageUrl('Shop'))}>Back to Shop</Button>
+      </div>
+    );
+  }
+
+  const recommendedSize = getSuggestedSize(currentProduct?.category, userProfile?.suggested_sizes);
+
   return (
     <div className="min-h-screen bg-[#1a1a1a] relative overflow-hidden">
       {/* Header */}
       <div className="absolute top-0 left-0 right-0 z-50 px-4 py-4 flex items-center justify-between">
         <button
           onClick={() => navigate(-1)}
+          aria-label="Go back"
           className="w-10 h-10 rounded-full bg-white/10 backdrop-blur flex items-center justify-center"
         >
           <ArrowLeft className="w-5 h-5 text-white" />
@@ -138,6 +153,7 @@ export default function TryOn() {
         </div>
         <button
           onClick={() => navigate(createPageUrl('Cart'))}
+          aria-label="Open cart"
           className="w-10 h-10 rounded-full bg-white/10 backdrop-blur flex items-center justify-center"
         >
           <ShoppingBag className="w-5 h-5 text-white" />
@@ -218,6 +234,7 @@ export default function TryOn() {
             </div>
             <button
               onClick={toggleWishlist}
+              aria-label={wishlist.includes(currentProduct.id) ? "Remove from wishlist" : "Add to wishlist"}
               className={`w-12 h-12 rounded-full flex items-center justify-center ${
                 wishlist.includes(currentProduct.id)
                   ? 'bg-[#c9a962]'
@@ -237,7 +254,7 @@ export default function TryOn() {
             <div className="flex items-center gap-2 mb-4 text-sm">
               <Sparkles className="w-4 h-4 text-[#c9a962]" />
               <span className="text-white/60">Recommended size: </span>
-              <span className="text-white font-medium">{userProfile.suggested_sizes.tops || 'M'}</span>
+              <span className="text-white font-medium">{recommendedSize || 'Select on product page'}</span>
             </div>
           )}
 
@@ -251,11 +268,11 @@ export default function TryOn() {
               View Details
             </Button>
             <Button
-              onClick={addToCart}
+              onClick={handleCartAction}
               className="flex-1 h-14 rounded-xl bg-[#c9a962] hover:bg-[#b8944d] text-[#1a1a1a]"
             >
               <ShoppingBag className="w-5 h-5 mr-2" />
-              Add to Cart
+              {(currentProduct.sizes?.length || 0) > 0 ? 'Choose Options' : 'View Product'}
             </Button>
           </div>
 

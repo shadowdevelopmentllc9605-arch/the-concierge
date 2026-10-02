@@ -3,7 +3,7 @@ import { base44 } from '@/api/base44Client';
 import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, Heart, Trash2, ShoppingBag, Eye, EyeOff, Share2 } from 'lucide-react';
+import { ArrowLeft, Heart, Trash2, ShoppingBag, Eye, EyeOff } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import PullToRefresh from '@/components/PullToRefresh';
@@ -12,7 +12,6 @@ export default function Wishlist() {
   const navigate = useNavigate();
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState(null);
 
   useEffect(() => {
     loadWishlist();
@@ -25,8 +24,6 @@ export default function Wishlist() {
   const loadWishlist = async () => {
     try {
       const currentUser = await base44.auth.me();
-      setUser(currentUser);
-      
       const wishlistItems = await base44.entities.WishlistItem.filter({ user_id: currentUser.id });
       setItems(wishlistItems);
     } catch (error) {
@@ -67,33 +64,8 @@ export default function Wishlist() {
     }
   };
 
-  const addToCart = async (item) => {
-    const removedItem = item;
-    const itemIndex = items.findIndex(i => i.id === item.id);
-    
-    // Optimistic update - remove from wishlist immediately
-    setItems(prev => prev.filter(i => i.id !== item.id));
-    
-    try {
-      await base44.entities.CartItem.create({
-        user_id: user.id,
-        product_id: item.product_id,
-        product_name: item.product_name,
-        product_image: item.product_image,
-        product_price: item.product_price,
-        size: 'M',
-        quantity: 1
-      });
-      await base44.entities.WishlistItem.delete(item.id);
-    } catch (error) {
-      // Revert on error
-      setItems(prev => {
-        const newItems = [...prev];
-        newItems.splice(itemIndex, 0, removedItem);
-        return newItems;
-      });
-      console.error(error);
-    }
+  const chooseOptions = (item) => {
+    navigate(createPageUrl('ProductDetail?id=' + item.product_id));
   };
 
   if (loading) {
@@ -125,9 +97,6 @@ export default function Wishlist() {
               <p className="text-sm text-[var(--color-text-secondary)]">{items.length} items saved</p>
             </div>
           </div>
-          <button className="w-10 h-10 rounded-full bg-[var(--color-surface)] shadow-sm flex items-center justify-center select-none">
-            <Share2 className="w-5 h-5 text-[var(--color-text-primary)]" />
-          </button>
         </div>
       </div>
 
@@ -191,24 +160,24 @@ export default function Wishlist() {
                     <p className="font-semibold text-[var(--color-text-primary)] mt-1">${item.product_price?.toFixed(2)}</p>
                     
                     <div className="flex items-center justify-between mt-3">
-                      <button
-                        onClick={() => toggleVisibility(item)}
-                        className="flex items-center gap-2 select-none"
-                      >
-                        <Switch 
-                          checked={item.is_public}
-                          className="scale-75"
-                        />
-                      </button>
+                      <Switch
+                        checked={item.is_public}
+                        onCheckedChange={() => toggleVisibility(item)}
+                        aria-label={item.is_public ? 'Make wishlist item private' : 'Make wishlist item public'}
+                        className="scale-75"
+                      />
                       <div className="flex gap-2">
                         <button
-                          onClick={() => addToCart(item)}
+                          onClick={() => chooseOptions(item)}
+                          aria-label="Choose product options"
+                          title="Choose size and color"
                           className="w-8 h-8 rounded-full bg-[var(--color-text-primary)] flex items-center justify-center select-none"
                         >
                           <ShoppingBag className="w-4 h-4 text-[var(--color-background)]" />
                         </button>
                         <button
                           onClick={() => removeItem(item)}
+                          aria-label="Remove from wishlist"
                           className="w-8 h-8 rounded-full bg-red-50 flex items-center justify-center select-none"
                         >
                           <Trash2 className="w-4 h-4 text-red-500" />

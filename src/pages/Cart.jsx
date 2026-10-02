@@ -3,14 +3,13 @@ import { base44 } from '@/api/base44Client';
 import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, Minus, Plus, Trash2, ShoppingBag, Loader2 } from 'lucide-react';
+import { ArrowLeft, Minus, Plus, Trash2, ShoppingBag } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 
 export default function Cart() {
   const navigate = useNavigate();
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState(null);
 
   useEffect(() => {
     loadCart();
@@ -19,8 +18,6 @@ export default function Cart() {
   const loadCart = async () => {
     try {
       const currentUser = await base44.auth.me();
-      setUser(currentUser);
-      
       const cartItems = await base44.entities.CartItem.filter({ user_id: currentUser.id });
       setItems(cartItems);
     } catch (error) {
