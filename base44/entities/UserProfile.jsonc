@@ -36,7 +36,10 @@
     },
     "measurement_unit": {
       "type": "string",
-      "enum": ["metric", "imperial"],
+      "enum": [
+        "metric",
+        "imperial"
+      ],
       "default": "imperial"
     },
     "measurement_confidence": {
@@ -54,15 +57,33 @@
       "type": "object",
       "description": "Canonical numeric body measurements stored in centimeters",
       "properties": {
-        "height": { "type": "number" },
-        "chest": { "type": "number" },
-        "bust": { "type": "number" },
-        "waist": { "type": "number" },
-        "hips": { "type": "number" },
-        "shoulders": { "type": "number" },
-        "arm_length": { "type": "number" },
-        "inseam": { "type": "number" },
-        "neck": { "type": "number" }
+        "height": {
+          "type": "number"
+        },
+        "chest": {
+          "type": "number"
+        },
+        "bust": {
+          "type": "number"
+        },
+        "waist": {
+          "type": "number"
+        },
+        "hips": {
+          "type": "number"
+        },
+        "shoulders": {
+          "type": "number"
+        },
+        "arm_length": {
+          "type": "number"
+        },
+        "inseam": {
+          "type": "number"
+        },
+        "neck": {
+          "type": "number"
+        }
       }
     },
     "measurements": {
