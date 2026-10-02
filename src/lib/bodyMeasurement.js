@@ -130,19 +130,22 @@ export async function measureBodyFromImages({ frontUrl, sideUrl, heightCm }) {
     getLandmarker(),
   ]);
 
-  const [frontResult, sideResult] = await Promise.all([
-    Promise.resolve(landmarker.detect(frontImage)),
-    Promise.resolve(landmarker.detect(sideImage)),
-  ]);
-
+  const frontResult = landmarker.detect(frontImage);
   const frontLandmarks = frontResult.landmarks?.[0];
+  const frontMaskRaw = frontResult.segmentationMasks?.[0]?.clone?.();
+
+  const sideResult = landmarker.detect(sideImage);
   const sideLandmarks = sideResult.landmarks?.[0];
+  const sideMaskRaw = sideResult.segmentationMasks?.[0]?.clone?.();
+
+  frontResult.close?.();
+  sideResult.close?.();
+
   if (!frontLandmarks || !sideLandmarks) {
+    closeMask(frontMaskRaw);
+    closeMask(sideMaskRaw);
     throw new Error('A full body could not be detected in both photos.');
   }
-
-  const frontMaskRaw = frontResult.segmentationMasks?.[0];
-  const sideMaskRaw = sideResult.segmentationMasks?.[0];
   const frontMask = maskToArray(frontMaskRaw);
   const sideMask = maskToArray(sideMaskRaw);
   const frontBox = getBoundingBox(frontMask);
@@ -168,21 +171,34 @@ export async function measureBodyFromImages({ frontUrl, sideUrl, heightCm }) {
   const hipY = (leftHip.y + rightHip.y) / 2;
   const torso = hipY - shoulderY;
 
-  const levels = {
+  const frontLevels = {
     chest: shoulderY + torso * 0.22,
     waist: shoulderY + torso * 0.62,
     hips: hipY + Math.max(0.02, torso * 0.10),
   };
 
+  const sideLeftShoulder = sideLandmarks[11];
+  const sideRightShoulder = sideLandmarks[12];
+  const sideLeftHip = sideLandmarks[23];
+  const sideRightHip = sideLandmarks[24];
+  const sideShoulderY = (sideLeftShoulder.y + sideRightShoulder.y) / 2;
+  const sideHipY = (sideLeftHip.y + sideRightHip.y) / 2;
+  const sideTorso = sideHipY - sideShoulderY;
+  const sideLevels = {
+    chest: sideShoulderY + sideTorso * 0.22,
+    waist: sideShoulderY + sideTorso * 0.62,
+    hips: sideHipY + Math.max(0.02, sideTorso * 0.10),
+  };
+
   const frontWidths = {
-    chest: rowSpan(frontMask, levels.chest),
-    waist: rowSpan(frontMask, levels.waist),
-    hips: rowSpan(frontMask, levels.hips),
+    chest: rowSpan(frontMask, frontLevels.chest),
+    waist: rowSpan(frontMask, frontLevels.waist),
+    hips: rowSpan(frontMask, frontLevels.hips),
   };
   const sideDepths = {
-    chest: rowSpan(sideMask, levels.chest),
-    waist: rowSpan(sideMask, levels.waist),
-    hips: rowSpan(sideMask, levels.hips),
+    chest: rowSpan(sideMask, sideLevels.chest),
+    waist: rowSpan(sideMask, sideLevels.waist),
+    hips: rowSpan(sideMask, sideLevels.hips),
   };
 
   const chest = ellipseCircumference(
