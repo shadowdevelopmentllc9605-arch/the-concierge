@@ -5,6 +5,7 @@ import { createPageUrl } from '@/utils';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Heart, ShoppingBag, Sparkles, Check, Loader2 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
+import { getCategoryGroup, recommendFromSizeChart } from '@/lib/fitRecommendation';
 
 export default function ProductDetail() {
   const navigate = useNavigate();
@@ -20,6 +21,7 @@ export default function ProductDetail() {
   const [addedToCart, setAddedToCart] = useState(false);
   const [user, setUser] = useState(null);
   const [suggestedSize, setSuggestedSize] = useState('');
+  const [recommendationSource, setRecommendationSource] = useState('');
 
   useEffect(() => {
     loadData();
@@ -43,16 +45,35 @@ export default function ProductDetail() {
         }
       }
 
-      // Get user profile for suggested size
+      // Get user profile and match measurements against this product's size chart when available.
       const profiles = await base44.entities.UserProfile.filter({ user_id: currentUser.id });
-      if (profiles.length > 0 && profiles[0].suggested_sizes) {
-        const category = products[0]?.category;
-        if (['suits', 'vests', 'dress_shirts', 'blouse', 'tshirts', 'polos', 'jackets', 'pattern_shirts', 'graphic_tees'].includes(category)) {
-          setSuggestedSize(profiles[0].suggested_sizes.tops);
-        } else if (['pants', 'jeans', 'shorts', 'khakis'].includes(category)) {
-          setSuggestedSize(profiles[0].suggested_sizes.bottoms);
-        } else if (['dresses', 'dress_skirts', 'skirts', 'evening_dresses'].includes(category)) {
-          setSuggestedSize(profiles[0].suggested_sizes.dresses);
+      if (profiles.length > 0 && products[0]) {
+        const profile = profiles[0];
+        const product = products[0];
+        const chartMatch = recommendFromSizeChart(
+          product.size_chart || [],
+          profile.measurement_values_cm || {}
+        );
+
+        if (chartMatch?.size) {
+          setSuggestedSize(chartMatch.size);
+          setRecommendationSource('product_size_chart');
+        } else {
+          const group = getCategoryGroup(product.category);
+          let fallback = group ? profile.suggested_sizes?.[group] : '';
+
+          // Suits often store values like 40R while the profile fallback is 40.
+          if (product.category === 'suits' && profile.suggested_sizes?.suits) {
+            const suitBase = profile.suggested_sizes.suits;
+            fallback =
+              product.sizes?.find(size => String(size).startsWith(String(suitBase))) ||
+              suitBase;
+          }
+
+          if (fallback && (!product.sizes?.length || product.sizes.includes(fallback))) {
+            setSuggestedSize(fallback);
+            setRecommendationSource('profile_estimate');
+          }
         }
       }
 
@@ -239,7 +260,7 @@ export default function ProductDetail() {
               {suggestedSize && (
                 <span className="text-xs text-[var(--color-accent)] flex items-center gap-1">
                   <Sparkles className="w-3 h-3" />
-                  Recommended: {suggestedSize}
+                  {recommendationSource === 'product_size_chart' ? 'Best match' : 'Profile estimate'}: {suggestedSize}
                 </span>
               )}
             </div>
@@ -261,6 +282,12 @@ export default function ProductDetail() {
               ))}
             </div>
           </div>
+        )}
+
+        {suggestedSize && recommendationSource === 'profile_estimate' && (
+          <p className="mt-3 text-xs text-[var(--color-text-secondary)]">
+            This is a general size estimate. Brand-specific recommendations become more precise when the retailer provides a product size chart.
+          </p>
         )}
 
         {/* Color Selection */}
