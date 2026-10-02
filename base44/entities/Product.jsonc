@@ -91,15 +91,33 @@
       "items": {
         "type": "object",
         "properties": {
-          "size": { "type": "string" },
-          "chest_min_cm": { "type": "number" },
-          "chest_max_cm": { "type": "number" },
-          "waist_min_cm": { "type": "number" },
-          "waist_max_cm": { "type": "number" },
-          "hips_min_cm": { "type": "number" },
-          "hips_max_cm": { "type": "number" },
-          "inseam_min_cm": { "type": "number" },
-          "inseam_max_cm": { "type": "number" }
+          "size": {
+            "type": "string"
+          },
+          "chest_min_cm": {
+            "type": "number"
+          },
+          "chest_max_cm": {
+            "type": "number"
+          },
+          "waist_min_cm": {
+            "type": "number"
+          },
+          "waist_max_cm": {
+            "type": "number"
+          },
+          "hips_min_cm": {
+            "type": "number"
+          },
+          "hips_max_cm": {
+            "type": "number"
+          },
+          "inseam_min_cm": {
+            "type": "number"
+          },
+          "inseam_max_cm": {
+            "type": "number"
+          }
         }
       }
     },
