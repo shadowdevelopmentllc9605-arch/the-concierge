@@ -1,66 +1,150 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Ruler, ChevronDown, ChevronUp, Save, Loader2 } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
+import {
+  cmToInches,
+  formatHeight,
+  formatLength,
+  inchesToCm,
+  parseHeightToCm,
+  parseLengthToCm,
+} from '@/lib/measurementUnits';
 
 const UNSURE = 'unsure';
 
-const fields = [
-  { key: 'height', label: 'Height', placeholder: 'e.g. 5\'11" or 180cm', maleOnly: false, femaleOnly: false },
-  { key: 'weight', label: 'Weight', placeholder: 'e.g. 175 lbs or 79 kg', maleOnly: false, femaleOnly: false },
-  { key: 'chest', label: 'Chest', placeholder: 'e.g. 40"', maleOnly: false, femaleOnly: false },
-  { key: 'bust', label: 'Bust', placeholder: 'e.g. 36"', maleOnly: false, femaleOnly: true },
-  { key: 'waist', label: 'Waist', placeholder: 'e.g. 32"', maleOnly: false, femaleOnly: false },
-  { key: 'hips', label: 'Hips', placeholder: 'e.g. 38"', maleOnly: false, femaleOnly: false },
-  { key: 'inseam', label: 'Inseam', placeholder: 'e.g. 30"', maleOnly: false, femaleOnly: false },
-  { key: 'neck', label: 'Neck', placeholder: 'e.g. 15.5"', maleOnly: false, femaleOnly: false },
-  { key: 'shoe_size', label: 'Shoe Size', placeholder: 'e.g. 10 US / 43 EU', maleOnly: false, femaleOnly: false },
+const lengthFields = [
+  { key: 'height', label: 'Height' },
+  { key: 'chest', label: 'Chest' },
+  { key: 'bust', label: 'Bust' },
+  { key: 'waist', label: 'Waist' },
+  { key: 'hips', label: 'Hips' },
+  { key: 'inseam', label: 'Inseam' },
+  { key: 'shoulders', label: 'Shoulders' },
+  { key: 'arm_length', label: 'Arm Length' },
+  { key: 'neck', label: 'Neck' },
 ];
 
+const textFields = [
+  { key: 'weight', label: 'Weight', placeholder: 'e.g. 175 lb or 79 kg' },
+  { key: 'shoe_size', label: 'Shoe Size', placeholder: 'e.g. 10 US / 43 EU' },
+];
+
+function initialLengthValue(profile, key, unit) {
+  const canonical = Number(profile?.measurement_values_cm?.[key]);
+  let cm = Number.isFinite(canonical) ? canonical : null;
+
+  if (cm == null) {
+    const existing = profile?.measurements?.[key];
+    cm = key === 'height'
+      ? parseHeightToCm(existing, profile?.measurement_unit || unit)
+      : parseLengthToCm(existing, profile?.measurement_unit || unit);
+  }
+
+  if (!Number.isFinite(cm)) return '';
+  return unit === 'metric' ? cm.toFixed(1) : cmToInches(cm).toFixed(1);
+}
+
+function formattedMeasurementMap(valuesCm, unit, existing = {}) {
+  const next = { ...existing };
+  for (const { key } of lengthFields) {
+    const value = Number(valuesCm[key]);
+    if (!Number.isFinite(value)) continue;
+    next[key] = key === 'height'
+      ? formatHeight(value, unit)
+      : formatLength(value, unit);
+  }
+  return next;
+}
+
 export default function MeasurementsEditor({ profile, onSaved }) {
+  const initialUnit = profile?.measurement_unit || 'imperial';
   const [open, setOpen] = useState(false);
-  const [measurements, setMeasurements] = useState(profile?.measurements || {});
+  const [unit, setUnit] = useState(initialUnit);
+  const [saving, setSaving] = useState(false);
+
+  const [lengthValues, setLengthValues] = useState(() =>
+    Object.fromEntries(lengthFields.map(({ key }) => [key, initialLengthValue(profile, key, initialUnit)]))
+  );
+  const [textValues, setTextValues] = useState(() =>
+    Object.fromEntries(textFields.map(({ key }) => [key, profile?.measurements?.[key] || '']))
+  );
   const [unsureFields, setUnsureFields] = useState(() => {
     const init = {};
-    fields.forEach(f => {
-      if (profile?.measurements?.[f.key] === UNSURE) init[f.key] = true;
+    [...lengthFields, ...textFields].forEach(({ key }) => {
+      if (profile?.measurements?.[key] === UNSURE) init[key] = true;
     });
     return init;
   });
-  const [saving, setSaving] = useState(false);
 
-  const gender = profile?.gender || 'prefer_not_to_say';
+  const scanConfidence = profile?.measurement_confidence;
+  const lastUpdated = profile?.measurement_updated_at;
+  const unitLabel = unit === 'metric' ? 'cm' : 'in';
 
-  const visibleFields = fields.filter(f => {
-    if (f.femaleOnly && gender === 'male') return false;
-    return true;
-  });
-
-  const handleChange = (key, value) => {
-    setMeasurements(prev => ({ ...prev, [key]: value }));
+  const switchUnit = (nextUnit) => {
+    if (nextUnit === unit) return;
+    setLengthValues(prev => {
+      const converted = {};
+      for (const { key } of lengthFields) {
+        const current = Number(prev[key]);
+        if (!Number.isFinite(current)) {
+          converted[key] = '';
+          continue;
+        }
+        converted[key] = nextUnit === 'metric'
+          ? inchesToCm(current).toFixed(1)
+          : cmToInches(current).toFixed(1);
+      }
+      return converted;
+    });
+    setUnit(nextUnit);
   };
 
+  const canonicalCm = useMemo(() => {
+    const values = {};
+    for (const { key } of lengthFields) {
+      if (unsureFields[key]) continue;
+      const numeric = Number(lengthValues[key]);
+      if (!Number.isFinite(numeric)) continue;
+      values[key] = unit === 'metric' ? numeric : inchesToCm(numeric);
+    }
+    return values;
+  }, [lengthValues, unit, unsureFields]);
+
   const toggleUnsure = (key) => {
-    setUnsureFields(prev => {
-      const next = { ...prev, [key]: !prev[key] };
-      if (next[key]) {
-        setMeasurements(m => ({ ...m, [key]: UNSURE }));
-      } else {
-        setMeasurements(m => ({ ...m, [key]: '' }));
-      }
-      return next;
-    });
+    setUnsureFields(prev => ({ ...prev, [key]: !prev[key] }));
   };
 
   const handleSave = async () => {
     if (!profile?.id) return;
     setSaving(true);
     try {
-      await base44.entities.UserProfile.update(profile.id, { measurements });
-      onSaved && onSaved({ ...profile, measurements });
+      const displayMeasurements = formattedMeasurementMap(
+        canonicalCm,
+        unit,
+        profile?.measurements || {}
+      );
+
+      for (const { key } of textFields) {
+        displayMeasurements[key] = unsureFields[key] ? UNSURE : textValues[key];
+      }
+      for (const { key } of lengthFields) {
+        if (unsureFields[key]) displayMeasurements[key] = UNSURE;
+      }
+
+      const update = {
+        measurement_unit: unit,
+        measurement_values_cm: canonicalCm,
+        measurements: displayMeasurements,
+        measurement_updated_at: new Date().toISOString(),
+        measurement_method: profile?.measurement_method || 'manual',
+      };
+
+      await base44.entities.UserProfile.update(profile.id, update);
+      onSaved?.({ ...profile, ...update });
       setOpen(false);
-    } catch (e) {
-      console.error(e);
+    } catch (error) {
+      console.error(error);
     } finally {
       setSaving(false);
     }
@@ -69,7 +153,7 @@ export default function MeasurementsEditor({ profile, onSaved }) {
   return (
     <div className="bg-[var(--color-surface)] rounded-2xl overflow-hidden shadow-sm">
       <button
-        onClick={() => setOpen(o => !o)}
+        onClick={() => setOpen(value => !value)}
         className="w-full flex items-center justify-between p-4 select-none"
       >
         <div className="flex items-center gap-3">
@@ -78,7 +162,9 @@ export default function MeasurementsEditor({ profile, onSaved }) {
           </div>
           <div className="text-left">
             <p className="font-medium text-[var(--color-text-primary)]">My Measurements</p>
-            <p className="text-xs text-[var(--color-text-secondary)]">Size & fit details</p>
+            <p className="text-xs text-[var(--color-text-secondary)]">
+              Metric or imperial • review anytime
+            </p>
           </div>
         </div>
         {open ? (
@@ -92,27 +178,84 @@ export default function MeasurementsEditor({ profile, onSaved }) {
         <motion.div
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: 'auto' }}
-          exit={{ opacity: 0, height: 0 }}
           className="border-t border-[var(--color-border-light)] px-4 pb-4 pt-3 space-y-3"
         >
-          {gender === 'male' && (
-            <p className="text-xs text-[var(--color-text-muted)] italic">
-              Bust measurement is marked N/A for male profiles.
-            </p>
-          )}
+          <div className="flex items-center justify-between gap-3">
+            <div>
+              <p className="text-sm font-medium text-[var(--color-text-primary)]">Display units</p>
+              {scanConfidence != null && (
+                <p className="text-xs text-[var(--color-text-secondary)]">
+                  Last scan quality: {scanConfidence}%{lastUpdated ? ' • measurements are editable' : ''}
+                </p>
+              )}
+            </div>
+            <div className="flex rounded-lg border border-[var(--color-border)] overflow-hidden">
+              <button
+                type="button"
+                onClick={() => switchUnit('imperial')}
+                className={`px-3 py-1.5 text-xs ${unit === 'imperial' ? 'bg-[var(--color-text-primary)] text-[var(--color-background)]' : ''}`}
+              >
+                Imperial
+              </button>
+              <button
+                type="button"
+                onClick={() => switchUnit('metric')}
+                className={`px-3 py-1.5 text-xs ${unit === 'metric' ? 'bg-[var(--color-text-primary)] text-[var(--color-background)]' : ''}`}
+              >
+                Metric
+              </button>
+            </div>
+          </div>
 
-          {visibleFields.map(field => (
+          {lengthFields.map(field => (
             <div key={field.key}>
               <div className="flex items-center justify-between mb-1">
                 <label className="text-sm font-medium text-[var(--color-text-primary)]">
                   {field.label}
                 </label>
                 <button
+                  type="button"
                   onClick={() => toggleUnsure(field.key)}
-                  className={`text-xs px-2 py-0.5 rounded-full border transition-colors select-none ${
+                  className={`text-xs px-2 py-0.5 rounded-full border ${
                     unsureFields[field.key]
                       ? 'bg-[var(--color-accent)] border-[var(--color-accent)] text-white'
-                      : 'bg-transparent border-[var(--color-border)] text-[var(--color-text-secondary)]'
+                      : 'border-[var(--color-border)] text-[var(--color-text-secondary)]'
+                  }`}
+                >
+                  Not sure
+                </button>
+              </div>
+              <div className="relative">
+                <input
+                  type="number"
+                  step="0.1"
+                  disabled={unsureFields[field.key]}
+                  value={unsureFields[field.key] ? '' : lengthValues[field.key]}
+                  onChange={(e) => setLengthValues(prev => ({ ...prev, [field.key]: e.target.value }))}
+                  className="w-full px-3 py-2 pr-12 rounded-xl border border-[var(--color-border)] bg-[var(--color-background-secondary)] text-[var(--color-text-primary)] text-sm focus:outline-none focus:ring-1 focus:ring-[var(--color-accent)] disabled:opacity-50"
+                />
+                {!unsureFields[field.key] && (
+                  <span className="absolute right-3 top-2.5 text-xs text-[var(--color-text-secondary)]">
+                    {unitLabel}
+                  </span>
+                )}
+              </div>
+            </div>
+          ))}
+
+          {textFields.map(field => (
+            <div key={field.key}>
+              <div className="flex items-center justify-between mb-1">
+                <label className="text-sm font-medium text-[var(--color-text-primary)]">
+                  {field.label}
+                </label>
+                <button
+                  type="button"
+                  onClick={() => toggleUnsure(field.key)}
+                  className={`text-xs px-2 py-0.5 rounded-full border ${
+                    unsureFields[field.key]
+                      ? 'bg-[var(--color-accent)] border-[var(--color-accent)] text-white'
+                      : 'border-[var(--color-border)] text-[var(--color-text-secondary)]'
                   }`}
                 >
                   Not sure
@@ -121,13 +264,17 @@ export default function MeasurementsEditor({ profile, onSaved }) {
               <input
                 type="text"
                 disabled={unsureFields[field.key]}
-                value={unsureFields[field.key] ? 'Not sure' : (measurements[field.key] || '')}
-                onChange={e => handleChange(field.key, e.target.value)}
+                value={unsureFields[field.key] ? '' : textValues[field.key]}
+                onChange={(e) => setTextValues(prev => ({ ...prev, [field.key]: e.target.value }))}
                 placeholder={field.placeholder}
-                className="w-full px-3 py-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-background-secondary)] text-[var(--color-text-primary)] text-sm placeholder:text-[var(--color-text-muted)] focus:outline-none focus:ring-1 focus:ring-[var(--color-accent)] disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full px-3 py-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-background-secondary)] text-[var(--color-text-primary)] text-sm focus:outline-none focus:ring-1 focus:ring-[var(--color-accent)] disabled:opacity-50"
               />
             </div>
           ))}
+
+          <p className="text-xs text-[var(--color-text-secondary)]">
+            Photo measurements are estimates. For critical fit decisions, compare them with a tape measurement and correct any value that looks wrong.
+          </p>
 
           <button
             onClick={handleSave}
