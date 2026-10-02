@@ -31,14 +31,6 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Lint changed launch-readiness files
-        run: >
-          npx eslint --quiet
-          src/pages/ProductDetail.jsx
-          src/pages/TryOn.jsx
-          src/pages/Wishlist.jsx
-          src/pages/Profile.jsx
-          src/pages/Cart.jsx
-          src/pages/Checkout.jsx
-          src/components/instore/InStoreCheckout.jsx
-          src/components/DeleteAccountDialog.jsx
+      - name: Lint application
+        run: npm run lint
+
