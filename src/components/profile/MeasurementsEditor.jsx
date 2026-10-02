@@ -193,14 +193,14 @@ export default function MeasurementsEditor({ profile, onSaved }) {
               <button
                 type="button"
                 onClick={() => switchUnit('imperial')}
-                className={\`px-3 py-1.5 text-xs \${unit === 'imperial' ? 'bg-[var(--color-text-primary)] text-[var(--color-background)]' : ''}\`}
+                className={`px-3 py-1.5 text-xs ${unit === 'imperial' ? 'bg-[var(--color-text-primary)] text-[var(--color-background)]' : ''}`}
               >
                 Imperial
               </button>
               <button
                 type="button"
                 onClick={() => switchUnit('metric')}
-                className={\`px-3 py-1.5 text-xs \${unit === 'metric' ? 'bg-[var(--color-text-primary)] text-[var(--color-background)]' : ''}\`}
+                className={`px-3 py-1.5 text-xs ${unit === 'metric' ? 'bg-[var(--color-text-primary)] text-[var(--color-background)]' : ''}`}
               >
                 Metric
               </button>
@@ -216,11 +216,11 @@ export default function MeasurementsEditor({ profile, onSaved }) {
                 <button
                   type="button"
                   onClick={() => toggleUnsure(field.key)}
-                  className={\`text-xs px-2 py-0.5 rounded-full border \${
+                  className={`text-xs px-2 py-0.5 rounded-full border ${
                     unsureFields[field.key]
                       ? 'bg-[var(--color-accent)] border-[var(--color-accent)] text-white'
                       : 'border-[var(--color-border)] text-[var(--color-text-secondary)]'
-                  }\`}
+                  }`}
                 >
                   Not sure
                 </button>
@@ -252,11 +252,11 @@ export default function MeasurementsEditor({ profile, onSaved }) {
                 <button
                   type="button"
                   onClick={() => toggleUnsure(field.key)}
-                  className={\`text-xs px-2 py-0.5 rounded-full border \${
+                  className={`text-xs px-2 py-0.5 rounded-full border ${
                     unsureFields[field.key]
                       ? 'bg-[var(--color-accent)] border-[var(--color-accent)] text-white'
                       : 'border-[var(--color-border)] text-[var(--color-text-secondary)]'
-                  }\`}
+                  }`}
                 >
                   Not sure
                 </button>
