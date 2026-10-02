@@ -34,6 +34,36 @@
       "type": "string",
       "description": "URL to back body scan image"
     },
+    "measurement_unit": {
+      "type": "string",
+      "enum": ["metric", "imperial"],
+      "default": "imperial"
+    },
+    "measurement_confidence": {
+      "type": "number",
+      "description": "Image quality/confidence score from 0-100; not a guarantee of accuracy"
+    },
+    "measurement_method": {
+      "type": "string"
+    },
+    "measurement_updated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "measurement_values_cm": {
+      "type": "object",
+      "description": "Canonical numeric body measurements stored in centimeters",
+      "properties": {
+        "height": { "type": "number" },
+        "chest": { "type": "number" },
+        "waist": { "type": "number" },
+        "hips": { "type": "number" },
+        "shoulders": { "type": "number" },
+        "arm_length": { "type": "number" },
+        "inseam": { "type": "number" },
+        "neck": { "type": "number" }
+      }
+    },
     "measurements": {
       "type": "object",
       "properties": {
