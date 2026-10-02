@@ -52,7 +52,7 @@ export default function DeleteAccountDialog({ isOpen, onClose, onConfirm, userEm
             Delete Account
           </h2>
           <p className="text-[var(--color-text-secondary)] text-sm mb-6">
-            This action is permanent and cannot be undone. All your data, including your closet items, wishlist, and purchase history will be permanently deleted.
+            This removes the app records The Concierge can currently delete, including your profile, closet, wishlist, cart, purchase history, check-ins, payment metadata, reviews, feedback, and friend connections. Your Base44 sign-in account and previously uploaded files may require separate platform-level deletion.
           </p>
 
           <div className="mb-6">
