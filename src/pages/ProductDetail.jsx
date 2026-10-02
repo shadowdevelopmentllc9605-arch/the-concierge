@@ -26,7 +26,10 @@ export default function ProductDetail() {
   }, [productId]);
 
   const loadData = async () => {
-    if (!productId) return;
+    if (!productId) {
+      setLoading(false);
+      return;
+    }
     setLoading(true);
     try {
       const currentUser = await base44.auth.me();
@@ -100,19 +103,37 @@ export default function ProductDetail() {
   };
 
   const addToCart = async () => {
-    if (!selectedSize) return;
+    const requiresSize = (product?.sizes?.length || 0) > 0;
+    if (requiresSize && !selectedSize) return;
+
     setAddingToCart(true);
     try {
-      await base44.entities.CartItem.create({
+      const existingItems = await base44.entities.CartItem.filter({
         user_id: user.id,
-        product_id: product.id,
-        product_name: product.name,
-        product_image: product.images?.[0],
-        product_price: product.price,
-        size: selectedSize,
-        color: selectedColor,
-        quantity: 1
+        product_id: product.id
       });
+      const matchingItem = existingItems.find(item =>
+        (item.size || '') === (selectedSize || '') &&
+        (item.color || '') === (selectedColor || '')
+      );
+
+      if (matchingItem) {
+        await base44.entities.CartItem.update(matchingItem.id, {
+          quantity: (matchingItem.quantity || 1) + 1
+        });
+      } else {
+        await base44.entities.CartItem.create({
+          user_id: user.id,
+          product_id: product.id,
+          product_name: product.name,
+          product_image: product.images?.[0],
+          product_price: product.price,
+          size: selectedSize || '',
+          color: selectedColor || '',
+          quantity: 1
+        });
+      }
+
       setAddedToCart(true);
       setTimeout(() => setAddedToCart(false), 2000);
     } catch (error) {
@@ -148,12 +169,14 @@ export default function ProductDetail() {
       <div className="fixed top-0 left-0 right-0 z-50 px-4 py-4 flex items-center justify-between safe-area-top">
         <button
           onClick={() => navigate(-1)}
+          aria-label="Go back"
           className="w-10 h-10 rounded-full bg-[var(--color-surface)] shadow-lg flex items-center justify-center select-none"
         >
           <ArrowLeft className="w-5 h-5 text-[var(--color-text-primary)]" />
         </button>
         <button
           onClick={toggleWishlist}
+          aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
           className={`w-10 h-10 rounded-full shadow-lg flex items-center justify-center transition-colors select-none ${
             isWishlisted ? 'bg-[var(--color-accent)]' : 'bg-[var(--color-surface)]'
           }`}
@@ -249,6 +272,8 @@ export default function ProductDetail() {
                 <button
                   key={color}
                   onClick={() => setSelectedColor(color)}
+                  aria-label={`Select color ${color}`}
+                  title={color}
                   className={`w-10 h-10 rounded-full border-2 transition-all select-none ${
                     selectedColor === color ? 'border-[var(--color-text-primary)] scale-110' : 'border-transparent'
                   }`}
@@ -264,7 +289,7 @@ export default function ProductDetail() {
       <div className="fixed bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-[var(--color-background)] via-[var(--color-background)] to-transparent safe-area-bottom">
         <Button
           onClick={addToCart}
-          disabled={!selectedSize || addingToCart}
+          disabled={((product.sizes?.length || 0) > 0 && !selectedSize) || addingToCart}
           className={`w-full h-14 rounded-xl font-medium text-base transition-colors select-none ${
             addedToCart
               ? 'bg-green-500 hover:bg-green-500'
