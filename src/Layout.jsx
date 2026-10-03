@@ -77,6 +77,9 @@ export default function Layout({ children, currentPageName }) {
       
       const cartItems = await base44.entities.CartItem.filter({ user_id: currentUser.id });
       setCartCount(cartItems.length);
+
+      // Best-effort reconciliation of bridge events that previously failed.
+      base44.functions.invoke('retryIntegrationSyncs', {}).catch(() => {});
     } catch (error) {
       // User not logged in
     }
