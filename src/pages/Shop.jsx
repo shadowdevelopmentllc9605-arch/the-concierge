@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import PullToRefresh from '@/components/PullToRefresh';
+import { getCategoryGroup, recommendFromSizeChart } from '@/lib/fitRecommendation';
 
 export default function Shop() {
   const navigate = useNavigate();
@@ -24,6 +25,8 @@ export default function Shop() {
   const [wishlist, setWishlist] = useState([]);
   const [cartCount, setCartCount] = useState(0);
   const [user, setUser] = useState(null);
+  const [profile, setProfile] = useState(null);
+  const specialFilter = urlParams.get('filter') || '';
 
   const categories = {
     business: ['suits', 'vests', 'dress_shirts', 'pants', 'blouse', 'dress_skirts', 'collar_stays', 'cufflinks', 'tie_bar', 'tie_chain', 'tie_pin', 'pocket_square', 'lapel_pin'],
@@ -50,11 +53,17 @@ export default function Shop() {
       let query = {};
       if (filters.style) query.style_type = filters.style;
       if (filters.category) query.category = filters.category;
-      
-      const allProducts = filters.style || filters.category 
+      if (filters.brand) query.brand = filters.brand;
+      if (specialFilter === 'new') query.is_new = true;
+
+      const hasQuery = filters.style || filters.category || filters.brand || specialFilter === 'new';
+      const allProducts = hasQuery
         ? await base44.entities.Product.filter(query)
         : await base44.entities.Product.list('-created_date', 50);
       setProducts(allProducts);
+
+      const profiles = await base44.entities.UserProfile.filter({ user_id: currentUser.id });
+      setProfile(profiles[0] || null);
 
       // Load wishlist
       const wishlistItems = await base44.entities.WishlistItem.filter({ user_id: currentUser.id });
@@ -112,10 +121,33 @@ export default function Shop() {
     }
   };
 
-  const filteredProducts = products.filter(p => 
-    !search || p.name?.toLowerCase().includes(search.toLowerCase()) ||
+  const filteredProducts = products.filter(p =>
+    !search ||
+    p.name?.toLowerCase().includes(search.toLowerCase()) ||
     p.brand?.toLowerCase().includes(search.toLowerCase())
   );
+
+  const getProductRecommendation = (product) => {
+    if (!profile) return null;
+
+    const chartMatch = recommendFromSizeChart(
+      product.size_chart || [],
+      profile.measurement_values_cm || {}
+    );
+    if (chartMatch?.size) return { size: chartMatch.size, label: 'Best match' };
+
+    const group = getCategoryGroup(product.category);
+    let size = group ? profile.suggested_sizes?.[group] : '';
+    if (product.category === 'suits' && profile.suggested_sizes?.suits) {
+      const suitBase = profile.suggested_sizes.suits;
+      size = product.sizes?.find(value => String(value).startsWith(String(suitBase))) || suitBase;
+    }
+
+    if (size && (!product.sizes?.length || product.sizes.includes(size))) {
+      return { size, label: 'Profile estimate' };
+    }
+    return null;
+  };
 
   return (
     <PullToRefresh onRefresh={handleRefresh} className="min-h-screen bg-[var(--color-background)] pb-24">
@@ -298,9 +330,17 @@ export default function Shop() {
                   <p className="text-xs text-[var(--color-text-secondary)] mb-1">{product.brand}</p>
                   <div className="flex items-center gap-2 mb-1">
                     <p className="text-sm font-semibold text-[var(--color-text-primary)]">${product.price?.toFixed(2)}</p>
-                    <span className="text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-700 font-medium">Fit: 92%</span>
                   </div>
-                  <p className="text-xs text-[var(--color-accent)] font-medium">Rec. Size: M · True to fit</p>
+                  {(() => {
+                    const recommendation = getProductRecommendation(product);
+                    return recommendation ? (
+                      <p className="text-xs text-[var(--color-accent)] font-medium">
+                        {recommendation.label}: {recommendation.size}
+                      </p>
+                    ) : (
+                      <p className="text-xs text-[var(--color-text-muted)]">Choose size on product page</p>
+                    );
+                  })()}
                   {product.vendor_id && (
                     <p className="text-xs text-[var(--color-text-muted)] flex items-center gap-1 mt-1">
                       <Store className="w-3 h-3" /> Available in-store
