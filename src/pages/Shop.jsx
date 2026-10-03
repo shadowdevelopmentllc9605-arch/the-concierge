@@ -150,9 +150,11 @@ export default function Shop() {
   };
 
   const filteredProducts = products.filter(p =>
-    !search ||
-    p.name?.toLowerCase().includes(search.toLowerCase()) ||
-    p.brand?.toLowerCase().includes(search.toLowerCase())
+    p.discontinued !== true && (
+      !search ||
+      p.name?.toLowerCase().includes(search.toLowerCase()) ||
+      p.brand?.toLowerCase().includes(search.toLowerCase())
+    )
   );
 
   const getProductRecommendation = (product) => {
