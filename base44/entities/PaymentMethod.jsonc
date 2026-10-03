@@ -43,21 +43,24 @@
           "type": "string"
         }
       }
+    },
+    "processor": {
+      "type": "string",
+      "enum": [
+        "stripe"
+      ]
+    },
+    "processor_payment_method_id": {
+      "type": "string"
     }
   },
   "required": [],
   "rls": {
-    "create": {
-      "data.user_id": "{{user.id}}"
-    },
+    "create": false,
     "read": {
       "data.user_id": "{{user.id}}"
     },
-    "update": {
-      "data.user_id": "{{user.id}}"
-    },
-    "delete": {
-      "data.user_id": "{{user.id}}"
-    }
+    "update": false,
+    "delete": false
   }
 }
