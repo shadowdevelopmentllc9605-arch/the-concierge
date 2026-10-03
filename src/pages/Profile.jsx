@@ -60,7 +60,7 @@ export default function Profile() {
       items: [
         { icon: ShoppingBag, label: 'My Closet', description: 'Previous purchases', path: 'Closet' },
         { icon: Heart, label: 'Wishlist', description: 'Saved items', path: 'Wishlist' },
-        { icon: CreditCard, label: 'Payment Methods', description: 'Available when secure card processing is connected', path: null },
+        { icon: CreditCard, label: 'Payment & Shipping', description: 'Saved card display info and shipping addresses', path: 'PaymentMethods' },
         { icon: Bell, label: 'Notifications', description: 'Offers, store updates, and purchase activity', path: 'Notifications' },
         { icon: Star, label: 'Reviews & Feedback', description: 'Rate your purchases', path: 'Feedback' },
       ]
