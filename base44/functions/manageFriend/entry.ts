@@ -23,12 +23,17 @@ export default async function (req: Request): Promise<Response> {
         return Response.json({ error: "A friend connection already exists or is pending." }, { status: 409 });
       }
 
-      const profiles = await base44.asServiceRole.entities.UserProfile.filter({ user_id: friendUser.id });
+      const [profiles, requesterProfiles] = await Promise.all([
+        base44.asServiceRole.entities.UserProfile.filter({ user_id: friendUser.id }),
+        base44.asServiceRole.entities.UserProfile.filter({ user_id: user.id })
+      ]);
       const record = await base44.asServiceRole.entities.Friend.create({
         user_id: user.id,
         friend_user_id: friendUser.id,
         friend_name: friendUser.full_name || friendUser.email,
         friend_picture: profiles[0]?.profile_picture || "",
+        requester_name: user.full_name || user.email,
+        requester_picture: requesterProfiles[0]?.profile_picture || "",
         status: "pending",
       });
       return Response.json({ success: true, friend: record });
