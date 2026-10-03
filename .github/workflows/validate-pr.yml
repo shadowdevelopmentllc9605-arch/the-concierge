@@ -54,8 +54,8 @@ jobs:
               --bundle \
               --platform=neutral \
               --format=esm \
-              --external:npm:* \
-              --external:base44:* \
+              --packages=external \
+              --external:base44:runtime \
               --outfile="/tmp/$fn_name.mjs"
           done
 
