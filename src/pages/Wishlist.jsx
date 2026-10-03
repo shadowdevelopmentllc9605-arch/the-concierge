@@ -12,6 +12,7 @@ export default function Wishlist() {
   const navigate = useNavigate();
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [profile, setProfile] = useState(null);
 
   useEffect(() => {
     loadWishlist();
@@ -24,8 +25,12 @@ export default function Wishlist() {
   const loadWishlist = async () => {
     try {
       const currentUser = await base44.auth.me();
-      const wishlistItems = await base44.entities.WishlistItem.filter({ user_id: currentUser.id });
+      const [wishlistItems, profiles] = await Promise.all([
+        base44.entities.WishlistItem.filter({ user_id: currentUser.id }),
+        base44.entities.UserProfile.filter({ user_id: currentUser.id })
+      ]);
       setItems(wishlistItems);
+      setProfile(profiles[0] || null);
     } catch (error) {
       console.error(error);
     } finally {
@@ -64,6 +69,17 @@ export default function Wishlist() {
     }
   };
 
+  const toggleWishlistSharing = async (enabled) => {
+    if (!profile?.id) return;
+    const wishlist_visibility = enabled ? 'public' : 'private';
+    try {
+      await base44.entities.UserProfile.update(profile.id, { wishlist_visibility });
+      setProfile(prev => ({ ...prev, wishlist_visibility }));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const chooseOptions = (item) => {
     navigate(createPageUrl('ProductDetail?id=' + item.product_id));
   };
@@ -97,6 +113,22 @@ export default function Wishlist() {
               <p className="text-sm text-[var(--color-text-secondary)]">{items.length} items saved</p>
             </div>
           </div>
+        </div>
+      </div>
+
+      <div className="px-6 pt-2">
+        <div className="bg-[var(--color-surface)] border border-[var(--color-border-light)] rounded-2xl p-4 flex items-center justify-between gap-4">
+          <div>
+            <p className="font-medium text-[var(--color-text-primary)]">Share with friends</p>
+            <p className="text-xs text-[var(--color-text-secondary)] mt-1">
+              When enabled, accepted friends can view only the items you mark Public below.
+            </p>
+          </div>
+          <Switch
+            checked={profile?.wishlist_visibility === 'public'}
+            onCheckedChange={toggleWishlistSharing}
+            aria-label="Share wishlist with accepted friends"
+          />
         </div>
       </div>
 
