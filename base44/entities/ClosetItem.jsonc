@@ -40,6 +40,9 @@
     },
     "external_purchase_id": {
       "type": "string"
+    },
+    "external_line_key": {
+      "type": "string"
     }
   },
   "required": [],
