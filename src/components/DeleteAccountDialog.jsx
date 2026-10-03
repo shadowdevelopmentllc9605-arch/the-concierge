@@ -52,7 +52,7 @@ export default function DeleteAccountDialog({ isOpen, onClose, onConfirm, userEm
             Delete Account
           </h2>
           <p className="text-[var(--color-text-secondary)] text-sm mb-6">
-            This removes the app records The Concierge can currently delete, including your profile, closet, wishlist, cart, purchase history, check-ins, payment metadata, reviews, feedback, and friend connections. Your Base44 sign-in account and previously uploaded files may require separate platform-level deletion.
+            This permanently deletes your Concierge records and your Base44 sign-in account, including your profile, closet, wishlist, cart, purchase history, check-ins, payment metadata, reviews, feedback, and friend connections. Base44 does not currently expose an SDK method to purge previously uploaded files from storage, so uploaded images may require separate platform-level removal.
           </p>
 
           <div className="mb-6">
