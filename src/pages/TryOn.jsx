@@ -5,23 +5,12 @@ import { createPageUrl } from '@/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, ChevronLeft, ChevronRight, Heart, ShoppingBag, Sparkles } from 'lucide-react';
 import { Button } from "@/components/ui/button";
-
-const TOP_CATEGORIES = ['suits', 'vests', 'dress_shirts', 'blouse', 'tshirts', 'polos', 'jackets', 'sports_jackets', 'pattern_shirts', 'graphic_tees'];
-const BOTTOM_CATEGORIES = ['pants', 'jeans', 'shorts', 'khakis'];
-const DRESS_CATEGORIES = ['dresses', 'dress_skirts', 'skirts', 'evening_dresses'];
-
-function getSuggestedSize(category, suggestedSizes) {
-  if (!suggestedSizes) return '';
-  if (TOP_CATEGORIES.includes(category)) return suggestedSizes.tops || '';
-  if (BOTTOM_CATEGORIES.includes(category)) return suggestedSizes.bottoms || '';
-  if (DRESS_CATEGORIES.includes(category)) return suggestedSizes.dresses || '';
-  return '';
-}
+import { getCategoryGroup, recommendFromSizeChart } from '@/lib/fitRecommendation';
 
 export default function TryOn() {
   const navigate = useNavigate();
   const urlParams = new URLSearchParams(window.location.search);
-  const initialProductId = urlParams.get('product');
+  const initialProductId = urlParams.get('id') || urlParams.get('product');
 
   const [products, setProducts] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -134,7 +123,20 @@ export default function TryOn() {
     );
   }
 
-  const recommendedSize = getSuggestedSize(currentProduct?.category, userProfile?.suggested_sizes);
+  const chartMatch = recommendFromSizeChart(
+    currentProduct?.size_chart || [],
+    userProfile?.measurement_values_cm || {}
+  );
+  const categoryGroup = getCategoryGroup(currentProduct?.category);
+  let recommendedSize = chartMatch?.size || (categoryGroup ? userProfile?.suggested_sizes?.[categoryGroup] : '');
+  if (currentProduct?.category === 'suits' && !chartMatch?.size && userProfile?.suggested_sizes?.suits) {
+    const suitBase = userProfile.suggested_sizes.suits;
+    recommendedSize = currentProduct.sizes?.find(value => String(value).startsWith(String(suitBase))) || suitBase;
+  }
+  if (recommendedSize && currentProduct?.sizes?.length && !currentProduct.sizes.includes(recommendedSize)) {
+    recommendedSize = '';
+  }
+  const recommendationLabel = chartMatch?.size ? 'Best match' : recommendedSize ? 'Profile estimate' : '';
 
   return (
     <div className="min-h-screen bg-[#1a1a1a] relative overflow-hidden">
@@ -253,7 +255,7 @@ export default function TryOn() {
           {userProfile?.suggested_sizes && (
             <div className="flex items-center gap-2 mb-4 text-sm">
               <Sparkles className="w-4 h-4 text-[#c9a962]" />
-              <span className="text-white/60">Recommended size: </span>
+              <span className="text-white/60">{recommendationLabel ? `${recommendationLabel}: ` : 'Size: '}</span>
               <span className="text-white font-medium">{recommendedSize || 'Select on product page'}</span>
             </div>
           )}
