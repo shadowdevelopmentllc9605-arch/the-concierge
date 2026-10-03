@@ -176,10 +176,18 @@ export default function ProductDetail() {
     );
   }
 
-  if (!product) {
+  if (!product || product.discontinued) {
     return (
-      <div className="min-h-screen bg-[var(--color-background)] flex items-center justify-center">
-        <p className="text-[var(--color-text-secondary)]">Product not found</p>
+      <div className="min-h-screen bg-[var(--color-background)] flex items-center justify-center px-6">
+        <div className="text-center">
+          <p className="text-[var(--color-text-primary)] font-medium">This product is no longer available.</p>
+          <button
+            onClick={() => navigate(createPageUrl('Shop'))}
+            className="mt-4 text-sm text-[var(--color-accent)]"
+          >
+            Return to Shop
+          </button>
+        </div>
       </div>
     );
   }
