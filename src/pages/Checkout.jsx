@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { base44 } from '@/api/base44Client';
+import { sharedBackendBridge } from '@/lib/sharedBackendBridge';
 import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { ArrowLeft, CreditCard, ShieldCheck, ShoppingBag, Loader2, CheckCircle2, AlertTriangle, MapPin } from 'lucide-react';
@@ -81,11 +82,10 @@ export default function Checkout() {
     setProcessing(true);
     setError('');
     try {
-      const response = await base44.functions.invoke('createStripeCheckout', {
+      const result = await sharedBackendBridge.startOnlineCheckout({
         saveCard,
         saveShippingAddress: saveAddress,
       });
-      const result = response?.data || response;
       if (!result?.success || !result?.url) {
         throw new Error(result?.error || 'Secure checkout could not be started.');
       }

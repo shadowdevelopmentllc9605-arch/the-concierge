@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { base44 } from '@/api/base44Client';
+import { sharedBackendBridge } from '@/lib/sharedBackendBridge';
 import { Home, Search, Heart, User, Store } from 'lucide-react';
 
 // Tab root pages
@@ -79,7 +80,7 @@ export default function Layout({ children, currentPageName }) {
       setCartCount(cartItems.length);
 
       // Best-effort reconciliation of bridge events that previously failed.
-      base44.functions.invoke('retryIntegrationSyncs', {}).catch(() => {});
+      sharedBackendBridge.retryPending().catch(() => {});
     } catch (error) {
       // User not logged in
     }

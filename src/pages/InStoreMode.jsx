@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
+import { sharedBackendBridge } from '@/lib/sharedBackendBridge';
 import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -150,12 +151,10 @@ export default function InStoreMode() {
     setShowStoreSelector(false);
 
     try {
-      const response = await base44.functions.invoke('storeVisit', {
-        action: 'checkin',
+      const result = await sharedBackendBridge.checkIn({
         vendorId: store.id,
         locationId: resolvedLocation?.id || resolvedLocation?.location_id || ''
       });
-      const result = response?.data || response;
       if (!result?.checkin) throw new Error(result?.error || 'Check-in could not be created.');
       setCheckedIn(result.checkin);
     } catch (error) {
@@ -195,12 +194,10 @@ export default function InStoreMode() {
     if (selectedItems.length === 0) return;
     
     try {
-      const response = await base44.functions.invoke('storeVisit', {
-        action: 'tryOnRequest',
+      const result = await sharedBackendBridge.requestTryOn({
         checkinId: checkedIn.id,
         wishlistItemIds: selectedItems.map(i => i.id)
       });
-      const result = response?.data || response;
       if (!result?.success) throw new Error(result?.error || 'Try-on request could not be sent.');
       setCheckedIn(prev => prev ? { ...prev, status: 'assisted', wishlist_items: selectedItems.map(i => i.id) } : prev);
       setTryOnRequested(true);
@@ -211,8 +208,7 @@ export default function InStoreMode() {
 
   const checkOut = async () => {
     try {
-      await base44.functions.invoke('storeVisit', {
-        action: 'checkout',
+      await sharedBackendBridge.checkoutVisit({
         checkinId: checkedIn.id
       });
       setCheckedIn(null);
