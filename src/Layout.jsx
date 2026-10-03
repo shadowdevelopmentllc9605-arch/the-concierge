@@ -19,7 +19,7 @@ const TAB_CHILDREN = {
   Shop: ['Shop', 'ProductDetail', 'TryOn', 'Cart'],
   InStoreMode: ['InStoreMode'],
   Wishlist: ['Wishlist'],
-  Profile: ['Profile', 'Closet', 'EditProfile', 'PaymentMethods', 'Friends', 'Feedback', 'FAQ', 'Support']
+  Profile: ['Profile', 'Closet', 'EditProfile', 'PaymentMethods', 'Friends', 'Feedback', 'FAQ', 'Support', 'Notifications']
 };
 
 function getTabForPage(pageName) {
