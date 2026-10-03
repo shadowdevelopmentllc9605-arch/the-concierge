@@ -9,13 +9,7 @@
       "type": "string"
     },
     "card_type": {
-      "type": "string",
-      "enum": [
-        "visa",
-        "mastercard",
-        "amex",
-        "discover"
-      ]
+      "type": "string"
     },
     "expiry_month": {
       "type": "number"
