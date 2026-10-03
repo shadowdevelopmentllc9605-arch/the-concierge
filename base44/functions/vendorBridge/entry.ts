@@ -16,6 +16,7 @@ async function upsertVendor(base44: any, business: any, locations: any[]) {
     floor_plan_image: locations.find((l: any) => l.is_default)?.floor_plan_url || business.floor_plan_url || "",
     style_categories: business.style_categories || [],
     locations: locations.map((l: any) => ({
+      id: l.id,
       name: l.name,
       address: l.address,
       lat: l.lat,
