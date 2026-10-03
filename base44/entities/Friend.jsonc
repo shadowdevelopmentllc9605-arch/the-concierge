@@ -22,6 +22,12 @@
         "blocked"
       ],
       "default": "pending"
+    },
+    "requester_name": {
+      "type": "string"
+    },
+    "requester_picture": {
+      "type": "string"
     }
   },
   "required": [],
