@@ -48,6 +48,28 @@ export default async function (req: Request): Promise<Response> {
           last_attempt_at: new Date().toISOString(),
           completed_at: new Date().toISOString(),
         });
+
+        if (job.action === "onlinePurchase" && String(job.event_key || "").startsWith("onlinePurchase:")) {
+          const orderId = String(job.event_key).split(":")[1];
+          const allUserJobs = await base44.asServiceRole.entities.IntegrationSyncJob.filter({
+            owner_user_id: user.id,
+            direction: "to_pro",
+          });
+          const orderJobs = allUserJobs.filter((row: any) =>
+            String(row.event_key || "").startsWith(`onlinePurchase:${orderId}:`)
+          );
+          const allComplete = orderJobs.every((row: any) =>
+            row.id === job.id || row.status === "completed"
+          );
+          const orders = await base44.asServiceRole.entities.Order.filter({ id: orderId, user_id: user.id });
+          if (orders[0]) {
+            await base44.asServiceRole.entities.Order.update(orders[0].id, {
+              pro_sync_status: allComplete ? "completed" : "partial",
+              sync_error: allComplete ? "" : orders[0].sync_error || "",
+            });
+          }
+        }
+
         completed += 1;
       } catch (error) {
         const message = error instanceof Error ? error.message : "Sync failed";
