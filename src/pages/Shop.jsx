@@ -3,7 +3,7 @@ import { base44 } from '@/api/base44Client';
 import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, SlidersHorizontal, X, Heart, ShoppingBag, Store, Sparkles } from 'lucide-react';
+import { Search, SlidersHorizontal, X, Heart, ShoppingBag, Store, Sparkles, Mic, MicOff } from 'lucide-react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -26,6 +26,8 @@ export default function Shop() {
   const [cartCount, setCartCount] = useState(0);
   const [user, setUser] = useState(null);
   const [profile, setProfile] = useState(null);
+  const [listening, setListening] = useState(false);
+  const [voiceError, setVoiceError] = useState('');
   const specialFilter = urlParams.get('filter') || '';
 
   const categories = {
@@ -77,6 +79,32 @@ export default function Shop() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const startVoiceSearch = () => {
+    const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!Recognition) {
+      setVoiceError('Voice search is not supported by this browser. You can still type your search.');
+      return;
+    }
+
+    setVoiceError('');
+    const recognition = new Recognition();
+    recognition.lang = navigator.language || 'en-US';
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    recognition.onstart = () => setListening(true);
+    recognition.onend = () => setListening(false);
+    recognition.onerror = () => {
+      setListening(false);
+      setVoiceError('I could not hear that clearly. Try again or type your search.');
+    };
+    recognition.onresult = (event) => {
+      const spoken = event.results?.[0]?.[0]?.transcript?.trim() || '';
+      if (spoken) setSearch(spoken);
+    };
+    recognition.start();
   };
 
   const toggleWishlist = async (product, e) => {
@@ -189,9 +217,19 @@ export default function Shop() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search products, brands..."
-              className="h-12 pl-12 pr-4 rounded-xl bg-[var(--color-surface)] border-0 shadow-sm text-[var(--color-text-primary)]"
+              className="h-12 pl-12 pr-14 rounded-xl bg-[var(--color-surface)] border-0 shadow-sm text-[var(--color-text-primary)]"
             />
+            <button
+              type="button"
+              onClick={startVoiceSearch}
+              aria-label={listening ? 'Listening for voice search' : 'Start voice search'}
+              className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-[var(--color-background-secondary)] flex items-center justify-center"
+            >
+              {listening ? <MicOff className="w-4 h-4 text-red-500" /> : <Mic className="w-4 h-4 text-[var(--color-text-primary)]" />}
+            </button>
           </div>
+
+          {voiceError && <p className="text-xs text-amber-700 mb-2">{voiceError}</p>}
 
           {/* Filter Pills */}
           <div className="flex gap-2 overflow-x-auto no-scrollbar pb-2">
