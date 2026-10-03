@@ -155,6 +155,10 @@
           }
         }
       }
+    },
+    "stock_quantity": {
+      "type": "number",
+      "default": 0
     }
   },
   "required": [],
