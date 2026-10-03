@@ -79,6 +79,25 @@ export default async function (req: Request): Promise<Response> {
       return Response.json({ success: true, vendorId: vendor.id, mappings });
     }
 
+    if (action === "deleteVendor") {
+      const { businessId } = body;
+      if (!businessId) return Response.json({ error: "businessId is required" }, { status: 400 });
+
+      const vendors = await base44.asServiceRole.entities.Vendor.filter({ linked_pro_business_id: businessId });
+      for (const vendor of vendors) {
+        const products = await base44.asServiceRole.entities.Product.filter({ vendor_id: vendor.id });
+        for (const product of products) {
+          const wish = await base44.asServiceRole.entities.WishlistItem.filter({ product_id: product.id });
+          for (const item of wish) await base44.asServiceRole.entities.WishlistItem.delete(item.id);
+          const cart = await base44.asServiceRole.entities.CartItem.filter({ product_id: product.id });
+          for (const item of cart) await base44.asServiceRole.entities.CartItem.delete(item.id);
+          await base44.asServiceRole.entities.Product.delete(product.id);
+        }
+        await base44.asServiceRole.entities.Vendor.delete(vendor.id);
+      }
+      return Response.json({ success: true, deletedVendors: vendors.length });
+    }
+
     if (action === "completePurchase") {
       const { userId, businessId, businessName, externalPurchaseId, locationId, items = [] } = body;
       if (!userId || !externalPurchaseId) return Response.json({ error: "Missing purchase identity" }, { status: 400 });
