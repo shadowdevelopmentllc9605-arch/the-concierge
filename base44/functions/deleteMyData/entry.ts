@@ -13,6 +13,8 @@ export default async function (req: Request): Promise<Response> {
       ["Purchase", { user_id: user.id }],
       ["StoreCheckin", { user_id: user.id }],
       ["PaymentMethod", { user_id: user.id }],
+      ["Order", { user_id: user.id }],
+      ["ShippingAddress", { user_id: user.id }],
       ["PushSubscription", { user_id: user.id }],
       ["AppNotification", { user_id: user.id }],
       ["ProductReview", { user_id: user.id }],
