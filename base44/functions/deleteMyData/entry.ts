@@ -38,10 +38,11 @@ export default async function (req: Request): Promise<Response> {
     const profiles = await base44.asServiceRole.entities.UserProfile.filter({ user_id: user.id });
     for (const profile of profiles) await base44.asServiceRole.entities.UserProfile.delete(profile.id);
 
-    // Authentication-account and uploaded-file deletion depends on Base44 platform support.
+    await base44.asServiceRole.entities.User.delete(user.id);
+
     return Response.json({
       success: true,
-      authAccountDeleted: false,
+      authAccountDeleted: true,
       uploadedFilesDeleted: false,
     });
   } catch (error) {
