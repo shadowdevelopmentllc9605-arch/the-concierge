@@ -2,15 +2,17 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
-import { Sparkles, TrendingUp, Heart, ShoppingBag, ChevronRight, Store, Zap } from 'lucide-react';
+import { Sparkles, Search, Heart, ShoppingBag, ChevronRight, Store } from 'lucide-react';
 import { motion } from 'framer-motion';
 import PullToRefresh from '@/components/PullToRefresh';
+import { getCategoryGroup, recommendFromSizeChart } from '@/lib/fitRecommendation';
 
 export default function Home() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [userProfile, setUserProfile] = useState(null);
   const [user, setUser] = useState(null);
+  const [recommendedItems, setRecommendedItems] = useState([]);
 
   useEffect(() => {
     checkOnboarding();
@@ -28,7 +30,73 @@ export default function Home() {
         return;
       }
       
-      setUserProfile(profiles[0]);
+      const profile = profiles[0];
+      setUserProfile(profile);
+
+      const [products, purchases, closet, vendors] = await Promise.all([
+        base44.entities.Product.list('-created_date', 100),
+        base44.entities.Purchase.filter({ user_id: currentUser.id }),
+        base44.entities.ClosetItem.filter({ user_id: currentUser.id }),
+        base44.entities.Vendor.list()
+      ]);
+
+      const purchasedProductIds = new Set(purchases.map(item => item.product_id).filter(Boolean));
+      const purchasedBrands = new Set();
+      const purchasedCategories = new Set();
+      for (const purchase of purchases) {
+        const product = products.find(item => item.id === purchase.product_id);
+        if (product?.brand) purchasedBrands.add(product.brand);
+        if (product?.category) purchasedCategories.add(product.category);
+      }
+      const closetStyles = new Set(closet.map(item => item.style_category).filter(Boolean));
+      const vendorNames = new Map(vendors.map(vendor => [vendor.id, vendor.business_name]));
+
+      const ranked = products
+        .filter(product => product.in_stock !== false)
+        .map(product => {
+          let score = 0;
+          if (profile.style_preferences?.includes(product.style_type)) score += 5;
+          if (closetStyles.has(product.style_type)) score += 2;
+          if (purchasedBrands.has(product.brand)) score += 3;
+          if (purchasedCategories.has(product.category)) score += 2;
+          if (product.is_new) score += 1;
+          if (purchasedProductIds.has(product.id)) score -= 4;
+
+          const chartMatch = recommendFromSizeChart(
+            product.size_chart || [],
+            profile.measurement_values_cm || {}
+          );
+
+          let size = chartMatch?.size || '';
+          let recommendationLabel = chartMatch?.size ? 'Best match' : '';
+
+          if (!size) {
+            const group = getCategoryGroup(product.category);
+            size = group ? profile.suggested_sizes?.[group] || '' : '';
+            if (product.category === 'suits' && profile.suggested_sizes?.suits) {
+              const suitBase = profile.suggested_sizes.suits;
+              size = product.sizes?.find(value => String(value).startsWith(String(suitBase))) || suitBase;
+            }
+            if (size && product.sizes?.length && !product.sizes.includes(size)) size = '';
+            if (size) recommendationLabel = 'Profile estimate';
+          }
+
+          return {
+            id: product.id,
+            name: product.name,
+            brand: product.brand,
+            price: Number(product.price || 0),
+            image: product.images?.[0] || '',
+            store: vendorNames.get(product.vendor_id) || '',
+            size,
+            recommendationLabel,
+            score
+          };
+        })
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 8);
+
+      setRecommendedItems(ranked);
     } catch (error) {
       console.error(error);
     } finally {
@@ -41,13 +109,6 @@ export default function Home() {
     { name: 'Casual Fit', image: 'https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?w=400&h=400&fit=crop', style: 'casual' },
     { name: 'Date Night', image: 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=400&h=400&fit=crop', style: 'nightlife' },
     { name: 'Weekend Style', image: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=400&h=400&fit=crop', style: 'trendy' },
-  ];
-
-  const recommendedItems = [
-    { id: 1, name: 'Slim Fit Suit', brand: 'Hugo Boss', price: '349', image: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=400&h=533&fit=crop', fitScore: 96, size: 'M (40R)', fitNote: 'True to size', store: 'Nordstrom' },
-    { id: 2, name: 'Oxford Dress Shirt', brand: 'Ralph Lauren', price: '89', image: 'https://images.unsplash.com/photo-1620012253295-c15cc3e65df4?w=400&h=533&fit=crop', fitScore: 94, size: 'M (15.5)', fitNote: 'Runs slim – size up', store: 'Macy\'s' },
-    { id: 3, name: 'Classic Chinos', brand: 'J.Crew', price: '79', image: 'https://images.unsplash.com/photo-1594938298603-c8148c4b4357?w=400&h=533&fit=crop', fitScore: 91, size: '32×32', fitNote: 'True to size', store: 'J.Crew' },
-    { id: 4, name: 'Chelsea Boots', brand: 'Thursday Boot', price: '199', image: 'https://images.unsplash.com/photo-1638247025967-b4e38f787b76?w=400&h=533&fit=crop', fitScore: 98, size: '10', fitNote: 'Perfect fit', store: 'Online' },
   ];
 
   const handleRefresh = useCallback(async () => {
@@ -68,7 +129,7 @@ export default function Home() {
 
   const categories = [
     { name: 'New Arrivals', icon: Sparkles, path: 'Shop?filter=new' },
-    { name: 'Trending', icon: TrendingUp, path: 'Shop?filter=trending' },
+    { name: 'Shop All', icon: Search, path: 'Shop' },
     { name: 'Wishlist', icon: Heart, path: 'Wishlist' },
     { name: 'My Closet', icon: ShoppingBag, path: 'Closet' },
   ];
@@ -146,7 +207,7 @@ export default function Home() {
         <div className="flex justify-between items-center mb-4">
           <div>
             <h2 className="text-xl font-light text-[var(--color-text-primary)] tracking-tight">Recommended for You</h2>
-            <p className="text-xs text-[var(--color-text-secondary)] mt-0.5">Perfect fit for your body</p>
+            <p className="text-xs text-[var(--color-text-secondary)] mt-0.5">Based on your style, closet, purchase history, and available fit data</p>
           </div>
           <button onClick={() => navigate(createPageUrl('Shop'))} className="text-sm text-[var(--color-accent)] select-none flex items-center gap-1">
             See all <ChevronRight className="w-4 h-4" />
@@ -159,23 +220,21 @@ export default function Home() {
               initial={{ x: 20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ delay: 0.6 + idx * 0.1 }}
-              onClick={() => navigate(createPageUrl('Shop'))}
+              onClick={() => navigate(createPageUrl(`ProductDetail?id=${item.id}`))}
               className="shrink-0 w-44 text-left select-none group"
             >
               <div className="relative aspect-[3/4] rounded-2xl overflow-hidden bg-[var(--color-placeholder)] mb-2">
                 <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                <div className="absolute bottom-2 left-2 right-2">
-                  <div className="bg-white/90 backdrop-blur-sm rounded-xl px-2 py-1.5">
-                    <div className="flex items-center justify-between mb-0.5">
-                      <span className="text-[10px] font-semibold text-green-700">Fit Score: {item.fitScore}%</span>
-                      <Zap className="w-3 h-3 text-[var(--color-accent)]" />
+                {item.size && (
+                  <div className="absolute bottom-2 left-2 right-2">
+                    <div className="bg-white/90 backdrop-blur-sm rounded-xl px-2 py-1.5">
+                      <p className="text-[10px] font-semibold text-green-700">{item.recommendationLabel}</p>
+                      <p className="text-[10px] text-gray-600">Recommended size: {item.size}</p>
                     </div>
-                    <p className="text-[10px] text-gray-600">Rec. Size: {item.size}</p>
-                    <p className="text-[10px] text-gray-500">{item.fitNote}</p>
                   </div>
-                </div>
+                )}
                 <button
-                  onClick={(e) => { e.stopPropagation(); navigate(createPageUrl('TryOn')); }}
+                  onClick={(e) => { e.stopPropagation(); navigate(createPageUrl(`TryOn?id=${item.id}`)); }}
                   className="absolute top-2 right-2 bg-[var(--color-text-primary)]/80 backdrop-blur text-[var(--color-background)] text-[10px] px-2 py-1 rounded-full font-medium"
                 >
                   Try On
@@ -184,7 +243,7 @@ export default function Home() {
               <p className="text-sm font-medium text-[var(--color-text-primary)] truncate">{item.name}</p>
               <p className="text-xs text-[var(--color-text-secondary)]">{item.brand}</p>
               <div className="flex items-center justify-between mt-1">
-                <p className="text-sm font-semibold text-[var(--color-text-primary)]">${item.price}</p>
+                <p className="text-sm font-semibold text-[var(--color-text-primary)]">${item.price.toFixed(2)}</p>
                 {item.store && (
                   <span className="text-[10px] text-[var(--color-text-muted)] flex items-center gap-0.5">
                     <Store className="w-2.5 h-2.5" />{item.store}
