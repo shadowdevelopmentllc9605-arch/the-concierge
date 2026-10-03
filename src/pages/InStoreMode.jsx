@@ -195,10 +195,14 @@ export default function InStoreMode() {
     if (selectedItems.length === 0) return;
     
     try {
-      await base44.entities.StoreCheckin.update(checkedIn.id, {
-        status: 'assisted',
-        wishlist_items: selectedItems.map(i => i.id)
+      const response = await base44.functions.invoke('storeVisit', {
+        action: 'tryOnRequest',
+        checkinId: checkedIn.id,
+        wishlistItemIds: selectedItems.map(i => i.id)
       });
+      const result = response?.data || response;
+      if (!result?.success) throw new Error(result?.error || 'Try-on request could not be sent.');
+      setCheckedIn(prev => prev ? { ...prev, status: 'assisted', wishlist_items: selectedItems.map(i => i.id) } : prev);
       setTryOnRequested(true);
     } catch (error) {
       console.error(error);
