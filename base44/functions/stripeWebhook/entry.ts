@@ -331,7 +331,7 @@ export default async function (req: Request): Promise<Response> {
           });
           for (const purchase of purchases) {
             await base44.asServiceRole.entities.Purchase.update(purchase.id, {
-              status: "completed",
+              status: "refunded",
             });
           }
           await base44.asServiceRole.entities.AppNotification.create({
