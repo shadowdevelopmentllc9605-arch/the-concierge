@@ -174,13 +174,17 @@ export default function Cart() {
               <span className="text-[#1a1a1a]">${subtotal.toFixed(2)}</span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-[#64748b]">Shipping</span>
+              <span className="text-[#64748b]">Estimated shipping</span>
               <span className="text-[#1a1a1a]">
                 {shipping === 0 ? 'Free' : `$${shipping.toFixed(2)}`}
               </span>
             </div>
+            <div className="flex justify-between text-sm">
+              <span className="text-[#64748b]">Tax</span>
+              <span className="text-[#64748b]">Calculated at secure checkout</span>
+            </div>
             <div className="flex justify-between text-lg font-semibold pt-2 border-t">
-              <span className="text-[#1a1a1a]">Total</span>
+              <span className="text-[#1a1a1a]">Estimated total before tax</span>
               <span className="text-[#1a1a1a]">${total.toFixed(2)}</span>
             </div>
           </div>
