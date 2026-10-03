@@ -41,6 +41,7 @@ export default async function (req: Request): Promise<Response> {
 
     const body = await req.json();
     const action = body?.action;
+    const eventKey = body?.eventKey || "";
 
     if (action === "syncCatalog") {
       const vendor = await upsertVendor(base44, body.business, body.locations || []);
@@ -65,6 +66,7 @@ export default async function (req: Request): Promise<Response> {
           vendor_id: vendor.id,
           linked_pro_inventory_id: item.id,
           in_stock: Number(item.stock_quantity || 0) > 0 || (item.variants || []).some((v: any) => Number(v.stock_quantity || 0) > 0),
+          discontinued: false,
           is_new: Boolean(item.is_new),
         };
         let product;
@@ -77,7 +79,20 @@ export default async function (req: Request): Promise<Response> {
         mappings.push({ inventoryId: item.id, productId: product.id });
       }
 
-      return Response.json({ success: true, vendorId: vendor.id, mappings });
+      const incomingIds = new Set((body.items || []).map((item: any) => item.id));
+      const existingProducts = await base44.asServiceRole.entities.Product.filter({ vendor_id: vendor.id });
+      let deactivated = 0;
+      for (const product of existingProducts) {
+        if (product.linked_pro_inventory_id && !incomingIds.has(product.linked_pro_inventory_id)) {
+          await base44.asServiceRole.entities.Product.update(product.id, {
+            in_stock: false,
+            discontinued: true,
+          });
+          deactivated += 1;
+        }
+      }
+
+      return Response.json({ success: true, vendorId: vendor.id, mappings, deactivated });
     }
 
     if (action === "deleteVendor") {
@@ -103,9 +118,6 @@ export default async function (req: Request): Promise<Response> {
       const { userId, businessId, businessName, externalPurchaseId, locationId, items = [] } = body;
       if (!userId || !externalPurchaseId) return Response.json({ error: "Missing purchase identity" }, { status: 400 });
 
-      const duplicate = await base44.asServiceRole.entities.Purchase.filter({ external_purchase_id: externalPurchaseId, user_id: userId });
-      if (duplicate.length > 0) return Response.json({ success: true, duplicate: true });
-
       const vendors = await base44.asServiceRole.entities.Vendor.filter({ linked_pro_business_id: businessId });
       const vendor = vendors[0];
 
@@ -121,48 +133,74 @@ export default async function (req: Request): Promise<Response> {
           product = products[0] || null;
         }
 
-        await base44.asServiceRole.entities.Purchase.create({
+        const lineKey =
+          item.line_key ||
+          `${externalPurchaseId}:${item.inventory_item_id || productId}:${item.size || ""}:${item.color || ""}`;
+
+        const purchases = await base44.asServiceRole.entities.Purchase.filter({
           user_id: userId,
-          product_id: productId,
-          product_name: item.name,
-          product_image: item.image || product?.images?.[0] || "",
-          product_price: Number(item.price || 0),
-          quantity: Number(item.quantity || 1),
-          size: item.size || "",
-          color: item.color || "",
-          vendor_id: vendor?.id || "",
-          vendor_name: businessName || vendor?.business_name || "",
-          location_id: locationId || "",
-          external_purchase_id: externalPurchaseId,
-          purchase_type: "in_store",
-          status: "completed",
+          external_line_key: lineKey,
         });
+        if (!purchases[0]) {
+          await base44.asServiceRole.entities.Purchase.create({
+            user_id: userId,
+            product_id: productId,
+            product_name: item.name,
+            product_image: item.image || product?.images?.[0] || "",
+            product_price: Number(item.price || 0),
+            quantity: Number(item.quantity || 1),
+            size: item.size || "",
+            color: item.color || "",
+            vendor_id: vendor?.id || "",
+            vendor_name: businessName || vendor?.business_name || "",
+            location_id: locationId || "",
+            external_purchase_id: externalPurchaseId,
+            external_line_key: lineKey,
+            purchase_type: "in_store",
+            status: "completed",
+          });
+        }
 
         if (productId) {
           const wish = await base44.asServiceRole.entities.WishlistItem.filter({ user_id: userId, product_id: productId });
           for (const w of wish) await base44.asServiceRole.entities.WishlistItem.delete(w.id);
         }
 
-        await base44.asServiceRole.entities.ClosetItem.create({
+        const closet = await base44.asServiceRole.entities.ClosetItem.filter({
           user_id: userId,
-          image: item.image || product?.images?.[0] || "",
-          item_type: item.name,
-          size: item.size || "",
-          color: item.color || "",
-          style_category: product?.style_type || "other",
-          description: item.name,
-          source: "purchased",
-          external_purchase_id: externalPurchaseId,
+          external_line_key: lineKey,
         });
+        if (!closet[0]) {
+          await base44.asServiceRole.entities.ClosetItem.create({
+            user_id: userId,
+            image: item.image || product?.images?.[0] || "",
+            item_type: item.name,
+            size: item.size || "",
+            color: item.color || "",
+            style_category: product?.style_type || "other",
+            description: item.name,
+            source: "purchased",
+            external_purchase_id: externalPurchaseId,
+            external_line_key: lineKey,
+          });
+        }
       }
 
-      await base44.asServiceRole.entities.AppNotification.create({
+      const notificationKey = eventKey || `purchase:${externalPurchaseId}`;
+      const notifications = await base44.asServiceRole.entities.AppNotification.filter({
         user_id: userId,
-        title: "Purchase added to your closet",
-        message: `Your purchase from ${businessName || "the store"} is now in My Closet.`,
-        type: "purchase",
-        vendor_id: vendor?.id || "",
+        external_event_key: notificationKey,
       });
+      if (!notifications[0]) {
+        await base44.asServiceRole.entities.AppNotification.create({
+          user_id: userId,
+          title: "Purchase added to your closet",
+          message: `Your purchase from ${businessName || "the store"} is now in My Closet.`,
+          type: "purchase",
+          vendor_id: vendor?.id || "",
+          external_event_key: notificationKey,
+        });
+      }
 
       return Response.json({ success: true });
     }
@@ -187,27 +225,37 @@ export default async function (req: Request): Promise<Response> {
 
       let delivered = 0;
       for (const userId of userIds) {
-        await base44.asServiceRole.entities.AppNotification.create({
+        const notificationKey = `${eventKey || "campaign"}:${userId}`;
+        const existing = await base44.asServiceRole.entities.AppNotification.filter({
           user_id: userId,
-          title,
-          message,
-          type,
-          vendor_id: vendor?.id || "",
-          coupon_code: couponCode,
-          valid_until: validUntil || undefined,
+          external_event_key: notificationKey,
         });
-        try {
-          const users = await base44.asServiceRole.entities.User.filter({ id: userId });
-          const email = users[0]?.email;
-          if (email) {
-            await base44.asServiceRole.integrations.Core.SendEmail({
-              to: email,
-              subject: title,
-              html: `<p>${message}</p>${couponCode ? `<p><strong>Code: ${couponCode}</strong></p>` : ""}`,
-            });
+
+        if (!existing[0]) {
+          await base44.asServiceRole.entities.AppNotification.create({
+            user_id: userId,
+            title,
+            message,
+            type,
+            vendor_id: vendor?.id || "",
+            coupon_code: couponCode,
+            valid_until: validUntil || undefined,
+            external_event_key: notificationKey,
+          });
+
+          try {
+            const users = await base44.asServiceRole.entities.User.filter({ id: userId });
+            const email = users[0]?.email;
+            if (email) {
+              await base44.asServiceRole.integrations.Core.SendEmail({
+                to: email,
+                subject: title,
+                html: `<p>${message}</p>${couponCode ? `<p><strong>Code: ${couponCode}</strong></p>` : ""}`,
+              });
+            }
+          } catch (emailError) {
+            console.warn("campaign email failed", emailError);
           }
-        } catch (emailError) {
-          console.warn("campaign email failed", emailError);
         }
         delivered += 1;
       }
