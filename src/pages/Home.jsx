@@ -90,6 +90,7 @@ export default function Home() {
             store: vendorNames.get(product.vendor_id) || '',
             size,
             recommendationLabel,
+            tryOnAvailable: Boolean(product.tryOn_image),
             score
           };
         })
@@ -233,12 +234,14 @@ export default function Home() {
                     </div>
                   </div>
                 )}
-                <button
-                  onClick={(e) => { e.stopPropagation(); navigate(createPageUrl(`TryOn?id=${item.id}`)); }}
-                  className="absolute top-2 right-2 bg-[var(--color-text-primary)]/80 backdrop-blur text-[var(--color-background)] text-[10px] px-2 py-1 rounded-full font-medium"
-                >
-                  Try On
-                </button>
+                {item.tryOnAvailable && (
+                  <button
+                    onClick={(e) => { e.stopPropagation(); navigate(createPageUrl(`TryOn?id=${item.id}`)); }}
+                    className="absolute top-2 right-2 bg-[var(--color-text-primary)]/80 backdrop-blur text-[var(--color-background)] text-[10px] px-2 py-1 rounded-full font-medium"
+                  >
+                    Try On
+                  </button>
+                )}
               </div>
               <p className="text-sm font-medium text-[var(--color-text-primary)] truncate">{item.name}</p>
               <p className="text-xs text-[var(--color-text-secondary)]">{item.brand}</p>
