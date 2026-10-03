@@ -101,6 +101,34 @@ export default async function (req: Request): Promise<Response> {
       return Response.json({ checkin, proSync });
     }
 
+    if (action === "tryOnRequest") {
+      const { checkinId, wishlistItemIds = [] } = body;
+      const records = await base44.asServiceRole.entities.StoreCheckin.filter({ id: checkinId, user_id: user.id });
+      const checkin = records[0];
+      if (!checkin) return Response.json({ error: "Check-in not found" }, { status: 404 });
+
+      const wishlistRows = [];
+      for (const wishlistId of wishlistItemIds) {
+        const matches = await base44.asServiceRole.entities.WishlistItem.filter({ id: wishlistId, user_id: user.id });
+        if (matches[0] && matches[0].vendor_id === checkin.vendor_id) wishlistRows.push(matches[0]);
+      }
+
+      await base44.asServiceRole.entities.StoreCheckin.update(checkin.id, {
+        status: "assisted",
+        wishlist_items: wishlistRows.map((item: any) => item.id),
+      });
+
+      let proSync = { connected: false };
+      if (checkin.pro_business_id) {
+        proSync = await postToPro(base44, "tryOnRequest", {
+          businessId: checkin.pro_business_id,
+          customerId: user.id,
+          productIds: wishlistRows.map((item: any) => item.product_id),
+        });
+      }
+      return Response.json({ success: true, proSync });
+    }
+
     if (action === "checkout") {
       const { checkinId } = body;
       if (!checkinId) return Response.json({ error: "checkinId is required" }, { status: 400 });
