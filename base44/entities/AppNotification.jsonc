@@ -1,0 +1,76 @@
+{
+  "name": "AppNotification",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string",
+      "rls": {
+        "write": false
+      }
+    },
+    "message": {
+      "type": "string",
+      "rls": {
+        "write": false
+      }
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "new_arrival",
+        "promo",
+        "birthday",
+        "coupon",
+        "purchase",
+        "general"
+      ],
+      "default": "general",
+      "rls": {
+        "write": false
+      }
+    },
+    "vendor_id": {
+      "type": "string",
+      "rls": {
+        "write": false
+      }
+    },
+    "coupon_code": {
+      "type": "string",
+      "rls": {
+        "write": false
+      }
+    },
+    "valid_until": {
+      "type": "string",
+      "format": "date",
+      "rls": {
+        "write": false
+      }
+    },
+    "read_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "user_id",
+    "title",
+    "message"
+  ],
+  "rls": {
+    "create": false,
+    "read": {
+      "data.user_id": "{{user.id}}"
+    },
+    "update": {
+      "data.user_id": "{{user.id}}"
+    },
+    "delete": {
+      "data.user_id": "{{user.id}}"
+    }
+  }
+}
