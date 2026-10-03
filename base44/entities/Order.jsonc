@@ -138,6 +138,20 @@
     },
     "sync_error": {
       "type": "string"
+    },
+    "discount": {
+      "type": "number",
+      "default": 0
+    },
+    "pro_sync_status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "completed",
+        "partial",
+        "not_applicable"
+      ],
+      "default": "pending"
     }
   },
   "required": [
