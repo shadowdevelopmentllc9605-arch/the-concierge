@@ -45,7 +45,25 @@
         "completed"
       ],
       "default": "processing"
+    },
+    "external_purchase_id": {
+      "type": "string"
+    },
+    "quantity": {
+      "type": "number",
+      "default": 1
+    },
+    "location_id": {
+      "type": "string"
     }
   },
-  "required": []
+  "required": [],
+  "rls": {
+    "create": false,
+    "read": {
+      "data.user_id": "{{user.id}}"
+    },
+    "update": false,
+    "delete": false
+  }
 }
