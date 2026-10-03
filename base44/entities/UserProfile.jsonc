@@ -163,6 +163,13 @@
         "private"
       ],
       "default": "private"
+    },
+    "stripe_customer_id": {
+      "type": "string",
+      "description": "Server-managed Stripe customer ID",
+      "rls": {
+        "write": false
+      }
     }
   },
   "required": [],
