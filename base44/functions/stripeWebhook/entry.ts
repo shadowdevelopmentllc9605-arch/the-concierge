@@ -12,12 +12,19 @@ async function getSyncToken(base44: any) {
   return rows[0]?.token || null;
 }
 
-async function decrementCustomerCatalogStock(base44: any, item: any) {
+async function decrementCustomerCatalogStock(base44: any, item: any, stockEventKey: string) {
   const rows = await base44.asServiceRole.entities.Product.filter({ id: item.product_id });
   const product = rows[0];
   if (!product) return;
 
+  const processed = Array.isArray(product.processed_stock_events)
+    ? product.processed_stock_events
+    : [];
+  if (processed.includes(stockEventKey)) return;
+
   const quantity = Math.max(1, Number(item.quantity || 1));
+  const nextProcessed = [...processed, stockEventKey].slice(-250);
+
   if (Array.isArray(product.variants) && product.variants.length > 0) {
     const variants = product.variants.map((variant: any) => {
       if (
@@ -37,20 +44,87 @@ async function decrementCustomerCatalogStock(base44: any, item: any) {
       variants,
       stock_quantity: stock,
       in_stock: stock > 0,
+      processed_stock_events: nextProcessed,
     });
   } else if (product.linked_pro_inventory_id) {
     const stock = Math.max(0, Number(product.stock_quantity || 0) - quantity);
     await base44.asServiceRole.entities.Product.update(product.id, {
       stock_quantity: stock,
       in_stock: stock > 0,
+      processed_stock_events: nextProcessed,
     });
   }
 }
 
-async function syncPaidOrderToPro(base44: any, order: any, user: any) {
-  const token = await getSyncToken(base44);
-  const groups = new Map<string, any[]>();
+async function deliverQueuedToPro(base44: any, order: any, action: string, payload: any, eventKey: string) {
+  const existing = await base44.asServiceRole.entities.IntegrationSyncJob.filter({
+    direction: "to_pro",
+    event_key: eventKey,
+  });
+  if (existing[0]?.status === "completed") return { success: true, duplicate: true };
 
+  let job = existing[0] || null;
+  const payloadJson = JSON.stringify({ action, eventKey, ...payload });
+  if (!job) {
+    job = await base44.asServiceRole.entities.IntegrationSyncJob.create({
+      owner_user_id: order.user_id,
+      business_id: payload?.businessId || "",
+      direction: "to_pro",
+      action,
+      event_key: eventKey,
+      payload_json: payloadJson,
+      status: "pending",
+      attempts: 0,
+    });
+  }
+
+  const token = await getSyncToken(base44);
+  if (!token) {
+    await base44.asServiceRole.entities.IntegrationSyncJob.update(job.id, {
+      status: "pending",
+      last_error: "Cross-app integration is not configured.",
+    });
+    return { success: false, error: "Cross-app integration is not configured." };
+  }
+
+  try {
+    const response = await fetch(
+      `https://base44.app/api/apps/${PRO_APP_ID}/functions/receiveCustomerEvent`,
+      {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          "x-concierge-sync-secret": token,
+        },
+        body: payloadJson,
+      },
+    );
+    const result = await response.json().catch(() => ({}));
+    const attempts = Number(job.attempts || 0) + 1;
+    if (!response.ok) throw new Error(result?.error || "Concierge Pro sync failed.");
+
+    await base44.asServiceRole.entities.IntegrationSyncJob.update(job.id, {
+      status: "completed",
+      attempts,
+      last_error: "",
+      last_attempt_at: new Date().toISOString(),
+      completed_at: new Date().toISOString(),
+    });
+    return { success: true, ...result };
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Concierge Pro sync failed";
+    await base44.asServiceRole.entities.IntegrationSyncJob.update(job.id, {
+      status: "pending",
+      attempts: Number(job.attempts || 0) + 1,
+      last_error: message,
+      last_attempt_at: new Date().toISOString(),
+    });
+    return { success: false, error: message };
+  }
+}
+
+async function syncPaidOrderToPro(base44: any, order: any, user: any) {
+  const groups = new Map<string, any[]>();
   for (const item of order.items || []) {
     if (!item.pro_business_id) continue;
     const current = groups.get(item.pro_business_id) || [];
@@ -59,47 +133,73 @@ async function syncPaidOrderToPro(base44: any, order: any, user: any) {
   }
 
   if (!groups.size) return [];
-  if (!token) return ["Cross-app integration is not configured."];
 
+  const entries = Array.from(groups.entries());
+  const totalSubtotalCents = Math.max(0, Math.round(Number(order.subtotal || 0) * 100));
+  const totalsCents = {
+    discount: Math.max(0, Math.round(Number(order.discount || 0) * 100)),
+    tax: Math.max(0, Math.round(Number(order.tax || 0) * 100)),
+    shipping: Math.max(0, Math.round(Number(order.shipping || 0) * 100)),
+  };
+  const allocated = { discount: 0, tax: 0, shipping: 0 };
   const errors: string[] = [];
-  for (const [businessId, items] of groups.entries()) {
-    try {
-      const response = await fetch(
-        `https://base44.app/api/apps/${PRO_APP_ID}/functions/receiveCustomerEvent`,
-        {
-          method: "POST",
-          headers: {
-            "content-type": "application/json",
-            "x-concierge-sync-secret": token,
-          },
-          body: JSON.stringify({
-            action: "onlinePurchase",
-            businessId,
-            externalOrderId: order.id,
-            customer: {
-              user_id: order.user_id,
-              name: user?.full_name || user?.email || "Online customer",
-              email: user?.email || "",
-            },
-            items: items.map((item: any) => ({
-              product_id: item.product_id,
-              name: item.product_name,
-              quantity: item.quantity,
-              price: item.unit_price,
-              size: item.size || "",
-              color: item.color || "",
-            })),
-          }),
-        },
-      );
-      const result = await response.json().catch(() => ({}));
-      if (!response.ok) {
-        errors.push(result?.error || `Concierge Pro sync failed for business ${businessId}`);
-      }
-    } catch (error) {
-      errors.push(error instanceof Error ? error.message : "Concierge Pro sync failed");
+
+  for (let index = 0; index < entries.length; index += 1) {
+    const [businessId, items] = entries[index];
+    const groupSubtotalCents = items.reduce(
+      (sum: number, item: any) =>
+        sum + Math.max(0, Math.round(Number(item.unit_price || 0) * 100)) * Math.max(1, Number(item.quantity || 1)),
+      0,
+    );
+    const last = index === entries.length - 1;
+    const ratio = totalSubtotalCents > 0 ? groupSubtotalCents / totalSubtotalCents : 0;
+
+    const groupCents: any = { subtotal: groupSubtotalCents };
+    for (const key of ["discount", "tax", "shipping"] as const) {
+      groupCents[key] = last
+        ? totalsCents[key] - allocated[key]
+        : Math.max(0, Math.round(totalsCents[key] * ratio));
+      allocated[key] += groupCents[key];
     }
+    groupCents.total =
+      groupCents.subtotal - groupCents.discount + groupCents.tax + groupCents.shipping;
+
+    const result = await deliverQueuedToPro(
+      base44,
+      order,
+      "onlinePurchase",
+      {
+        businessId,
+        externalOrderId: order.id,
+        customer: {
+          user_id: order.user_id,
+          name: user?.full_name || user?.email || "Online customer",
+          email: user?.email || "",
+        },
+        orderTotals: {
+          subtotal: groupCents.subtotal / 100,
+          discount: groupCents.discount / 100,
+          tax: groupCents.tax / 100,
+          shipping: groupCents.shipping / 100,
+          total: groupCents.total / 100,
+          currency: order.currency || "usd",
+        },
+        items: items.map((item: any) => ({
+          product_id: item.product_id,
+          line_key: `${order.id}:${item.cart_item_id || [item.product_id, item.size, item.color].join(":")}`,
+          name: item.product_name,
+          quantity: item.quantity,
+          price: item.unit_price,
+          size: item.size || "",
+          color: item.color || "",
+        })),
+      },
+      `onlinePurchase:${order.id}:${businessId}`,
+    );
+
+    if (!result.success) errors.push(result.error || `Concierge Pro sync failed for business ${businessId}`);
   }
+
   return errors;
 }
 
@@ -114,7 +214,6 @@ async function finalizePaidOrder(base44: any, stripe: Stripe, sessionId: string)
   const orders = await base44.asServiceRole.entities.Order.filter({ id: orderId });
   const order = orders[0];
   if (!order) throw new Error("Concierge order was not found.");
-  if (order.payment_status === "paid") return order;
 
   const paymentIntent = session.payment_intent as any;
   const paymentIntentId = typeof paymentIntent === "string"
@@ -145,6 +244,7 @@ async function finalizePaidOrder(base44: any, stripe: Stripe, sessionId: string)
     subtotal: Number(session.amount_subtotal || 0) / 100,
     shipping: Number(session.total_details?.amount_shipping || 0) / 100,
     tax: Number(session.total_details?.amount_tax || 0) / 100,
+    discount: Number(session.total_details?.amount_discount || 0) / 100,
     total: Number(session.amount_total || 0) / 100,
     shipping_address: shippingAddress,
     sync_error: "",
@@ -153,13 +253,14 @@ async function finalizePaidOrder(base44: any, stripe: Stripe, sessionId: string)
   const users = await base44.asServiceRole.entities.User.filter({ id: order.user_id });
   const user = users[0] || null;
 
-  const existingPurchases = await base44.asServiceRole.entities.Purchase.filter({
-    user_id: order.user_id,
-    external_purchase_id: order.id,
-  });
+  for (const item of order.items || []) {
+    const lineKey = `${order.id}:${item.cart_item_id || [item.product_id, item.size, item.color].join(":")}`;
 
-  if (!existingPurchases.length) {
-    for (const item of order.items || []) {
+    const purchases = await base44.asServiceRole.entities.Purchase.filter({
+      user_id: order.user_id,
+      external_line_key: lineKey,
+    });
+    if (!purchases[0]) {
       await base44.asServiceRole.entities.Purchase.create({
         user_id: order.user_id,
         product_id: item.product_id,
@@ -173,9 +274,16 @@ async function finalizePaidOrder(base44: any, stripe: Stripe, sessionId: string)
         purchase_type: "online",
         status: "processing",
         external_purchase_id: order.id,
+        external_line_key: lineKey,
         quantity: Number(item.quantity || 1),
       });
+    }
 
+    const closet = await base44.asServiceRole.entities.ClosetItem.filter({
+      user_id: order.user_id,
+      external_line_key: lineKey,
+    });
+    if (!closet[0]) {
       await base44.asServiceRole.entities.ClosetItem.create({
         user_id: order.user_id,
         image: item.product_image || "",
@@ -186,13 +294,13 @@ async function finalizePaidOrder(base44: any, stripe: Stripe, sessionId: string)
         description: item.product_name,
         source: "purchased",
         external_purchase_id: order.id,
+        external_line_key: lineKey,
       });
-
-      await decrementCustomerCatalogStock(base44, item);
     }
 
-    for (const item of order.items || []) {
-      if (!item.cart_item_id) continue;
+    await decrementCustomerCatalogStock(base44, item, `stock:${lineKey}`);
+
+    if (item.cart_item_id) {
       try {
         await base44.asServiceRole.entities.CartItem.delete(item.cart_item_id);
       } catch {
@@ -244,21 +352,41 @@ async function finalizePaidOrder(base44: any, stripe: Stripe, sessionId: string)
     }
   }
 
-  const syncErrors = await syncPaidOrderToPro(base44, order, user);
-  if (syncErrors.length) {
-    await base44.asServiceRole.entities.Order.update(order.id, {
-      sync_error: syncErrors.join(" | "),
+  const finalOrder = {
+    ...order,
+    payment_status: "paid",
+    fulfillment_status: "processing",
+    payment_intent_id: paymentIntentId,
+    subtotal: Number(session.amount_subtotal || 0) / 100,
+    shipping: Number(session.total_details?.amount_shipping || 0) / 100,
+    tax: Number(session.total_details?.amount_tax || 0) / 100,
+    discount: Number(session.total_details?.amount_discount || 0) / 100,
+    total: Number(session.amount_total || 0) / 100,
+    shipping_address: shippingAddress,
+  };
+
+  const syncErrors = await syncPaidOrderToPro(base44, finalOrder, user);
+  await base44.asServiceRole.entities.Order.update(order.id, {
+    sync_error: syncErrors.join(" | "),
+    pro_sync_status: syncErrors.length ? "partial" : "completed",
+  });
+
+  const notificationKey = `order-confirmed:${order.id}`;
+  const existingNotifications = await base44.asServiceRole.entities.AppNotification.filter({
+    user_id: order.user_id,
+    external_event_key: notificationKey,
+  });
+  if (!existingNotifications[0]) {
+    await base44.asServiceRole.entities.AppNotification.create({
+      user_id: order.user_id,
+      title: "Order confirmed",
+      message: `Your order #${String(order.id).slice(-8)} was paid successfully and is now processing.`,
+      type: "purchase",
+      external_event_key: notificationKey,
     });
   }
 
-  await base44.asServiceRole.entities.AppNotification.create({
-    user_id: order.user_id,
-    title: "Order confirmed",
-    message: `Your order #${String(order.id).slice(-8)} was paid successfully and is now processing.`,
-    type: "purchase",
-  });
-
-  return { ...order, payment_status: "paid", fulfillment_status: "processing" };
+  return finalOrder;
 }
 
 export default async function (req: Request): Promise<Response> {
