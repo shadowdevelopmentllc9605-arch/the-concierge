@@ -36,6 +36,9 @@
           },
           "lng": {
             "type": "number"
+          },
+          "id": {
+            "type": "string"
           }
         }
       }
