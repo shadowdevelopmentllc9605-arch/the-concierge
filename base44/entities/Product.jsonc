@@ -159,6 +159,16 @@
     "stock_quantity": {
       "type": "number",
       "default": 0
+    },
+    "discontinued": {
+      "type": "boolean",
+      "default": false
+    },
+    "processed_stock_events": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
     }
   },
   "required": [],
