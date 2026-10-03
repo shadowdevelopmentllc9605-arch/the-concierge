@@ -54,6 +54,9 @@
     "read_at": {
       "type": "string",
       "format": "date-time"
+    },
+    "external_event_key": {
+      "type": "string"
     }
   },
   "required": [
