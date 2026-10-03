@@ -187,15 +187,17 @@ export default function TryOn() {
               exit={{ opacity: 0, scale: 0.9 }}
               className="absolute inset-0 flex items-center justify-center pointer-events-none"
             >
-              {currentProduct.tryOn_image || currentProduct.images?.[0] ? (
+              {currentProduct.tryOn_image ? (
                 <img 
-                  src={currentProduct.tryOn_image || currentProduct.images[0]}
+                  src={currentProduct.tryOn_image}
                   alt={currentProduct.name}
                   className="h-2/3 w-auto object-contain drop-shadow-2xl"
                 />
               ) : (
-                <div className="w-48 h-64 bg-white/10 rounded-2xl flex items-center justify-center">
-                  <span className="text-white/40">No preview</span>
+                <div className="max-w-xs bg-black/50 border border-white/10 rounded-2xl p-6 text-center">
+                  <Sparkles className="w-8 h-8 text-[#c9a962] mx-auto mb-3" />
+                  <p className="text-white font-medium">Virtual try-on asset unavailable</p>
+                  <p className="text-white/60 text-sm mt-2">This retailer has not uploaded a try-on asset for this product yet.</p>
                 </div>
               )}
             </motion.div>
