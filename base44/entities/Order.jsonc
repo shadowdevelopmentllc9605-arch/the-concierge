@@ -1,0 +1,173 @@
+{
+  "name": "Order",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string"
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "cart_item_id": {
+            "type": "string"
+          },
+          "product_id": {
+            "type": "string"
+          },
+          "product_name": {
+            "type": "string"
+          },
+          "product_image": {
+            "type": "string"
+          },
+          "unit_price": {
+            "type": "number"
+          },
+          "quantity": {
+            "type": "number"
+          },
+          "size": {
+            "type": "string"
+          },
+          "color": {
+            "type": "string"
+          },
+          "vendor_id": {
+            "type": "string"
+          },
+          "vendor_name": {
+            "type": "string"
+          },
+          "pro_business_id": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "subtotal": {
+      "type": "number"
+    },
+    "shipping": {
+      "type": "number",
+      "default": 0
+    },
+    "tax": {
+      "type": "number",
+      "default": 0
+    },
+    "total": {
+      "type": "number",
+      "default": 0
+    },
+    "currency": {
+      "type": "string",
+      "default": "usd"
+    },
+    "payment_status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "paid",
+        "failed",
+        "refunded"
+      ],
+      "default": "pending"
+    },
+    "fulfillment_status": {
+      "type": "string",
+      "enum": [
+        "pending_payment",
+        "processing",
+        "shipped",
+        "delivered",
+        "completed",
+        "cancelled"
+      ],
+      "default": "pending_payment"
+    },
+    "payment_provider": {
+      "type": "string",
+      "enum": [
+        "stripe"
+      ]
+    },
+    "checkout_session_id": {
+      "type": "string"
+    },
+    "payment_intent_id": {
+      "type": "string"
+    },
+    "save_card": {
+      "type": "boolean",
+      "default": false
+    },
+    "save_shipping_address": {
+      "type": "boolean",
+      "default": false
+    },
+    "shipping_address": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "line1": {
+          "type": "string"
+        },
+        "line2": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        },
+        "postal_code": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        }
+      }
+    },
+    "sync_error": {
+      "type": "string"
+    },
+    "discount": {
+      "type": "number",
+      "default": 0
+    },
+    "pro_sync_status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "completed",
+        "partial",
+        "not_applicable"
+      ],
+      "default": "pending"
+    }
+  },
+  "required": [
+    "user_id",
+    "items",
+    "subtotal",
+    "currency",
+    "payment_status",
+    "fulfillment_status"
+  ],
+  "rls": {
+    "create": false,
+    "read": {
+      "data.user_id": "{{user.id}}"
+    },
+    "update": false,
+    "delete": false
+  }
+}

@@ -21,6 +21,7 @@ export default function InStoreMode() {
   const [detectingLocation, setDetectingLocation] = useState(false);
   const [nearbyStores, setNearbyStores] = useState([]);
   const [selectedStore, setSelectedStore] = useState(null);
+  const [selectedLocation, setSelectedLocation] = useState(null);
   const [checkedIn, setCheckedIn] = useState(null);
   const [wishlistItems, setWishlistItems] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
@@ -87,8 +88,8 @@ export default function InStoreMode() {
             const nearby = vendors.filter(v => {
               if (!v.locations?.length) return false;
               return v.locations.some(loc => {
-                if (!loc.lat || !loc.lng) return true; // Include if no coords set
-                const distance = getDistance(latitude, longitude, loc.lat, loc.lng);
+                if (!Number.isFinite(Number(loc.lat)) || !Number.isFinite(Number(loc.lng))) return false;
+                const distance = getDistance(latitude, longitude, Number(loc.lat), Number(loc.lng));
                 return distance < 0.5; // Within 500m
               });
             });
@@ -96,7 +97,13 @@ export default function InStoreMode() {
             if (nearby.length > 0) {
               setNearbyStores(nearby);
               if (nearby.length === 1) {
-                handleStoreSelect(nearby[0]);
+                const nearestLocation = nearby[0].locations
+                  .filter(loc => Number.isFinite(Number(loc.lat)) && Number.isFinite(Number(loc.lng)))
+                  .sort((a, b) =>
+                    getDistance(latitude, longitude, Number(a.lat), Number(a.lng)) -
+                    getDistance(latitude, longitude, Number(b.lat), Number(b.lng))
+                  )[0] || null;
+                handleStoreSelect(nearby[0], nearestLocation);
               } else {
                 setShowStoreSelector(true);
               }
@@ -131,22 +138,29 @@ export default function InStoreMode() {
     return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
   };
 
-  const handleStoreSelect = async (store) => {
+  const handleStoreSelect = async (store, location = null) => {
+    const resolvedLocation =
+      location ||
+      (store.locations?.length === 1 ? store.locations[0] : null) ||
+      store.locations?.[0] ||
+      null;
+
     setSelectedStore(store);
+    setSelectedLocation(resolvedLocation);
     setShowStoreSelector(false);
-    
-    // Create check-in
+
     try {
-      const checkin = await base44.entities.StoreCheckin.create({
-        user_id: user.id,
-        user_name: user.full_name,
-        user_picture: userProfile?.profile_picture,
-        vendor_id: store.id,
-        status: 'browsing'
+      const response = await base44.functions.invoke('storeVisit', {
+        action: 'checkin',
+        vendorId: store.id,
+        locationId: resolvedLocation?.id || resolvedLocation?.location_id || ''
       });
-      setCheckedIn(checkin);
+      const result = response?.data || response;
+      if (!result?.checkin) throw new Error(result?.error || 'Check-in could not be created.');
+      setCheckedIn(result.checkin);
     } catch (error) {
       console.error(error);
+      alert(error?.response?.data?.error || error?.message || 'Check-in could not be created.');
     }
   };
 
@@ -181,10 +195,14 @@ export default function InStoreMode() {
     if (selectedItems.length === 0) return;
     
     try {
-      await base44.entities.StoreCheckin.update(checkedIn.id, {
-        status: 'assisted',
-        wishlist_items: selectedItems.map(i => i.id)
+      const response = await base44.functions.invoke('storeVisit', {
+        action: 'tryOnRequest',
+        checkinId: checkedIn.id,
+        wishlistItemIds: selectedItems.map(i => i.id)
       });
+      const result = response?.data || response;
+      if (!result?.success) throw new Error(result?.error || 'Try-on request could not be sent.');
+      setCheckedIn(prev => prev ? { ...prev, status: 'assisted', wishlist_items: selectedItems.map(i => i.id) } : prev);
       setTryOnRequested(true);
     } catch (error) {
       console.error(error);
@@ -193,14 +211,17 @@ export default function InStoreMode() {
 
   const checkOut = async () => {
     try {
-      await base44.entities.StoreCheckin.update(checkedIn.id, {
-        status: 'completed'
+      await base44.functions.invoke('storeVisit', {
+        action: 'checkout',
+        checkinId: checkedIn.id
       });
       setCheckedIn(null);
       setSelectedStore(null);
+      setSelectedLocation(null);
       navigate(createPageUrl('Home'));
     } catch (error) {
       console.error(error);
+      alert(error?.response?.data?.error || error?.message || 'Store checkout could not be completed.');
     }
   };
 
@@ -332,7 +353,7 @@ export default function InStoreMode() {
           <div>
             <h1 className="text-xl font-medium text-white">{selectedStore?.business_name}</h1>
             <p className="text-white/60 text-sm">
-              {selectedStore?.locations?.[0]?.address || 'In-Store Shopping'}
+              {selectedLocation?.address || selectedStore?.locations?.[0]?.address || 'In-Store Shopping'}
             </p>
           </div>
         </div>

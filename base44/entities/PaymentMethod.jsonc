@@ -9,13 +9,7 @@
       "type": "string"
     },
     "card_type": {
-      "type": "string",
-      "enum": [
-        "visa",
-        "mastercard",
-        "amex",
-        "discover"
-      ]
+      "type": "string"
     },
     "expiry_month": {
       "type": "number"
@@ -43,7 +37,24 @@
           "type": "string"
         }
       }
+    },
+    "processor": {
+      "type": "string",
+      "enum": [
+        "stripe"
+      ]
+    },
+    "processor_payment_method_id": {
+      "type": "string"
     }
   },
-  "required": []
+  "required": [],
+  "rls": {
+    "create": false,
+    "read": {
+      "data.user_id": "{{user.id}}"
+    },
+    "update": false,
+    "delete": false
+  }
 }

@@ -1,34 +1,31 @@
 {
-  "name": "CartItem",
+  "name": "PushSubscription",
   "type": "object",
   "properties": {
     "user_id": {
       "type": "string"
     },
-    "product_id": {
+    "endpoint": {
       "type": "string"
     },
-    "product_name": {
+    "p256dh": {
       "type": "string"
     },
-    "product_image": {
+    "auth": {
       "type": "string"
     },
-    "product_price": {
-      "type": "number"
-    },
-    "size": {
+    "user_agent": {
       "type": "string"
     },
-    "color": {
-      "type": "string"
-    },
-    "quantity": {
-      "type": "number",
-      "default": 1
+    "active": {
+      "type": "boolean",
+      "default": true
     }
   },
-  "required": [],
+  "required": [
+    "user_id",
+    "endpoint"
+  ],
   "rls": {
     "create": {
       "data.user_id": "{{user.id}}"

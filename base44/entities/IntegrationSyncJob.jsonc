@@ -1,0 +1,64 @@
+{
+  "name": "IntegrationSyncJob",
+  "type": "object",
+  "properties": {
+    "owner_user_id": {
+      "type": "string"
+    },
+    "business_id": {
+      "type": "string"
+    },
+    "direction": {
+      "type": "string",
+      "enum": [
+        "to_pro",
+        "to_customer"
+      ]
+    },
+    "action": {
+      "type": "string"
+    },
+    "event_key": {
+      "type": "string"
+    },
+    "payload_json": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "completed",
+        "failed"
+      ],
+      "default": "pending"
+    },
+    "attempts": {
+      "type": "number",
+      "default": 0
+    },
+    "last_error": {
+      "type": "string"
+    },
+    "last_attempt_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "completed_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "direction",
+    "action",
+    "event_key",
+    "payload_json"
+  ],
+  "rls": {
+    "create": false,
+    "read": false,
+    "update": false,
+    "delete": false
+  }
+}

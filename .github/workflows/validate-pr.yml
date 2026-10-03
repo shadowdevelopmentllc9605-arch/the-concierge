@@ -3,7 +3,7 @@ name: Validate Concierge PR
 on:
   push:
     branches:
-      - fix/launch-readiness-audit
+      - hardening/full-platform-pass
   pull_request:
     branches:
       - main
@@ -27,6 +27,37 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Audit dependencies
+        run: npm audit --audit-level=low
+
+      - name: Validate Base44 entity schemas
+        run: |
+          node - <<'NODE'
+          const fs = require('fs');
+          const path = require('path');
+          const dir = path.join(process.cwd(), 'base44', 'entities');
+          for (const fileName of fs.readdirSync(dir).filter(fileName => fileName.endsWith('.jsonc'))) {
+            const full = path.join(dir, fileName);
+            JSON.parse(fs.readFileSync(full, 'utf8'));
+            console.log('validated', fileName);
+          }
+          NODE
+
+      - name: Bundle-check Base44 backend functions
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          for file in base44/functions/*/entry.ts; do
+            fn_name="$(basename "$(dirname "$file")")"
+            ./node_modules/.bin/esbuild "$file" \
+              --bundle \
+              --platform=neutral \
+              --format=esm \
+              --packages=external \
+              --external:base44:runtime \
+              --outfile="/tmp/$fn_name.mjs"
+          done
 
       - name: Build
         run: npm run build

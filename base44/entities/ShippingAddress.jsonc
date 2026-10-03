@@ -1,34 +1,48 @@
 {
-  "name": "CartItem",
+  "name": "ShippingAddress",
   "type": "object",
   "properties": {
     "user_id": {
       "type": "string"
     },
-    "product_id": {
+    "name": {
       "type": "string"
     },
-    "product_name": {
+    "line1": {
       "type": "string"
     },
-    "product_image": {
+    "line2": {
       "type": "string"
     },
-    "product_price": {
-      "type": "number"
-    },
-    "size": {
+    "city": {
       "type": "string"
     },
-    "color": {
+    "state": {
       "type": "string"
     },
-    "quantity": {
-      "type": "number",
-      "default": 1
+    "postal_code": {
+      "type": "string"
+    },
+    "country": {
+      "type": "string",
+      "default": "US"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "is_default": {
+      "type": "boolean",
+      "default": false
     }
   },
-  "required": [],
+  "required": [
+    "user_id",
+    "line1",
+    "city",
+    "state",
+    "postal_code",
+    "country"
+  ],
   "rls": {
     "create": {
       "data.user_id": "{{user.id}}"

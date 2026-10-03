@@ -22,7 +22,48 @@
         "blocked"
       ],
       "default": "pending"
+    },
+    "requester_name": {
+      "type": "string"
+    },
+    "requester_picture": {
+      "type": "string"
     }
   },
-  "required": []
+  "required": [],
+  "rls": {
+    "create": {
+      "data.user_id": "{{user.id}}"
+    },
+    "read": {
+      "$or": [
+        {
+          "data.user_id": "{{user.id}}"
+        },
+        {
+          "data.friend_user_id": "{{user.id}}"
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.user_id": "{{user.id}}"
+        },
+        {
+          "data.friend_user_id": "{{user.id}}"
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "data.user_id": "{{user.id}}"
+        },
+        {
+          "data.friend_user_id": "{{user.id}}"
+        }
+      ]
+    }
+  }
 }

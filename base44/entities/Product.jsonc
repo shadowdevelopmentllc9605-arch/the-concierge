@@ -131,7 +131,63 @@
     "is_new": {
       "type": "boolean",
       "default": false
+    },
+    "linked_pro_inventory_id": {
+      "type": "string"
+    },
+    "variants": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "size": {
+            "type": "string"
+          },
+          "color": {
+            "type": "string"
+          },
+          "sku": {
+            "type": "string"
+          },
+          "stock_quantity": {
+            "type": "number",
+            "default": 0
+          }
+        }
+      }
+    },
+    "stock_quantity": {
+      "type": "number",
+      "default": 0
+    },
+    "discontinued": {
+      "type": "boolean",
+      "default": false
+    },
+    "processed_stock_events": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
     }
   },
-  "required": []
+  "required": [],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": true,
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
 }

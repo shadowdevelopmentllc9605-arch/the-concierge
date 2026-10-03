@@ -5,7 +5,7 @@ import { createPageUrl } from '@/utils';
 import { motion } from 'framer-motion';
 import { 
   User, ShoppingBag, CreditCard, Heart, Users, 
-  HelpCircle, MessageCircle, LogOut, ChevronRight, Star, Trash2 
+  HelpCircle, MessageCircle, LogOut, ChevronRight, Star, Trash2, Bell 
 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import DeleteAccountDialog from '@/components/DeleteAccountDialog';
@@ -44,56 +44,13 @@ export default function Profile() {
 
   const handleDeleteAccount = async () => {
     try {
-      const [
-        closetItems,
-        wishlistItems,
-        cartItems,
-        purchases,
-        checkins,
-        paymentMethods,
-        productReviews,
-        aiFeedback,
-        shoppingExperiences,
-        outgoingFriends,
-        incomingFriends
-      ] = await Promise.all([
-        base44.entities.ClosetItem.filter({ user_id: user.id }),
-        base44.entities.WishlistItem.filter({ user_id: user.id }),
-        base44.entities.CartItem.filter({ user_id: user.id }),
-        base44.entities.Purchase.filter({ user_id: user.id }),
-        base44.entities.StoreCheckin.filter({ user_id: user.id }),
-        base44.entities.PaymentMethod.filter({ user_id: user.id }),
-        base44.entities.ProductReview.filter({ user_id: user.id }),
-        base44.entities.AIFeedback.filter({ user_id: user.id }),
-        base44.entities.ShoppingExperience.filter({ user_id: user.id }),
-        base44.entities.Friend.filter({ user_id: user.id }),
-        base44.entities.Friend.filter({ friend_user_id: user.id })
-      ]);
-
-      const friendRecords = Array.from(
-        new Map([...outgoingFriends, ...incomingFriends].map(record => [record.id, record])).values()
-      );
-
-      await Promise.all([
-        ...closetItems.map(record => base44.entities.ClosetItem.delete(record.id)),
-        ...wishlistItems.map(record => base44.entities.WishlistItem.delete(record.id)),
-        ...cartItems.map(record => base44.entities.CartItem.delete(record.id)),
-        ...purchases.map(record => base44.entities.Purchase.delete(record.id)),
-        ...checkins.map(record => base44.entities.StoreCheckin.delete(record.id)),
-        ...paymentMethods.map(record => base44.entities.PaymentMethod.delete(record.id)),
-        ...productReviews.map(record => base44.entities.ProductReview.delete(record.id)),
-        ...aiFeedback.map(record => base44.entities.AIFeedback.delete(record.id)),
-        ...shoppingExperiences.map(record => base44.entities.ShoppingExperience.delete(record.id)),
-        ...friendRecords.map(record => base44.entities.Friend.delete(record.id))
-      ]);
-
-      if (profile?.id) {
-        await base44.entities.UserProfile.delete(profile.id);
-      }
-
+      const response = await base44.functions.invoke('deleteMyData', {});
+      const result = response?.data || response;
+      if (!result?.success) throw new Error(result?.error || 'Account data could not be deleted.');
       base44.auth.logout();
     } catch (error) {
       console.error(error);
+      alert(error?.response?.data?.error || error?.message || 'Account data could not be deleted.');
     }
   };
 
@@ -103,21 +60,22 @@ export default function Profile() {
       items: [
         { icon: ShoppingBag, label: 'My Closet', description: 'Previous purchases', path: 'Closet' },
         { icon: Heart, label: 'Wishlist', description: 'Saved items', path: 'Wishlist' },
-        { icon: CreditCard, label: 'Payment Methods', description: 'Available after secure payments are connected', path: null },
+        { icon: CreditCard, label: 'Payment & Shipping', description: 'Saved card display info and shipping addresses', path: 'PaymentMethods' },
+        { icon: Bell, label: 'Notifications', description: 'Offers, store updates, and purchase activity', path: 'Notifications' },
         { icon: Star, label: 'Reviews & Feedback', description: 'Rate your purchases', path: 'Feedback' },
       ]
     },
     {
       section: 'Social',
       items: [
-        { icon: Users, label: 'Friends', description: 'Temporarily unavailable while privacy controls are added', path: null },
+        { icon: Users, label: 'Friends', description: 'Connect and share public wishlists', path: 'Friends' },
       ]
     },
     {
       section: 'Support',
       items: [
-        { icon: HelpCircle, label: 'FAQ', description: 'Help articles are being prepared', path: null },
-        { icon: MessageCircle, label: 'Customer Service', description: 'Send feedback or request help', path: 'Feedback' },
+        { icon: HelpCircle, label: 'FAQ', description: 'Answers about fit, privacy, shopping, and stores', path: 'FAQ' },
+        { icon: MessageCircle, label: 'Customer Service', description: 'Support and feedback', path: 'Support' },
       ]
     }
   ];

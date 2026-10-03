@@ -155,7 +155,36 @@
     "onboarding_step": {
       "type": "number",
       "default": 1
+    },
+    "wishlist_visibility": {
+      "type": "string",
+      "enum": [
+        "public",
+        "private"
+      ],
+      "default": "private"
+    },
+    "stripe_customer_id": {
+      "type": "string",
+      "description": "Server-managed Stripe customer ID",
+      "rls": {
+        "write": false
+      }
     }
   },
-  "required": []
+  "required": [],
+  "rls": {
+    "create": {
+      "data.user_id": "{{user.id}}"
+    },
+    "read": {
+      "data.user_id": "{{user.id}}"
+    },
+    "update": {
+      "data.user_id": "{{user.id}}"
+    },
+    "delete": {
+      "data.user_id": "{{user.id}}"
+    }
+  }
 }
