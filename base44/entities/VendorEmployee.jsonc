@@ -48,5 +48,11 @@
       "default": true
     }
   },
-  "required": []
+  "required": [],
+  "rls": {
+    "create": false,
+    "read": false,
+    "update": false,
+    "delete": false
+  }
 }
