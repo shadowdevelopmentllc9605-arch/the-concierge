@@ -42,7 +42,8 @@
         "processing",
         "shipped",
         "delivered",
-        "completed"
+        "completed",
+        "refunded"
       ],
       "default": "processing"
     },
