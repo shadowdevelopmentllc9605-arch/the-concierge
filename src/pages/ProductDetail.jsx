@@ -268,11 +268,12 @@ export default function ProductDetail() {
 
         {/* Try On Button */}
         <button
-          onClick={() => navigate(createPageUrl(`TryOn?product=${product.id}`))}
-          className="w-full mt-6 h-12 bg-[var(--color-background-secondary)] rounded-xl flex items-center justify-center gap-2 text-[var(--color-text-primary)] font-medium select-none"
+          onClick={() => product.tryOn_image && navigate(createPageUrl(`TryOn?product=${product.id}`))}
+          disabled={!product.tryOn_image}
+          className="w-full mt-6 h-12 bg-[var(--color-background-secondary)] rounded-xl flex items-center justify-center gap-2 text-[var(--color-text-primary)] font-medium select-none disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <Sparkles className="w-5 h-5 text-[var(--color-accent)]" />
-          Virtual Try-On
+          {product.tryOn_image ? 'Virtual Try-On' : 'Virtual Try-On Asset Not Available'}
         </button>
 
         {/* Size Selection */}
