@@ -60,6 +60,7 @@ export default async function (req: Request): Promise<Response> {
           sizes: item.sizes || [],
           colors: item.colors || [],
           size_chart: item.size_chart || [],
+          variants: item.variants || [],
           vendor_id: vendor.id,
           linked_pro_inventory_id: item.id,
           in_stock: Number(item.stock_quantity || 0) > 0 || (item.variants || []).some((v: any) => Number(v.stock_quantity || 0) > 0),
