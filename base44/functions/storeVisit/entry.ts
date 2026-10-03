@@ -7,22 +7,71 @@ async function getSyncToken(base44: any) {
   return configs[0]?.token || null;
 }
 
-async function postToPro(base44: any, action: string, payload: any) {
-  const token = await getSyncToken(base44);
-  if (!token) return { connected: false, reason: "integration_not_configured" };
-
-  const response = await fetch(`https://base44.app/api/apps/${PRO_APP_ID}/functions/receiveCustomerEvent`, {
-    method: "POST",
-    headers: {
-      "content-type": "application/json",
-      "x-concierge-sync-secret": token,
-    },
-    body: JSON.stringify({ action, ...payload }),
+async function postToPro(base44: any, action: string, payload: any, eventKey: string, ownerUserId: string) {
+  const existing = await base44.asServiceRole.entities.IntegrationSyncJob.filter({
+    direction: "to_pro",
+    event_key: eventKey,
   });
+  if (existing[0]?.status === "completed") {
+    return { connected: true, duplicate: true };
+  }
 
-  const data = await response.json().catch(() => ({}));
-  if (!response.ok) throw new Error(data?.error || `Concierge Pro sync failed (${response.status})`);
-  return { connected: true, ...data };
+  const token = await getSyncToken(base44);
+  let job = existing[0] || null;
+  const payloadJson = JSON.stringify({ action, eventKey, ...payload });
+
+  if (!job) {
+    job = await base44.asServiceRole.entities.IntegrationSyncJob.create({
+      owner_user_id: ownerUserId,
+      business_id: payload?.businessId || "",
+      direction: "to_pro",
+      action,
+      event_key: eventKey,
+      payload_json: payloadJson,
+      status: "pending",
+      attempts: 0,
+    });
+  }
+
+  if (!token) {
+    await base44.asServiceRole.entities.IntegrationSyncJob.update(job.id, {
+      status: "pending",
+      last_error: "integration_not_configured",
+    });
+    return { connected: false, reason: "integration_not_configured" };
+  }
+
+  try {
+    const response = await fetch(`https://base44.app/api/apps/${PRO_APP_ID}/functions/receiveCustomerEvent`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "x-concierge-sync-secret": token,
+      },
+      body: payloadJson,
+    });
+
+    const data = await response.json().catch(() => ({}));
+    const attempts = Number(job.attempts || 0) + 1;
+    if (!response.ok) throw new Error(data?.error || `Concierge Pro sync failed (${response.status})`);
+
+    await base44.asServiceRole.entities.IntegrationSyncJob.update(job.id, {
+      status: "completed",
+      attempts,
+      last_error: "",
+      last_attempt_at: new Date().toISOString(),
+      completed_at: new Date().toISOString(),
+    });
+    return { connected: true, ...data };
+  } catch (error) {
+    await base44.asServiceRole.entities.IntegrationSyncJob.update(job.id, {
+      status: "pending",
+      attempts: Number(job.attempts || 0) + 1,
+      last_error: error instanceof Error ? error.message : "sync_failed",
+      last_attempt_at: new Date().toISOString(),
+    });
+    return { connected: false, reason: error instanceof Error ? error.message : "sync_failed" };
+  }
 }
 
 export default async function (req: Request): Promise<Response> {
@@ -95,7 +144,7 @@ export default async function (req: Request): Promise<Response> {
               created_date: purchase.created_date,
             })),
           },
-        });
+        }, `checkin:${checkin.id}`, user.id);
       }
 
       return Response.json({ checkin, proSync });
@@ -124,7 +173,7 @@ export default async function (req: Request): Promise<Response> {
           businessId: checkin.pro_business_id,
           customerId: user.id,
           productIds: wishlistRows.map((item: any) => item.product_id),
-        });
+        }, `tryOn:${checkin.id}:${wishlistRows.map((item: any) => item.id).sort().join(",")}`, user.id);
       }
       return Response.json({ success: true, proSync });
     }
@@ -145,7 +194,7 @@ export default async function (req: Request): Promise<Response> {
           businessId: checkin.pro_business_id,
           externalCheckinId: checkin.id,
           customerId: user.id,
-        });
+        }, `checkout:${checkin.id}`, user.id);
       }
 
       return Response.json({ success: true, proSync });
