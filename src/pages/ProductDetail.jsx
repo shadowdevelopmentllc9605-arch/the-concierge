@@ -184,6 +184,29 @@ export default function ProductDetail() {
     );
   }
 
+  const hasVariantStock = Array.isArray(product.variants) && product.variants.length > 0;
+  const sizeAvailable = (size) =>
+    !hasVariantStock ||
+    product.variants.some(variant =>
+      variant.size === size &&
+      Number(variant.stock_quantity || 0) > 0 &&
+      (!selectedColor || variant.color === selectedColor)
+    );
+  const colorAvailable = (color) =>
+    !hasVariantStock ||
+    product.variants.some(variant =>
+      variant.color === color &&
+      Number(variant.stock_quantity || 0) > 0 &&
+      (!selectedSize || variant.size === selectedSize)
+    );
+  const selectionInStock =
+    !hasVariantStock ||
+    product.variants.some(variant =>
+      Number(variant.stock_quantity || 0) > 0 &&
+      (!selectedSize || variant.size === selectedSize) &&
+      (!selectedColor || variant.color === selectedColor)
+    );
+
   return (
     <div className="min-h-screen bg-[var(--color-background)] pb-32">
       {/* Header */}
@@ -268,9 +291,12 @@ export default function ProductDetail() {
               {product.sizes.map(size => (
                 <button
                   key={size}
-                  onClick={() => setSelectedSize(size)}
+                  onClick={() => sizeAvailable(size) && setSelectedSize(size)}
+                  disabled={!sizeAvailable(size)}
                   className={`h-12 min-w-[48px] px-4 rounded-xl border-2 font-medium text-sm transition-colors select-none ${
-                    selectedSize === size
+                    !sizeAvailable(size)
+                      ? 'border-[var(--color-border)] text-[var(--color-text-muted)] opacity-40 cursor-not-allowed line-through'
+                      : selectedSize === size
                       ? 'border-[var(--color-text-primary)] bg-[var(--color-text-primary)] text-[var(--color-background)]'
                       : size === suggestedSize
                         ? 'border-[var(--color-accent)] text-[var(--color-text-primary)]'
@@ -298,11 +324,14 @@ export default function ProductDetail() {
               {product.colors.map(color => (
                 <button
                   key={color}
-                  onClick={() => setSelectedColor(color)}
+                  onClick={() => colorAvailable(color) && setSelectedColor(color)}
+                  disabled={!colorAvailable(color)}
                   aria-label={`Select color ${color}`}
                   title={color}
                   className={`w-10 h-10 rounded-full border-2 transition-all select-none ${
-                    selectedColor === color ? 'border-[var(--color-text-primary)] scale-110' : 'border-transparent'
+                    !colorAvailable(color)
+                      ? 'border-transparent opacity-30 cursor-not-allowed'
+                      : selectedColor === color ? 'border-[var(--color-text-primary)] scale-110' : 'border-transparent'
                   }`}
                   style={{ backgroundColor: color.toLowerCase() }}
                 />
@@ -316,7 +345,12 @@ export default function ProductDetail() {
       <div className="fixed bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-[var(--color-background)] via-[var(--color-background)] to-transparent safe-area-bottom">
         <Button
           onClick={addToCart}
-          disabled={((product.sizes?.length || 0) > 0 && !selectedSize) || addingToCart}
+          disabled={
+            ((product.sizes?.length || 0) > 0 && !selectedSize) ||
+            ((product.colors?.length || 0) > 0 && !selectedColor) ||
+            !selectionInStock ||
+            addingToCart
+          }
           className={`w-full h-14 rounded-xl font-medium text-base transition-colors select-none ${
             addedToCart
               ? 'bg-green-500 hover:bg-green-500'
