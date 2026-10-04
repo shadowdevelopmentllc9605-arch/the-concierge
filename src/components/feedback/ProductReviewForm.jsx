@@ -33,7 +33,7 @@ export default function ProductReviewForm({ purchase, user, onComplete, onSkip }
     setUploading(true);
     try {
       for (const file of files) {
-        const { file_url } = await base44.integrations.Core.UploadPublicFile({ file });
+        const { file_url } = await base44.integrations.Core.UploadFile({ file });
         setPhotos(prev => [...prev, file_url]);
       }
     } catch (error) {
