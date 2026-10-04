@@ -84,7 +84,7 @@ export default function MeasurementsEditor({ profile, onSaved }) {
   const switchUnit = (nextUnit) => {
     if (nextUnit === unit) return;
     setLengthValues(prev => {
-      const converted = {};
+      const converted = /** @type {Record<string, string>} */ ({});
       for (const { key } of lengthFields) {
         const current = Number(prev[key]);
         if (!Number.isFinite(current)) {
