@@ -10,7 +10,7 @@ export default function Notifications() {
   const load = async () => {
     const user = await base44.auth.me();
     const rows = await base44.entities.AppNotification.filter({ user_id: user.id });
-    setItems([...rows].sort((a,b) => new Date(b.created_date || 0) - new Date(a.created_date || 0)));
+    setItems([...rows].sort((a,b) => new Date(b.created_date || 0).getTime() - new Date(a.created_date || 0).getTime()));
   };
   useEffect(() => { load().catch(console.error); }, []);
 
