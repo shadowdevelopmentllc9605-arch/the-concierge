@@ -23,22 +23,11 @@ export default function ClosetUpload({ profile, concierge, onComplete }) {
     setUploading(true);
     try {
       for (const file of files) {
-        const { file_url } = await base44.integrations.Core.UploadFile({ file });
-        
-        // Analyze each item
-        const analysis = await base44.integrations.Core.InvokeLLM({
-          prompt: "Analyze this clothing item. Identify the type of clothing, color, style category (business/casual/nightlife/trendy), and any notable features.",
-          file_urls: [file_url],
-          response_json_schema: {
-            type: "object",
-            properties: {
-              item_type: { type: "string" },
-              color: { type: "string" },
-              style_category: { type: "string" },
-              description: { type: "string" }
-            }
-          }
-        });
+        const { file_url } = await base44.integrations.Core.UploadPublicFile({ file });
+
+        // Analyze each item via the backend (protects integration credits)
+        const analysisRes = await base44.functions.invoke('analyzeClothingItem', { file_url });
+        const analysis = analysisRes.data || {};
 
         const newItem = {
           image: file_url,

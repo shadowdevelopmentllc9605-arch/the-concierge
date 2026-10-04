@@ -21,7 +21,7 @@ export default function ProfileSetup({ user, profile, concierge, onComplete }) {
 
     setUploading(true);
     try {
-      const { file_url } = await base44.integrations.Core.UploadFile({ file });
+      const { file_url } = await base44.integrations.Core.UploadPublicFile({ file });
       setPicture(file_url);
     } catch (error) {
       console.error(error);

@@ -189,21 +189,10 @@ export default function Closet() {
     try {
       const user = await base44.auth.me();
       for (const file of files) {
-        const { file_url } = await base44.integrations.Core.UploadFile({ file });
-        
-        const analysis = await base44.integrations.Core.InvokeLLM({
-          prompt: "Analyze this clothing item. Identify the type of clothing, color, style category (business/casual/nightlife/trendy), and any notable features.",
-          file_urls: [file_url],
-          response_json_schema: {
-            type: "object",
-            properties: {
-              item_type: { type: "string" },
-              color: { type: "string" },
-              style_category: { type: "string" },
-              description: { type: "string" }
-            }
-          }
-        });
+        const { file_url } = await base44.integrations.Core.UploadPublicFile({ file });
+
+        const analysisRes = await base44.functions.invoke('analyzeClothingItem', { file_url });
+        const analysis = analysisRes.data || {};
 
         const newItem = await base44.entities.ClosetItem.create({
           user_id: user.id,

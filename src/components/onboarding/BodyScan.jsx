@@ -75,7 +75,7 @@ export default function BodyScan({ profile, concierge, onComplete }) {
     setError('');
     setScanQuality(null);
     try {
-      const { file_url } = await base44.integrations.Core.UploadFile({ file });
+      const { file_url } = await base44.integrations.Core.UploadPublicFile({ file });
       setScans(prev => ({ ...prev, [currentScan]: file_url }));
 
       const currentIndex = scanSteps.findIndex(step => step.key === currentScan);
