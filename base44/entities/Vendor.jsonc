@@ -49,6 +49,33 @@
     },
     "linked_pro_business_id": {
       "type": "string"
+    },
+    "stripe_connected_account_id": {
+      "type": "string",
+      "rls": {
+        "write": false
+      }
+    },
+    "stripe_onboarding_complete": {
+      "type": "boolean",
+      "default": false,
+      "rls": {
+        "write": false
+      }
+    },
+    "stripe_charges_enabled": {
+      "type": "boolean",
+      "default": false,
+      "rls": {
+        "write": false
+      }
+    },
+    "stripe_payouts_enabled": {
+      "type": "boolean",
+      "default": false,
+      "rls": {
+        "write": false
+      }
     }
   },
   "required": [],
