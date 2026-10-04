@@ -13,25 +13,25 @@ export default function StylePreferences({ profile, concierge, onComplete }) {
       id: 'business',
       name: 'Business',
       description: 'Suits, dress shirts, blouses, dress skirts, pants',
-      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=500&fit=crop'
+      image: 'https://media.base44.com/images/public/698951bc103c5b61b68d35b7/153803aec_generated_image.png'
     },
     {
       id: 'casual',
       name: 'Casual',
       description: 'Polos, jeans, t-shirts, shorts, skirts, tops',
-      image: 'https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?w=400&h=500&fit=crop'
+      image: 'https://media.base44.com/images/public/698951bc103c5b61b68d35b7/c2e2840c5_generated_image.png'
     },
     {
       id: 'nightlife',
       name: 'Nightlife',
       description: 'Jackets, pattern shirts, evening dresses',
-      image: 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=400&h=500&fit=crop'
+      image: 'https://media.base44.com/images/public/698951bc103c5b61b68d35b7/ed12c091d_generated_image.png'
     },
     {
       id: 'trendy',
       name: 'Trendy',
       description: 'Runway style, seasonal looks',
-      image: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=400&h=500&fit=crop'
+      image: 'https://media.base44.com/images/public/698951bc103c5b61b68d35b7/e30cdb9bf_generated_image.png'
     }
   ];
 

@@ -106,10 +106,10 @@ export default function Home() {
   };
 
   const outfitSuggestions = [
-    { name: 'Business Look', image: 'https://images.unsplash.com/photo-1521341957697-b93449760f30?w=400&h=400&fit=crop', style: 'business' },
-    { name: 'Casual Fit', image: 'https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?w=400&h=400&fit=crop', style: 'casual' },
-    { name: 'Date Night', image: 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=400&h=400&fit=crop', style: 'nightlife' },
-    { name: 'Weekend Style', image: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=400&h=400&fit=crop', style: 'trendy' },
+    { name: 'Business Look', image: 'https://media.base44.com/images/public/698951bc103c5b61b68d35b7/153803aec_generated_image.png', style: 'business' },
+    { name: 'Casual Fit', image: 'https://media.base44.com/images/public/698951bc103c5b61b68d35b7/c2e2840c5_generated_image.png', style: 'casual' },
+    { name: 'Date Night', image: 'https://media.base44.com/images/public/698951bc103c5b61b68d35b7/ed12c091d_generated_image.png', style: 'nightlife' },
+    { name: 'Weekend Style', image: 'https://media.base44.com/images/public/698951bc103c5b61b68d35b7/e30cdb9bf_generated_image.png', style: 'trendy' },
   ];
 
   const handleRefresh = useCallback(async () => {
@@ -136,10 +136,10 @@ export default function Home() {
   ];
 
   const styleCategories = [
-    { name: 'Business', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=500&fit=crop', path: 'Shop?style=business' },
-    { name: 'Casual', image: 'https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?w=400&h=500&fit=crop', path: 'Shop?style=casual' },
-    { name: 'Nightlife', image: 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=400&h=500&fit=crop', path: 'Shop?style=nightlife' },
-    { name: 'Trendy', image: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=400&h=500&fit=crop', path: 'Shop?style=trendy' },
+    { name: 'Business', image: 'https://media.base44.com/images/public/698951bc103c5b61b68d35b7/153803aec_generated_image.png', path: 'Shop?style=business' },
+    { name: 'Casual', image: 'https://media.base44.com/images/public/698951bc103c5b61b68d35b7/c2e2840c5_generated_image.png', path: 'Shop?style=casual' },
+    { name: 'Nightlife', image: 'https://media.base44.com/images/public/698951bc103c5b61b68d35b7/ed12c091d_generated_image.png', path: 'Shop?style=nightlife' },
+    { name: 'Trendy', image: 'https://media.base44.com/images/public/698951bc103c5b61b68d35b7/e30cdb9bf_generated_image.png', path: 'Shop?style=trendy' },
   ];
 
   return (
@@ -152,7 +152,7 @@ export default function Home() {
       >
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-black/60 z-10" />
         <img 
-          src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&h=800&fit=crop"
+          src="https://media.base44.com/images/public/698951bc103c5b61b68d35b7/e3d563c13_generated_image.png"
           alt="Fashion"
           className="w-full h-full object-cover"
         />
