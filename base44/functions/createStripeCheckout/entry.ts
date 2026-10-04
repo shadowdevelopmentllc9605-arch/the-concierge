@@ -50,6 +50,7 @@ export default async function (req: Request): Promise<Response> {
     const orderItems: any[] = [];
     const lineItems: any[] = [];
     let subtotalCents = 0;
+    let checkoutVendor: any = null;
 
     for (const cartItem of cart) {
       const products = await base44.asServiceRole.entities.Product.filter({ id: cartItem.product_id });
@@ -82,6 +83,21 @@ export default async function (req: Request): Promise<Response> {
       if (product.vendor_id) {
         const vendors = await base44.asServiceRole.entities.Vendor.filter({ id: product.vendor_id });
         vendor = vendors[0] || null;
+      }
+
+      if (!vendor?.stripe_connected_account_id || !vendor?.stripe_charges_enabled) {
+        return Response.json({
+          error: `${vendor?.business_name || product.name} is not ready to accept Stripe payments yet.`,
+          code: "vendor_payments_not_ready",
+        }, { status: 409 });
+      }
+
+      if (!checkoutVendor) checkoutVendor = vendor;
+      if (checkoutVendor.id !== vendor.id) {
+        return Response.json({
+          error: "For launch, each Stripe checkout can contain items from only one retailer. Please check out each retailer separately.",
+          code: "multi_vendor_checkout_not_supported",
+        }, { status: 409 });
       }
 
       orderItems.push({
@@ -136,7 +152,14 @@ export default async function (req: Request): Promise<Response> {
       }
     }
 
+    if (!checkoutVendor?.stripe_connected_account_id) {
+      return Response.json({ error: "The retailer is not connected to Stripe." }, { status: 409 });
+    }
+
     const shippingCents = subtotalCents > 10000 ? 0 : 999;
+    const feeBpsRaw = Number(secrets.get("CONCIERGE_PLATFORM_FEE_BPS") || "500");
+    const feeBps = Math.max(0, Math.min(10000, Number.isFinite(feeBpsRaw) ? feeBpsRaw : 500));
+    const applicationFeeCents = Math.round(subtotalCents * feeBps / 10000);
     const order = await base44.asServiceRole.entities.Order.create({
       user_id: user.id,
       items: orderItems,
@@ -177,9 +200,15 @@ export default async function (req: Request): Promise<Response> {
         },
         payment_intent_data: {
           ...(saveCard ? { setup_future_usage: "off_session" as const } : {}),
+          application_fee_amount: applicationFeeCents,
+          transfer_data: {
+            destination: checkoutVendor.stripe_connected_account_id,
+          },
           metadata: {
             concierge_order_id: order.id,
             base44_user_id: user.id,
+            concierge_vendor_id: checkoutVendor.id,
+            concierge_pro_business_id: checkoutVendor.linked_pro_business_id || "",
           },
         },
         metadata: {
