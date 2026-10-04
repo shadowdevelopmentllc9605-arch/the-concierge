@@ -459,7 +459,6 @@ export default function InStoreMode() {
         onClose={() => setShowCheckout(false)}
         store={selectedStore}
         user={user}
-        onComplete={checkOut}
       />
     </div>
   );
