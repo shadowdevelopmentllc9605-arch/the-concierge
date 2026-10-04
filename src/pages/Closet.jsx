@@ -189,7 +189,7 @@ export default function Closet() {
     try {
       const user = await base44.auth.me();
       for (const file of files) {
-        const { file_url } = await base44.integrations.Core.UploadPublicFile({ file });
+        const { file_url } = await base44.integrations.Core.UploadFile({ file });
 
         const analysisRes = await base44.functions.invoke('analyzeClothingItem', { file_url });
         const analysis = analysisRes.data || {};
