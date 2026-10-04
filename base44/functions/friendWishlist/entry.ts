@@ -1,4 +1,5 @@
 import { createClientFromRequest } from "npm:@base44/sdk";
+// Deployment refresh marker.
 
 export default async function (req: Request): Promise<Response> {
   try {
