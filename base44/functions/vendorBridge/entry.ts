@@ -1,4 +1,5 @@
 import { createClientFromRequest } from "npm:@base44/sdk";
+// Redeploy marker: 2026-10-03 bridge verification.
 
 async function authorize(base44: any, req: Request) {
   const configs = await base44.asServiceRole.entities.IntegrationConfig.filter({ key: "cross_app_sync", enabled: true });
