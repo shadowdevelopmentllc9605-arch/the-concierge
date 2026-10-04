@@ -23,7 +23,7 @@ export default function ClosetUpload({ profile, concierge, onComplete }) {
     setUploading(true);
     try {
       for (const file of files) {
-        const { file_url } = await base44.integrations.Core.UploadPublicFile({ file });
+        const { file_url } = await base44.integrations.Core.UploadFile({ file });
 
         // Analyze each item via the backend (protects integration credits)
         const analysisRes = await base44.functions.invoke('analyzeClothingItem', { file_url });
