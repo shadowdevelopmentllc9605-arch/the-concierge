@@ -28,9 +28,25 @@ export default async function(req: Request): Promise<Response> {
       return Response.json({ error: 'Only images uploaded through the app can be analyzed' }, { status: 403 });
     }
 
-    // Private storage references need a short-lived signed URL before the AI can fetch them.
+    // Private storage references: verify the caller owns the file before signing it.
     let imageUrl = fileUrl;
     if (fileUrl.startsWith('mp/private/')) {
+      const [profiles, closetItems] = await Promise.all([
+        base44.asServiceRole.entities.UserProfile.filter({ user_id: user.id }),
+        base44.asServiceRole.entities.ClosetItem.filter({ user_id: user.id }),
+      ]);
+      const ownedRefs = new Set<string>();
+      for (const p of profiles) {
+        for (const ref of [p.body_scan_front, p.body_scan_side, p.body_scan_back]) {
+          if (ref) ownedRefs.add(ref);
+        }
+      }
+      for (const item of closetItems) {
+        if (item.image) ownedRefs.add(item.image);
+      }
+      if (!ownedRefs.has(fileUrl)) {
+        return Response.json({ error: 'Only images uploaded through the app can be analyzed' }, { status: 403 });
+      }
       try {
         const { signed_url } = await base44.asServiceRole.integrations.Core.CreateFileSignedUrl({ file_uri: fileUrl });
         imageUrl = signed_url;

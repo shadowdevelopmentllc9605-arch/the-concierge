@@ -1,5 +1,15 @@
 import { createClientFromRequest } from "npm:@base44/sdk";
 
+// Escapes untrusted text before it is interpolated into HTML email bodies.
+function escapeHtml(value: any): string {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 async function authorize(base44: any, req: Request) {
   const configs = await base44.asServiceRole.entities.IntegrationConfig.filter({ key: "cross_app_sync", enabled: true });
   const expected = configs[0]?.token;
@@ -257,8 +267,8 @@ export default async function (req: Request): Promise<Response> {
             if (email) {
               await base44.asServiceRole.integrations.Core.SendEmail({
                 to: email,
-                subject: title,
-                html: `<p>${message}</p>${couponCode ? `<p><strong>Code: ${couponCode}</strong></p>` : ""}`,
+                subject: escapeHtml(title),
+                html: `<p>${escapeHtml(message)}</p>${couponCode ? `<p><strong>Code: ${escapeHtml(couponCode)}</strong></p>` : ""}`,
               });
             }
           } catch (emailError) {
