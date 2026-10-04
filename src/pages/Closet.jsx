@@ -8,7 +8,7 @@ import { format } from 'date-fns';
 import ClosetItemEditor from '@/components/closet/ClosetItemEditor';
 import PullToRefresh from '@/components/PullToRefresh';
 
-function EmptyState({ onTakePhoto, onUploadImage, uploading, type = 'all' }) {
+function EmptyState({ onTakePhoto = null, onUploadImage = null, uploading = false, type = 'all' }) {
   return (
     <div className="flex flex-col items-center justify-center py-20 px-6">
       <div className="w-20 h-20 rounded-full bg-[var(--color-background-secondary)] flex items-center justify-center mb-6">
