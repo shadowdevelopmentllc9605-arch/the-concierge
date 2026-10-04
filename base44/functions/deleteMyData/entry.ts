@@ -6,6 +6,12 @@ export default async function (req: Request): Promise<Response> {
     const user = await base44.auth.me();
     if (!user) return Response.json({ error: "Unauthorized" }, { status: 401 });
 
+    // Destructive, irreversible action: require an explicit confirmation string.
+    const body = await req.json().catch(() => ({}));
+    if (body?.confirm !== "DELETE") {
+      return Response.json({ error: "Confirmation required: pass confirm \"DELETE\"" }, { status: 400 });
+    }
+
     const entityQueries = [
       ["ClosetItem", { user_id: user.id }],
       ["WishlistItem", { user_id: user.id }],

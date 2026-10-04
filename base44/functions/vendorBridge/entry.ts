@@ -4,7 +4,15 @@ async function authorize(base44: any, req: Request) {
   const configs = await base44.asServiceRole.entities.IntegrationConfig.filter({ key: "cross_app_sync", enabled: true });
   const expected = configs[0]?.token;
   const provided = req.headers.get("x-concierge-sync-secret");
-  return Boolean(expected && provided && expected === provided);
+  if (!expected || !provided) return false;
+  // Constant-time comparison to avoid timing side channels on the shared secret.
+  const a = new TextEncoder().encode(expected);
+  const b = new TextEncoder().encode(provided);
+  let diff = a.length ^ b.length;
+  for (let i = 0; i < Math.max(a.length, b.length); i++) {
+    diff |= (a[i] || 0) ^ (b[i] || 0);
+  }
+  return diff === 0;
 }
 
 async function upsertVendor(base44: any, business: any, locations: any[]) {

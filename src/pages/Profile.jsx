@@ -44,7 +44,7 @@ export default function Profile() {
 
   const handleDeleteAccount = async () => {
     try {
-      const response = await base44.functions.invoke('deleteMyData', {});
+      const response = await base44.functions.invoke('deleteMyData', { confirm: 'DELETE' });
       const result = response?.data || response;
       if (!result?.success) throw new Error(result?.error || 'Account data could not be deleted.');
       base44.auth.logout();
