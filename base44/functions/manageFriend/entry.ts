@@ -13,36 +13,38 @@ export default async function (req: Request): Promise<Response> {
       if (!email || email === String(user.email || "").toLowerCase()) {
         return Response.json({ error: "Enter another Concierge user's email." }, { status: 400 });
       }
+      // Uniform response: never reveal whether an email is registered (prevents enumeration).
       const users = await base44.asServiceRole.entities.User.filter({ email });
       const friendUser = users[0];
-      if (!friendUser) return Response.json({ error: "No Concierge account was found for that email." }, { status: 404 });
-
-      const existingOut = await base44.asServiceRole.entities.Friend.filter({ user_id: user.id, friend_user_id: friendUser.id });
-      const existingIn = await base44.asServiceRole.entities.Friend.filter({ user_id: friendUser.id, friend_user_id: user.id });
-      if (existingOut[0] || existingIn[0]) {
-        return Response.json({ error: "A friend connection already exists or is pending." }, { status: 409 });
+      if (friendUser) {
+        const existingOut = await base44.asServiceRole.entities.Friend.filter({ user_id: user.id, friend_user_id: friendUser.id });
+        const existingIn = await base44.asServiceRole.entities.Friend.filter({ user_id: friendUser.id, friend_user_id: user.id });
+        if (!existingOut[0] && !existingIn[0]) {
+          const requesterProfiles = await base44.asServiceRole.entities.UserProfile.filter({ user_id: user.id });
+          // Target's name and picture are withheld until they accept the request.
+          await base44.asServiceRole.entities.Friend.create({
+            user_id: user.id,
+            friend_user_id: friendUser.id,
+            friend_name: "",
+            friend_picture: "",
+            requester_name: user.full_name || user.email,
+            requester_picture: requesterProfiles[0]?.profile_picture || "",
+            status: "pending",
+          });
+        }
       }
-
-      const [profiles, requesterProfiles] = await Promise.all([
-        base44.asServiceRole.entities.UserProfile.filter({ user_id: friendUser.id }),
-        base44.asServiceRole.entities.UserProfile.filter({ user_id: user.id })
-      ]);
-      const record = await base44.asServiceRole.entities.Friend.create({
-        user_id: user.id,
-        friend_user_id: friendUser.id,
-        friend_name: friendUser.full_name || friendUser.email,
-        friend_picture: profiles[0]?.profile_picture || "",
-        requester_name: user.full_name || user.email,
-        requester_picture: requesterProfiles[0]?.profile_picture || "",
-        status: "pending",
-      });
-      return Response.json({ success: true, friend: record });
+      return Response.json({ success: true });
     }
 
     if (action === "accept") {
       const records = await base44.asServiceRole.entities.Friend.filter({ id: body.friendId, friend_user_id: user.id });
       if (!records[0]) return Response.json({ error: "Friend request not found." }, { status: 404 });
-      await base44.asServiceRole.entities.Friend.update(records[0].id, { status: "accepted" });
+      const accepterProfiles = await base44.asServiceRole.entities.UserProfile.filter({ user_id: user.id });
+      await base44.asServiceRole.entities.Friend.update(records[0].id, {
+        status: "accepted",
+        friend_name: user.full_name || user.email,
+        friend_picture: accepterProfiles[0]?.profile_picture || "",
+      });
       return Response.json({ success: true });
     }
 

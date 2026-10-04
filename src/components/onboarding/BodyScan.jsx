@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { motion } from 'framer-motion';
 import { Button } from "@/components/ui/button";
@@ -6,6 +6,7 @@ import { Camera, Check, ArrowRight, Loader2, RotateCcw, AlertCircle, Ruler } fro
 import ConciergeGuide from './ConciergeGuide';
 import { measureBodyFromImages } from '@/lib/bodyMeasurement';
 import { formatHeight, formatLength, parseHeightToCm } from '@/lib/measurementUnits';
+import { resolveFileUrl } from '@/lib/privateFiles';
 import { deriveGenericSuggestedSizes } from '@/lib/fitRecommendation';
 
 function buildDisplayMeasurements(valuesCm, unit) {
@@ -40,7 +41,26 @@ export default function BodyScan({ profile, concierge, onComplete }) {
   const [analyzing, setAnalyzing] = useState(false);
   const [error, setError] = useState('');
   const [scanQuality, setScanQuality] = useState(null);
+  const [scanPreviews, setScanPreviews] = useState({});
   const fileInputRef = useRef(null);
+
+  // Resolve stored scan references (private files) to short-lived signed URLs for display.
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      for (const key of ['front', 'side', 'back']) {
+        const uri = scans[key];
+        if (!uri || scanPreviews[key]) continue;
+        try {
+          const url = await resolveFileUrl(uri);
+          if (!cancelled) setScanPreviews(prev => ({ ...prev, [key]: url }));
+        } catch (err) {
+          console.error(err);
+        }
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [scans.front, scans.side, scans.back]);
 
   const scanSteps = [
     { key: 'front', label: 'Front View', instruction: 'Full body visible, facing camera, fitted clothing, arms slightly away from your sides' },
@@ -75,8 +95,11 @@ export default function BodyScan({ profile, concierge, onComplete }) {
     setError('');
     setScanQuality(null);
     try {
-      const { file_url } = await base44.integrations.Core.UploadPublicFile({ file });
-      setScans(prev => ({ ...prev, [currentScan]: file_url }));
+      // Body scans are intimate photos: store privately, render only via short-lived signed URLs.
+      const { file_uri } = await base44.integrations.Core.UploadPrivateFile({ file });
+      const previewUrl = await resolveFileUrl(file_uri);
+      setScans(prev => ({ ...prev, [currentScan]: file_uri }));
+      setScanPreviews(prev => ({ ...prev, [currentScan]: previewUrl }));
 
       const currentIndex = scanSteps.findIndex(step => step.key === currentScan);
       if (currentIndex < scanSteps.length - 1) {
@@ -101,9 +124,13 @@ export default function BodyScan({ profile, concierge, onComplete }) {
     setAnalyzing(true);
     setError('');
     try {
+      const [frontUrl, sideUrl] = await Promise.all([
+        resolveFileUrl(scans.front),
+        resolveFileUrl(scans.side),
+      ]);
       const result = await measureBodyFromImages({
-        frontUrl: scans.front,
-        sideUrl: scans.side,
+        frontUrl,
+        sideUrl,
         heightCm,
       });
 
@@ -263,15 +290,28 @@ export default function BodyScan({ profile, concierge, onComplete }) {
       <div className="relative aspect-[3/4] bg-white rounded-2xl overflow-hidden mb-6 shadow-sm border border-[#e5e7eb]">
         {scans[currentScan] ? (
           <>
-            <img
-              src={scans[currentScan]}
-              alt={`${currentScan} body scan`}
-              className="w-full h-full object-contain bg-[#faf8f5]"
-            />
+            {scanPreviews[currentScan] ? (
+              <img
+                src={scanPreviews[currentScan]}
+                alt={`${currentScan} body scan`}
+                className="w-full h-full object-contain bg-[#faf8f5]"
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center bg-[#faf8f5]">
+                <Loader2 className="w-6 h-6 animate-spin text-[#c9a962]" />
+              </div>
+            )}
             <button
               type="button"
               aria-label={`Retake ${currentScan} photo`}
-              onClick={() => setScans(prev => ({ ...prev, [currentScan]: null }))}
+              onClick={() => {
+              setScans(prev => ({ ...prev, [currentScan]: null }));
+              setScanPreviews(prev => {
+                const next = { ...prev };
+                delete next[currentScan];
+                return next;
+              });
+            }}
               className="absolute top-4 right-4 w-10 h-10 bg-black/50 rounded-full flex items-center justify-center"
             >
               <RotateCcw className="w-5 h-5 text-white" />

@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, ChevronLeft, ChevronRight, Heart, ShoppingBag, Sparkles } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { getCategoryGroup, recommendFromSizeChart } from '@/lib/fitRecommendation';
+import { resolveFileUrl } from '@/lib/privateFiles';
 
 export default function TryOn() {
   const navigate = useNavigate();
@@ -18,6 +19,20 @@ export default function TryOn() {
   const [loading, setLoading] = useState(true);
   const [wishlist, setWishlist] = useState([]);
   const [user, setUser] = useState(null);
+  const [bodyScanUrl, setBodyScanUrl] = useState('');
+
+  // Body scans are private files — render through a short-lived signed URL.
+  useEffect(() => {
+    let cancelled = false;
+    if (userProfile?.body_scan_front) {
+      resolveFileUrl(userProfile.body_scan_front)
+        .then(url => { if (!cancelled) setBodyScanUrl(url); })
+        .catch(console.error);
+    } else {
+      setBodyScanUrl('');
+    }
+    return () => { cancelled = true; };
+  }, [userProfile?.body_scan_front]);
 
   useEffect(() => {
     loadData();
@@ -166,9 +181,9 @@ export default function TryOn() {
       <div className="h-screen relative">
         {/* User silhouette/photo background */}
         <div className="absolute inset-0 flex items-center justify-center">
-          {userProfile?.body_scan_front ? (
+          {bodyScanUrl ? (
             <img 
-              src={userProfile.body_scan_front}
+              src={bodyScanUrl}
               alt="Your body scan"
               className="h-full w-auto object-contain opacity-50"
             />
