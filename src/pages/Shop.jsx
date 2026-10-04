@@ -82,7 +82,8 @@ export default function Shop() {
   };
 
   const startVoiceSearch = () => {
-    const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const voiceWindow = /** @type {any} */ (window);
+    const Recognition = voiceWindow.SpeechRecognition || voiceWindow.webkitSpeechRecognition;
     if (!Recognition) {
       setVoiceError('Voice search is not supported by this browser. You can still type your search.');
       return;
