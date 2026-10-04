@@ -118,7 +118,6 @@ export default function Onboarding() {
   }
 
   const CurrentStepComponent = steps[step - 1].component;
-  const currentGuideMessage = steps[step - 1].guideMessage;
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#faf8f5] to-[#f5f0ea]">
@@ -153,7 +152,6 @@ export default function Onboarding() {
             user={user}
             profile={profile}
             concierge={selectedConcierge}
-            guideMessage={currentGuideMessage}
             onComplete={handleStepComplete}
           />
         </motion.div>
