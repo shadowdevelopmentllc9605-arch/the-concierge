@@ -42,6 +42,10 @@ async function upsertVendor(base44: any, business: any, locations: any[]) {
     })),
     linked_pro_business_id: business.id,
     setup_completed: Boolean(business.setup_complete),
+    stripe_connected_account_id: business.stripe_connected_account_id || "",
+    stripe_onboarding_complete: Boolean(business.stripe_onboarding_complete),
+    stripe_charges_enabled: Boolean(business.stripe_charges_enabled),
+    stripe_payouts_enabled: Boolean(business.stripe_payouts_enabled),
   };
   if (existing[0]) {
     await base44.asServiceRole.entities.Vendor.update(existing[0].id, data);
