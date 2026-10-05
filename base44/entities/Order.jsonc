@@ -61,6 +61,37 @@
       "type": "number",
       "default": 0
     },
+    "concierge_attributed": {
+      "type": "boolean",
+      "default": true
+    },
+    "attribution_source": {
+      "type": "string",
+      "enum": [
+        "concierge_online",
+        "concierge_store_visit",
+        "none"
+      ],
+      "default": "concierge_online"
+    },
+    "platform_fee_percent": {
+      "type": "number",
+      "default": 4
+    },
+    "platform_fee_amount": {
+      "type": "number",
+      "default": 0
+    },
+    "platform_fee_status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "collected",
+        "refunded",
+        "not_applicable"
+      ],
+      "default": "pending"
+    },
     "currency": {
       "type": "string",
       "default": "usd"
