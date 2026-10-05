@@ -128,6 +128,7 @@ export default async function (req: Request): Promise<Response> {
           unit_amount: unitAmount,
           product_data: {
             name: product.name,
+            tax_code: "txcd_99999999", // Stripe Tax: General - Tangible Goods fallback for launch inventory.
             description: [product.brand, cartItem.size, cartItem.color].filter(Boolean).join(" · "),
             images: product.images?.[0] ? [product.images[0]] : undefined,
             metadata: {
