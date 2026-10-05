@@ -472,10 +472,32 @@ export default async function (req: Request): Promise<Response> {
           payment_intent_id: paymentIntentId,
         });
         if (orders[0]) {
+          let platformFeeStatus = orders[0].platform_fee_status || "collected";
+          let remainingPlatformFeeAmount = Number(orders[0].platform_fee_amount || 0);
+          const applicationFeeId = typeof (charge as any).application_fee === "string"
+            ? (charge as any).application_fee
+            : (charge as any).application_fee?.id;
+          if (applicationFeeId) {
+            try {
+              const applicationFee: any = await stripe.applicationFees.retrieve(applicationFeeId);
+              const originalFeeCents = Number(applicationFee.amount || 0);
+              const refundedFeeCents = Number(applicationFee.amount_refunded || 0);
+              remainingPlatformFeeAmount = Math.max(0, originalFeeCents - refundedFeeCents) / 100;
+              platformFeeStatus = refundedFeeCents >= originalFeeCents && originalFeeCents > 0
+                ? "refunded"
+                : refundedFeeCents > 0
+                  ? "partially_refunded"
+                  : "collected";
+            } catch (feeError) {
+              console.warn("Unable to verify application-fee refund state", feeError);
+            }
+          }
+
           await base44.asServiceRole.entities.Order.update(orders[0].id, {
             payment_status: "refunded",
             fulfillment_status: "cancelled",
-            platform_fee_status: "refunded",
+            platform_fee_status: platformFeeStatus,
+            platform_fee_amount: remainingPlatformFeeAmount,
           });
           const purchases = await base44.asServiceRole.entities.Purchase.filter({
             user_id: orders[0].user_id,
@@ -498,7 +520,8 @@ export default async function (req: Request): Promise<Response> {
               {
                 businessId,
                 externalOrderId: orders[0].id,
-                platformFeeStatus: "refunded",
+                platformFeeStatus,
+                platformFeeAmount: remainingPlatformFeeAmount,
               },
               `onlineRefund:${orders[0].id}:${businessId}`,
             );
