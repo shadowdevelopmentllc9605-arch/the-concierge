@@ -486,6 +486,24 @@ export default async function (req: Request): Promise<Response> {
               status: "refunded",
             });
           }
+
+          const businessIds = Array.from(new Set(
+            (orders[0].items || []).map((item: any) => item.pro_business_id).filter(Boolean)
+          ));
+          for (const businessId of businessIds) {
+            await deliverQueuedToPro(
+              base44,
+              orders[0],
+              "onlineRefund",
+              {
+                businessId,
+                externalOrderId: orders[0].id,
+                platformFeeStatus: "refunded",
+              },
+              `onlineRefund:${orders[0].id}:${businessId}`,
+            );
+          }
+
           await base44.asServiceRole.entities.AppNotification.create({
             user_id: orders[0].user_id,
             title: "Order refunded",
