@@ -69,6 +69,26 @@ export default async function (req: Request): Promise<Response> {
     const action = body?.action;
     const eventKey = body?.eventKey || "";
 
+    if (action === "updateVendorPayments") {
+      const business = body.business || {};
+      if (!business.id) return Response.json({ error: "Business ID is required" }, { status: 400 });
+      const vendors = await base44.asServiceRole.entities.Vendor.filter({ linked_pro_business_id: business.id });
+      if (!vendors[0]) {
+        return Response.json({ success: true, updated: false, reason: "vendor_not_synced_yet" });
+      }
+      await base44.asServiceRole.entities.Vendor.update(vendors[0].id, {
+        stripe_connected_account_id: business.stripe_connected_account_id || "",
+        stripe_onboarding_complete: Boolean(business.stripe_onboarding_complete),
+        stripe_charges_enabled: Boolean(business.stripe_charges_enabled),
+        stripe_payouts_enabled: Boolean(business.stripe_payouts_enabled),
+        stripe_transfers_enabled: Boolean(business.stripe_transfers_enabled),
+        stripe_subscription_status: business.stripe_subscription_status || "",
+        billing_plan: business.billing_plan || "standard",
+        platform_fee_percent: Number(business.platform_fee_percent || 4),
+      });
+      return Response.json({ success: true, updated: true, vendorId: vendors[0].id });
+    }
+
     if (action === "syncCatalog") {
       const vendor = await upsertVendor(base44, body.business, body.locations || []);
       const mappings: any[] = [];
