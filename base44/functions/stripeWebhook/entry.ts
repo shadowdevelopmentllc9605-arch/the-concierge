@@ -184,6 +184,13 @@ async function syncPaidOrderToPro(base44: any, order: any, user: any) {
           total: groupCents.total / 100,
           currency: order.currency || "usd",
         },
+        attribution: {
+          attributed: Boolean(order.concierge_attributed),
+          source: order.attribution_source || "concierge_online",
+          platformFeePercent: Number(order.platform_fee_percent || 4),
+          platformFeeAmount: Number(order.platform_fee_amount || 0),
+          platformFeeStatus: order.platform_fee_status || "collected",
+        },
         items: items.map((item: any) => ({
           product_id: item.product_id,
           line_key: `${order.id}:${item.cart_item_id || [item.product_id, item.size, item.color].join(":")}`,
@@ -219,6 +226,12 @@ async function finalizePaidOrder(base44: any, stripe: Stripe, sessionId: string)
   const paymentIntentId = typeof paymentIntent === "string"
     ? paymentIntent
     : paymentIntent?.id || "";
+  const platformFeeAmount = Number(
+    paymentIntent && typeof paymentIntent !== "string"
+      ? paymentIntent.application_fee_amount || session.metadata?.concierge_platform_fee_amount_cents || 0
+      : session.metadata?.concierge_platform_fee_amount_cents || 0
+  ) / 100;
+  const platformFeePercent = Number(session.metadata?.concierge_platform_fee_percent || order.platform_fee_percent || 4);
 
   const shippingDetails =
     session.collected_information?.shipping_details ||
@@ -246,6 +259,11 @@ async function finalizePaidOrder(base44: any, stripe: Stripe, sessionId: string)
     tax: Number(session.total_details?.amount_tax || 0) / 100,
     discount: Number(session.total_details?.amount_discount || 0) / 100,
     total: Number(session.amount_total || 0) / 100,
+    concierge_attributed: true,
+    attribution_source: session.metadata?.concierge_attribution_source || "concierge_online",
+    platform_fee_percent: platformFeePercent,
+    platform_fee_amount: platformFeeAmount,
+    platform_fee_status: "collected",
     shipping_address: shippingAddress,
     sync_error: "",
   });
@@ -362,6 +380,11 @@ async function finalizePaidOrder(base44: any, stripe: Stripe, sessionId: string)
     tax: Number(session.total_details?.amount_tax || 0) / 100,
     discount: Number(session.total_details?.amount_discount || 0) / 100,
     total: Number(session.amount_total || 0) / 100,
+    concierge_attributed: true,
+    attribution_source: session.metadata?.concierge_attribution_source || "concierge_online",
+    platform_fee_percent: platformFeePercent,
+    platform_fee_amount: platformFeeAmount,
+    platform_fee_status: "collected",
     shipping_address: shippingAddress,
   };
 
@@ -452,6 +475,7 @@ export default async function (req: Request): Promise<Response> {
           await base44.asServiceRole.entities.Order.update(orders[0].id, {
             payment_status: "refunded",
             fulfillment_status: "cancelled",
+            platform_fee_status: "refunded",
           });
           const purchases = await base44.asServiceRole.entities.Purchase.filter({
             user_id: orders[0].user_id,
