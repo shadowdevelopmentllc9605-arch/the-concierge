@@ -87,6 +87,7 @@
       "enum": [
         "pending",
         "collected",
+        "partially_refunded",
         "refunded",
         "not_applicable"
       ],
