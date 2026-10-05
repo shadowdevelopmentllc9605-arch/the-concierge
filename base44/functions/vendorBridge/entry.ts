@@ -46,6 +46,10 @@ async function upsertVendor(base44: any, business: any, locations: any[]) {
     stripe_onboarding_complete: Boolean(business.stripe_onboarding_complete),
     stripe_charges_enabled: Boolean(business.stripe_charges_enabled),
     stripe_payouts_enabled: Boolean(business.stripe_payouts_enabled),
+    stripe_transfers_enabled: Boolean(business.stripe_transfers_enabled),
+    stripe_subscription_status: business.stripe_subscription_status || "",
+    billing_plan: business.billing_plan || "standard",
+    platform_fee_percent: Number(business.platform_fee_percent || 4),
   };
   if (existing[0]) {
     await base44.asServiceRole.entities.Vendor.update(existing[0].id, data);
