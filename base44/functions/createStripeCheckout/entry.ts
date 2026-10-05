@@ -85,9 +85,16 @@ export default async function (req: Request): Promise<Response> {
         vendor = vendors[0] || null;
       }
 
-      if (!vendor?.stripe_connected_account_id || !vendor?.stripe_charges_enabled) {
+      const retailerSubscriptionActive = ["active", "trialing"].includes(String(vendor?.stripe_subscription_status || ""));
+      const retailerCanReceiveFunds = Boolean(vendor?.stripe_transfers_enabled || vendor?.stripe_payouts_enabled);
+      if (
+        !vendor?.stripe_connected_account_id ||
+        !vendor?.stripe_onboarding_complete ||
+        !retailerCanReceiveFunds ||
+        !retailerSubscriptionActive
+      ) {
         return Response.json({
-          error: `${vendor?.business_name || product.name} is not ready to accept Stripe payments yet.`,
+          error: `${vendor?.business_name || product.name} is not ready for Concierge marketplace checkout yet.`,
           code: "vendor_payments_not_ready",
         }, { status: 409 });
       }
@@ -157,8 +164,8 @@ export default async function (req: Request): Promise<Response> {
     }
 
     const shippingCents = subtotalCents > 10000 ? 0 : 999;
-    const feeBpsRaw = Number(secrets.get("CONCIERGE_PLATFORM_FEE_BPS") || "500");
-    const feeBps = Math.max(0, Math.min(10000, Number.isFinite(feeBpsRaw) ? feeBpsRaw : 500));
+    const feeBpsRaw = Number(secrets.get("CONCIERGE_PLATFORM_FEE_BPS") || "400");
+    const feeBps = Math.max(0, Math.min(10000, Number.isFinite(feeBpsRaw) ? feeBpsRaw : 400));
     const applicationFeeCents = Math.round(subtotalCents * feeBps / 10000);
     const order = await base44.asServiceRole.entities.Order.create({
       user_id: user.id,
@@ -167,6 +174,11 @@ export default async function (req: Request): Promise<Response> {
       shipping: shippingCents / 100,
       tax: 0,
       total: (subtotalCents + shippingCents) / 100,
+      concierge_attributed: true,
+      attribution_source: "concierge_online",
+      platform_fee_percent: feeBps / 100,
+      platform_fee_amount: applicationFeeCents / 100,
+      platform_fee_status: "pending",
       currency: "usd",
       payment_status: "pending",
       fulfillment_status: "pending_payment",
@@ -209,6 +221,9 @@ export default async function (req: Request): Promise<Response> {
             base44_user_id: user.id,
             concierge_vendor_id: checkoutVendor.id,
             concierge_pro_business_id: checkoutVendor.linked_pro_business_id || "",
+            concierge_attribution_source: "concierge_online",
+            concierge_platform_fee_percent: String(feeBps / 100),
+            concierge_platform_fee_amount_cents: String(applicationFeeCents),
           },
         },
         metadata: {
@@ -216,6 +231,9 @@ export default async function (req: Request): Promise<Response> {
           base44_user_id: user.id,
           save_card: String(saveCard),
           save_shipping_address: String(saveShippingAddress),
+          concierge_attribution_source: "concierge_online",
+          concierge_platform_fee_percent: String(feeBps / 100),
+          concierge_platform_fee_amount_cents: String(applicationFeeCents),
         },
         success_url: `${origin}/Checkout?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${origin}/Cart`,
@@ -230,6 +248,9 @@ export default async function (req: Request): Promise<Response> {
         orderId: order.id,
         checkoutSessionId: session.id,
         url: session.url,
+        platformFeePercent: feeBps / 100,
+        platformFeeAmount: applicationFeeCents / 100,
+        attributionSource: "concierge_online",
       });
     } catch (stripeError) {
       await base44.asServiceRole.entities.Order.update(order.id, {
