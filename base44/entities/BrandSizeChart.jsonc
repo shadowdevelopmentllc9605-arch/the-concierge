@@ -42,7 +42,8 @@
         "underwear",
         "footwear",
         "unisex_clothing",
-        "other"
+        "other",
+        "headwear"
       ]
     },
     "chart_name": {
@@ -177,6 +178,12 @@
           },
           "cup_size": {
             "type": "string"
+          },
+          "head_circumference_min_cm": {
+            "type": "number"
+          },
+          "head_circumference_max_cm": {
+            "type": "number"
           }
         }
       }
