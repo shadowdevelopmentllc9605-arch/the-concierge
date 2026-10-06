@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import PullToRefresh from '@/components/PullToRefresh';
-import { getCategoryGroup, recommendFromSizeChart } from '@/lib/fitRecommendation';
+import { getCategoryGroup, getEffectiveSizeChart, recommendFromSizeChart } from '@/lib/fitRecommendation';
 
 export default function Shop() {
   const navigate = useNavigate();
@@ -26,6 +26,7 @@ export default function Shop() {
   const [cartCount, setCartCount] = useState(0);
   const [user, setUser] = useState(null);
   const [profile, setProfile] = useState(null);
+  const [brandCharts, setBrandCharts] = useState([]);
   const [listening, setListening] = useState(false);
   const [voiceError, setVoiceError] = useState('');
   const specialFilter = urlParams.get('filter') || '';
@@ -66,6 +67,9 @@ export default function Shop() {
 
       const profiles = await base44.entities.UserProfile.filter({ user_id: currentUser.id });
       setProfile(profiles[0] || null);
+
+      const sizeCharts = await base44.entities.BrandSizeChart.filter({ active: true });
+      setBrandCharts(sizeCharts);
 
       // Load wishlist
       const wishlistItems = await base44.entities.WishlistItem.filter({ user_id: currentUser.id });
@@ -161,11 +165,17 @@ export default function Shop() {
   const getProductRecommendation = (product) => {
     if (!profile) return null;
 
+    const effectiveChart = getEffectiveSizeChart(product, profile, brandCharts);
     const chartMatch = recommendFromSizeChart(
-      product.size_chart || [],
+      effectiveChart.entries,
       profile.measurement_values_cm || {}
     );
-    if (chartMatch?.size) return { size: chartMatch.size, label: 'Best match' };
+    if (chartMatch?.size) {
+      const label = effectiveChart.source === 'brand_size_chart'
+        ? (chartMatch.matchType === 'nearest' ? 'Closest brand match' : 'Verified brand match')
+        : (chartMatch.matchType === 'nearest' ? 'Closest product-chart match' : 'Best match');
+      return { size: chartMatch.size, label };
+    }
 
     const group = getCategoryGroup(product.category);
     let size = group ? profile.suggested_sizes?.[group] : '';
