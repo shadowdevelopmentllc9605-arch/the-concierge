@@ -15,12 +15,14 @@ export default function ProductDetail() {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedSize, setSelectedSize] = useState('');
+  const [selectedWidth, setSelectedWidth] = useState('');
   const [selectedColor, setSelectedColor] = useState('');
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [addingToCart, setAddingToCart] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
   const [user, setUser] = useState(null);
   const [suggestedSize, setSuggestedSize] = useState('');
+  const [suggestedWidth, setSuggestedWidth] = useState('');
   const [recommendationSource, setRecommendationSource] = useState('');
 
   useEffect(() => {
@@ -71,6 +73,10 @@ export default function ProductDetail() {
 
         if (chartMatch?.size) {
           setSuggestedSize(chartMatch.size);
+          setSuggestedWidth(chartMatch.width || '');
+          if (chartMatch.width && (!product.width_options?.length || product.width_options.includes(chartMatch.width))) {
+            setSelectedWidth(chartMatch.width);
+          }
           setRecommendationSource(
             effectiveChart.source === 'brand_size_chart'
               ? (chartMatch.matchType === 'nearest' ? 'brand_size_chart_nearest' : 'brand_size_chart')
