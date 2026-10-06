@@ -157,6 +157,7 @@ export default function TryOn() {
   );
   const categoryGroup = getCategoryGroup(currentProduct?.category);
   let recommendedSize = chartMatch?.size || (categoryGroup ? userProfile?.suggested_sizes?.[categoryGroup] : '');
+  const recommendedWidth = chartMatch?.width || '';
   if (currentProduct?.category === 'suits' && !chartMatch?.size && userProfile?.suggested_sizes?.suits) {
     const suitBase = userProfile.suggested_sizes.suits;
     recommendedSize = currentProduct.sizes?.find(value => String(value).startsWith(String(suitBase))) || suitBase;
@@ -290,7 +291,7 @@ export default function TryOn() {
             <div className="flex items-center gap-2 mb-4 text-sm">
               <Sparkles className="w-4 h-4 text-[#c9a962]" />
               <span className="text-white/60">{recommendationLabel ? `${recommendationLabel}: ` : 'Size: '}</span>
-              <span className="text-white font-medium">{recommendedSize || 'Select on product page'}</span>
+              <span className="text-white font-medium">{recommendedSize ? recommendedSize + (recommendedWidth ? ' • ' + recommendedWidth : '') : 'Select on product page'}</span>
             </div>
           )}
 
