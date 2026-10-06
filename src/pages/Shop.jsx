@@ -33,10 +33,10 @@ export default function Shop() {
 
   const categories = {
     business: ['suits', 'vests', 'dress_shirts', 'pants', 'blouse', 'dress_skirts', 'sports_jackets', 'collar_stays', 'cufflinks', 'tie_bar', 'tie_chain', 'tie_pin', 'pocket_square', 'lapel_pin'],
-    casual: ['polos', 'tshirts', 'jackets', 'jeans', 'shorts', 'khakis', 'dresses', 'skirts', 'jumpers'],
+    casual: ['polos', 'tshirts', 'jackets', 'jeans', 'shorts', 'khakis', 'dresses', 'skirts', 'jumpers', 'swimwear'],
     formal: ['suits', 'vests', 'dress_shirts', 'dresses', 'evening_dresses', 'sports_jackets'],
     evening: ['evening_dresses', 'dresses', 'suits', 'sports_jackets', 'pattern_shirts'],
-    outdoor: ['coats', 'parkas', 'outerwear', 'jackets', 'boots', 'hats'],
+    outdoor: ['coats', 'parkas', 'outerwear', 'jackets', 'boots', 'hats', 'swimwear'],
     active: ['tshirts', 'shorts', 'pants', 'jackets', 'shoes', 'boots', 'hats'],
     nightlife: ['pattern_shirts', 'graphic_tees', 'sports_jackets', 'evening_dresses'],
     accessories: ['hats', 'glasses', 'earrings', 'necklaces', 'bracelets', 'watches', 'belts', 'socks', 'shoes', 'boots']
