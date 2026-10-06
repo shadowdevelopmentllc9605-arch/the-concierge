@@ -161,9 +161,11 @@ export default function TryOn() {
     }
   );
   const categoryGroup = getCategoryGroup(currentProduct?.category);
-  let recommendedSize = chartMatch?.size || (categoryGroup ? userProfile?.suggested_sizes?.[categoryGroup] : '');
-  const recommendedWidth = chartMatch?.width || '';
-  if (currentProduct?.category === 'suits' && !chartMatch?.size && userProfile?.suggested_sizes?.suits) {
+  let recommendedSize = chartMatch?.blocked
+    ? ''
+    : (chartMatch?.size || (categoryGroup ? userProfile?.suggested_sizes?.[categoryGroup] : ''));
+  const recommendedWidth = chartMatch?.blocked ? '' : (chartMatch?.width || '');
+  if (currentProduct?.category === 'suits' && !chartMatch?.size && !chartMatch?.blocked && userProfile?.suggested_sizes?.suits) {
     const suitBase = userProfile.suggested_sizes.suits;
     recommendedSize = currentProduct.sizes?.find(value => String(value).startsWith(String(suitBase))) || suitBase;
   }
