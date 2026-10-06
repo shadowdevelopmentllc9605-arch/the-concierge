@@ -1,84 +1,72 @@
-# Department-store brand master audit
+# Department-store fashion brand master
 
 Snapshot: 2026-10-06  
-Audit version: `2026-10-06-brand-master-layer-1`
+Version: `2026-10-06-full-department-store-brand-layer-4`
 
-This audit is the brand-discovery layer for The Concierge. Brand existence and retailer presence are tracked independently from sizing-chart availability so later recommendation layers can use the same brand graph for fit, style, trends, assortment, and retailer-specific intelligence.
+The Concierge now separates **brand discovery** from **verified sizing**. A brand is retained in the master even when no trustworthy numeric size chart is available, so later fit, style, trend, assortment, and retailer-intelligence layers can use the same brand graph.
 
-The audited fashion scope includes women, men, kids, intimates, activewear, accessories/headwear, and footwear. Home-only, beauty-only, furniture, cookware, and electronics brands are excluded unless they also participate in a fashion category.
+## Current canonical layer
 
-## Live brand master
+- Source BrandCatalog records: **1,074**
+- Canonical unique fashion brands after merging duplicate discoveries: **965**
+- Duplicate discovery records merged by `brand_key`: **109**
+- Retailer banners represented: **16**
+- Unique brands with verified sizing: **90**
+- Unique brands with partial official sizing information: **24**
+- Unique brands currently estimate-only: **851**
+- Live verified size-chart records: **248**
+- Live normalized sizing rows: **3,520**
 
-- Brand catalog records: **277**
-- Retailer groups represented: **9**
-- Brands with verified sizing charts: **74**
-- Brands with partial/unsafe-to-generalize sizing sources: **25**
-- Brands currently using measurement-based estimate fallback: **178**
-- Verified size-chart records: **179**
-- Normalized verified size rows: **2,447**
+The shopper Shop page uses cursor pagination and merges duplicate brand records at runtime, so the full current catalog can be searched rather than only the first 500 records.
 
-The live entity is `BrandCatalog`. A repository snapshot is stored in `data/brand-catalog.json`.
+## Retailer coverage
 
-## Sizing status model
-
-- **verified_loaded** — one or more compatible verified numeric charts are live in `BrandSizeChart`.
-- **partial** — sizing information exists, but it is incomplete, malformed, image-only, or tied to a specific fit family that is unsafe to apply generically.
-- **estimate_only** — the brand is still fully represented in `BrandCatalog`, but no compatible verified chart is live; The Concierge uses the customer's body measurements and labels the result **Estimated size**.
-
-## Retailer audit status
-
-| Retailer | Fashion brands represented | Verified loaded | Partial source | Estimate-only |
+| Retailer | Fashion brands | Verified | Partial | Estimate-only |
 | --- | ---: | ---: | ---: | ---: |
-| Walmart | 57 | 11 | 4 | 42 |
-| Target | 20 | 15 | 2 | 3 |
-| Kohl's | 67 | 32 | 9 | 26 |
-| Macy's | 57 | 26 | 6 | 25 |
+| Nordstrom Rack | 399 | 36 | 5 | 358 |
+| Von Maur | 295 | 33 | 3 | 259 |
+| Nordstrom | 144 | 28 | 1 | 115 |
+| Bloomingdale's | 95 | 29 | 2 | 64 |
+| Macy's | 74 | 38 | 6 | 30 |
+| Saks Fifth Avenue | 72 | 8 | 0 | 64 |
+| Kohl's | 67 | 34 | 7 | 26 |
 | Dillard's | 58 | 4 | 2 | 52 |
-| JCPenney | 26 | 6 | 7 | 13 |
-| Belk | 32 | 13 | 0 | 19 |
-| Nordstrom | 42 | 18 | 1 | 23 |
-| Bloomingdale's | 44 | 18 | 1 | 25 |
+| Walmart | 57 | 11 | 4 | 42 |
+| JCPenney | 49 | 10 | 9 | 30 |
+| Neiman Marcus | 47 | 1 | 0 | 46 |
+| Bealls Florida | 42 | 16 | 1 | 25 |
+| Boscov's | 40 | 13 | 4 | 23 |
+| Bergdorf Goodman | 34 | 0 | 0 | 34 |
+| Belk | 32 | 19 | 0 | 13 |
+| Target | 20 | 15 | 2 | 3 |
 
-Because the same brand can be carried by several retailers, the retailer totals overlap; they do not sum to 277 unique brands.
+Because brands are carried by multiple retailers, retailer totals overlap and do not sum to 965.
 
-The machine-readable retailer/brand/status matrix is in `data/department-store-brand-audit.json`.
+## Sizing provenance
 
-## Shopper app integration
+- **verified_loaded**: one or more compatible official/verified numeric charts are live in `BrandSizeChart`.
+- **partial**: the brand publishes sizing information, but the current source is incomplete, image-only, fit-family-specific, or otherwise unsafe to generalize.
+- **estimate_only**: the brand is listed and usable for discovery/style layers, but fit falls back to the customer's body measurements until a compatible verified chart is available.
 
-The Shop filter now loads brands from `BrandCatalog`, not from the current product inventory or only from `BrandSizeChart`. This means brands remain visible and selectable even when:
+Product-specific retailer charts still take priority over a general brand chart.
 
-- no current retailer inventory item has been synced yet;
-- no verified size chart is available yet;
-- the only current sizing path is a body-measurement estimate.
+## Official brand-site expansion
 
-The brand filter exposes the full live brand master and labels sizing availability through the brand record metadata.
+The latest pass checked brand-owned sources and added or expanded verified coverage for Carter's, Playtex, Maidenform, and Speedo. Existing official-site coverage also includes brands such as ASICS, Birkenstock, Saucony, Nike, adidas, Under Armour, New Balance, Levi's, Calvin Klein, and others.
 
-## Verified sizing layer
+Carter's now includes compatible data for kids underwear, baby/toddler/kids bottoms, expanded footwear, women, adult family tops, and headwear. Weight-dependent rows are not treated as verified measurements because the current fit engine does not score body weight.
 
-The verified sizing catalog currently contains **179** chart records across **74** brands and **2,447** normalized rows.
+Playtex and Maidenform use official band/cup availability as identity compatibility charts; they are not represented as body-measurement bra conversions.
 
-Recommendation priority remains:
+Speedo now includes compatible men, women, and boys swimwear measurement charts.
 
-1. Retailer-supplied product chart / product fit override
-2. Compatible verified brand chart
-3. Measurement-based estimate
+Hanes and PUMA remain **partial** where official sites confirm multi-gender/multi-age ranges but the audit did not capture a complete trustworthy numeric body table.
 
-A verified chart is never inferred from product reviews, a one-row size snippet, generic category dimensions, or another brand's chart.
+## Dynamic-catalog caveat
 
-## Why some brands remain estimate-only
+This is a current U.S.-focused fashion snapshot, not a claim that every department store worldwide or every future assortment is permanently enumerated. Department-store catalogs change continuously. The data model is deliberately refreshable: a new brand can enter `BrandCatalog` immediately and gain verified sizing independently when an official chart becomes available.
 
-A retailer listing a brand does not mean a usable body-measurement chart is publicly available. Examples include retailer private labels whose product pages expose a “Size guide” control without retrievable numeric measurements, image-only charts, and product families whose Classic/Slim/Straight or other fit tables cannot safely be generalized to every product under the brand.
-
-Those brands remain in the master brand graph and are available for future style/trend layers; only the sizing provenance remains estimate-only until a trustworthy compatible chart is added.
-
-## Dynamic retailer directories
-
-Macy's, Nordstrom, and Bloomingdale's maintain large, frequently changing A-Z brand/designer directories. Their current official fashion directories remain canonical discovery sources, and the brand master can be refreshed without changing the sizing engine. New brands should enter `BrandCatalog` immediately, then gain verified sizing independently if and when trustworthy measurements are available.
-
-## Key files
-
-- `base44/entities/BrandCatalog.jsonc` — live brand master schema
-- `data/brand-catalog.json` — repository snapshot of live brand records
-- `data/department-store-brand-audit.json` — retailer → brand → sizing-status matrix
-- `data/brand-sizing-catalog.json` — verified numeric size-chart snapshot
-- `docs/SIZING_CATALOG.md` — sizing-engine documentation
+Machine-readable files:
+- `data/brand-catalog.json`
+- `data/department-store-brand-audit.json`
+- `data/brand-sizing-live-summary.json`
