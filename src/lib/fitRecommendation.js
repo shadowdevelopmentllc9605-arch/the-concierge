@@ -496,6 +496,35 @@ export function getEffectiveSizeChart(product, profile, brandCharts = []) {
       };
 }
 
+export function getFitRecommendationPresentation(source = '', matchType = '') {
+  const normalizedSource = String(source || '').replace(/_nearest$/, '');
+  const nearest = matchType === 'nearest' || String(source || '').endsWith('_nearest');
+
+  if (normalizedSource === 'profile_estimate') {
+    return {
+      label: 'Estimated size',
+      detail: 'Based on your body measurements',
+      verified: false,
+    };
+  }
+
+  if (normalizedSource === 'product_size_chart' || normalizedSource === 'brand_size_chart') {
+    return {
+      label: nearest ? 'Closest verified fit' : 'Verified fit',
+      detail: normalizedSource === 'product_size_chart'
+        ? 'Based on this product’s sizing chart and your body measurements'
+        : 'Based on verified brand sizing and your body measurements',
+      verified: true,
+    };
+  }
+
+  return {
+    label: 'Size recommendation',
+    detail: '',
+    verified: false,
+  };
+}
+
 export function recommendProfileSize(category, profile) {
   const group = getCategoryGroup(category);
   if (!group) return null;
