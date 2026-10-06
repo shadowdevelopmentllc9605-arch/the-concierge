@@ -364,17 +364,24 @@ export function normalizeBrandKey(value = '') {
   return aliases[normalized] || normalized;
 }
 
+export function getSizingAgeGroup(profile = {}) {
+  if (!profile?.birthday) return 'unknown';
+  const birthday = new Date(`${profile.birthday}T00:00:00`);
+  if (Number.isNaN(birthday.getTime())) return 'unknown';
+
+  const today = new Date();
+  const ageYears = (today.getTime() - birthday.getTime()) / (365.2425 * 24 * 60 * 60 * 1000);
+  if (ageYears < 0) return 'unknown';
+  if (ageYears < 2) return 'infant';
+  if (ageYears < 5) return 'toddler';
+  if (ageYears < 13) return 'kids';
+  if (ageYears < 18) return 'youth';
+  return 'adult';
+}
+
 export function getSizingAudience(profile = {}) {
-  if (profile?.birthday) {
-    const birthday = new Date(`${profile.birthday}T00:00:00`);
-    if (!Number.isNaN(birthday.getTime())) {
-      const today = new Date();
-      let age = today.getFullYear() - birthday.getFullYear();
-      const monthDelta = today.getMonth() - birthday.getMonth();
-      if (monthDelta < 0 || (monthDelta === 0 && today.getDate() < birthday.getDate())) age -= 1;
-      if (age >= 0 && age < 18) return 'kids';
-    }
-  }
+  const ageGroup = getSizingAgeGroup(profile);
+  if (['infant', 'toddler', 'kids', 'youth'].includes(ageGroup)) return 'kids';
   if (profile?.gender === 'male') return 'men';
   if (profile?.gender === 'female') return 'women';
   return 'unknown';
@@ -424,6 +431,16 @@ export function selectBrandSizeChart(brandCharts = [], product = {}, profile = {
     }
   }
 
+  const sizingAgeGroup = getSizingAgeGroup(profile);
+  if (sizingAgeGroup !== 'unknown') {
+    const exactAgeGroup = audienceCandidates.filter(chart => chart?.age_group === sizingAgeGroup);
+    const allAges = audienceCandidates.filter(chart =>
+      !chart?.age_group || chart.age_group === 'all' || chart.age_group === 'unknown'
+    );
+    if (exactAgeGroup.length) audienceCandidates = exactAgeGroup;
+    else if (allAges.length) audienceCandidates = allAges;
+  }
+
   if (audience === 'kids') {
     const childGender = profile?.gender === 'male'
       ? 'boys'
@@ -461,6 +478,18 @@ export function selectBrandSizeChart(brandCharts = [], product = {}, profile = {
     );
     if (compatible.length) audienceCandidates = compatible;
     else return null;
+  }
+
+  if (audience === 'kids' && sizingAgeGroup === 'unknown') {
+    const genericAgeCharts = audienceCandidates.filter(chart =>
+      !chart?.age_group || chart.age_group === 'all' || chart.age_group === 'unknown'
+    );
+    if (genericAgeCharts.length) {
+      audienceCandidates = genericAgeCharts;
+    } else {
+      const distinctAgeGroups = new Set(audienceCandidates.map(chart => chart?.age_group).filter(Boolean));
+      if (distinctAgeGroups.size > 1) return null;
+    }
   }
 
   return audienceCandidates[0] || null;
