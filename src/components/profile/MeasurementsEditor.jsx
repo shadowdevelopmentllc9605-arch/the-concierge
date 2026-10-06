@@ -10,6 +10,7 @@ import {
   parseHeightToCm,
   parseLengthToCm,
 } from '@/lib/measurementUnits';
+import { deriveGenericSuggestedSizes } from '@/lib/fitRecommendation';
 
 const UNSURE = 'unsure';
 
@@ -83,6 +84,13 @@ export default function MeasurementsEditor({ profile, onSaved }) {
     });
     return init;
   });
+  const [verifiedFields, setVerifiedFields] = useState(() => {
+    const init = {};
+    lengthFields.forEach(({ key }) => {
+      init[key] = profile?.measurement_sources?.[key] === 'customer_tape_verified';
+    });
+    return init;
+  });
 
   const scanConfidence = profile?.measurement_confidence;
   const lastUpdated = profile?.measurement_updated_at;
@@ -119,7 +127,13 @@ export default function MeasurementsEditor({ profile, onSaved }) {
   }, [lengthValues, unit, unsureFields]);
 
   const toggleUnsure = (key) => {
-    setUnsureFields(prev => ({ ...prev, [key]: !prev[key] }));
+    setUnsureFields(prev => {
+      const nextUnsure = !prev[key];
+      if (nextUnsure) {
+        setVerifiedFields(verified => ({ ...verified, [key]: false }));
+      }
+      return { ...prev, [key]: nextUnsure };
+    });
   };
 
   const handleSave = async () => {
@@ -139,12 +153,54 @@ export default function MeasurementsEditor({ profile, onSaved }) {
         if (unsureFields[key]) displayMeasurements[key] = UNSURE;
       }
 
+      const measurementSources = { ...(profile?.measurement_sources || {}) };
+      const confidenceByField = { ...(profile?.measurement_confidence_by_field || {}) };
+
+      for (const { key } of lengthFields) {
+        const current = Number(canonicalCm[key]);
+        const previous = Number(profile?.measurement_values_cm?.[key]);
+
+        if (!Number.isFinite(current)) {
+          delete measurementSources[key];
+          delete confidenceByField[key];
+          continue;
+        }
+
+        if (verifiedFields[key]) {
+          measurementSources[key] = 'customer_tape_verified';
+          confidenceByField[key] = 100;
+          continue;
+        }
+
+        const changed = !Number.isFinite(previous) || Math.abs(current - previous) >= 0.2;
+        if (changed) {
+          measurementSources[key] = Number.isFinite(previous)
+            ? 'customer_corrected'
+            : 'customer_supplied';
+          confidenceByField[key] = Math.max(Number(confidenceByField[key] || 0), 90);
+        }
+      }
+
+      const verifiedCore = ['chest', 'waist', 'hips'].filter(key =>
+        Number.isFinite(Number(canonicalCm[key])) && verifiedFields[key]
+      );
+      const anyVerified = Object.values(verifiedFields).some(Boolean);
+      const validationStatus = verifiedCore.length === 3
+        ? 'verified'
+        : anyVerified
+          ? 'partially_verified'
+          : 'reviewed';
+
       const update = {
         measurement_unit: unit,
         measurement_values_cm: canonicalCm,
         measurements: displayMeasurements,
+        measurement_sources: measurementSources,
+        measurement_confidence_by_field: confidenceByField,
+        measurement_validation_status: validationStatus,
+        suggested_sizes: deriveGenericSuggestedSizes(canonicalCm),
         measurement_updated_at: new Date().toISOString(),
-        measurement_method: profile?.measurement_method || 'manual',
+        measurement_method: profile?.body_scan_front ? 'mixed_scan_manual_review' : 'manual',
       };
 
       await base44.entities.UserProfile.update(profile.id, update);
@@ -247,6 +303,16 @@ export default function MeasurementsEditor({ profile, onSaved }) {
                   </span>
                 )}
               </div>
+              {!unsureFields[field.key] && (
+                <label className="flex items-center gap-2 mt-2 text-xs text-[var(--color-text-secondary)] cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={Boolean(verifiedFields[field.key])}
+                    onChange={(e) => setVerifiedFields(prev => ({ ...prev, [field.key]: e.target.checked }))}
+                  />
+                  I verified this measurement with a tape or ruler
+                </label>
+              )}
             </div>
           ))}
 
@@ -280,7 +346,7 @@ export default function MeasurementsEditor({ profile, onSaved }) {
           ))}
 
           <p className="text-xs text-[var(--color-text-secondary)]">
-            Photo measurements are estimates. For critical fit decisions, compare them with a tape measurement and correct any value that looks wrong.
+            Photo measurements are estimates. Mark a measurement verified only when you actually checked it with a tape or ruler. The Concierge uses that verification when deciding how confident a size recommendation should be.
           </p>
 
           <button
