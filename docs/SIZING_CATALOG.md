@@ -13,16 +13,17 @@ This repository mirrors the verified sizing reference data used by The Concierge
 
 ## Head-to-toe coverage
 
-The catalog supports adult and kids sizing across tops, bottoms, dresses/evening wear, suits/formalwear, underwear/bras, outerwear, headwear, and footwear/boots.
+The catalog supports adult and kids sizing across tops, bottoms, dresses/evening wear, suits/formalwear, underwear/bras, swimwear, outerwear, headwear, and footwear/boots.
 
-- bottoms: 6
-- dresses: 1
-- footwear: 16
+- bottoms: 21
+- dresses: 6
+- footwear: 17
 - headwear: 5
 - outerwear: 4
 - suits: 2
-- tops: 20
-- underwear: 3
+- swimwear: 2
+- tops: 48
+- underwear: 5
 
 ## Advanced footwear fit
 
