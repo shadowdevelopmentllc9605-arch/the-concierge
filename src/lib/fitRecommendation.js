@@ -378,6 +378,7 @@ export function selectBrandSizeChart(brandCharts = [], product = {}, profile = {
     chart?.active !== false &&
     normalizeBrandKey(chart?.brand_key || chart?.brand_name) === brandKey &&
     chart?.category_group === categoryGroup &&
+    chart?.measurement_basis !== 'garment' &&
     Array.isArray(chart?.entries) &&
     chart.entries.length > 0
   );
@@ -446,18 +447,40 @@ export function selectBrandSizeChart(brandCharts = [], product = {}, profile = {
 }
 
 export function getEffectiveSizeChart(product, profile, brandCharts = []) {
-  if (Array.isArray(product?.size_chart) && product.size_chart.length > 0) {
+  const productBasis = product?.size_chart_measurement_basis || 'body';
+  if (
+    Array.isArray(product?.size_chart) &&
+    product.size_chart.length > 0 &&
+    productBasis !== 'garment'
+  ) {
     return {
       entries: product.size_chart,
       source: 'product_size_chart',
       chart: null,
+      measurementBasis: productBasis,
+      garmentMeasurements: product?.garment_measurements || [],
+      garmentFit: product?.garment_fit || {},
     };
   }
 
   const chart = selectBrandSizeChart(brandCharts, product, profile);
   return chart
-    ? { entries: chart.entries, source: 'brand_size_chart', chart }
-    : { entries: [], source: 'none', chart: null };
+    ? {
+        entries: chart.entries,
+        source: 'brand_size_chart',
+        chart,
+        measurementBasis: chart.measurement_basis || 'body',
+        garmentMeasurements: product?.garment_measurements || [],
+        garmentFit: product?.garment_fit || {},
+      }
+    : {
+        entries: [],
+        source: productBasis === 'garment' ? 'garment_data_only' : 'none',
+        chart: null,
+        measurementBasis: productBasis,
+        garmentMeasurements: product?.garment_measurements || [],
+        garmentFit: product?.garment_fit || {},
+      };
 }
 
 export function recommendProfileSize(category, profile) {
