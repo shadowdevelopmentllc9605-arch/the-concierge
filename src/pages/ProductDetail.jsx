@@ -25,6 +25,9 @@ export default function ProductDetail() {
   const [suggestedWidth, setSuggestedWidth] = useState('');
   const [footwearFitNote, setFootwearFitNote] = useState('');
   const [recommendationSource, setRecommendationSource] = useState('');
+  const [fitConfidence, setFitConfidence] = useState('');
+  const [fitConfidenceScore, setFitConfidenceScore] = useState(null);
+  const [missingFitMeasurements, setMissingFitMeasurements] = useState([]);
 
   useEffect(() => {
     loadData();
@@ -71,6 +74,11 @@ export default function ProductDetail() {
             shoeWidth: profile.measurements?.shoe_width,
             braSize: profile.measurements?.bra_size,
             gender: profile.gender,
+            category: product.category,
+            categoryGroup: getCategoryGroup(product.category),
+            measurementConfidence: profile.measurement_confidence,
+            measurementConfidenceByField: profile.measurement_confidence_by_field || {},
+            validationStatus: profile.measurement_validation_status || 'estimated',
             sizeAdjustmentSteps: product.footwear_fit?.size_adjustment_steps ?? effectiveChart.chart?.size_adjustment_steps ?? 0
           }
         );
@@ -78,6 +86,9 @@ export default function ProductDetail() {
         if (chartMatch?.size) {
           setSuggestedSize(chartMatch.size);
           setSuggestedWidth(chartMatch.width || '');
+          setFitConfidence(chartMatch.fitConfidence || '');
+          setFitConfidenceScore(chartMatch.confidenceScore ?? null);
+          setMissingFitMeasurements(chartMatch.missingMeasurements || []);
           if (chartMatch.width && (!product.width_options?.length || product.width_options.includes(chartMatch.width))) {
             setSelectedWidth(chartMatch.width);
           }
@@ -101,6 +112,9 @@ export default function ProductDetail() {
           if (fallback && (!product.sizes?.length || product.sizes.includes(fallback))) {
             setSuggestedSize(fallback);
             setRecommendationSource('profile_estimate');
+            setFitConfidence('low');
+            setFitConfidenceScore(null);
+            setMissingFitMeasurements([]);
           }
         }
       }
@@ -343,7 +357,7 @@ export default function ProductDetail() {
               {suggestedSize && (
                 <span className="text-xs text-[var(--color-accent)] flex items-center gap-1">
                   <Sparkles className="w-3 h-3" />
-                  {recommendationSource === 'brand_size_chart' ? 'Verified brand match' : recommendationSource === 'brand_size_chart_nearest' ? 'Closest brand match' : recommendationSource === 'product_size_chart_nearest' ? 'Closest product-chart match' : recommendationSource === 'product_size_chart' ? 'Best match' : 'Profile estimate'}: {suggestedSize}{suggestedWidth ? ' • ' + suggestedWidth : ''}
+                  {recommendationSource === 'brand_size_chart_nearest' ? 'Closest brand fit' : recommendationSource === 'product_size_chart_nearest' ? 'Closest product fit' : recommendationSource === 'profile_estimate' ? 'Profile estimate' : fitConfidence === 'high' ? 'High-confidence fit' : fitConfidence === 'medium' ? 'Fit match' : 'Low-confidence fit'}: {suggestedSize}{suggestedWidth ? ' • ' + suggestedWidth : ''}
                 </span>
               )}
             </div>
@@ -419,6 +433,12 @@ export default function ProductDetail() {
         {suggestedSize && recommendationSource.startsWith('brand_size_chart') && (
           <p className="mt-3 text-xs text-[var(--color-text-secondary)]">
             Recommendation uses the verified brand sizing catalog. A retailer-supplied product chart will override it when available.
+            {fitConfidenceScore != null ? ` Fit confidence: ${fitConfidenceScore}%.` : ''}
+          </p>
+        )}
+        {suggestedSize && missingFitMeasurements.length > 0 && (
+          <p className="mt-2 text-xs text-amber-700">
+            Add or verify {missingFitMeasurements.join(', ').replaceAll('_', ' ')} in My Measurements to improve this fit recommendation.
           </p>
         )}
 
