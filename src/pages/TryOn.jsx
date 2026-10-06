@@ -5,7 +5,7 @@ import { createPageUrl } from '@/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, ChevronLeft, ChevronRight, Heart, ShoppingBag, Sparkles } from 'lucide-react';
 import { Button } from "@/components/ui/button";
-import { getCategoryGroup, recommendFromSizeChart } from '@/lib/fitRecommendation';
+import { getCategoryGroup, getEffectiveSizeChart, recommendFromSizeChart } from '@/lib/fitRecommendation';
 import { resolveFileUrl } from '@/lib/privateFiles';
 
 export default function TryOn() {
@@ -20,6 +20,7 @@ export default function TryOn() {
   const [wishlist, setWishlist] = useState([]);
   const [user, setUser] = useState(null);
   const [bodyScanUrl, setBodyScanUrl] = useState('');
+  const [brandCharts, setBrandCharts] = useState([]);
 
   // Body scans are private files — render through a short-lived signed URL.
   useEffect(() => {
@@ -49,9 +50,13 @@ export default function TryOn() {
         setUserProfile(profiles[0]);
       }
 
-      // Load products
-      const allProducts = await base44.entities.Product.list('-created_date', 50);
+      // Load products and verified brand charts
+      const [allProducts, sizeCharts] = await Promise.all([
+        base44.entities.Product.list('-created_date', 50),
+        base44.entities.BrandSizeChart.filter({ active: true })
+      ]);
       setProducts(allProducts);
+      setBrandCharts(sizeCharts);
 
       // If initial product specified, find its index
       if (initialProductId) {
@@ -138,8 +143,9 @@ export default function TryOn() {
     );
   }
 
+  const effectiveChart = getEffectiveSizeChart(currentProduct, userProfile, brandCharts);
   const chartMatch = recommendFromSizeChart(
-    currentProduct?.size_chart || [],
+    effectiveChart.entries,
     userProfile?.measurement_values_cm || {}
   );
   const categoryGroup = getCategoryGroup(currentProduct?.category);
@@ -151,7 +157,11 @@ export default function TryOn() {
   if (recommendedSize && currentProduct?.sizes?.length && !currentProduct.sizes.includes(recommendedSize)) {
     recommendedSize = '';
   }
-  const recommendationLabel = chartMatch?.size ? 'Best match' : recommendedSize ? 'Profile estimate' : '';
+  const recommendationLabel = chartMatch?.size
+    ? (effectiveChart.source === 'brand_size_chart'
+      ? (chartMatch.matchType === 'nearest' ? 'Closest brand match' : 'Verified brand match')
+      : (chartMatch.matchType === 'nearest' ? 'Closest product-chart match' : 'Best match'))
+    : recommendedSize ? 'Profile estimate' : '';
 
   return (
     <div className="min-h-screen bg-[#1a1a1a] relative overflow-hidden">
