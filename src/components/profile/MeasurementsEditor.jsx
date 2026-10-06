@@ -25,12 +25,15 @@ const lengthFields = [
   { key: 'arm_length', label: 'Arm Length' },
   { key: 'neck', label: 'Neck' },
   { key: 'head_circumference', label: 'Head Circumference' },
-  { key: 'foot_length', label: 'Foot Length' },
+  { key: 'foot_length', label: 'Foot Length (larger foot)' },
+  { key: 'foot_width', label: 'Foot Width (widest foot)' },
+  { key: 'calf_circumference', label: 'Calf Circumference' },
 ];
 
 const textFields = [
   { key: 'weight', label: 'Weight', placeholder: 'e.g. 175 lb or 79 kg' },
   { key: 'shoe_size', label: 'Shoe Size', placeholder: 'e.g. 10 US / 43 EU' },
+  { key: 'shoe_width', label: 'Shoe Width', placeholder: 'e.g. D, 2E, Wide, Narrow' },
   { key: 'bra_size', label: 'Bra Size', placeholder: 'e.g. 34C' },
 ];
 
