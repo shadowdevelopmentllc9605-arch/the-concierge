@@ -5,7 +5,7 @@ import { createPageUrl } from '@/utils';
 import { Sparkles, Search, Heart, ShoppingBag, ChevronRight, Store } from 'lucide-react';
 import { motion } from 'framer-motion';
 import PullToRefresh from '@/components/PullToRefresh';
-import { getCategoryGroup, recommendFromSizeChart } from '@/lib/fitRecommendation';
+import { getCategoryGroup, getEffectiveSizeChart, recommendFromSizeChart } from '@/lib/fitRecommendation';
 
 export default function Home() {
   const navigate = useNavigate();
@@ -33,11 +33,12 @@ export default function Home() {
       const profile = profiles[0];
       setUserProfile(profile);
 
-      const [products, purchases, closet, vendors] = await Promise.all([
+      const [products, purchases, closet, vendors, brandCharts] = await Promise.all([
         base44.entities.Product.list('-created_date', 100),
         base44.entities.Purchase.filter({ user_id: currentUser.id }),
         base44.entities.ClosetItem.filter({ user_id: currentUser.id }),
-        base44.entities.Vendor.list()
+        base44.entities.Vendor.list(),
+        base44.entities.BrandSizeChart.filter({ active: true })
       ]);
 
       const purchasedProductIds = new Set(purchases.map(item => item.product_id).filter(Boolean));
@@ -62,13 +63,19 @@ export default function Home() {
           if (product.is_new) score += 1;
           if (purchasedProductIds.has(product.id)) score -= 4;
 
+          const effectiveChart = getEffectiveSizeChart(product, profile, brandCharts);
           const chartMatch = recommendFromSizeChart(
-            product.size_chart || [],
+            effectiveChart.entries,
             profile.measurement_values_cm || {}
           );
 
           let size = chartMatch?.size || '';
-          let recommendationLabel = chartMatch?.size ? 'Best match' : '';
+          let recommendationLabel = '';
+          if (chartMatch?.size) {
+            recommendationLabel = effectiveChart.source === 'brand_size_chart'
+              ? (chartMatch.matchType === 'nearest' ? 'Closest brand match' : 'Verified brand match')
+              : (chartMatch.matchType === 'nearest' ? 'Closest product-chart match' : 'Best match');
+          }
 
           if (!size) {
             const group = getCategoryGroup(product.category);
