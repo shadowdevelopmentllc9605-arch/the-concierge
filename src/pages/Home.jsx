@@ -81,10 +81,10 @@ export default function Home() {
             }
           );
 
-          let size = chartMatch?.size || '';
-          let width = chartMatch?.width || '';
+          let size = chartMatch?.blocked ? '' : (chartMatch?.size || '');
+          let width = chartMatch?.blocked ? '' : (chartMatch?.width || '');
           let recommendationLabel = '';
-          if (chartMatch?.size) {
+          if (chartMatch?.size && !chartMatch.blocked) {
             if (chartMatch.matchType === 'nearest') {
               recommendationLabel = effectiveChart.source === 'brand_size_chart'
                 ? 'Closest brand fit'
@@ -98,7 +98,7 @@ export default function Home() {
             }
           }
 
-          if (!size) {
+          if (!size && !chartMatch?.blocked) {
             const group = getCategoryGroup(product.category);
             size = group ? profile.suggested_sizes?.[group] || '' : '';
             if (product.category === 'suits' && profile.suggested_sizes?.suits) {
