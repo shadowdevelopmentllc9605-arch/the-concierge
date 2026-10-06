@@ -339,7 +339,7 @@ export default function ProductDetail() {
               {suggestedSize && (
                 <span className="text-xs text-[var(--color-accent)] flex items-center gap-1">
                   <Sparkles className="w-3 h-3" />
-                  {recommendationSource === 'brand_size_chart' ? 'Verified brand match' : recommendationSource === 'brand_size_chart_nearest' ? 'Closest brand match' : recommendationSource === 'product_size_chart_nearest' ? 'Closest product-chart match' : recommendationSource === 'product_size_chart' ? 'Best match' : 'Profile estimate'}: {suggestedSize}
+                  {recommendationSource === 'brand_size_chart' ? 'Verified brand match' : recommendationSource === 'brand_size_chart_nearest' ? 'Closest brand match' : recommendationSource === 'product_size_chart_nearest' ? 'Closest product-chart match' : recommendationSource === 'product_size_chart' ? 'Best match' : 'Profile estimate'}: {suggestedSize}{suggestedWidth ? ' • ' + suggestedWidth : ''}
                 </span>
               )}
             </div>
@@ -364,6 +364,47 @@ export default function ProductDetail() {
               ))}
             </div>
           </div>
+        )}
+
+        {widthOptions.length > 0 && (
+          <div className="mt-6">
+            <div className="flex justify-between items-center mb-3">
+              <p className="text-sm font-medium text-[var(--color-text-primary)]">Select Width</p>
+              {suggestedWidth && (
+                <span className="text-xs text-[var(--color-accent)] flex items-center gap-1">
+                  <Sparkles className="w-3 h-3" />
+                  Recommended: {suggestedWidth}
+                </span>
+              )}
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {widthOptions.map(width => (
+                <button
+                  key={width}
+                  onClick={() => widthAvailable(width) && setSelectedWidth(width)}
+                  disabled={!widthAvailable(width)}
+                  className={
+                    'h-11 min-w-[52px] px-4 rounded-xl border-2 font-medium text-sm transition-colors select-none ' +
+                    (!widthAvailable(width)
+                      ? 'border-[var(--color-border)] text-[var(--color-text-muted)] opacity-40 cursor-not-allowed line-through'
+                      : selectedWidth === width
+                        ? 'border-[var(--color-text-primary)] bg-[var(--color-text-primary)] text-[var(--color-background)]'
+                        : width === suggestedWidth
+                          ? 'border-[var(--color-accent)] text-[var(--color-text-primary)]'
+                          : 'border-[var(--color-border)] text-[var(--color-text-primary)]')
+                  }
+                >
+                  {width}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {getCategoryGroup(product.category) === 'footwear' && product.footwear_fit?.fit_notes && (
+          <p className="mt-3 text-xs text-[var(--color-text-secondary)]">
+            Fit note: {product.footwear_fit.fit_notes}
+          </p>
         )}
 
         {suggestedSize && recommendationSource === 'profile_estimate' && (
@@ -408,6 +449,7 @@ export default function ProductDetail() {
           onClick={addToCart}
           disabled={
             ((product.sizes?.length || 0) > 0 && !selectedSize) ||
+            (widthOptions.length > 0 && !selectedWidth) ||
             ((product.colors?.length || 0) > 0 && !selectedColor) ||
             !selectionInStock ||
             addingToCart
