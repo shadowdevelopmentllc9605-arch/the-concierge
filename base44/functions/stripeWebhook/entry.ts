@@ -194,7 +194,7 @@ async function syncPaidOrderToPro(base44: any, order: any, user: any) {
         },
         items: items.map((item: any) => ({
           product_id: item.product_id,
-          line_key: `${order.id}:${item.cart_item_id || [item.product_id, item.size, item.color].join(":")}`,
+          line_key: `${order.id}:${item.cart_item_id || [item.product_id, item.size, item.width_code, item.color].join(":")}`,
           name: item.product_name,
           quantity: item.quantity,
           price: item.unit_price,
