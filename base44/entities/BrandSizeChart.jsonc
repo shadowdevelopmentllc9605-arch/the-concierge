@@ -260,6 +260,20 @@
     "size_adjustment_steps": {
       "type": "number",
       "description": "Optional official/product-specific half-size step adjustment. 1 = +0.5 US size, -1 = -0.5. Zero/absent means no automatic adjustment."
+    },
+    "age_group": {
+      "type": "string",
+      "enum": [
+        "infant",
+        "toddler",
+        "kids",
+        "youth",
+        "adult",
+        "all",
+        "unknown"
+      ],
+      "default": "all",
+      "description": "Age band for sizing systems that reuse labeled sizes across child development stages."
     }
   },
   "required": [
