@@ -4,6 +4,12 @@ const CATEGORY_GROUPS = {
   dresses: new Set(['dresses', 'dress_skirts', 'skirts', 'evening_dresses']),
 };
 
+function finiteNumber(value) {
+  if (value === null || value === undefined || value === '') return Number.NaN;
+  const numeric = Number(value);
+  return Number.isFinite(numeric) ? numeric : Number.NaN;
+}
+
 function within(value, min, max) {
   if (!Number.isFinite(value)) return true;
   if (Number.isFinite(min) && value < min) return false;
@@ -22,10 +28,10 @@ export function recommendFromSizeChart(sizeChart = [], measurementsCm = {}) {
   if (!Array.isArray(sizeChart) || sizeChart.length === 0) return null;
 
   const user = {
-    chest: Number(measurementsCm.chest),
-    waist: Number(measurementsCm.waist),
-    hips: Number(measurementsCm.hips),
-    inseam: Number(measurementsCm.inseam),
+    chest: finiteNumber(measurementsCm.chest),
+    waist: finiteNumber(measurementsCm.waist),
+    hips: finiteNumber(measurementsCm.hips),
+    inseam: finiteNumber(measurementsCm.inseam),
   };
 
   const scored = sizeChart
@@ -37,8 +43,8 @@ export function recommendFromSizeChart(sizeChart = [], measurementsCm = {}) {
 
       for (const key of ['chest', 'waist', 'hips', 'inseam']) {
         const value = user[key];
-        const min = Number(row[`${key}_min_cm`]);
-        const max = Number(row[`${key}_max_cm`]);
+        const min = finiteNumber(row[`${key}_min_cm`]);
+        const max = finiteNumber(row[`${key}_max_cm`]);
         const hasMin = Number.isFinite(min);
         const hasMax = Number.isFinite(max);
         const hasBounds = hasMin || hasMax;
@@ -176,8 +182,8 @@ export function recommendProfileSize(category, profile) {
 
 
 function letterSizeFromChest(chestCm) {
-  if (!Number.isFinite(Number(chestCm))) return '';
-  const chest = Number(chestCm);
+  const chest = finiteNumber(chestCm);
+  if (!Number.isFinite(chest)) return '';
   if (chest < 86) return 'XS';
   if (chest < 94) return 'S';
   if (chest < 102) return 'M';
@@ -187,8 +193,8 @@ function letterSizeFromChest(chestCm) {
 }
 
 function letterSizeFromWaist(waistCm) {
-  if (!Number.isFinite(Number(waistCm))) return '';
-  const waist = Number(waistCm);
+  const waist = finiteNumber(waistCm);
+  if (!Number.isFinite(waist)) return '';
   if (waist < 72) return 'XS';
   if (waist < 80) return 'S';
   if (waist < 88) return 'M';
@@ -198,9 +204,9 @@ function letterSizeFromWaist(waistCm) {
 }
 
 export function deriveGenericSuggestedSizes(measurementsCm = {}) {
-  const chest = Number(measurementsCm.chest);
-  const waist = Number(measurementsCm.waist);
-  const hips = Number(measurementsCm.hips);
+  const chest = finiteNumber(measurementsCm.chest);
+  const waist = finiteNumber(measurementsCm.waist);
+  const hips = finiteNumber(measurementsCm.hips);
 
   const tops = letterSizeFromChest(chest);
   const bottoms = letterSizeFromWaist(waist);
