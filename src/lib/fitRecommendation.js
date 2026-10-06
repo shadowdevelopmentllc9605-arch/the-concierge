@@ -253,10 +253,14 @@ export function recommendFromSizeChart(sizeChart = [], measurementsCm = {}, opti
       const confidence = buildFitConfidence(sizeChart, measurementsCm, options, true, 1, true);
       return {
         size: identityMatch.size,
+        baseSize: identityMatch.size,
+        width: identityMatch.width_code || '',
+        widthLabel: identityMatch.width_label || '',
         source: 'product_size_chart',
         matched: identityMatch,
         criteriaMatched: 1,
         matchType: 'exact',
+        sizeAdjusted: false,
         ...confidence,
       };
     }
