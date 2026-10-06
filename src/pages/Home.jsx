@@ -67,7 +67,13 @@ export default function Home() {
           const chartMatch = recommendFromSizeChart(
             effectiveChart.entries,
             profile.measurement_values_cm || {},
-            { shoeSize: profile.measurements?.shoe_size, braSize: profile.measurements?.bra_size, gender: profile.gender }
+            {
+              shoeSize: profile.measurements?.shoe_size,
+              shoeWidth: profile.measurements?.shoe_width,
+              braSize: profile.measurements?.bra_size,
+              gender: profile.gender,
+              sizeAdjustmentSteps: product.footwear_fit?.size_adjustment_steps ?? effectiveChart.chart?.size_adjustment_steps ?? 0
+            }
           );
 
           let size = chartMatch?.size || '';
