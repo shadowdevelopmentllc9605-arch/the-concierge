@@ -24,6 +24,7 @@ const lengthFields = [
   { key: 'shoulders', label: 'Shoulders' },
   { key: 'arm_length', label: 'Arm Length' },
   { key: 'neck', label: 'Neck' },
+  { key: 'head_circumference', label: 'Head Circumference' },
   { key: 'foot_length', label: 'Foot Length' },
 ];
 
