@@ -26,6 +26,9 @@
     "quantity": {
       "type": "number",
       "default": 1
+    },
+    "width_code": {
+      "type": "string"
     }
   },
   "required": [],
