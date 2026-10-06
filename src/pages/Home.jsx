@@ -72,6 +72,11 @@ export default function Home() {
               shoeWidth: profile.measurements?.shoe_width,
               braSize: profile.measurements?.bra_size,
               gender: profile.gender,
+              category: product.category,
+              categoryGroup: getCategoryGroup(product.category),
+              measurementConfidence: profile.measurement_confidence,
+              measurementConfidenceByField: profile.measurement_confidence_by_field || {},
+              validationStatus: profile.measurement_validation_status || 'estimated',
               sizeAdjustmentSteps: product.footwear_fit?.size_adjustment_steps ?? effectiveChart.chart?.size_adjustment_steps ?? 0
             }
           );
@@ -80,9 +85,17 @@ export default function Home() {
           let width = chartMatch?.width || '';
           let recommendationLabel = '';
           if (chartMatch?.size) {
-            recommendationLabel = effectiveChart.source === 'brand_size_chart'
-              ? (chartMatch.matchType === 'nearest' ? 'Closest brand match' : 'Verified brand match')
-              : (chartMatch.matchType === 'nearest' ? 'Closest product-chart match' : 'Best match');
+            if (chartMatch.matchType === 'nearest') {
+              recommendationLabel = effectiveChart.source === 'brand_size_chart'
+                ? 'Closest brand fit'
+                : 'Closest product fit';
+            } else {
+              recommendationLabel = chartMatch.fitConfidence === 'high'
+                ? 'High-confidence fit'
+                : chartMatch.fitConfidence === 'medium'
+                  ? 'Fit match'
+                  : 'Low-confidence fit';
+            }
           }
 
           if (!size) {
@@ -106,6 +119,8 @@ export default function Home() {
             size,
             width,
             recommendationLabel,
+            fitConfidence: chartMatch?.fitConfidence || (size ? 'low' : ''),
+            fitConfidenceScore: chartMatch?.confidenceScore ?? null,
             tryOnAvailable: Boolean(product.tryOn_image),
             score
           };
