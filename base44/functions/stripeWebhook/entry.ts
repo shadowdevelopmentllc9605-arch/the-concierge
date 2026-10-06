@@ -29,6 +29,7 @@ async function decrementCustomerCatalogStock(base44: any, item: any, stockEventK
     const variants = product.variants.map((variant: any) => {
       if (
         String(variant.size || "") === String(item.size || "") &&
+        String(variant.width_code || "") === String(item.width_code || "") &&
         String(variant.color || "") === String(item.color || "")
       ) {
         return {
@@ -198,6 +199,7 @@ async function syncPaidOrderToPro(base44: any, order: any, user: any) {
           quantity: item.quantity,
           price: item.unit_price,
           size: item.size || "",
+          width_code: item.width_code || "",
           color: item.color || "",
         })),
       },
@@ -272,7 +274,7 @@ async function finalizePaidOrder(base44: any, stripe: Stripe, sessionId: string)
   const user = users[0] || null;
 
   for (const item of order.items || []) {
-    const lineKey = `${order.id}:${item.cart_item_id || [item.product_id, item.size, item.color].join(":")}`;
+    const lineKey = `${order.id}:${item.cart_item_id || [item.product_id, item.size, item.width_code, item.color].join(":")}`;
 
     const purchases = await base44.asServiceRole.entities.Purchase.filter({
       user_id: order.user_id,
@@ -286,6 +288,7 @@ async function finalizePaidOrder(base44: any, stripe: Stripe, sessionId: string)
         product_image: item.product_image || "",
         product_price: Number(item.unit_price || 0),
         size: item.size || "",
+        width_code: item.width_code || "",
         color: item.color || "",
         vendor_id: item.vendor_id || "",
         vendor_name: item.vendor_name || "",
@@ -307,6 +310,7 @@ async function finalizePaidOrder(base44: any, stripe: Stripe, sessionId: string)
         image: item.product_image || "",
         item_type: item.product_name,
         size: item.size || "",
+        width_code: item.width_code || "",
         color: item.color || "",
         style_category: "other",
         description: item.product_name,
