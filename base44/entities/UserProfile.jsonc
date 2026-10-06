@@ -92,6 +92,12 @@
         },
         "head_circumference": {
           "type": "number"
+        },
+        "foot_width": {
+          "type": "number"
+        },
+        "calf_circumference": {
+          "type": "number"
         }
       }
     },
@@ -142,6 +148,15 @@
         },
         "head_circumference": {
           "type": "string"
+        },
+        "foot_width": {
+          "type": "string"
+        },
+        "calf_circumference": {
+          "type": "string"
+        },
+        "shoe_width": {
+          "type": "string"
         }
       }
     },
@@ -170,6 +185,9 @@
           "type": "string"
         },
         "outerwear": {
+          "type": "string"
+        },
+        "footwear_width": {
           "type": "string"
         }
       }
