@@ -122,7 +122,7 @@ export default function PrecisionScan() {
   const [photoUri, setPhotoUri] = useState('');
   const [photoUrl, setPhotoUrl] = useState('');
   const [points, setPoints] = useState([]);
-  const [results, setResults] = useState({});
+  const [results, setResults] = useState(/** @type {Record<string, any>} */ ({}));
   const fileRef = useRef(null);
   const imageRef = useRef(null);
 
