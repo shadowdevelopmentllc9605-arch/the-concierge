@@ -178,14 +178,30 @@ export default function Shop() {
         shoeWidth: profile.measurements?.shoe_width,
         braSize: profile.measurements?.bra_size,
         gender: profile.gender,
+        category: product.category,
+        categoryGroup: getCategoryGroup(product.category),
+        measurementConfidence: profile.measurement_confidence,
+        measurementConfidenceByField: profile.measurement_confidence_by_field || {},
+        validationStatus: profile.measurement_validation_status || 'estimated',
         sizeAdjustmentSteps: product.footwear_fit?.size_adjustment_steps ?? effectiveChart.chart?.size_adjustment_steps ?? 0
       }
     );
     if (chartMatch?.size) {
-      const label = effectiveChart.source === 'brand_size_chart'
-        ? (chartMatch.matchType === 'nearest' ? 'Closest brand match' : 'Verified brand match')
-        : (chartMatch.matchType === 'nearest' ? 'Closest product-chart match' : 'Best match');
-      return { size: chartMatch.size, width: chartMatch.width || '', label };
+      const label = chartMatch.matchType === 'nearest'
+        ? (effectiveChart.source === 'brand_size_chart' ? 'Closest brand fit' : 'Closest product fit')
+        : chartMatch.fitConfidence === 'high'
+          ? 'High-confidence fit'
+          : chartMatch.fitConfidence === 'medium'
+            ? 'Fit match'
+            : 'Low-confidence fit';
+      return {
+        size: chartMatch.size,
+        width: chartMatch.width || '',
+        label,
+        fitConfidence: chartMatch.fitConfidence,
+        confidenceScore: chartMatch.confidenceScore,
+        missingMeasurements: chartMatch.missingMeasurements || []
+      };
     }
 
     const group = getCategoryGroup(product.category);
