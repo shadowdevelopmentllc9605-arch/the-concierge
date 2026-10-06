@@ -149,7 +149,13 @@ export default function ProductDetail() {
 
   const addToCart = async () => {
     const requiresSize = (product?.sizes?.length || 0) > 0;
+    const cartWidthOptions = Array.from(new Set([
+      ...(product?.width_options || []),
+      ...((product?.variants || []).map(variant => variant.width_code).filter(Boolean))
+    ])).filter(Boolean);
+    const requiresWidth = cartWidthOptions.length > 0;
     if (requiresSize && !selectedSize) return;
+    if (requiresWidth && !selectedWidth) return;
 
     setAddingToCart(true);
     try {
@@ -159,6 +165,7 @@ export default function ProductDetail() {
       });
       const matchingItem = existingItems.find(item =>
         (item.size || '') === (selectedSize || '') &&
+        (item.width_code || '') === (selectedWidth || '') &&
         (item.color || '') === (selectedColor || '')
       );
 
@@ -174,6 +181,7 @@ export default function ProductDetail() {
           product_image: product.images?.[0],
           product_price: product.price,
           size: selectedSize || '',
+          width_code: selectedWidth || '',
           color: selectedColor || '',
           quantity: 1
         });
