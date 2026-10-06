@@ -1,0 +1,67 @@
+{
+  "name": "MeasurementValidationRecord",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string"
+    },
+    "protocol_version": {
+      "type": "string"
+    },
+    "scan_method": {
+      "type": "string"
+    },
+    "scan_timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "verification_timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "scan_quality": {
+      "type": "number"
+    },
+    "scan_values_cm": {
+      "type": "object"
+    },
+    "reference_values_cm": {
+      "type": "object"
+    },
+    "absolute_errors_cm": {
+      "type": "object"
+    },
+    "verified_fields": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "diagnostics": {
+      "type": "object"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "user_id",
+    "protocol_version",
+    "reference_values_cm",
+    "verified_fields"
+  ],
+  "rls": {
+    "create": {
+      "data.user_id": "{{user.id}}"
+    },
+    "read": {
+      "data.user_id": "{{user.id}}"
+    },
+    "update": {
+      "data.user_id": "{{user.id}}"
+    },
+    "delete": {
+      "data.user_id": "{{user.id}}"
+    }
+  }
+}
