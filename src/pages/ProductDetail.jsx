@@ -446,8 +446,22 @@ export default function ProductDetail() {
         )}
         {missingFitMeasurements.length > 0 && (
           <p className="mt-3 text-xs text-amber-700">
-            Fit recommendation paused. Add or verify {missingFitMeasurements.join(', ')} in My Measurements before The Concierge treats a size as reliable.
+            Fit recommendation paused. Add or improve {missingFitMeasurements.join(', ')} before The Concierge treats a size as reliable.
           </p>
+        )}
+
+        {(getCategoryGroup(product.category) === 'footwear' || getCategoryGroup(product.category) === 'headwear') &&
+          (fitConfidence !== 'high' || missingFitMeasurements.length > 0) && (
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => navigate(createPageUrl(
+              `PrecisionScan?mode=${getCategoryGroup(product.category) === 'footwear' ? 'feet' : 'head'}&product=${product.id}`
+            ))}
+            className="mt-3 w-full rounded-xl"
+          >
+            Improve {getCategoryGroup(product.category) === 'footwear' ? 'Foot' : 'Head'} Measurement with Photos
+          </Button>
         )}
 
         {/* Color Selection */}
