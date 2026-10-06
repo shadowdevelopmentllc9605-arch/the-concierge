@@ -53,7 +53,8 @@
         "boots",
         "coats",
         "parkas",
-        "outerwear"
+        "outerwear",
+        "swimwear"
       ]
     },
     "style_type": {
