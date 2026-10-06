@@ -37,10 +37,16 @@ function labeledAlternateValue(value = '', label = '') {
   return normalizedSizeValue(text.replace(pattern, ''));
 }
 
+function normalizedUsShoeSize(value = '') {
+  const text = String(value).trim();
+  const match = text.match(/(?:us\s*)?(\d+(?:\.\d+)?)/i);
+  return match ? match[1] : normalizedSizeValue(text);
+}
+
 export function recommendFromSizeChart(sizeChart = [], measurementsCm = {}, options = {}) {
   if (!Array.isArray(sizeChart) || sizeChart.length === 0) return null;
 
-  const shoeSize = normalizedSizeValue(options.shoeSize);
+  const shoeSize = normalizedUsShoeSize(options.shoeSize);
   if (shoeSize) {
     let identityMatch = null;
     if (options.gender === 'female') {
