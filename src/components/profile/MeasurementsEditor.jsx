@@ -17,17 +17,20 @@ const lengthFields = [
   { key: 'height', label: 'Height' },
   { key: 'chest', label: 'Chest' },
   { key: 'bust', label: 'Bust' },
+  { key: 'underbust', label: 'Under Bust' },
   { key: 'waist', label: 'Waist' },
   { key: 'hips', label: 'Hips' },
   { key: 'inseam', label: 'Inseam' },
   { key: 'shoulders', label: 'Shoulders' },
   { key: 'arm_length', label: 'Arm Length' },
   { key: 'neck', label: 'Neck' },
+  { key: 'foot_length', label: 'Foot Length' },
 ];
 
 const textFields = [
   { key: 'weight', label: 'Weight', placeholder: 'e.g. 175 lb or 79 kg' },
   { key: 'shoe_size', label: 'Shoe Size', placeholder: 'e.g. 10 US / 43 EU' },
+  { key: 'bra_size', label: 'Bra Size', placeholder: 'e.g. 34C' },
 ];
 
 function initialLengthValue(profile, key, unit) {
