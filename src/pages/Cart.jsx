@@ -129,7 +129,7 @@ export default function Cart() {
                 <div className="flex-1 min-w-0">
                   <h3 className="font-medium text-[#1a1a1a] truncate">{item.product_name}</h3>
                   <p className="text-sm text-[#64748b] mt-1">
-                    Size: {item.size} {item.color && `• ${item.color}`}
+                    Size: {item.size}{item.width_code ? ' • Width ' + item.width_code : ''} {item.color && `• ${item.color}`}
                   </p>
                   <p className="font-semibold text-[#1a1a1a] mt-2">${item.product_price?.toFixed(2)}</p>
                   
