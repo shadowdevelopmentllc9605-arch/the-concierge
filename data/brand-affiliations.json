@@ -1,6 +1,6 @@
 {
   "version": "2026-10-06",
-  "count": 43,
+  "count": 47,
   "affiliations": [
     {
       "parent_name": "adidas AG",
@@ -12,6 +12,17 @@
       "active": true,
       "parent_key": "adidasag",
       "brand_name": "adidas"
+    },
+    {
+      "parent_name": "Caleres",
+      "source_url": "https://www.allenedmonds.com/help/size-chart",
+      "source_retrieved_at": "2026-10-06T18:05:00Z",
+      "notes": "Allen Edmonds' official fit page identifies Caleres as its parent company.",
+      "relationship_type": "brand_family",
+      "brand_key": "allenedmonds",
+      "active": true,
+      "parent_key": "caleres",
+      "brand_name": "Allen Edmonds"
     },
     {
       "parent_name": "H&M Group",
@@ -100,6 +111,17 @@
       "active": true,
       "parent_key": "hmgroup",
       "brand_name": "Cheap Monday"
+    },
+    {
+      "parent_name": "Clarks",
+      "source_url": "https://www.clarks.com/en-us/fit-guide",
+      "source_retrieved_at": "2026-10-06T18:05:00Z",
+      "notes": "Brand-family record for official sizing provenance.",
+      "relationship_type": "brand_family",
+      "brand_key": "clarks",
+      "active": true,
+      "parent_key": "clarks",
+      "brand_name": "Clarks"
     },
     {
       "parent_name": "Columbia Sportswear Company",
@@ -265,6 +287,28 @@
       "active": true,
       "parent_key": "kontoorbrandsinc",
       "brand_name": "Musto"
+    },
+    {
+      "parent_name": "Caleres",
+      "source_url": "https://www.naturalizer.com/shoe-size-chart",
+      "source_retrieved_at": "2026-10-06T18:25:00Z",
+      "notes": "Official Naturalizer sizing page is © Caleres, Inc.; ownership does not identify a specific manufacturing factory.",
+      "relationship_type": "brand_family",
+      "brand_key": "naturalizer",
+      "active": true,
+      "parent_key": "caleres",
+      "brand_name": "Naturalizer"
+    },
+    {
+      "parent_name": "New Balance Athletics, Inc.",
+      "source_url": "https://www.newbalance.com/size-guide.html",
+      "source_retrieved_at": "2026-10-06T18:05:00Z",
+      "notes": "Brand sizing source; ownership entry does not imply a specific contract factory.",
+      "relationship_type": "brand_family",
+      "brand_key": "newbalance",
+      "active": true,
+      "parent_key": "newbalanceathleticsinc",
+      "brand_name": "New Balance"
     },
     {
       "parent_name": "New Era Cap, LLC",
