@@ -442,12 +442,18 @@ export function selectBrandSizeChart(brandCharts = [], product = {}, profile = {
     }
   }
 
-  const productSizes = new Set((product?.sizes || []).map(size => String(size).toLowerCase()));
+  const productSizes = new Set((product?.sizes || []).map(normalizedSizeValue).filter(Boolean));
   if (productSizes.size > 0) {
     const compatible = audienceCandidates.filter(chart =>
-      chart.entries.some(row => productSizes.has(String(row?.size || '').toLowerCase()))
+      chart.entries.some(row =>
+        [row?.size, row?.numeric_equivalent, row?.us_size, row?.alternate_size]
+          .map(normalizedSizeValue)
+          .filter(Boolean)
+          .some(value => productSizes.has(value))
+      )
     );
     if (compatible.length) audienceCandidates = compatible;
+    else return null;
   }
 
   return audienceCandidates[0] || null;
