@@ -49,7 +49,11 @@
         "underwear",
         "bras",
         "lingerie",
-        "sleepwear"
+        "sleepwear",
+        "boots",
+        "coats",
+        "parkas",
+        "outerwear"
       ]
     },
     "style_type": {
@@ -58,7 +62,11 @@
         "business",
         "casual",
         "nightlife",
-        "trendy"
+        "trendy",
+        "formal",
+        "evening",
+        "outdoor",
+        "active"
       ]
     },
     "price": {
@@ -181,6 +189,12 @@
           },
           "cup_size": {
             "type": "string"
+          },
+          "head_circumference_min_cm": {
+            "type": "number"
+          },
+          "head_circumference_max_cm": {
+            "type": "number"
           }
         }
       }
