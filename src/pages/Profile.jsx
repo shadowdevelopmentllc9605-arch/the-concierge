@@ -5,7 +5,7 @@ import { createPageUrl } from '@/utils';
 import { motion } from 'framer-motion';
 import { 
   User, ShoppingBag, CreditCard, Heart, Users, 
-  HelpCircle, MessageCircle, LogOut, ChevronRight, Star, Trash2, Bell 
+  HelpCircle, MessageCircle, LogOut, ChevronRight, Star, Trash2, Bell, ScanLine 
 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import DeleteAccountDialog from '@/components/DeleteAccountDialog';
@@ -63,6 +63,7 @@ export default function Profile() {
         { icon: CreditCard, label: 'Payment & Shipping', description: 'Saved card display info and shipping addresses', path: 'PaymentMethods' },
         { icon: Bell, label: 'Notifications', description: 'Offers, store updates, and purchase activity', path: 'Notifications' },
         { icon: Star, label: 'Reviews & Feedback', description: 'Rate your purchases', path: 'Feedback' },
+        { icon: ScanLine, label: 'Precision Fit Scan', description: 'Improve foot or hat measurements with close-up photos', path: 'PrecisionScan' },
       ]
     },
     {
