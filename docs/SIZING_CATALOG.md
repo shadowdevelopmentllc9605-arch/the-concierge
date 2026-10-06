@@ -3,36 +3,55 @@
 This repository mirrors the verified sizing reference data used by The Concierge and Concierge Pro.
 
 - Snapshot: 2026-10-06
-- Verified chart records: 51
-- Normalized size rows: 602
-- Brand-family / ownership relationships: 43
+- Verified chart records: 57
+- Normalized size rows: 1040
+- Width-aware footwear rows: 438
+- Brand-family / ownership relationships: 47
 - Initial market focus: US sizing
 
 ## Head-to-toe coverage
 
-The catalog supports adult and kids sizing across tops, bottoms, dresses/evening wear, suits/formalwear, underwear/bras, outerwear, headwear, and footwear/boots. Current verified chart counts by category group:
+The catalog supports adult and kids sizing across tops, bottoms, dresses/evening wear, suits/formalwear, underwear/bras, outerwear, headwear, and footwear/boots.
 
 - bottoms: 6
 - dresses: 1
-- footwear: 10
+- footwear: 16
 - headwear: 5
 - outerwear: 4
 - suits: 2
 - tops: 20
 - underwear: 3
 
-Headwear recommendations use head circumference when supplied. Footwear and boots can use either saved US shoe size or measured foot length. Bra recommendations can use saved bra size and/or bust/underbust measurements. Kids sizing uses birthday to select the kids audience and preserves boys/girls/unisex distinctions when the brand publishes them.
+## Advanced footwear fit
 
-The shopper occasion taxonomy includes business, casual, formal, evening, outdoor, active, nightlife, and trendy. Product-specific retailer charts always override global brand charts.
+Footwear recommendations can use:
+
+- saved US shoe size and brand-specific US/UK/EU/JP conversions
+- measured foot length from the larger foot
+- measured foot width at the widest point
+- saved brand width code or semantic width such as Narrow, Medium, Wide, and Extra Wide
+- footwear subtype: running, training, walking, casual sneaker, dress Oxford/Derby, loafer/slip-on, work boot, hiking boot, fashion/dress boot, sandal, heel/pump, or other
+- product or brand last/family when supplied
+- sock profile when supplied
+- calf circumference for product-specific tall-boot charts
+- explicit official/product size adjustments in half-size steps when published
+
+The engine does **not** assume that dress shoes should always size down or athletic shoes should always size up. It applies no automatic shift unless an official brand/product chart or retailer product override supplies one.
+
+Width systems are brand-specific. A code such as D, E, 2E, G, H, Wide, or Extra Wide is not treated as universally equivalent across manufacturers. Numeric foot-width measurements are used only where the official source publishes them.
+
+For tall boots, calf fit is intentionally product-specific. The schema and recommendation engine can score calf circumference when a retailer or verified product chart supplies calf bounds, but the master brand catalog does not invent a universal calf-to-shoe-size adjustment.
+
+Product-specific retailer charts and fit guidance always override the general brand catalog.
 
 ## Recommendation priority
 
-1. Retailer-supplied product size chart
-2. Verified brand size chart
+1. Retailer-supplied product size chart / fit override
+2. Verified brand size and width chart
 3. Generic profile estimate where appropriate
 
-Official body measurements are normalized to centimeters. Each record keeps its source URL, retrieval time, audience, category group, optional child gender detail, and relationship metadata.
+Official measurements are normalized to centimeters. Each record preserves source URL, retrieval time, audience, category group, footwear metadata, and relationship metadata.
 
-A brand owner or parent company is not assumed to be the physical garment manufacturer. Contract factories and sourcing partners can vary by product and season, so manufacturing relationships should only be recorded when they are publicly verifiable.
+A brand owner or parent company is not assumed to be the physical manufacturer. Contract factories and sourcing partners can vary by product and season.
 
-The shopper runtime does not scrape brand websites. Reference measurements are reviewed and stored in the read-only Base44 catalog, making recommendations independent of external-site availability while preserving source traceability.
+The shopper runtime does not scrape brand websites during recommendations. Reviewed reference measurements are stored in the read-only catalog so recommendations remain usable while retaining source traceability.
