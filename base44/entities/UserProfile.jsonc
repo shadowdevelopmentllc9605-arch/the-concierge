@@ -89,6 +89,9 @@
         },
         "foot_length": {
           "type": "number"
+        },
+        "head_circumference": {
+          "type": "number"
         }
       }
     },
@@ -136,6 +139,9 @@
         },
         "bra_size": {
           "type": "string"
+        },
+        "head_circumference": {
+          "type": "string"
         }
       }
     },
@@ -158,6 +164,12 @@
           "type": "string"
         },
         "footwear": {
+          "type": "string"
+        },
+        "headwear": {
+          "type": "string"
+        },
+        "outerwear": {
           "type": "string"
         }
       }
