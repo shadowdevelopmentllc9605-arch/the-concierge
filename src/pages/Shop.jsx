@@ -185,7 +185,7 @@ export default function Shop() {
       const label = effectiveChart.source === 'brand_size_chart'
         ? (chartMatch.matchType === 'nearest' ? 'Closest brand match' : 'Verified brand match')
         : (chartMatch.matchType === 'nearest' ? 'Closest product-chart match' : 'Best match');
-      return { size: chartMatch.size, label };
+      return { size: chartMatch.size, width: chartMatch.width || '', label };
     }
 
     const group = getCategoryGroup(product.category);
@@ -397,7 +397,7 @@ export default function Shop() {
                     const recommendation = getProductRecommendation(product);
                     return recommendation ? (
                       <p className="text-xs text-[var(--color-accent)] font-medium">
-                        {recommendation.label}: {recommendation.size}
+                        {recommendation.label}: {recommendation.size}{recommendation.width ? ' • ' + recommendation.width : ''}
                       </p>
                     ) : (
                       <p className="text-xs text-[var(--color-text-muted)]">Choose size on product page</p>
