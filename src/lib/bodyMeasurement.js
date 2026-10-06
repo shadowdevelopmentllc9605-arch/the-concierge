@@ -175,6 +175,138 @@ function selectCrossSection(front, side, back, scales, startFraction, endFractio
   }, null);
 }
 
+function maskValueAt(mask, yNormalized, xNormalized) {
+  if (!mask?.values?.length || !mask.width || !mask.height) return 0;
+  const y = Math.max(0, Math.min(mask.height - 1, Math.round(yNormalized * (mask.height - 1))));
+  const x = Math.max(0, Math.min(mask.width - 1, Math.round(xNormalized * (mask.width - 1))));
+  return mask.values[y * mask.width + x] || 0;
+}
+
+function hasForegroundBetween(mask, yNormalized, xStart, xEnd, threshold = MASK_THRESHOLD) {
+  if (!mask?.values?.length) return false;
+  const y = Math.max(0, Math.min(mask.height - 1, Math.round(yNormalized * (mask.height - 1))));
+  const start = Math.max(0, Math.min(mask.width - 1, Math.round(Math.min(xStart, xEnd) * (mask.width - 1))));
+  const end = Math.max(0, Math.min(mask.width - 1, Math.round(Math.max(xStart, xEnd) * (mask.width - 1))));
+  const offset = y * mask.width;
+  for (let x = start; x <= end; x += 1) {
+    if (mask.values[offset + x] >= threshold) return true;
+  }
+  return false;
+}
+
+function detectCrotchY(view) {
+  const { landmarks, mask } = view;
+  const hipY = (landmarks[23].y + landmarks[24].y) / 2;
+  const kneeY = (landmarks[25].y + landmarks[26].y) / 2;
+  const centerX = (landmarks[23].x + landmarks[24].x) / 2;
+  const leftX = Math.min(landmarks[23].x, landmarks[24].x);
+  const rightX = Math.max(landmarks[23].x, landmarks[24].x);
+  const hipSpan = Math.max(0.08, rightX - leftX);
+
+  for (let y = hipY + 0.015; y < kneeY - 0.02; y += 0.003) {
+    const centerIsBackground = maskValueAt(mask, y, centerX) < MASK_THRESHOLD;
+    if (!centerIsBackground) continue;
+    const leftLegPresent = hasForegroundBetween(mask, y, centerX - hipSpan * 1.4, centerX - 0.015);
+    const rightLegPresent = hasForegroundBetween(mask, y, centerX + 0.015, centerX + hipSpan * 1.4);
+    if (leftLegPresent && rightLegPresent) {
+      return Math.max(hipY, y - 0.012);
+    }
+  }
+  return null;
+}
+
+function legWidthAtFraction(view, scale, kneeIndex, ankleIndex, fraction) {
+  const knee = view.landmarks[kneeIndex];
+  const ankle = view.landmarks[ankleIndex];
+  if (!knee || !ankle) return null;
+  const y = knee.y + (ankle.y - knee.y) * fraction;
+  const x = knee.x + (ankle.x - knee.x) * fraction;
+  const pixels = rowSpanAroundCenter(view.mask, y, x);
+  return pixels ? pixels * scale : null;
+}
+
+function estimateCalfCircumference(front, side, back, scales) {
+  const candidates = [];
+  for (let fraction = 0.18; fraction <= 0.72; fraction += 0.04) {
+    const frontalWidths = [
+      legWidthAtFraction(front, scales.front, 25, 27, fraction),
+      legWidthAtFraction(front, scales.front, 26, 28, fraction),
+      legWidthAtFraction(back, scales.back, 25, 27, fraction),
+      legWidthAtFraction(back, scales.back, 26, 28, fraction),
+    ].filter(Number.isFinite);
+    const sideDepths = [
+      legWidthAtFraction(side, scales.side, 25, 27, fraction),
+      legWidthAtFraction(side, scales.side, 26, 28, fraction),
+    ].filter(Number.isFinite);
+    if (!frontalWidths.length || !sideDepths.length) continue;
+    const width = frontalWidths.reduce((sum, value) => sum + value, 0) / frontalWidths.length;
+    const depth = sideDepths.reduce((sum, value) => sum + value, 0) / sideDepths.length;
+    const circumference = ellipseCircumference(width, depth);
+    if (Number.isFinite(circumference)) candidates.push(circumference);
+  }
+  return candidates.length ? Math.max(...candidates) : null;
+}
+
+function imageScaleCmPerPixel(view, heightCm) {
+  const imageToMaskY = view.image.naturalHeight / view.mask.height;
+  return heightCm / Math.max(1, view.box.height * imageToMaskY);
+}
+
+function estimateFootLength(side, heightCm) {
+  const scale = imageScaleCmPerPixel(side, heightCm);
+  const values = [
+    distance2d(side.landmarks[29], side.landmarks[31], side.image.naturalWidth, side.image.naturalHeight),
+    distance2d(side.landmarks[30], side.landmarks[32], side.image.naturalWidth, side.image.naturalHeight),
+  ]
+    .filter(Number.isFinite)
+    .map(value => value * scale)
+    .filter(value => value >= 15 && value <= 36);
+  return values.length ? Math.max(...values) : null;
+}
+
+function estimateFootWidth(front, scale) {
+  const footSpecs = [[29, 31], [30, 32]];
+  const widths = [];
+  for (const [heelIndex, toeIndex] of footSpecs) {
+    const heel = front.landmarks[heelIndex];
+    const toe = front.landmarks[toeIndex];
+    if (!heel || !toe) continue;
+    for (let fraction = 0.45; fraction <= 0.9; fraction += 0.1) {
+      const y = heel.y + (toe.y - heel.y) * fraction;
+      const x = heel.x + (toe.x - heel.x) * fraction;
+      const pixels = rowSpanAroundCenter(front.mask, y, x);
+      if (pixels) widths.push(pixels * scale);
+    }
+  }
+  const plausible = widths.filter(value => value >= 5 && value <= 16);
+  return plausible.length ? Math.max(...plausible) : null;
+}
+
+function estimateHeadCircumference(front, side, back, scales) {
+  const earYFront = (front.landmarks[7]?.y + front.landmarks[8]?.y) / 2;
+  const earYSide = (side.landmarks[7]?.y + side.landmarks[8]?.y) / 2;
+  const earYBack = (back.landmarks[7]?.y + back.landmarks[8]?.y) / 2;
+  const earXFront = (front.landmarks[7]?.x + front.landmarks[8]?.x) / 2;
+  const earXSide = (side.landmarks[7]?.x + side.landmarks[8]?.x) / 2;
+  const earXBack = (back.landmarks[7]?.x + back.landmarks[8]?.x) / 2;
+  if (![earYFront, earYSide, earYBack, earXFront, earXSide, earXBack].every(Number.isFinite)) return null;
+
+  const frontWidth = rowSpanAroundCenter(front.mask, earYFront, earXFront);
+  const backWidth = rowSpanAroundCenter(back.mask, earYBack, earXBack);
+  const sideDepth = rowSpanAroundCenter(side.mask, earYSide, earXSide);
+  const widths = [
+    frontWidth ? frontWidth * scales.front : null,
+    backWidth ? backWidth * scales.back : null,
+  ].filter(Number.isFinite);
+  if (!widths.length || !sideDepth) return null;
+  const width = widths.reduce((sum, value) => sum + value, 0) / widths.length;
+  return ellipseCircumference(width, sideDepth * scales.side);
+}
+
+function plausibleOrNull(value, min, max) {
+  return Number.isFinite(value) && value >= min && value <= max ? value : null;
+}
+
 function orientationMetrics(landmarks) {
   const shoulderSep = Math.abs((landmarks[11]?.x ?? 0) - (landmarks[12]?.x ?? 0));
   const hipSep = Math.abs((landmarks[23]?.x ?? 0) - (landmarks[24]?.x ?? 0));
