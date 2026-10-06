@@ -354,7 +354,14 @@ export function recommendFromSizeChart(sizeChart = [], measurementsCm = {}, opti
 }
 
 export function normalizeBrandKey(value = '') {
-  return String(value).toLowerCase().replace(/[^a-z0-9]/g, '');
+  const normalized = String(value).toLowerCase().replace(/[^a-z0-9]/g, '');
+  const aliases = {
+    avaviv: 'avaandviv',
+    catjack: 'catandjack',
+    croftbarrow: 'croftandbarrow',
+    shadeshore: 'shadeandshore',
+  };
+  return aliases[normalized] || normalized;
 }
 
 export function getSizingAudience(profile = {}) {
