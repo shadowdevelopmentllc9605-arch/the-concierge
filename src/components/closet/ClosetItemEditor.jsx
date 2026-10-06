@@ -22,6 +22,7 @@ export default function ClosetItemEditor({ item, onSave, onCancel, saving = fals
   const [formData, setFormData] = useState({
     item_type: item?.item_type || '',
     size: item?.size || '',
+    width_code: item?.width_code || '',
     color: item?.color || '',
     style_category: item?.style_category || ''
   });
@@ -94,6 +95,18 @@ export default function ClosetItemEditor({ item, onSave, onCancel, saving = fals
                 </button>
               ))}
             </div>
+          </div>
+
+          <div>
+            <Label className="text-[var(--color-text-secondary)] text-xs tracking-wide uppercase mb-2 block">
+              Footwear Width
+            </Label>
+            <Input
+              value={formData.width_code}
+              onChange={(e) => setFormData({ ...formData, width_code: e.target.value })}
+              placeholder="Optional: D, 2E, Wide, Narrow"
+              className="h-12 rounded-xl border-[var(--color-border)] bg-[var(--color-background)] text-[var(--color-text-primary)] focus:ring-[var(--color-accent)] focus:border-[var(--color-accent)]"
+            />
           </div>
 
           {/* Color Selection */}
