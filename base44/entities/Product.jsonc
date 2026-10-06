@@ -195,6 +195,24 @@
           },
           "head_circumference_max_cm": {
             "type": "number"
+          },
+          "foot_width_min_cm": {
+            "type": "number"
+          },
+          "foot_width_max_cm": {
+            "type": "number"
+          },
+          "calf_circumference_min_cm": {
+            "type": "number"
+          },
+          "calf_circumference_max_cm": {
+            "type": "number"
+          },
+          "width_code": {
+            "type": "string"
+          },
+          "width_label": {
+            "type": "string"
           }
         }
       }
@@ -230,6 +248,9 @@
           "stock_quantity": {
             "type": "number",
             "default": 0
+          },
+          "width_code": {
+            "type": "string"
           }
         }
       }
@@ -246,6 +267,68 @@
       "type": "array",
       "items": {
         "type": "string"
+      }
+    },
+    "footwear_type": {
+      "type": "string",
+      "enum": [
+        "all",
+        "athletic_running",
+        "athletic_training",
+        "walking",
+        "casual_sneaker",
+        "dress_oxford_derby",
+        "loafer_slipon",
+        "boot_work",
+        "boot_hiking",
+        "boot_fashion",
+        "sandal",
+        "heel_pump",
+        "other"
+      ],
+      "default": "all"
+    },
+    "width_options": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "footwear_fit": {
+      "type": "object",
+      "properties": {
+        "last_name": {
+          "type": "string"
+        },
+        "fit_profile": {
+          "type": "string",
+          "enum": [
+            "true_to_size",
+            "snug",
+            "roomy",
+            "runs_small",
+            "runs_large",
+            "unknown"
+          ],
+          "default": "unknown"
+        },
+        "size_adjustment_steps": {
+          "type": "number"
+        },
+        "sock_profile": {
+          "type": "string",
+          "enum": [
+            "thin",
+            "standard",
+            "thick",
+            "varies",
+            "not_applicable"
+          ],
+          "default": "not_applicable"
+        },
+        "fit_notes": {
+          "type": "string"
+        }
       }
     }
   },
