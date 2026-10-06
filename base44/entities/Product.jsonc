@@ -330,6 +330,135 @@
           "type": "string"
         }
       }
+    },
+    "size_chart_measurement_basis": {
+      "type": "string",
+      "enum": [
+        "body",
+        "garment",
+        "mixed",
+        "unknown"
+      ],
+      "default": "body",
+      "description": "Whether size-chart values describe the wearer body, finished garment, or a mixture."
+    },
+    "garment_fit": {
+      "type": "object",
+      "description": "Construction and intended-fit metadata used to interpret garment measurements.",
+      "properties": {
+        "fit_cut": {
+          "type": "string",
+          "enum": [
+            "compression",
+            "skinny",
+            "slim",
+            "tailored",
+            "regular",
+            "relaxed",
+            "oversized",
+            "unknown"
+          ],
+          "default": "unknown"
+        },
+        "stretch_level": {
+          "type": "string",
+          "enum": [
+            "none",
+            "low",
+            "medium",
+            "high",
+            "unknown"
+          ],
+          "default": "unknown"
+        },
+        "fabric_behavior": {
+          "type": "string",
+          "enum": [
+            "rigid",
+            "structured",
+            "draped",
+            "stretchy",
+            "mixed",
+            "unknown"
+          ],
+          "default": "unknown"
+        },
+        "layering_allowance": {
+          "type": "string",
+          "enum": [
+            "none",
+            "light",
+            "standard",
+            "heavy",
+            "unknown"
+          ],
+          "default": "unknown"
+        },
+        "intended_fit_notes": {
+          "type": "string"
+        },
+        "data_source": {
+          "type": "string"
+        },
+        "source_url": {
+          "type": "string"
+        },
+        "source_retrieved_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "garment_measurements": {
+      "type": "array",
+      "description": "Optional finished-garment measurements by labeled size, stored in centimeters.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "size": {
+            "type": "string"
+          },
+          "chest_cm": {
+            "type": "number"
+          },
+          "bust_cm": {
+            "type": "number"
+          },
+          "waist_cm": {
+            "type": "number"
+          },
+          "hips_cm": {
+            "type": "number"
+          },
+          "shoulders_cm": {
+            "type": "number"
+          },
+          "sleeve_cm": {
+            "type": "number"
+          },
+          "inseam_cm": {
+            "type": "number"
+          },
+          "rise_cm": {
+            "type": "number"
+          },
+          "thigh_cm": {
+            "type": "number"
+          },
+          "garment_length_cm": {
+            "type": "number"
+          },
+          "foot_internal_length_cm": {
+            "type": "number"
+          },
+          "foot_internal_width_cm": {
+            "type": "number"
+          },
+          "calf_opening_cm": {
+            "type": "number"
+          }
+        }
+      }
     }
   },
   "required": [],
