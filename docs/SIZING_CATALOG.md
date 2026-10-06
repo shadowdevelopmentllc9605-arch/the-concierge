@@ -2,29 +2,31 @@
 
 This repository mirrors the verified sizing reference data used by The Concierge and Concierge Pro.
 
-- Snapshot: 2026-10-06 missing department-store brand expansion
-- Verified chart records: 120
-- Distinct brands with verified charts: 55
-- Normalized size rows: 1730
+- Snapshot: 2026-10-06 master department-store brand audit
+- Verified chart records: 179
+- Distinct brands with verified charts: 74
+- Normalized size rows: 2447
 - Width-aware footwear rows: 438
 - Brand-family / ownership relationships: 47
 - Initial market focus: US sizing
-- Department-store/private-label expansion: 63 chart records across 37 newly covered brands
-- Latest verified additions: Original Use, Art Class, Knox Rose, Colsie, Stars Above, and Cremieux
+- Master-audit pass added: 59 chart records across 19 newly verified brands
+- Total department-store expansion from the original 18-brand baseline: 122 additional chart records across 56 additional verified brands
+- Latest verified additions: Champion, Reebok, Fruit of the Loom, Carter's, Crocs, Lee, Vans, Tommy Hilfiger, Crown & Ivy, Wonderly, Kim Rogers, Worthington, Jockey, Skechers, Eddie Bauer, Polo Ralph Lauren, Lauren Ralph Lauren, Lands' End, and Dockers
+- Retailer audit detail: `docs/DEPARTMENT_STORE_BRAND_AUDIT.md` and `data/department-store-brand-audit.json`
 
 ## Head-to-toe coverage
 
 The catalog supports adult and kids sizing across tops, bottoms, dresses/evening wear, suits/formalwear, underwear/bras, swimwear, outerwear, headwear, and footwear/boots.
 
-- bottoms: 24
-- dresses: 7
-- footwear: 17
-- headwear: 5
-- outerwear: 4
+- bottoms: 38
+- dresses: 12
+- footwear: 30
+- headwear: 6
+- outerwear: 5
 - suits: 2
 - swimwear: 2
-- tops: 52
-- underwear: 7
+- tops: 70
+- underwear: 14
 
 ## Advanced footwear fit
 
