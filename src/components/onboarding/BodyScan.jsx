@@ -18,10 +18,18 @@ import { MEASUREMENT_PROTOCOL_VERSION } from '@/lib/measurementDefinitions';
 
 const REVIEW_FIELDS = [
   { key: 'chest', label: 'Chest', verify: true },
+  { key: 'bust', label: 'Bust', verify: true },
+  { key: 'underbust', label: 'Underbust', verify: true },
   { key: 'waist', label: 'Waist', verify: true },
-  { key: 'hips', label: 'Hips', verify: true },
-  { key: 'shoulders', label: 'Shoulder width', verify: false },
-  { key: 'arm_length', label: 'Arm length', verify: false },
+  { key: 'hips', label: 'Hips / seat', verify: true },
+  { key: 'inseam', label: 'Inseam', verify: true },
+  { key: 'shoulders', label: 'Shoulder width', verify: true },
+  { key: 'arm_length', label: 'Arm / sleeve length', verify: true },
+  { key: 'neck', label: 'Neck', verify: true },
+  { key: 'head_circumference', label: 'Head circumference', verify: true },
+  { key: 'foot_length', label: 'Foot length', verify: true },
+  { key: 'foot_width', label: 'Foot width', verify: true },
+  { key: 'calf_circumference', label: 'Calf circumference', verify: true },
 ];
 
 function buildDisplayMeasurements(valuesCm, unit, existing = {}) {
@@ -91,17 +99,17 @@ export default function BodyScan({ profile, concierge, onComplete }) {
     {
       key: 'front',
       label: 'Front View',
-      instruction: 'Stand straight, face the camera, keep your full body visible, and hold your arms slightly away from your sides.'
+      instruction: 'Stand barefoot, face the camera, keep your full body and feet visible, hold your arms slightly away from your sides, and pull long hair away from your neck.'
     },
     {
       key: 'side',
       label: 'Side View',
-      instruction: 'Turn exactly 90°, keep your full body visible, and keep your arms relaxed without blocking your torso.'
+      instruction: 'Turn exactly 90°, stay barefoot, keep your full body and feet visible, and keep your arms relaxed without blocking your torso.'
     },
     {
       key: 'back',
       label: 'Back View',
-      instruction: 'Face directly away from the camera, stand straight, and keep the same camera position and distance.'
+      instruction: 'Face directly away, stand barefoot and straight, keep hair clear of your neck, and keep the same camera position and distance.'
     }
   ];
 
@@ -277,6 +285,10 @@ export default function BodyScan({ profile, concierge, onComplete }) {
           silhouette_coverage: scanResult.diagnostics?.silhouette_coverage,
           front_back_width_agreement: scanResult.diagnostics?.front_back_width_agreement,
           orientation_score: scanResult.diagnostics?.orientation_score,
+          front_back_orientation_agreement: scanResult.diagnostics?.front_back_orientation_agreement,
+          chest_level_fraction: scanResult.diagnostics?.chest_level_fraction,
+          waist_level_fraction: scanResult.diagnostics?.waist_level_fraction,
+          hip_level_fraction: scanResult.diagnostics?.hip_level_fraction,
         },
         measurement_method: scanResult.method,
         measurement_updated_at: new Date().toISOString(),
@@ -296,7 +308,7 @@ export default function BodyScan({ profile, concierge, onComplete }) {
   };
 
   const allScansComplete = scans.front && scans.side && scans.back;
-  const guideMessage = "I'll build your fit profile from three calibrated views, then you'll review the measurements before I use them for sizing.";
+  const guideMessage = "I'll build the fullest fit profile I can from three calibrated photos. A tape measure can improve confidence, but it is not required.";
 
   if (scanResult) {
     return (
@@ -320,7 +332,7 @@ export default function BodyScan({ profile, concierge, onComplete }) {
             <div>
               <p className="text-sm font-medium text-emerald-900">Accuracy safeguard</p>
               <p className="text-xs text-emerald-800 mt-1 leading-relaxed">
-                If you can, verify chest, waist, and hips with a measuring tape. Mark only measurements you actually checked. Verified values receive the highest fit confidence.
+                A tape measure is optional. The photo scan provides the best available estimate it can for each field. If you happen to have a tape or ruler, you can verify any value to raise its confidence further.
               </p>
             </div>
           </div>
@@ -330,7 +342,7 @@ export default function BodyScan({ profile, concierge, onComplete }) {
           <div className="flex items-center justify-between gap-3 mb-4">
             <div>
               <p className="font-medium text-[#2d2d2d]">Measurements</p>
-              <p className="text-xs text-[#6b7280]">Edit any value that you know is different.</p>
+              <p className="text-xs text-[#6b7280]">Photo estimates are usable without a tape. Edit or verify a value only when you have better information.</p>
             </div>
             <div className="flex rounded-xl border border-[#d1d5db] overflow-hidden">
               <button
