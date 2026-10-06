@@ -344,6 +344,18 @@
         },
         "orientation_score": {
           "type": "number"
+        },
+        "front_back_orientation_agreement": {
+          "type": "number"
+        },
+        "chest_level_fraction": {
+          "type": "number"
+        },
+        "waist_level_fraction": {
+          "type": "number"
+        },
+        "hip_level_fraction": {
+          "type": "number"
         }
       }
     },
