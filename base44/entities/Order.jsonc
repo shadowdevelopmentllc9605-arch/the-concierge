@@ -42,6 +42,9 @@
           },
           "pro_business_id": {
             "type": "string"
+          },
+          "width_code": {
+            "type": "string"
           }
         }
       }
