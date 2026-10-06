@@ -213,6 +213,15 @@ export function recommendFromSizeChart(sizeChart = [], measurementsCm = {}, opti
     const identityMatch = chooseWidthCandidate(identityCandidates, options.shoeWidth, footWidth);
     if (identityMatch) {
       const adjustedSize = applyHalfSizeAdjustment(identityMatch.size, options.sizeAdjustmentSteps);
+      const criteriaMatched = 1 + (identityMatch.width_code ? 1 : 0);
+      const confidence = buildFitConfidence(
+        sizeChart,
+        measurementsCm,
+        options,
+        true,
+        criteriaMatched,
+        true
+      );
       return {
         size: adjustedSize,
         baseSize: identityMatch.size,
@@ -220,9 +229,10 @@ export function recommendFromSizeChart(sizeChart = [], measurementsCm = {}, opti
         widthLabel: identityMatch.width_label || '',
         source: 'product_size_chart',
         matched: identityMatch,
-        criteriaMatched: 1 + (identityMatch.width_code ? 1 : 0),
+        criteriaMatched,
         matchType: 'exact',
         sizeAdjusted: adjustedSize !== String(identityMatch.size),
+        ...confidence,
       };
     }
   }
@@ -234,12 +244,14 @@ export function recommendFromSizeChart(sizeChart = [], measurementsCm = {}, opti
       normalizedSizeValue(`${row?.band_size || ''}${row?.cup_size || ''}`) === braSize
     );
     if (identityMatch) {
+      const confidence = buildFitConfidence(sizeChart, measurementsCm, options, true, 1, true);
       return {
         size: identityMatch.size,
         source: 'product_size_chart',
         matched: identityMatch,
         criteriaMatched: 1,
         matchType: 'exact',
+        ...confidence,
       };
     }
   }
@@ -316,6 +328,14 @@ export function recommendFromSizeChart(sizeChart = [], measurementsCm = {}, opti
   if (!best) return null;
 
   const adjustedSize = applyHalfSizeAdjustment(best.row.size, options.sizeAdjustmentSteps);
+  const confidence = buildFitConfidence(
+    sizeChart,
+    measurementsCm,
+    options,
+    best.exact,
+    best.criteria,
+    false
+  );
   return {
     size: adjustedSize,
     baseSize: best.row.size,
@@ -326,6 +346,7 @@ export function recommendFromSizeChart(sizeChart = [], measurementsCm = {}, opti
     criteriaMatched: best.criteria,
     matchType: best.exact ? 'exact' : 'nearest',
     sizeAdjusted: adjustedSize !== String(best.row.size),
+    ...confidence,
   };
 }
 
