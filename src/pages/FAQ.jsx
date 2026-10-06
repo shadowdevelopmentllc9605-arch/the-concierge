@@ -3,12 +3,12 @@ import { ArrowLeft, HelpCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const FAQS = [
-  ['How are my measurements estimated?', 'The Concierge uses your known height plus front and side photos for on-device pose and silhouette analysis. Measurements are estimates and can be corrected manually.'],
+  ['How are my measurements estimated?', 'The Concierge uses your measured height plus front, side, and back photos for on-device pose and silhouette analysis. The scan checks pose, orientation, framing, and view consistency before producing measurements. Photo measurements are estimates and should be reviewed before fit decisions.'],
   ['Why can my size differ by brand?', 'Brands use different size charts and ease. When a retailer supplies a product size chart, The Concierge compares your measurements with that specific chart.'],
   ['Who can see my wishlist?', 'Your wishlist is private unless you choose to make it public. Accepted friends can only view public wishlist items when your overall wishlist visibility is public.'],
   ['What happens when I check in at a store?', 'For participating linked stores, your check-in can share store-specific wishlist and profile information with Concierge Pro so an employee can assist you.'],
   ['Can the app charge my card yet?', 'Card processing is only enabled when a production payment provider is connected. The app never marks an unsupported card payment successful.'],
-  ['Can I correct a body scan?', 'Yes. Open Profile → My Measurements to review or correct any estimate in metric or imperial units.'],
+  ['Can I correct or verify a body scan?', 'Yes. Review scan results before continuing, or open Profile → My Measurements later. You can correct any estimate in metric or imperial units and mark measurements you actually checked with a tape or ruler as verified. Verified measurements receive higher confidence in fit recommendations.'],
 ];
 
 export default function FAQ() {
