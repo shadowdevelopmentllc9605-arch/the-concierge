@@ -1,4 +1,4 @@
-export const MEASUREMENT_PROTOCOL_VERSION = 'concierge_anthropometry_v1';
+export const MEASUREMENT_PROTOCOL_VERSION = 'concierge_anthropometry_v2_photo_first';
 
 export const MEASUREMENT_DEFINITIONS = {
   height: {
