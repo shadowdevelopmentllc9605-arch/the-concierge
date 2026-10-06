@@ -147,7 +147,13 @@ export default function TryOn() {
   const chartMatch = recommendFromSizeChart(
     effectiveChart.entries,
     userProfile?.measurement_values_cm || {},
-    { shoeSize: userProfile?.measurements?.shoe_size, braSize: userProfile?.measurements?.bra_size, gender: userProfile?.gender }
+    {
+      shoeSize: userProfile?.measurements?.shoe_size,
+      shoeWidth: userProfile?.measurements?.shoe_width,
+      braSize: userProfile?.measurements?.bra_size,
+      gender: userProfile?.gender,
+      sizeAdjustmentSteps: currentProduct?.footwear_fit?.size_adjustment_steps ?? effectiveChart.chart?.size_adjustment_steps ?? 0
+    }
   );
   const categoryGroup = getCategoryGroup(currentProduct?.category);
   let recommendedSize = chartMatch?.size || (categoryGroup ? userProfile?.suggested_sizes?.[categoryGroup] : '');
