@@ -71,11 +71,17 @@ function fitRequirementKeys(category, categoryGroup) {
 }
 
 function chartMeasurementKeys(sizeChart = []) {
-  const keys = ['chest', 'bust', 'underbust', 'waist', 'hips', 'inseam', 'foot_length', 'foot_width', 'calf_circumference', 'head_circumference', 'height', 'neck', 'sleeve'];
-  return new Set(keys.filter(key => sizeChart.some(row =>
+  const keys = ['chest', 'bust', 'underbust', 'waist', 'hips', 'inseam', 'foot_length', 'foot_width', 'calf_circumference', 'head_circumference', 'height', 'neck'];
+  const available = new Set(keys.filter(key => sizeChart.some(row =>
     Number.isFinite(finiteNumber(row?.[`${key}_min_cm`])) ||
     Number.isFinite(finiteNumber(row?.[`${key}_max_cm`]))
   )));
+  const hasSleeve = sizeChart.some(row =>
+    Number.isFinite(finiteNumber(row?.sleeve_min_cm)) ||
+    Number.isFinite(finiteNumber(row?.sleeve_max_cm))
+  );
+  if (hasSleeve) available.add('arm_length');
+  return available;
 }
 
 function buildFitConfidence(sizeChart, measurementsCm, options, exact, criteriaMatched, identityOnly = false) {
@@ -271,9 +277,10 @@ export function recommendFromSizeChart(sizeChart = [], measurementsCm = {}, opti
     head_circumference: finiteNumber(measurementsCm.head_circumference),
     height: finiteNumber(measurementsCm.height),
     neck: finiteNumber(measurementsCm.neck),
+    arm_length: finiteNumber(measurementsCm.arm_length),
   };
 
-  const measurementKeys = ['chest', 'bust', 'underbust', 'waist', 'hips', 'inseam', 'foot_length', 'foot_width', 'calf_circumference', 'head_circumference', 'height', 'neck'];
+  const measurementKeys = ['chest', 'bust', 'underbust', 'waist', 'hips', 'inseam', 'foot_length', 'foot_width', 'calf_circumference', 'head_circumference', 'height', 'neck', 'arm_length'];
   const scored = sizeChart
     .map(row => {
       let criteria = 0;
@@ -283,8 +290,9 @@ export function recommendFromSizeChart(sizeChart = [], measurementsCm = {}, opti
 
       for (const key of measurementKeys) {
         const value = user[key];
-        const min = finiteNumber(row[`${key}_min_cm`]);
-        const max = finiteNumber(row[`${key}_max_cm`]);
+        const chartKey = key === 'arm_length' ? 'sleeve' : key;
+        const min = finiteNumber(row[`${chartKey}_min_cm`]);
+        const max = finiteNumber(row[`${chartKey}_max_cm`]);
         const hasMin = Number.isFinite(min);
         const hasMax = Number.isFinite(max);
         const hasBounds = hasMin || hasMax;
