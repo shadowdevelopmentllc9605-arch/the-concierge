@@ -378,7 +378,7 @@ export function selectBrandSizeChart(brandCharts = [], product = {}, profile = {
     chart?.active !== false &&
     normalizeBrandKey(chart?.brand_key || chart?.brand_name) === brandKey &&
     chart?.category_group === categoryGroup &&
-    chart?.measurement_basis !== 'garment' &&
+    (!chart?.measurement_basis || chart?.measurement_basis === 'body') &&
     Array.isArray(chart?.entries) &&
     chart.entries.length > 0
   );
@@ -451,7 +451,7 @@ export function getEffectiveSizeChart(product, profile, brandCharts = []) {
   if (
     Array.isArray(product?.size_chart) &&
     product.size_chart.length > 0 &&
-    productBasis !== 'garment'
+    productBasis === 'body'
   ) {
     return {
       entries: product.size_chart,
@@ -475,7 +475,7 @@ export function getEffectiveSizeChart(product, profile, brandCharts = []) {
       }
     : {
         entries: [],
-        source: productBasis === 'garment' ? 'garment_data_only' : 'none',
+        source: productBasis === 'garment' || productBasis === 'mixed' ? 'non_body_chart_only' : 'none',
         chart: null,
         measurementBasis: productBasis,
         garmentMeasurements: product?.garment_measurements || [],
