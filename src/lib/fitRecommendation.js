@@ -70,6 +70,9 @@ function buildFitConfidence(sizeChart, measurementsCm, options, exact, criteriaM
   const avgFieldConfidence = confidenceValues.length
     ? confidenceValues.reduce((sum, value) => sum + value, 0) / confidenceValues.length
     : finiteNumber(options.measurementConfidence);
+  const minFieldConfidence = confidenceValues.length
+    ? Math.min(...confidenceValues)
+    : finiteNumber(options.measurementConfidence);
 
   const completeness = requirements.length
     ? (requirements.length - readiness.missing.length) / requirements.length
@@ -90,6 +93,9 @@ function buildFitConfidence(sizeChart, measurementsCm, options, exact, criteriaM
   if (identityOnly) score = Math.min(score, 72);
   if (!exact) score = Math.min(score, 74);
   if (criteriaMatched <= 1 && requirements.length > 1) score = Math.min(score, 60);
+  if (Number.isFinite(minFieldConfidence) && minFieldConfidence < 45) score = Math.min(score, 49);
+  else if (Number.isFinite(minFieldConfidence) && minFieldConfidence < 65) score = Math.min(score, 64);
+  else if (Number.isFinite(minFieldConfidence) && minFieldConfidence < 80) score = Math.min(score, 79);
   if (blocked) score = Math.min(score, 49);
   if (missingChartData.length) score = Math.min(score, 79);
 
