@@ -2,12 +2,14 @@
 
 This repository mirrors the verified sizing reference data used by The Concierge and Concierge Pro.
 
-- Snapshot: 2026-10-06
-- Verified chart records: 57
-- Normalized size rows: 1040
+- Snapshot: 2026-10-06 department-store expansion
+- Verified chart records: 110
+- Distinct brands with verified charts: 49
+- Normalized size rows: 1615
 - Width-aware footwear rows: 438
 - Brand-family / ownership relationships: 47
 - Initial market focus: US sizing
+- Department-store/private-label expansion: 53 chart records across 31 newly covered brands
 
 ## Head-to-toe coverage
 
