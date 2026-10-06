@@ -32,10 +32,14 @@ export default function Shop() {
   const specialFilter = urlParams.get('filter') || '';
 
   const categories = {
-    business: ['suits', 'vests', 'dress_shirts', 'pants', 'blouse', 'dress_skirts', 'collar_stays', 'cufflinks', 'tie_bar', 'tie_chain', 'tie_pin', 'pocket_square', 'lapel_pin'],
+    business: ['suits', 'vests', 'dress_shirts', 'pants', 'blouse', 'dress_skirts', 'sports_jackets', 'collar_stays', 'cufflinks', 'tie_bar', 'tie_chain', 'tie_pin', 'pocket_square', 'lapel_pin'],
     casual: ['polos', 'tshirts', 'jackets', 'jeans', 'shorts', 'khakis', 'dresses', 'skirts', 'jumpers'],
+    formal: ['suits', 'vests', 'dress_shirts', 'dresses', 'evening_dresses', 'sports_jackets'],
+    evening: ['evening_dresses', 'dresses', 'suits', 'sports_jackets', 'pattern_shirts'],
+    outdoor: ['coats', 'parkas', 'outerwear', 'jackets', 'boots', 'hats'],
+    active: ['tshirts', 'shorts', 'pants', 'jackets', 'shoes', 'boots', 'hats'],
     nightlife: ['pattern_shirts', 'graphic_tees', 'sports_jackets', 'evening_dresses'],
-    accessories: ['hats', 'glasses', 'earrings', 'necklaces', 'bracelets', 'watches', 'belts', 'socks', 'shoes']
+    accessories: ['hats', 'glasses', 'earrings', 'necklaces', 'bracelets', 'watches', 'belts', 'socks', 'shoes', 'boots']
   };
 
   useEffect(() => {
@@ -263,7 +267,7 @@ export default function Shop() {
                   <div>
                     <p className="text-sm font-medium text-[var(--color-text-primary)] mb-3">Style</p>
                     <div className="flex flex-wrap gap-2">
-                      {['business', 'casual', 'nightlife', 'trendy'].map(style => (
+                      {['business', 'casual', 'formal', 'evening', 'outdoor', 'active', 'nightlife', 'trendy'].map(style => (
                         <button
                           key={style}
                           onClick={() => setFilters(prev => ({ ...prev, style: prev.style === style ? '' : style }))}
