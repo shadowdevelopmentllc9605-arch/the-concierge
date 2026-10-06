@@ -11,6 +11,9 @@ export default function AIFeedbackForm({ purchase, user, onComplete, onSkip }) {
   const [tryOnAccuracy, setTryOnAccuracy] = useState(0);
   const [recommendationRelevance, setRecommendationRelevance] = useState(0);
   const [feedbackText, setFeedbackText] = useState('');
+  const [fitResult, setFitResult] = useState('');
+  const [problemAreas, setProblemAreas] = useState('');
+  const [keptItem, setKeptItem] = useState(null);
   const [submitting, setSubmitting] = useState(false);
 
   const sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
@@ -29,6 +32,9 @@ export default function AIFeedbackForm({ purchase, user, onComplete, onSkip }) {
           was_helpful: sizeSuggestionAccurate,
           suggested_size: purchase.size,
           actual_size_needed: actualSizeNeeded || purchase.size,
+          fit_result: fitResult || (sizeSuggestionAccurate ? 'ideal' : 'mixed'),
+          problem_areas: problemAreas.split(',').map(value => value.trim()).filter(Boolean),
+          kept_item: keptItem,
           feedback_text: feedbackText
         });
       }
@@ -133,6 +139,45 @@ export default function AIFeedbackForm({ purchase, user, onComplete, onSkip }) {
             </div>
           </motion.div>
         )}
+      </div>
+
+      <div className="bg-[var(--color-surface)] rounded-2xl p-6">
+        <div className="flex items-center gap-3 mb-4">
+          <Shirt className="w-5 h-5 text-[var(--color-accent)]" />
+          <h3 className="font-medium text-[var(--color-text-primary)]">How did it actually fit?</h3>
+        </div>
+        <div className="grid grid-cols-2 gap-2 mb-4">
+          {[
+            ['too_tight', 'Too tight'],
+            ['ideal', 'Ideal fit'],
+            ['too_loose', 'Too loose'],
+            ['mixed', 'Mixed by area'],
+          ].map(([value, label]) => (
+            <button
+              key={value}
+              type="button"
+              onClick={() => setFitResult(value)}
+              className={`py-2.5 px-3 rounded-xl text-sm border transition-colors ${fitResult === value ? 'border-[var(--color-accent)] bg-[var(--color-accent)]/10 text-[var(--color-text-primary)]' : 'border-[var(--color-border)] text-[var(--color-text-secondary)]'}`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+        {(fitResult === 'too_tight' || fitResult === 'too_loose' || fitResult === 'mixed') && (
+          <Textarea
+            value={problemAreas}
+            onChange={(e) => setProblemAreas(e.target.value)}
+            placeholder="Where was the fit off? e.g. chest, waist, shoulders, sleeves, thigh, toe box"
+            className="min-h-[72px] resize-none bg-[var(--color-background)] border-[var(--color-border)]"
+          />
+        )}
+        <div className="flex gap-2 mt-4">
+          <button type="button" onClick={() => setKeptItem(true)} className={`flex-1 py-2 rounded-xl text-sm border ${keptItem === true ? 'border-green-500 bg-green-50 text-green-700' : 'border-[var(--color-border)]'}`}>Kept it</button>
+          <button type="button" onClick={() => setKeptItem(false)} className={`flex-1 py-2 rounded-xl text-sm border ${keptItem === false ? 'border-red-400 bg-red-50 text-red-700' : 'border-[var(--color-border)]'}`}>Returned / exchanged</button>
+        </div>
+        <p className="text-xs text-[var(--color-text-secondary)] mt-3">
+          This real-world outcome helps validate future fit recommendations instead of learning only from clicks.
+        </p>
       </div>
 
       {/* Virtual Try-On Accuracy */}
