@@ -11,6 +11,7 @@ import {
   parseLengthToCm,
 } from '@/lib/measurementUnits';
 import { deriveGenericSuggestedSizes } from '@/lib/fitRecommendation';
+import { MEASUREMENT_DEFINITIONS, MEASUREMENT_PROTOCOL_VERSION } from '@/lib/measurementDefinitions';
 
 const UNSURE = 'unsure';
 
@@ -204,6 +205,38 @@ export default function MeasurementsEditor({ profile, onSaved }) {
       };
 
       await base44.entities.UserProfile.update(profile.id, update);
+
+      const verifiedKeys = lengthFields
+        .map(({ key }) => key)
+        .filter(key => verifiedFields[key] && Number.isFinite(Number(canonicalCm[key])));
+      if (verifiedKeys.length > 0 && profile?.measurement_scan_values_cm) {
+        const referenceValues = {};
+        const scanValues = {};
+        const absoluteErrors = {};
+        for (const key of verifiedKeys) {
+          const reference = Number(canonicalCm[key]);
+          const scan = Number(profile.measurement_scan_values_cm?.[key]);
+          referenceValues[key] = reference;
+          if (Number.isFinite(scan)) {
+            scanValues[key] = scan;
+            absoluteErrors[key] = Number(Math.abs(reference - scan).toFixed(2));
+          }
+        }
+        await base44.entities.MeasurementValidationRecord.create({
+          user_id: profile.user_id,
+          protocol_version: profile.measurement_protocol_version || MEASUREMENT_PROTOCOL_VERSION,
+          scan_method: profile.measurement_method || '',
+          scan_timestamp: profile.measurement_updated_at || new Date().toISOString(),
+          verification_timestamp: new Date().toISOString(),
+          scan_quality: Number(profile.measurement_confidence || 0),
+          scan_values_cm: scanValues,
+          reference_values_cm: referenceValues,
+          absolute_errors_cm: absoluteErrors,
+          verified_fields: verifiedKeys,
+          diagnostics: profile.measurement_scan_diagnostics || {},
+        });
+      }
+
       onSaved?.({ ...profile, ...update });
       setOpen(false);
     } catch (error) {
@@ -303,6 +336,11 @@ export default function MeasurementsEditor({ profile, onSaved }) {
                   </span>
                 )}
               </div>
+              {MEASUREMENT_DEFINITIONS[field.key] && (
+                <p className="mt-1 text-[11px] leading-relaxed text-[var(--color-text-secondary)]">
+                  {MEASUREMENT_DEFINITIONS[field.key].short} {MEASUREMENT_DEFINITIONS[field.key].method}
+                </p>
+              )}
               {!unsureFields[field.key] && (
                 <label className="flex items-center gap-2 mt-2 text-xs text-[var(--color-text-secondary)] cursor-pointer">
                   <input
