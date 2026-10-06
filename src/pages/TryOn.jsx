@@ -152,6 +152,11 @@ export default function TryOn() {
       shoeWidth: userProfile?.measurements?.shoe_width,
       braSize: userProfile?.measurements?.bra_size,
       gender: userProfile?.gender,
+      category: currentProduct?.category,
+      categoryGroup: getCategoryGroup(currentProduct?.category),
+      measurementConfidence: userProfile?.measurement_confidence,
+      measurementConfidenceByField: userProfile?.measurement_confidence_by_field || {},
+      validationStatus: userProfile?.measurement_validation_status || 'estimated',
       sizeAdjustmentSteps: currentProduct?.footwear_fit?.size_adjustment_steps ?? effectiveChart.chart?.size_adjustment_steps ?? 0
     }
   );
@@ -166,9 +171,13 @@ export default function TryOn() {
     recommendedSize = '';
   }
   const recommendationLabel = chartMatch?.size
-    ? (effectiveChart.source === 'brand_size_chart'
-      ? (chartMatch.matchType === 'nearest' ? 'Closest brand match' : 'Verified brand match')
-      : (chartMatch.matchType === 'nearest' ? 'Closest product-chart match' : 'Best match'))
+    ? (chartMatch.matchType === 'nearest'
+      ? (effectiveChart.source === 'brand_size_chart' ? 'Closest brand fit' : 'Closest product fit')
+      : chartMatch.fitConfidence === 'high'
+        ? 'High-confidence fit'
+        : chartMatch.fitConfidence === 'medium'
+          ? 'Fit match'
+          : 'Low-confidence fit')
     : recommendedSize ? 'Profile estimate' : '';
 
   return (
