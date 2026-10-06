@@ -1,0 +1,56 @@
+{
+  "name": "BrandAffiliation",
+  "type": "object",
+  "properties": {
+    "parent_name": {
+      "type": "string"
+    },
+    "parent_key": {
+      "type": "string"
+    },
+    "brand_name": {
+      "type": "string"
+    },
+    "brand_key": {
+      "type": "string"
+    },
+    "relationship_type": {
+      "type": "string",
+      "enum": [
+        "parent_company",
+        "subsidiary",
+        "brand_family",
+        "licensee",
+        "manufacturer",
+        "contract_manufacturer",
+        "unknown"
+      ]
+    },
+    "active": {
+      "type": "boolean",
+      "default": true
+    },
+    "source_url": {
+      "type": "string"
+    },
+    "source_retrieved_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "parent_name",
+    "brand_name",
+    "relationship_type",
+    "source_url"
+  ],
+  "rls": {
+    "create": false,
+    "read": true,
+    "update": false,
+    "delete": false
+  }
+}
