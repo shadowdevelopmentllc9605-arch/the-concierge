@@ -23,6 +23,7 @@ export default function ProductDetail() {
   const [user, setUser] = useState(null);
   const [suggestedSize, setSuggestedSize] = useState('');
   const [suggestedWidth, setSuggestedWidth] = useState('');
+  const [footwearFitNote, setFootwearFitNote] = useState('');
   const [recommendationSource, setRecommendationSource] = useState('');
 
   useEffect(() => {
@@ -59,6 +60,9 @@ export default function ProductDetail() {
             })
           : [];
         const effectiveChart = getEffectiveSizeChart(product, profile, brandCharts);
+        if (getCategoryGroup(product.category) === 'footwear') {
+          setFootwearFitNote(product.footwear_fit?.fit_notes || effectiveChart.chart?.fit_guidance || '');
+        }
         const chartMatch = recommendFromSizeChart(
           effectiveChart.entries,
           profile.measurement_values_cm || {},
@@ -401,9 +405,9 @@ export default function ProductDetail() {
           </div>
         )}
 
-        {getCategoryGroup(product.category) === 'footwear' && product.footwear_fit?.fit_notes && (
+        {getCategoryGroup(product.category) === 'footwear' && footwearFitNote && (
           <p className="mt-3 text-xs text-[var(--color-text-secondary)]">
-            Fit note: {product.footwear_fit.fit_notes}
+            Fit note: {footwearFitNote}
           </p>
         )}
 
