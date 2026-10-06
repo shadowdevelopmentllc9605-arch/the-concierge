@@ -1,7 +1,10 @@
 const CATEGORY_GROUPS = {
-  tops: new Set(['suits', 'vests', 'dress_shirts', 'blouse', 'tshirts', 'polos', 'jackets', 'pattern_shirts', 'graphic_tees', 'sports_jackets']),
+  tops: new Set(['vests', 'dress_shirts', 'blouse', 'tshirts', 'polos', 'jackets', 'pattern_shirts', 'graphic_tees', 'sports_jackets']),
   bottoms: new Set(['pants', 'jeans', 'shorts', 'khakis']),
   dresses: new Set(['dresses', 'dress_skirts', 'skirts', 'evening_dresses']),
+  suits: new Set(['suits']),
+  underwear: new Set(['underwear', 'bras', 'lingerie', 'sleepwear']),
+  footwear: new Set(['shoes']),
 };
 
 function finiteNumber(value) {
@@ -24,16 +27,74 @@ export function getCategoryGroup(category) {
   return null;
 }
 
-export function recommendFromSizeChart(sizeChart = [], measurementsCm = {}) {
+function normalizedSizeValue(value = '') {
+  return String(value).trim().toLowerCase().replace(/\s+/g, '');
+}
+
+function labeledAlternateValue(value = '', label = '') {
+  const text = String(value).trim();
+  const pattern = new RegExp(`^us\\s*${label}\\s*`, 'i');
+  return normalizedSizeValue(text.replace(pattern, ''));
+}
+
+export function recommendFromSizeChart(sizeChart = [], measurementsCm = {}, options = {}) {
   if (!Array.isArray(sizeChart) || sizeChart.length === 0) return null;
 
+  const shoeSize = normalizedSizeValue(options.shoeSize);
+  if (shoeSize) {
+    let identityMatch = null;
+    if (options.gender === 'female') {
+      identityMatch = sizeChart.find(row =>
+        /^us\s*women/i.test(String(row?.alternate_size || '')) &&
+        labeledAlternateValue(row.alternate_size, 'women') === shoeSize
+      );
+    }
+    identityMatch ||= sizeChart.find(row =>
+      normalizedSizeValue(row?.us_size || row?.size) === shoeSize
+    );
+    if (identityMatch) {
+      return {
+        size: identityMatch.size,
+        source: 'product_size_chart',
+        matched: identityMatch,
+        criteriaMatched: 1,
+        matchType: 'exact',
+      };
+    }
+  }
+
+  const braSize = normalizedSizeValue(options.braSize);
+  if (braSize) {
+    const identityMatch = sizeChart.find(row =>
+      normalizedSizeValue(row?.size) === braSize ||
+      normalizedSizeValue(`${row?.band_size || ''}${row?.cup_size || ''}`) === braSize
+    );
+    if (identityMatch) {
+      return {
+        size: identityMatch.size,
+        source: 'product_size_chart',
+        matched: identityMatch,
+        criteriaMatched: 1,
+        matchType: 'exact',
+      };
+    }
+  }
+
+  const chest = finiteNumber(measurementsCm.chest);
+  const bust = finiteNumber(measurementsCm.bust);
   const user = {
-    chest: finiteNumber(measurementsCm.chest),
+    chest: Number.isFinite(chest) ? chest : bust,
+    bust: Number.isFinite(bust) ? bust : chest,
+    underbust: finiteNumber(measurementsCm.underbust),
     waist: finiteNumber(measurementsCm.waist),
     hips: finiteNumber(measurementsCm.hips),
     inseam: finiteNumber(measurementsCm.inseam),
+    foot_length: finiteNumber(measurementsCm.foot_length),
+    height: finiteNumber(measurementsCm.height),
+    neck: finiteNumber(measurementsCm.neck),
   };
 
+  const measurementKeys = ['chest', 'bust', 'underbust', 'waist', 'hips', 'inseam', 'foot_length', 'height', 'neck'];
   const scored = sizeChart
     .map(row => {
       let criteria = 0;
@@ -41,7 +102,7 @@ export function recommendFromSizeChart(sizeChart = [], measurementsCm = {}) {
       let outsideDistance = 0;
       let exact = true;
 
-      for (const key of ['chest', 'waist', 'hips', 'inseam']) {
+      for (const key of measurementKeys) {
         const value = user[key];
         const min = finiteNumber(row[`${key}_min_cm`]);
         const max = finiteNumber(row[`${key}_max_cm`]);
@@ -100,9 +161,19 @@ export function normalizeBrandKey(value = '') {
   return String(value).toLowerCase().replace(/[^a-z0-9]/g, '');
 }
 
-export function getSizingAudience(gender) {
-  if (gender === 'male') return 'men';
-  if (gender === 'female') return 'women';
+export function getSizingAudience(profile = {}) {
+  if (profile?.birthday) {
+    const birthday = new Date(`${profile.birthday}T00:00:00`);
+    if (!Number.isNaN(birthday.getTime())) {
+      const today = new Date();
+      let age = today.getFullYear() - birthday.getFullYear();
+      const monthDelta = today.getMonth() - birthday.getMonth();
+      if (monthDelta < 0 || (monthDelta === 0 && today.getDate() < birthday.getDate())) age -= 1;
+      if (age >= 0 && age < 18) return 'kids';
+    }
+  }
+  if (profile?.gender === 'male') return 'men';
+  if (profile?.gender === 'female') return 'women';
   return 'unknown';
 }
 
@@ -113,7 +184,7 @@ export function selectBrandSizeChart(brandCharts = [], product = {}, profile = {
   const categoryGroup = getCategoryGroup(product.category);
   if (!brandKey || !categoryGroup) return null;
 
-  const audience = getSizingAudience(profile?.gender);
+  const audience = getSizingAudience(profile);
   const candidates = brandCharts.filter(chart =>
     chart?.active !== false &&
     normalizeBrandKey(chart?.brand_key || chart?.brand_name) === brandKey &&
