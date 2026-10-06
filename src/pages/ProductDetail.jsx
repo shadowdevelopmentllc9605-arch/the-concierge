@@ -5,7 +5,7 @@ import { createPageUrl } from '@/utils';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Heart, ShoppingBag, Sparkles, Check, Loader2 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
-import { getCategoryGroup, recommendFromSizeChart } from '@/lib/fitRecommendation';
+import { getCategoryGroup, getEffectiveSizeChart, normalizeBrandKey, recommendFromSizeChart } from '@/lib/fitRecommendation';
 
 export default function ProductDetail() {
   const navigate = useNavigate();
@@ -50,14 +50,25 @@ export default function ProductDetail() {
       if (profiles.length > 0 && products[0]) {
         const profile = profiles[0];
         const product = products[0];
+        const brandCharts = product.brand
+          ? await base44.entities.BrandSizeChart.filter({
+              brand_key: normalizeBrandKey(product.brand),
+              active: true
+            })
+          : [];
+        const effectiveChart = getEffectiveSizeChart(product, profile, brandCharts);
         const chartMatch = recommendFromSizeChart(
-          product.size_chart || [],
+          effectiveChart.entries,
           profile.measurement_values_cm || {}
         );
 
         if (chartMatch?.size) {
           setSuggestedSize(chartMatch.size);
-          setRecommendationSource('product_size_chart');
+          setRecommendationSource(
+            effectiveChart.source === 'brand_size_chart'
+              ? (chartMatch.matchType === 'nearest' ? 'brand_size_chart_nearest' : 'brand_size_chart')
+              : (chartMatch.matchType === 'nearest' ? 'product_size_chart_nearest' : 'product_size_chart')
+          );
         } else {
           const group = getCategoryGroup(product.category);
           let fallback = group ? profile.suggested_sizes?.[group] : '';
@@ -292,7 +303,7 @@ export default function ProductDetail() {
               {suggestedSize && (
                 <span className="text-xs text-[var(--color-accent)] flex items-center gap-1">
                   <Sparkles className="w-3 h-3" />
-                  {recommendationSource === 'product_size_chart' ? 'Best match' : 'Profile estimate'}: {suggestedSize}
+                  {recommendationSource === 'brand_size_chart' ? 'Verified brand match' : recommendationSource === 'brand_size_chart_nearest' ? 'Closest brand match' : recommendationSource === 'product_size_chart_nearest' ? 'Closest product-chart match' : recommendationSource === 'product_size_chart' ? 'Best match' : 'Profile estimate'}: {suggestedSize}
                 </span>
               )}
             </div>
@@ -321,7 +332,12 @@ export default function ProductDetail() {
 
         {suggestedSize && recommendationSource === 'profile_estimate' && (
           <p className="mt-3 text-xs text-[var(--color-text-secondary)]">
-            This is a general size estimate. Brand-specific recommendations become more precise when the retailer provides a product size chart.
+            This is a general size estimate. Verified brand or retailer product charts take priority when available.
+          </p>
+        )}
+        {suggestedSize && recommendationSource.startsWith('brand_size_chart') && (
+          <p className="mt-3 text-xs text-[var(--color-text-secondary)]">
+            Recommendation uses the verified brand sizing catalog. A retailer-supplied product chart will override it when available.
           </p>
         )}
 
