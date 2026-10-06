@@ -90,6 +90,27 @@ function rowSpan(mask, yNormalized, threshold = MASK_THRESHOLD) {
   return maxX >= minX ? maxX - minX + 1 : null;
 }
 
+function rowSpanAroundCenter(mask, yNormalized, xNormalized, threshold = MASK_THRESHOLD) {
+  if (!mask?.values?.length || !mask.width || !mask.height) return null;
+  const y = Math.max(0, Math.min(mask.height - 1, Math.round(yNormalized * (mask.height - 1))));
+  const offset = y * mask.width;
+  const targetX = Math.max(0, Math.min(mask.width - 1, Math.round(xNormalized * (mask.width - 1))));
+
+  let seed = -1;
+  for (let radius = 0; radius < Math.ceil(mask.width * 0.18); radius += 1) {
+    const candidates = radius === 0 ? [targetX] : [targetX - radius, targetX + radius];
+    seed = candidates.find(x => x >= 0 && x < mask.width && mask.values[offset + x] >= threshold) ?? -1;
+    if (seed >= 0) break;
+  }
+  if (seed < 0) return null;
+
+  let left = seed;
+  let right = seed;
+  while (left > 0 && mask.values[offset + left - 1] >= threshold) left -= 1;
+  while (right < mask.width - 1 && mask.values[offset + right + 1] >= threshold) right += 1;
+  return right - left + 1;
+}
+
 function distance2d(a, b, width, height) {
   if (!a || !b) return null;
   const dx = (a.x - b.x) * width;
@@ -120,19 +141,54 @@ function closeMask(mask) {
   }
 }
 
-function torsoLevels(landmarks) {
+function torsoFrame(landmarks) {
   const leftShoulder = landmarks[11];
   const rightShoulder = landmarks[12];
   const leftHip = landmarks[23];
   const rightHip = landmarks[24];
   const shoulderY = (leftShoulder.y + rightShoulder.y) / 2;
   const hipY = (leftHip.y + rightHip.y) / 2;
-  const torso = hipY - shoulderY;
+  const shoulderX = (leftShoulder.x + rightShoulder.x) / 2;
+  const hipX = (leftHip.x + rightHip.x) / 2;
   return {
-    chest: shoulderY + torso * 0.22,
-    waist: shoulderY + torso * 0.62,
-    hips: hipY + Math.max(0.02, torso * 0.10),
+    shoulderY,
+    hipY,
+    shoulderX,
+    hipX,
+    torso: hipY - shoulderY,
   };
+}
+
+function crossSectionAtFraction(view, scale, fraction) {
+  const frame = view.frame;
+  const y = frame.shoulderY + frame.torso * fraction;
+  const centerFraction = Math.max(0, Math.min(1, fraction));
+  const x = frame.shoulderX + (frame.hipX - frame.shoulderX) * centerFraction;
+  const pixels = rowSpanAroundCenter(view.mask, y, x);
+  return pixels ? pixels * scale : null;
+}
+
+function selectCrossSection(front, side, back, scales, startFraction, endFraction, mode) {
+  const candidates = [];
+  for (let fraction = startFraction; fraction <= endFraction + 0.0001; fraction += 0.025) {
+    const frontWidth = crossSectionAtFraction(front, scales.front, fraction);
+    const backWidth = crossSectionAtFraction(back, scales.back, fraction);
+    const sideDepth = crossSectionAtFraction(side, scales.side, fraction);
+    const widths = [frontWidth, backWidth].filter(Number.isFinite);
+    if (!widths.length || !Number.isFinite(sideDepth)) continue;
+    const width = widths.reduce((sum, value) => sum + value, 0) / widths.length;
+    const circumference = ellipseCircumference(width, sideDepth);
+    if (Number.isFinite(circumference)) {
+      candidates.push({ fraction, circumference, frontWidth, backWidth, sideDepth, width });
+    }
+  }
+  if (!candidates.length) return null;
+  return candidates.reduce((best, candidate) => {
+    if (!best) return candidate;
+    return mode === 'min'
+      ? (candidate.circumference < best.circumference ? candidate : best)
+      : (candidate.circumference > best.circumference ? candidate : best);
+  }, null);
 }
 
 function orientationMetrics(landmarks) {
@@ -188,7 +244,7 @@ async function analyzeView(url, landmarker) {
     rawMask,
     mask,
     box,
-    levels: torsoLevels(landmarks),
+    frame: torsoFrame(landmarks),
     orientation: orientationMetrics(landmarks),
     coverage: scanCoverage(box, mask),
   };
@@ -248,41 +304,29 @@ export async function measureBodyFromImages({ frontUrl, sideUrl, backUrl, height
     const sideScale = numericHeight / side.box.height;
     const backScale = numericHeight / back.box.height;
 
-    const frontWidths = {
-      chest: rowSpan(front.mask, front.levels.chest),
-      waist: rowSpan(front.mask, front.levels.waist),
-      hips: rowSpan(front.mask, front.levels.hips),
-    };
-    const backWidths = {
-      chest: rowSpan(back.mask, back.levels.chest),
-      waist: rowSpan(back.mask, back.levels.waist),
-      hips: rowSpan(back.mask, back.levels.hips),
-    };
-    const sideDepths = {
-      chest: rowSpan(side.mask, side.levels.chest),
-      waist: rowSpan(side.mask, side.levels.waist),
-      hips: rowSpan(side.mask, side.levels.hips),
-    };
+    const scales = { front: frontScale, side: sideScale, back: backScale };
+    const chestSection = selectCrossSection(front, side, back, scales, 0.16, 0.38, 'max');
+    const waistSection = selectCrossSection(front, side, back, scales, 0.45, 0.80, 'min');
+    const hipSection = selectCrossSection(front, side, back, scales, 0.88, 1.18, 'max');
 
-    const frontWidthCm = Object.fromEntries(
-      Object.entries(frontWidths).map(([key, value]) => [key, value ? value * frontScale : null])
-    );
-    const backWidthCm = Object.fromEntries(
-      Object.entries(backWidths).map(([key, value]) => [key, value ? value * backScale : null])
-    );
-    const sideDepthCm = Object.fromEntries(
-      Object.entries(sideDepths).map(([key, value]) => [key, value ? value * sideScale : null])
-    );
-
-    const averagedWidth = {};
-    for (const key of ['chest', 'waist', 'hips']) {
-      const values = [frontWidthCm[key], backWidthCm[key]].filter(Number.isFinite);
-      averagedWidth[key] = values.length ? values.reduce((sum, value) => sum + value, 0) / values.length : null;
+    if (!chestSection || !waistSection || !hipSection) {
+      throw new Error('The torso outline was not clear enough to locate chest, waist, and hip cross-sections. Retake the photos in fitted clothing.');
     }
 
-    const chest = ellipseCircumference(averagedWidth.chest, sideDepthCm.chest);
-    const waist = ellipseCircumference(averagedWidth.waist, sideDepthCm.waist);
-    const hips = ellipseCircumference(averagedWidth.hips, sideDepthCm.hips);
+    const chest = chestSection.circumference;
+    const waist = waistSection.circumference;
+    const hips = hipSection.circumference;
+
+    const frontWidthCm = {
+      chest: chestSection.frontWidth,
+      waist: waistSection.frontWidth,
+      hips: hipSection.frontWidth,
+    };
+    const backWidthCm = {
+      chest: chestSection.backWidth,
+      waist: waistSection.backWidth,
+      hips: hipSection.backWidth,
+    };
 
     const leftShoulder = front.landmarks[11];
     const rightShoulder = front.landmarks[12];
@@ -378,8 +422,11 @@ export async function measureBodyFromImages({ frontUrl, sideUrl, backUrl, height
         front_back_width_agreement: Number((widthAgreement * 100).toFixed(1)),
         orientation_score: Number((orientationScore * 100).toFixed(1)),
         front_back_orientation_agreement: Number((frontBackOrientationAgreement * 100).toFixed(1)),
+        chest_level_fraction: Number(chestSection.fraction.toFixed(3)),
+        waist_level_fraction: Number(waistSection.fraction.toFixed(3)),
+        hip_level_fraction: Number(hipSection.fraction.toFixed(3)),
       },
-      method: 'mediapipe_full_three_view_height_calibrated_v2',
+      method: 'mediapipe_full_three_view_contour_height_calibrated_v3',
       notes: confidence >= 85
         ? 'Strong scan quality. Review the measurements before using them for high-confidence fit decisions.'
         : 'Scan quality is usable but not strong enough to treat as verified. Review or confirm key measurements with a tape.',
