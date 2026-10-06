@@ -77,13 +77,13 @@ export default function Shop() {
       const sizeCharts = await base44.entities.BrandSizeChart.filter({ active: true });
       setBrandCharts(sizeCharts);
 
-      const brandPageSize = 500;
       const brands = [];
-      for (let skip = 0; skip < 5000; skip += brandPageSize) {
-        const page = await base44.entities.BrandCatalog.list('brand_name', brandPageSize, skip);
-        brands.push(...(page || []));
-        if (!page || page.length < brandPageSize) break;
-      }
+      let brandCursor = null;
+      do {
+        const page = await base44.entities.BrandCatalog.list({ limit: 500, cursor: brandCursor });
+        brands.push(...(page?.items || []));
+        brandCursor = page?.next_cursor || null;
+      } while (brandCursor);
       const mergedBrands = new Map();
       for (const brand of brands.filter(item => item.active !== false)) {
         const key = brand.brand_key || brand.brand_name?.toLowerCase().replace(/[^a-z0-9]/g, '');
