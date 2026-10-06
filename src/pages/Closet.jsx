@@ -60,7 +60,7 @@ function OwnedItemCard({ item, idx, onRemove, onEdit }) {
       <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
         <div className="absolute bottom-2 left-2 right-2">
           <p className="text-white text-xs font-medium truncate">{item.item_type || 'Untitled'}</p>
-          <p className="text-white/70 text-xs capitalize">{item.size && `${item.size} • `}{item.style_category || 'No category'}</p>
+          <p className="text-white/70 text-xs capitalize">{item.size && `${item.size}${item.width_code ? ' ' + item.width_code : ''} • `}{item.style_category || 'No category'}</p>
         </div>
       </div>
       <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -113,7 +113,7 @@ function PurchaseCard({ item, idx }) {
         <div className="flex-1 min-w-0">
           <h3 className="font-medium text-[var(--color-text-primary)] truncate">{item.product_name}</h3>
           <p className="text-sm text-[var(--color-text-secondary)] mt-1">
-            Size: {item.size} {item.color && `• ${item.color}`}
+            Size: {item.size}{item.width_code ? ' • Width ' + item.width_code : ''} {item.color && `• ${item.color}`}
           </p>
           
           <div className="flex items-center gap-4 mt-2 text-xs text-[var(--color-text-secondary)]">
