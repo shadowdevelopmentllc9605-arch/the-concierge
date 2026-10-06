@@ -83,6 +83,12 @@
         },
         "neck": {
           "type": "number"
+        },
+        "underbust": {
+          "type": "number"
+        },
+        "foot_length": {
+          "type": "number"
         }
       }
     },
@@ -121,6 +127,12 @@
         },
         "shoe_size": {
           "type": "string"
+        },
+        "underbust": {
+          "type": "string"
+        },
+        "foot_length": {
+          "type": "string"
         }
       }
     },
@@ -137,6 +149,12 @@
           "type": "string"
         },
         "suits": {
+          "type": "string"
+        },
+        "underwear": {
+          "type": "string"
+        },
+        "footwear": {
           "type": "string"
         }
       }
