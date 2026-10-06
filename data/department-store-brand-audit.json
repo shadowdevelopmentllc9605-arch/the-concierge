@@ -1,773 +1,352 @@
 {
-  "version": "2026-10-06-master-department-store-audit-1",
+  "version": "2026-10-06-brand-master-layer-1",
   "audited_at": "2026-10-06",
   "scope": {
-    "included": "Apparel, underwear, swimwear, headwear and footwear brands surfaced by official retailer fashion/brand directories, plus major owned/exclusive labels.",
-    "excluded": "Beauty, home, jewelry-only brands and uncurated third-party marketplace sellers. Nordstrom, Bloomingdale's and Macy's maintain very large dynamic directories; their official directories are tracked as canonical sources while the audit prioritizes apparel/footwear intersections and retailer-exclusive labels.",
+    "included": "Fashion-relevant brands for women, men, kids, intimates, activewear, accessories/headwear and footwear from the audited department stores. Brand existence is tracked independently from sizing-chart availability.",
+    "excluded": "Home-only, beauty-only, furniture, cookware and electronics brands unless they also participate in a fashion category.",
     "status_definitions": {
-      "verified_loaded": "At least one official/verified numeric chart for this brand is live in BrandSizeChart.",
-      "source_found_not_loaded": "A source or partial/fit-specific chart was found, but loading it generically could create false recommendations.",
-      "estimate_only": "No trustworthy compatible numeric chart is live; the app uses body-measurement Estimated size fallback."
+      "verified_loaded": "One or more compatible verified sizing charts are live in BrandSizeChart.",
+      "partial": "Sizing source exists but is incomplete, fit-family-specific, malformed or otherwise unsafe to generalize.",
+      "estimate_only": "Brand is available in the master catalog but no compatible verified chart is live; body-measurement estimates remain available."
     }
   },
   "live_catalog_at_audit": {
-    "verified_chart_records": 179,
-    "distinct_verified_brands": 74,
-    "normalized_size_rows": 2447
+    "brand_catalog_records": 277,
+    "verified_chart_brands": 74,
+    "partial_sizing_brands": 25,
+    "estimate_only_brands": 178,
+    "retailers": 9
   },
   "retailers": [
     {
-      "retailer": "Walmart",
-      "source_url": "https://www.walmart.com/cp/fashion-brand-directory/3928184",
-      "inventory_mode": "official_fashion_brand_directory",
+      "retailer": "Belk",
+      "source_url": "https://www.belk.com/site.html",
+      "inventory_mode": "department_store_fashion_brand_directory_snapshot",
       "brands": [
-        "Airwalk",
-        "AND1",
-        "Athletic Works",
-        "Avia",
-        "Bali",
-        "Ben Hogan",
-        "Brahma",
-        "Carter's Child of Mine",
-        "Casio",
-        "Cate & Chloe",
-        "Celebrity Pink",
-        "Champion",
-        "Chaps",
-        "Claire's",
-        "Crocs",
-        "Disney",
-        "Dr. Scholl's Shoes",
-        "Easy Peasy",
-        "Free Assembly",
-        "Fruit of the Loom",
-        "Garanimals",
-        "Genuine Dickies",
-        "George",
-        "Gildan",
-        "Ground Up",
-        "Hanes",
-        "Herman Survivors",
-        "IZOD",
-        "Jessica Simpson",
-        "Joyspun",
-        "Justice",
-        "Lands' End",
-        "Lee",
-        "Levi Strauss Signature",
-        "LifeStride",
-        "Love & Sports",
-        "M+A by Monica + Andy",
-        "Madden Girl",
-        "Madden NYC",
-        "Marvel",
-        "Miabella",
-        "Modern Moments by Gerber",
-        "No Boundaries",
-        "Parade",
-        "The Pioneer Woman",
-        "Reebok",
-        "Ryka",
-        "Scoop",
-        "Ozark Trail",
-        "Skechers",
-        "Sofia Jeans by Sofia Vergara",
-        "SOUL by Naturalizer",
-        "Terra & Sky",
-        "Time & Tru",
-        "U.S. Polo Assn.",
-        "Wonder Nation",
-        "Wrangler"
-      ],
-      "brand_status": [
-        {
-          "brand": "Airwalk",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "AND1",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "Athletic Works",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "Avia",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "Bali",
-          "status": "source_found_not_loaded"
-        },
-        {
-          "brand": "Ben Hogan",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "Brahma",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "Carter's Child of Mine",
-          "status": "verified_loaded"
-        },
-        {
-          "brand": "Casio",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "Cate & Chloe",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "Celebrity Pink",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "Champion",
-          "status": "verified_loaded"
-        },
-        {
-          "brand": "Chaps",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "Claire's",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "Crocs",
-          "status": "verified_loaded"
-        },
-        {
-          "brand": "Disney",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "Dr. Scholl's Shoes",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "Easy Peasy",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "Free Assembly",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "Fruit of the Loom",
-          "status": "verified_loaded"
-        },
-        {
-          "brand": "Garanimals",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "Genuine Dickies",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "George",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "Gildan",
-          "status": "source_found_not_loaded"
-        },
-        {
-          "brand": "Ground Up",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "Hanes",
-          "status": "source_found_not_loaded"
-        },
-        {
-          "brand": "Herman Survivors",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "IZOD",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "Jessica Simpson",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "Joyspun",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "Justice",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "Lands' End",
-          "status": "verified_loaded"
-        },
-        {
-          "brand": "Lee",
-          "status": "verified_loaded"
-        },
-        {
-          "brand": "Levi Strauss Signature",
-          "status": "verified_loaded"
-        },
-        {
-          "brand": "LifeStride",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "Love & Sports",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "M+A by Monica + Andy",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "Madden Girl",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "Madden NYC",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "Marvel",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "Miabella",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "Modern Moments by Gerber",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "No Boundaries",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "Parade",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "The Pioneer Woman",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "Reebok",
-          "status": "verified_loaded"
-        },
-        {
-          "brand": "Ryka",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "Scoop",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "Ozark Trail",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "Skechers",
-          "status": "verified_loaded"
-        },
-        {
-          "brand": "Sofia Jeans by Sofia Vergara",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "SOUL by Naturalizer",
-          "status": "verified_loaded"
-        },
-        {
-          "brand": "Terra & Sky",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "Time & Tru",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "U.S. Polo Assn.",
-          "status": "source_found_not_loaded"
-        },
-        {
-          "brand": "Wonder Nation",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "Wrangler",
-          "status": "verified_loaded"
-        }
-      ],
-      "counts": {
-        "estimate_only": 42,
-        "source_found_not_loaded": 4,
-        "verified_loaded": 11
-      }
-    },
-    {
-      "retailer": "Target",
-      "source_url": "https://corporate.target.com/about/products-services/target-brands",
-      "inventory_mode": "owned_apparel_accessories_brands",
-      "brands": [
-        "A New Day",
-        "All in Motion",
-        "Art Class",
-        "Auden",
-        "Ava & Viv",
-        "Cat & Jack",
-        "Colsie",
-        "Future Collective",
-        "Goodfellow & Co.",
-        "JoyLab",
-        "Knox Rose",
-        "Kona Sol",
-        "Original Use",
-        "Shade & Shore",
-        "Stars Above",
-        "Universal Thread",
-        "Wild Fable"
-      ],
-      "brand_status": [
-        {
-          "brand": "A New Day",
-          "status": "verified_loaded"
-        },
-        {
-          "brand": "All in Motion",
-          "status": "verified_loaded"
-        },
-        {
-          "brand": "Art Class",
-          "status": "verified_loaded"
-        },
-        {
-          "brand": "Auden",
-          "status": "verified_loaded"
-        },
-        {
-          "brand": "Ava & Viv",
-          "status": "verified_loaded"
-        },
-        {
-          "brand": "Cat & Jack",
-          "status": "verified_loaded"
-        },
-        {
-          "brand": "Colsie",
-          "status": "verified_loaded"
-        },
-        {
-          "brand": "Future Collective",
-          "status": "source_found_not_loaded"
-        },
-        {
-          "brand": "Goodfellow & Co.",
-          "status": "verified_loaded"
-        },
-        {
-          "brand": "JoyLab",
-          "status": "verified_loaded"
-        },
-        {
-          "brand": "Knox Rose",
-          "status": "verified_loaded"
-        },
-        {
-          "brand": "Kona Sol",
-          "status": "source_found_not_loaded"
-        },
-        {
-          "brand": "Original Use",
-          "status": "verified_loaded"
-        },
-        {
-          "brand": "Shade & Shore",
-          "status": "verified_loaded"
-        },
-        {
-          "brand": "Stars Above",
-          "status": "verified_loaded"
-        },
-        {
-          "brand": "Universal Thread",
-          "status": "verified_loaded"
-        },
-        {
-          "brand": "Wild Fable",
-          "status": "verified_loaded"
-        }
-      ],
-      "counts": {
-        "verified_loaded": 15,
-        "source_found_not_loaded": 2
-      }
-    },
-    {
-      "retailer": "Kohl's",
-      "source_url": "https://www.kohls.com/feature/brands.jsp",
-      "inventory_mode": "official_brand_directory_apparel_footwear_subset",
-      "brands": [
+        "'47",
+        "abercrombie kids",
         "adidas",
-        "Aerosoles",
-        "Apt. 9",
-        "Bali",
-        "Bearpaw",
-        "Calvin Klein",
+        "Betsey Johnson",
+        "Birkenstock",
         "Carter's",
         "Champion",
-        "Clarks",
-        "Cole Haan",
+        "Coach",
+        "Collection by Michael Strahan",
         "Columbia",
-        "Converse",
-        "Crocs",
-        "Croft & Barrow",
-        "Cuddl Duds",
-        "Cupshe",
-        "Dickies",
-        "Disney",
-        "Dockers",
-        "Easy Street",
-        "Eddie Bauer",
-        "FLX",
-        "Gloria Vanderbilt",
-        "Haggar",
-        "Hanes",
-        "Hurley",
+        "Crown & Ivy",
+        "DKNY",
+        "Dolce Vita",
+        "Fanatics",
+        "Free People",
+        "Frye and Co.",
         "IZOD",
-        "Jockey",
-        "Juicy Couture",
-        "Jumping Beans",
-        "Lands' End",
-        "LC Lauren Conrad",
-        "Lee",
+        "Kasper",
+        "Kim Rogers",
+        "Lauren Ralph Lauren",
         "Levi's",
-        "Lily Rose",
-        "Little Co. by Lauren Conrad",
-        "London Fog",
         "Madden Girl",
-        "Maidenform",
-        "New Balance",
+        "Michael Kors",
         "Nike",
-        "Nine West",
-        "Nunn Bush",
-        "Pink Republic",
-        "Playtex",
-        "Ralph Lauren",
-        "Reebok",
+        "PHILOSOPHY BY REPUBLIC",
+        "Polo Ralph Lauren",
+        "Sam Edelman",
         "Skechers",
-        "SO",
-        "Sonoma Goods For Life",
-        "Stride Rite",
-        "Tek Gear",
-        "Tommy Hilfiger",
-        "TOMS",
+        "Steve Madden",
         "Under Armour",
-        "UNIONBAY",
-        "Vanity Fair",
-        "Vans",
-        "ZeroXposur"
+        "Vineyard Vines",
+        "Wonderly"
       ],
       "brand_status": [
         {
+          "brand": "'47",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "abercrombie kids",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
           "brand": "adidas",
-          "status": "verified_loaded"
+          "status": "verified_loaded",
+          "verified_chart_count": 7,
+          "verified_categories": [
+            "bottoms",
+            "footwear",
+            "tops"
+          ]
         },
         {
-          "brand": "Aerosoles",
-          "status": "estimate_only"
+          "brand": "Betsey Johnson",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
-          "brand": "Apt. 9",
-          "status": "verified_loaded"
-        },
-        {
-          "brand": "Bali",
-          "status": "source_found_not_loaded"
-        },
-        {
-          "brand": "Bearpaw",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "Calvin Klein",
-          "status": "verified_loaded"
+          "brand": "Birkenstock",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Carter's",
-          "status": "verified_loaded"
+          "status": "verified_loaded",
+          "verified_chart_count": 2,
+          "verified_categories": [
+            "footwear",
+            "headwear"
+          ]
         },
         {
           "brand": "Champion",
-          "status": "verified_loaded"
+          "status": "verified_loaded",
+          "verified_chart_count": 4,
+          "verified_categories": [
+            "bottoms",
+            "tops"
+          ]
         },
         {
-          "brand": "Clarks",
-          "status": "verified_loaded"
+          "brand": "Coach",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
-          "brand": "Cole Haan",
-          "status": "source_found_not_loaded"
+          "brand": "Collection by Michael Strahan",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Columbia",
-          "status": "verified_loaded"
+          "status": "verified_loaded",
+          "verified_chart_count": 7,
+          "verified_categories": [
+            "dresses",
+            "footwear",
+            "outerwear",
+            "tops"
+          ]
         },
         {
-          "brand": "Converse",
-          "status": "verified_loaded"
+          "brand": "Crown & Ivy",
+          "status": "verified_loaded",
+          "verified_chart_count": 2,
+          "verified_categories": [
+            "bottoms",
+            "tops"
+          ]
         },
         {
-          "brand": "Crocs",
-          "status": "verified_loaded"
+          "brand": "DKNY",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
-          "brand": "Croft & Barrow",
-          "status": "verified_loaded"
+          "brand": "Dolce Vita",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
-          "brand": "Cuddl Duds",
-          "status": "estimate_only"
+          "brand": "Fanatics",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
-          "brand": "Cupshe",
-          "status": "estimate_only"
+          "brand": "Free People",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
-          "brand": "Dickies",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "Disney",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "Dockers",
-          "status": "verified_loaded"
-        },
-        {
-          "brand": "Easy Street",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "Eddie Bauer",
-          "status": "verified_loaded"
-        },
-        {
-          "brand": "FLX",
-          "status": "verified_loaded"
-        },
-        {
-          "brand": "Gloria Vanderbilt",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "Haggar",
-          "status": "source_found_not_loaded"
-        },
-        {
-          "brand": "Hanes",
-          "status": "source_found_not_loaded"
-        },
-        {
-          "brand": "Hurley",
-          "status": "estimate_only"
+          "brand": "Frye and Co.",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "IZOD",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
-          "brand": "Jockey",
-          "status": "verified_loaded"
+          "brand": "Kasper",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
-          "brand": "Juicy Couture",
-          "status": "estimate_only"
+          "brand": "Kim Rogers",
+          "status": "verified_loaded",
+          "verified_chart_count": 3,
+          "verified_categories": [
+            "bottoms",
+            "dresses",
+            "tops"
+          ]
         },
         {
-          "brand": "Jumping Beans",
-          "status": "verified_loaded"
-        },
-        {
-          "brand": "Lands' End",
-          "status": "verified_loaded"
-        },
-        {
-          "brand": "LC Lauren Conrad",
-          "status": "verified_loaded"
-        },
-        {
-          "brand": "Lee",
-          "status": "verified_loaded"
+          "brand": "Lauren Ralph Lauren",
+          "status": "verified_loaded",
+          "verified_chart_count": 3,
+          "verified_categories": [
+            "bottoms",
+            "dresses",
+            "tops"
+          ]
         },
         {
           "brand": "Levi's",
-          "status": "verified_loaded"
-        },
-        {
-          "brand": "Lily Rose",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "Little Co. by Lauren Conrad",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "London Fog",
-          "status": "estimate_only"
+          "status": "verified_loaded",
+          "verified_chart_count": 4,
+          "verified_categories": [
+            "bottoms",
+            "tops"
+          ]
         },
         {
           "brand": "Madden Girl",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
-          "brand": "Maidenform",
-          "status": "source_found_not_loaded"
-        },
-        {
-          "brand": "New Balance",
-          "status": "verified_loaded"
+          "brand": "Michael Kors",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Nike",
-          "status": "verified_loaded"
+          "status": "verified_loaded",
+          "verified_chart_count": 5,
+          "verified_categories": [
+            "bottoms",
+            "headwear",
+            "tops"
+          ]
         },
         {
-          "brand": "Nine West",
-          "status": "verified_loaded"
+          "brand": "PHILOSOPHY BY REPUBLIC",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
-          "brand": "Nunn Bush",
-          "status": "source_found_not_loaded"
+          "brand": "Polo Ralph Lauren",
+          "status": "verified_loaded",
+          "verified_chart_count": 4,
+          "verified_categories": [
+            "bottoms",
+            "footwear",
+            "tops"
+          ]
         },
         {
-          "brand": "Pink Republic",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "Playtex",
-          "status": "source_found_not_loaded"
-        },
-        {
-          "brand": "Ralph Lauren",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "Reebok",
-          "status": "verified_loaded"
+          "brand": "Sam Edelman",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Skechers",
-          "status": "verified_loaded"
+          "status": "verified_loaded",
+          "verified_chart_count": 3,
+          "verified_categories": [
+            "footwear"
+          ]
         },
         {
-          "brand": "SO",
-          "status": "verified_loaded"
-        },
-        {
-          "brand": "Sonoma Goods For Life",
-          "status": "verified_loaded"
-        },
-        {
-          "brand": "Stride Rite",
-          "status": "source_found_not_loaded"
-        },
-        {
-          "brand": "Tek Gear",
-          "status": "verified_loaded"
-        },
-        {
-          "brand": "Tommy Hilfiger",
-          "status": "verified_loaded"
-        },
-        {
-          "brand": "TOMS",
-          "status": "estimate_only"
+          "brand": "Steve Madden",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Under Armour",
-          "status": "verified_loaded"
+          "status": "verified_loaded",
+          "verified_chart_count": 7,
+          "verified_categories": [
+            "bottoms",
+            "headwear",
+            "tops"
+          ]
         },
         {
-          "brand": "UNIONBAY",
-          "status": "estimate_only"
+          "brand": "Vineyard Vines",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
-          "brand": "Vanity Fair",
-          "status": "source_found_not_loaded"
-        },
-        {
-          "brand": "Vans",
-          "status": "verified_loaded"
-        },
-        {
-          "brand": "ZeroXposur",
-          "status": "estimate_only"
+          "brand": "Wonderly",
+          "status": "verified_loaded",
+          "verified_chart_count": 3,
+          "verified_categories": [
+            "bottoms",
+            "dresses",
+            "tops"
+          ]
         }
       ],
       "counts": {
-        "verified_loaded": 30,
-        "estimate_only": 20,
-        "source_found_not_loaded": 9
+        "estimate_only": 19,
+        "verified_loaded": 13
       }
     },
     {
-      "retailer": "Macy's",
-      "source_url": "https://www.macys.com/shop/brands?id=337697",
-      "inventory_mode": "dynamic_all_brand_directory_priority_apparel_footwear",
+      "retailer": "Bloomingdale's",
+      "source_url": "https://www.bloomingdales.com/shop/all-designers?id=1001351",
+      "inventory_mode": "department_store_fashion_brand_directory_snapshot",
       "brands": [
+        "A.L.C.",
+        "A.P.C.",
+        "Acne Studios",
         "adidas",
         "Adrianna Papell",
-        "Aerosoles",
-        "ALDO",
-        "Alfani",
-        "Alfred Dunner",
-        "And Now This",
-        "Anne Klein",
-        "Bar III",
+        "AG",
+        "AGOLDE",
+        "Alice and Olivia",
+        "ALLSAINTS",
+        "Anine Bing",
+        "AQUA",
+        "Aviator Nation",
+        "Birkenstock",
+        "Burberry",
         "Calvin Klein",
         "Carter's",
-        "Charter Club",
         "Clarks",
-        "Club Room",
         "Coach",
+        "Cole Haan",
+        "Converse",
+        "Crocs",
         "DKNY",
-        "Epic Threads",
-        "First Impressions",
         "Free People",
         "Hugo Boss",
-        "I.N.C. International Concepts",
-        "JM Collection",
-        "Karen Scott",
-        "Karl Lagerfeld Paris",
         "Lacoste",
-        "Lands' End",
         "Lauren Ralph Lauren",
         "Levi's",
         "Michael Kors",
         "Naturalizer",
         "New Balance",
         "Nike",
-        "Nine West",
-        "On 34th",
         "Polo Ralph Lauren",
         "Reebok",
+        "Sam Edelman",
+        "Saucony",
         "Skechers",
+        "Sperry",
         "Steve Madden",
-        "Style & Co.",
-        "Sun + Stone",
         "The North Face",
+        "Timberland",
         "Tommy Hilfiger",
         "UGG",
         "Under Armour",
@@ -775,201 +354,339 @@
       ],
       "brand_status": [
         {
+          "brand": "A.L.C.",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "A.P.C.",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Acne Studios",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
           "brand": "adidas",
-          "status": "verified_loaded"
+          "status": "verified_loaded",
+          "verified_chart_count": 7,
+          "verified_categories": [
+            "bottoms",
+            "footwear",
+            "tops"
+          ]
         },
         {
           "brand": "Adrianna Papell",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
-          "brand": "Aerosoles",
-          "status": "estimate_only"
+          "brand": "AG",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
-          "brand": "ALDO",
-          "status": "estimate_only"
+          "brand": "AGOLDE",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
-          "brand": "Alfani",
-          "status": "verified_loaded"
+          "brand": "Alice and Olivia",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
-          "brand": "Alfred Dunner",
-          "status": "estimate_only"
+          "brand": "ALLSAINTS",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
-          "brand": "And Now This",
-          "status": "source_found_not_loaded"
+          "brand": "Anine Bing",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
-          "brand": "Anne Klein",
-          "status": "estimate_only"
+          "brand": "AQUA",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
-          "brand": "Bar III",
-          "status": "verified_loaded"
+          "brand": "Aviator Nation",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Birkenstock",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Burberry",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Calvin Klein",
-          "status": "verified_loaded"
+          "status": "verified_loaded",
+          "verified_chart_count": 6,
+          "verified_categories": [
+            "suits",
+            "tops",
+            "underwear"
+          ]
         },
         {
           "brand": "Carter's",
-          "status": "verified_loaded"
-        },
-        {
-          "brand": "Charter Club",
-          "status": "verified_loaded"
+          "status": "verified_loaded",
+          "verified_chart_count": 2,
+          "verified_categories": [
+            "footwear",
+            "headwear"
+          ]
         },
         {
           "brand": "Clarks",
-          "status": "verified_loaded"
-        },
-        {
-          "brand": "Club Room",
-          "status": "verified_loaded"
+          "status": "verified_loaded",
+          "verified_chart_count": 2,
+          "verified_categories": [
+            "footwear"
+          ]
         },
         {
           "brand": "Coach",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Cole Haan",
+          "status": "partial",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Converse",
+          "status": "verified_loaded",
+          "verified_chart_count": 1,
+          "verified_categories": [
+            "footwear"
+          ]
+        },
+        {
+          "brand": "Crocs",
+          "status": "verified_loaded",
+          "verified_chart_count": 2,
+          "verified_categories": [
+            "footwear"
+          ]
         },
         {
           "brand": "DKNY",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "Epic Threads",
-          "status": "source_found_not_loaded"
-        },
-        {
-          "brand": "First Impressions",
-          "status": "source_found_not_loaded"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Free People",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Hugo Boss",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "I.N.C. International Concepts",
-          "status": "verified_loaded"
-        },
-        {
-          "brand": "JM Collection",
-          "status": "verified_loaded"
-        },
-        {
-          "brand": "Karen Scott",
-          "status": "verified_loaded"
-        },
-        {
-          "brand": "Karl Lagerfeld Paris",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Lacoste",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "Lands' End",
-          "status": "verified_loaded"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Lauren Ralph Lauren",
-          "status": "verified_loaded"
+          "status": "verified_loaded",
+          "verified_chart_count": 3,
+          "verified_categories": [
+            "bottoms",
+            "dresses",
+            "tops"
+          ]
         },
         {
           "brand": "Levi's",
-          "status": "verified_loaded"
+          "status": "verified_loaded",
+          "verified_chart_count": 4,
+          "verified_categories": [
+            "bottoms",
+            "tops"
+          ]
         },
         {
           "brand": "Michael Kors",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Naturalizer",
-          "status": "verified_loaded"
+          "status": "verified_loaded",
+          "verified_chart_count": 1,
+          "verified_categories": [
+            "footwear"
+          ]
         },
         {
           "brand": "New Balance",
-          "status": "verified_loaded"
+          "status": "verified_loaded",
+          "verified_chart_count": 2,
+          "verified_categories": [
+            "footwear"
+          ]
         },
         {
           "brand": "Nike",
-          "status": "verified_loaded"
-        },
-        {
-          "brand": "Nine West",
-          "status": "verified_loaded"
-        },
-        {
-          "brand": "On 34th",
-          "status": "source_found_not_loaded"
+          "status": "verified_loaded",
+          "verified_chart_count": 5,
+          "verified_categories": [
+            "bottoms",
+            "headwear",
+            "tops"
+          ]
         },
         {
           "brand": "Polo Ralph Lauren",
-          "status": "verified_loaded"
+          "status": "verified_loaded",
+          "verified_chart_count": 4,
+          "verified_categories": [
+            "bottoms",
+            "footwear",
+            "tops"
+          ]
         },
         {
           "brand": "Reebok",
-          "status": "verified_loaded"
+          "status": "verified_loaded",
+          "verified_chart_count": 2,
+          "verified_categories": [
+            "footwear"
+          ]
+        },
+        {
+          "brand": "Sam Edelman",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Saucony",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Skechers",
-          "status": "verified_loaded"
+          "status": "verified_loaded",
+          "verified_chart_count": 3,
+          "verified_categories": [
+            "footwear"
+          ]
+        },
+        {
+          "brand": "Sperry",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Steve Madden",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "Style & Co.",
-          "status": "verified_loaded"
-        },
-        {
-          "brand": "Sun + Stone",
-          "status": "source_found_not_loaded"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "The North Face",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Timberland",
+          "status": "verified_loaded",
+          "verified_chart_count": 1,
+          "verified_categories": [
+            "footwear"
+          ]
         },
         {
           "brand": "Tommy Hilfiger",
-          "status": "verified_loaded"
+          "status": "verified_loaded",
+          "verified_chart_count": 5,
+          "verified_categories": [
+            "bottoms",
+            "footwear",
+            "outerwear",
+            "tops",
+            "underwear"
+          ]
         },
         {
           "brand": "UGG",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Under Armour",
-          "status": "verified_loaded"
+          "status": "verified_loaded",
+          "verified_chart_count": 7,
+          "verified_categories": [
+            "bottoms",
+            "headwear",
+            "tops"
+          ]
         },
         {
           "brand": "Vans",
-          "status": "verified_loaded"
+          "status": "verified_loaded",
+          "verified_chart_count": 3,
+          "verified_categories": [
+            "footwear"
+          ]
         }
       ],
       "counts": {
-        "verified_loaded": 25,
-        "estimate_only": 15,
-        "source_found_not_loaded": 5
+        "estimate_only": 25,
+        "verified_loaded": 18,
+        "partial": 1
       }
     },
     {
       "retailer": "Dillard's",
       "source_url": "https://www.dillards.com/search-term/exclusives",
-      "inventory_mode": "exclusive_apparel_footwear_brand_directory",
+      "inventory_mode": "department_store_fashion_brand_directory_snapshot",
       "brands": [
+        "A Loves A",
         "AdventureWear 360",
         "Alex Marie",
         "Allison Daley",
-        "A Loves A",
         "Anna & Ava",
         "Antonio Melani",
         "Belle by Badgley Mischka",
@@ -998,20 +715,20 @@
         "Gianni Bini",
         "Gibson & Latimer",
         "Go Softly",
-        "Hickey Freeman",
         "Hart Schaffner Marx",
+        "Hickey Freeman",
         "Investments",
         "Jasmine & Ginger",
         "Katherine Kelly",
         "Kinesis",
+        "L.L.Bean",
         "Landry",
         "Le' AL.X",
         "Leslie Fay",
-        "L.L.Bean",
         "Modern Movement",
         "Murano",
-        "Nurture",
         "Nottibianche",
+        "Nurture",
         "Preston & York",
         "Reba",
         "Roundtree & Yorke",
@@ -1027,473 +744,1218 @@
       ],
       "brand_status": [
         {
+          "brand": "A Loves A",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
           "brand": "AdventureWear 360",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Alex Marie",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Allison Daley",
-          "status": "source_found_not_loaded"
-        },
-        {
-          "brand": "A Loves A",
-          "status": "estimate_only"
+          "status": "partial",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Anna & Ava",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Antonio Melani",
-          "status": "verified_loaded"
+          "status": "verified_loaded",
+          "verified_chart_count": 4,
+          "verified_categories": [
+            "bottoms",
+            "dresses",
+            "footwear"
+          ]
         },
         {
           "brand": "Belle by Badgley Mischka",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Brahmin",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Brioso",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Cabernet",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Caribbean",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Cezanne",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Chantilly Place",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Chelsea & Violet",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Chelsea & Violet Girls",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Citrine",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Class Club",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Code Bleu",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Copper Key",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Cotillion",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Cremieux",
-          "status": "verified_loaded"
+          "status": "verified_loaded",
+          "verified_chart_count": 1,
+          "verified_categories": [
+            "tops"
+          ]
         },
         {
           "brand": "Deltan",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Dillard's",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Edgehill Collection",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Every",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Flag LTD.",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "GB",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "GB Girls",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Gemma Layne",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Gianni Bini",
-          "status": "source_found_not_loaded"
+          "status": "partial",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Gibson & Latimer",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Go Softly",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "Hickey Freeman",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Hart Schaffner Marx",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Hickey Freeman",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Investments",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Jasmine & Ginger",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Katherine Kelly",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Kinesis",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "Landry",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "Le' AL.X",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "Leslie Fay",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "L.L.Bean",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Landry",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Le' AL.X",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Leslie Fay",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Modern Movement",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Murano",
-          "status": "verified_loaded"
-        },
-        {
-          "brand": "Nurture",
-          "status": "estimate_only"
+          "status": "verified_loaded",
+          "verified_chart_count": 1,
+          "verified_categories": [
+            "tops"
+          ]
         },
         {
           "brand": "Nottibianche",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Nurture",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Preston & York",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Reba",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Roundtree & Yorke",
-          "status": "verified_loaded"
+          "status": "verified_loaded",
+          "verified_chart_count": 1,
+          "verified_categories": [
+            "tops"
+          ]
         },
         {
           "brand": "ROWM",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Scene & Heard",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Section X",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Sleep Sense",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Starting Out",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Studio D",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Turnbury",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Van Winkle & Co.",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Westbound",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         }
       ],
       "counts": {
         "estimate_only": 52,
-        "source_found_not_loaded": 2,
+        "partial": 2,
         "verified_loaded": 4
       }
     },
     {
       "retailer": "JCPenney",
       "source_url": "https://www.jcpenney.com/d/brands",
-      "inventory_mode": "official_featured_apparel_brand_directory",
+      "inventory_mode": "department_store_fashion_brand_directory_snapshot",
       "brands": [
-        "Nike",
-        "Levi's",
-        "adidas",
-        "Liz Claiborne",
-        "Worthington",
         "a.n.a",
+        "adidas",
         "Arizona",
         "Champion",
+        "Clarks",
+        "Deer Stags",
+        "Fila",
+        "Frye and Co.",
         "Haggar",
         "IZOD",
         "J. Ferrar",
+        "Journee Collection",
+        "Levi's",
+        "Liz Claiborne",
+        "Mixit",
         "mutual weave",
+        "Nike",
+        "Puma",
         "Shaquille O'Neal XLG",
         "St. John's Bay",
         "Stafford",
         "Stylus",
+        "Thereabouts",
         "U.S. Polo Assn.",
+        "Worthington",
         "Xersion"
       ],
       "brand_status": [
         {
-          "brand": "Nike",
-          "status": "verified_loaded"
-        },
-        {
-          "brand": "Levi's",
-          "status": "verified_loaded"
+          "brand": "a.n.a",
+          "status": "partial",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "adidas",
-          "status": "verified_loaded"
-        },
-        {
-          "brand": "Liz Claiborne",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "Worthington",
-          "status": "verified_loaded"
-        },
-        {
-          "brand": "a.n.a",
-          "status": "source_found_not_loaded"
+          "status": "verified_loaded",
+          "verified_chart_count": 7,
+          "verified_categories": [
+            "bottoms",
+            "footwear",
+            "tops"
+          ]
         },
         {
           "brand": "Arizona",
-          "status": "source_found_not_loaded"
+          "status": "partial",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Champion",
-          "status": "verified_loaded"
+          "status": "verified_loaded",
+          "verified_chart_count": 4,
+          "verified_categories": [
+            "bottoms",
+            "tops"
+          ]
+        },
+        {
+          "brand": "Clarks",
+          "status": "verified_loaded",
+          "verified_chart_count": 2,
+          "verified_categories": [
+            "footwear"
+          ]
+        },
+        {
+          "brand": "Deer Stags",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Fila",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Frye and Co.",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Haggar",
-          "status": "source_found_not_loaded"
+          "status": "partial",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "IZOD",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "J. Ferrar",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
-          "brand": "mutual weave",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "Shaquille O'Neal XLG",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "St. John's Bay",
-          "status": "source_found_not_loaded"
-        },
-        {
-          "brand": "Stafford",
-          "status": "source_found_not_loaded"
-        },
-        {
-          "brand": "Stylus",
-          "status": "source_found_not_loaded"
-        },
-        {
-          "brand": "U.S. Polo Assn.",
-          "status": "source_found_not_loaded"
-        },
-        {
-          "brand": "Xersion",
-          "status": "estimate_only"
-        }
-      ],
-      "counts": {
-        "verified_loaded": 5,
-        "estimate_only": 6,
-        "source_found_not_loaded": 7
-      }
-    },
-    {
-      "retailer": "Belk",
-      "source_url": "https://www.belk.com/site.html",
-      "inventory_mode": "official_featured_apparel_footwear_plus_exclusives",
-      "brands": [
-        "Crown & Ivy",
-        "Wonderly",
-        "Kim Rogers",
-        "Free People",
-        "Lauren Ralph Lauren",
-        "PHILOSOPHY BY REPUBLIC",
-        "Vineyard Vines",
-        "IZOD",
-        "Levi's",
-        "Polo Ralph Lauren",
-        "Under Armour",
-        "adidas",
-        "Nike",
-        "Sam Edelman",
-        "Skechers",
-        "Steve Madden",
-        "Collection by Michael Strahan"
-      ],
-      "brand_status": [
-        {
-          "brand": "Crown & Ivy",
-          "status": "verified_loaded"
-        },
-        {
-          "brand": "Wonderly",
-          "status": "verified_loaded"
-        },
-        {
-          "brand": "Kim Rogers",
-          "status": "verified_loaded"
-        },
-        {
-          "brand": "Free People",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "Lauren Ralph Lauren",
-          "status": "verified_loaded"
-        },
-        {
-          "brand": "PHILOSOPHY BY REPUBLIC",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "Vineyard Vines",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "IZOD",
-          "status": "estimate_only"
+          "brand": "Journee Collection",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Levi's",
-          "status": "verified_loaded"
+          "status": "verified_loaded",
+          "verified_chart_count": 4,
+          "verified_categories": [
+            "bottoms",
+            "tops"
+          ]
         },
         {
-          "brand": "Polo Ralph Lauren",
-          "status": "verified_loaded"
+          "brand": "Liz Claiborne",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
-          "brand": "Under Armour",
-          "status": "verified_loaded"
+          "brand": "Mixit",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
-          "brand": "adidas",
-          "status": "verified_loaded"
+          "brand": "mutual weave",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Nike",
-          "status": "verified_loaded"
+          "status": "verified_loaded",
+          "verified_chart_count": 5,
+          "verified_categories": [
+            "bottoms",
+            "headwear",
+            "tops"
+          ]
         },
         {
-          "brand": "Sam Edelman",
-          "status": "estimate_only"
+          "brand": "Puma",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
-          "brand": "Skechers",
-          "status": "verified_loaded"
+          "brand": "Shaquille O'Neal XLG",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
-          "brand": "Steve Madden",
-          "status": "estimate_only"
+          "brand": "St. John's Bay",
+          "status": "partial",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
-          "brand": "Collection by Michael Strahan",
-          "status": "estimate_only"
+          "brand": "Stafford",
+          "status": "partial",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Stylus",
+          "status": "partial",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Thereabouts",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "U.S. Polo Assn.",
+          "status": "partial",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Worthington",
+          "status": "verified_loaded",
+          "verified_chart_count": 3,
+          "verified_categories": [
+            "bottoms",
+            "dresses",
+            "tops"
+          ]
+        },
+        {
+          "brand": "Xersion",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         }
       ],
       "counts": {
-        "verified_loaded": 10,
-        "estimate_only": 7
+        "partial": 7,
+        "verified_loaded": 6,
+        "estimate_only": 13
       }
     },
     {
-      "retailer": "Nordstrom",
-      "source_url": "https://www.nordstrom.com/brands-list/",
-      "inventory_mode": "dynamic_all_brand_directory_priority_apparel_footwear",
+      "retailer": "Kohl's",
+      "source_url": "https://www.kohls.com/feature/brands.jsp",
+      "inventory_mode": "department_store_fashion_brand_directory_snapshot",
       "brands": [
         "adidas",
-        "Burberry",
+        "Aerosoles",
+        "Apt. 9",
+        "Bali",
+        "Bearpaw",
         "Calvin Klein",
         "Carter's",
+        "Champion",
         "Clarks",
         "Cole Haan",
+        "Columbia",
         "Converse",
         "Crocs",
+        "Croft & Barrow",
+        "Cuddl Duds",
+        "Cupshe",
+        "Dickies",
+        "Disney",
+        "Dockers",
+        "Easy Street",
+        "Eddie Bauer",
+        "FLX",
+        "Gloria Vanderbilt",
+        "Haggar",
+        "Hanes",
+        "Harper & Ivy",
+        "Hurley",
+        "IZOD",
+        "Jammies For Your Families",
+        "Jockey",
+        "Juicy Couture",
+        "Jumping Beans",
+        "Lands' End",
+        "LC Lauren Conrad",
+        "Lee",
+        "Levi's",
+        "Lily Rose",
+        "Little Co. by Lauren Conrad",
+        "London Fog",
+        "Madden Girl",
+        "Maidenform",
+        "Miryana",
+        "New Balance",
+        "Nike",
+        "Nine West",
+        "Nunn Bush",
+        "Oakley",
+        "Peanuts",
+        "Pink Republic",
+        "Playtex",
+        "Polo Ralph Lauren",
+        "Ray-Ban",
+        "Reebok",
+        "Rosetti",
+        "Simply Vera Vera Wang",
+        "Skechers",
+        "SO",
+        "Sonoma Goods For Life",
+        "Stride Rite",
+        "Tek Gear",
+        "Tommy Hilfiger",
+        "TOMS",
+        "Under Armour",
+        "UNIONBAY",
+        "Vanity Fair",
+        "Vans",
+        "ZeroXposur"
+      ],
+      "brand_status": [
+        {
+          "brand": "adidas",
+          "status": "verified_loaded",
+          "verified_chart_count": 7,
+          "verified_categories": [
+            "bottoms",
+            "footwear",
+            "tops"
+          ]
+        },
+        {
+          "brand": "Aerosoles",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Apt. 9",
+          "status": "verified_loaded",
+          "verified_chart_count": 1,
+          "verified_categories": [
+            "tops"
+          ]
+        },
+        {
+          "brand": "Bali",
+          "status": "partial",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Bearpaw",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Calvin Klein",
+          "status": "verified_loaded",
+          "verified_chart_count": 6,
+          "verified_categories": [
+            "suits",
+            "tops",
+            "underwear"
+          ]
+        },
+        {
+          "brand": "Carter's",
+          "status": "verified_loaded",
+          "verified_chart_count": 2,
+          "verified_categories": [
+            "footwear",
+            "headwear"
+          ]
+        },
+        {
+          "brand": "Champion",
+          "status": "verified_loaded",
+          "verified_chart_count": 4,
+          "verified_categories": [
+            "bottoms",
+            "tops"
+          ]
+        },
+        {
+          "brand": "Clarks",
+          "status": "verified_loaded",
+          "verified_chart_count": 2,
+          "verified_categories": [
+            "footwear"
+          ]
+        },
+        {
+          "brand": "Cole Haan",
+          "status": "partial",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Columbia",
+          "status": "verified_loaded",
+          "verified_chart_count": 7,
+          "verified_categories": [
+            "dresses",
+            "footwear",
+            "outerwear",
+            "tops"
+          ]
+        },
+        {
+          "brand": "Converse",
+          "status": "verified_loaded",
+          "verified_chart_count": 1,
+          "verified_categories": [
+            "footwear"
+          ]
+        },
+        {
+          "brand": "Crocs",
+          "status": "verified_loaded",
+          "verified_chart_count": 2,
+          "verified_categories": [
+            "footwear"
+          ]
+        },
+        {
+          "brand": "Croft & Barrow",
+          "status": "verified_loaded",
+          "verified_chart_count": 1,
+          "verified_categories": [
+            "tops"
+          ]
+        },
+        {
+          "brand": "Cuddl Duds",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Cupshe",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Dickies",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Disney",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Dockers",
+          "status": "verified_loaded",
+          "verified_chart_count": 1,
+          "verified_categories": [
+            "tops"
+          ]
+        },
+        {
+          "brand": "Easy Street",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Eddie Bauer",
+          "status": "verified_loaded",
+          "verified_chart_count": 3,
+          "verified_categories": [
+            "bottoms",
+            "dresses",
+            "tops"
+          ]
+        },
+        {
+          "brand": "FLX",
+          "status": "verified_loaded",
+          "verified_chart_count": 1,
+          "verified_categories": [
+            "tops"
+          ]
+        },
+        {
+          "brand": "Gloria Vanderbilt",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Haggar",
+          "status": "partial",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Hanes",
+          "status": "partial",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Harper & Ivy",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Hurley",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "IZOD",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Jammies For Your Families",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Jockey",
+          "status": "verified_loaded",
+          "verified_chart_count": 3,
+          "verified_categories": [
+            "underwear"
+          ]
+        },
+        {
+          "brand": "Juicy Couture",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Jumping Beans",
+          "status": "verified_loaded",
+          "verified_chart_count": 2,
+          "verified_categories": [
+            "bottoms",
+            "tops"
+          ]
+        },
+        {
+          "brand": "Lands' End",
+          "status": "verified_loaded",
+          "verified_chart_count": 3,
+          "verified_categories": [
+            "bottoms",
+            "tops"
+          ]
+        },
+        {
+          "brand": "LC Lauren Conrad",
+          "status": "verified_loaded",
+          "verified_chart_count": 1,
+          "verified_categories": [
+            "tops"
+          ]
+        },
+        {
+          "brand": "Lee",
+          "status": "verified_loaded",
+          "verified_chart_count": 4,
+          "verified_categories": [
+            "bottoms",
+            "tops"
+          ]
+        },
+        {
+          "brand": "Levi's",
+          "status": "verified_loaded",
+          "verified_chart_count": 4,
+          "verified_categories": [
+            "bottoms",
+            "tops"
+          ]
+        },
+        {
+          "brand": "Lily Rose",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Little Co. by Lauren Conrad",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "London Fog",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Madden Girl",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Maidenform",
+          "status": "partial",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Miryana",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "New Balance",
+          "status": "verified_loaded",
+          "verified_chart_count": 2,
+          "verified_categories": [
+            "footwear"
+          ]
+        },
+        {
+          "brand": "Nike",
+          "status": "verified_loaded",
+          "verified_chart_count": 5,
+          "verified_categories": [
+            "bottoms",
+            "headwear",
+            "tops"
+          ]
+        },
+        {
+          "brand": "Nine West",
+          "status": "verified_loaded",
+          "verified_chart_count": 1,
+          "verified_categories": [
+            "tops"
+          ]
+        },
+        {
+          "brand": "Nunn Bush",
+          "status": "partial",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Oakley",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Peanuts",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Pink Republic",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Playtex",
+          "status": "partial",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Polo Ralph Lauren",
+          "status": "verified_loaded",
+          "verified_chart_count": 4,
+          "verified_categories": [
+            "bottoms",
+            "footwear",
+            "tops"
+          ]
+        },
+        {
+          "brand": "Ray-Ban",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Reebok",
+          "status": "verified_loaded",
+          "verified_chart_count": 2,
+          "verified_categories": [
+            "footwear"
+          ]
+        },
+        {
+          "brand": "Rosetti",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Simply Vera Vera Wang",
+          "status": "verified_loaded",
+          "verified_chart_count": 1,
+          "verified_categories": [
+            "dresses"
+          ]
+        },
+        {
+          "brand": "Skechers",
+          "status": "verified_loaded",
+          "verified_chart_count": 3,
+          "verified_categories": [
+            "footwear"
+          ]
+        },
+        {
+          "brand": "SO",
+          "status": "verified_loaded",
+          "verified_chart_count": 2,
+          "verified_categories": [
+            "bottoms",
+            "tops"
+          ]
+        },
+        {
+          "brand": "Sonoma Goods For Life",
+          "status": "verified_loaded",
+          "verified_chart_count": 1,
+          "verified_categories": [
+            "tops"
+          ]
+        },
+        {
+          "brand": "Stride Rite",
+          "status": "partial",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Tek Gear",
+          "status": "verified_loaded",
+          "verified_chart_count": 4,
+          "verified_categories": [
+            "bottoms",
+            "tops"
+          ]
+        },
+        {
+          "brand": "Tommy Hilfiger",
+          "status": "verified_loaded",
+          "verified_chart_count": 5,
+          "verified_categories": [
+            "bottoms",
+            "footwear",
+            "outerwear",
+            "tops",
+            "underwear"
+          ]
+        },
+        {
+          "brand": "TOMS",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Under Armour",
+          "status": "verified_loaded",
+          "verified_chart_count": 7,
+          "verified_categories": [
+            "bottoms",
+            "headwear",
+            "tops"
+          ]
+        },
+        {
+          "brand": "UNIONBAY",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Vanity Fair",
+          "status": "partial",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Vans",
+          "status": "verified_loaded",
+          "verified_chart_count": 3,
+          "verified_categories": [
+            "footwear"
+          ]
+        },
+        {
+          "brand": "ZeroXposur",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        }
+      ],
+      "counts": {
+        "verified_loaded": 32,
+        "estimate_only": 26,
+        "partial": 9
+      }
+    },
+    {
+      "retailer": "Macy's",
+      "source_url": "https://www.macys.com/shop/brands?id=337697",
+      "inventory_mode": "department_store_fashion_brand_directory_snapshot",
+      "brands": [
+        "adidas",
+        "Adrianna Papell",
+        "Aerosoles",
+        "ALDO",
+        "Alfani",
+        "Alfred Dunner",
+        "And Now This",
+        "Anne Klein",
+        "Bali",
+        "Bar III",
+        "Birkenstock",
+        "Calvin Klein",
+        "Carter's",
+        "Charter Club",
+        "Clarks",
+        "Club Room",
+        "Coach",
+        "DKNY",
+        "Donna Karan New York",
+        "Epic Threads",
+        "First Impressions",
         "Free People",
         "Hugo Boss",
+        "I.N.C. International Concepts",
+        "JM Collection",
+        "Jockey",
+        "Joe's Jeans",
+        "Karen Scott",
+        "Karl Lagerfeld Paris",
+        "Lacoste",
+        "Lands' End",
+        "Lauren Ralph Lauren",
         "Levi's",
         "Michael Kors",
+        "Mode of One",
         "Naturalizer",
         "New Balance",
         "Nike",
+        "Nine West",
+        "On 34th",
         "Polo Ralph Lauren",
-        "Ralph Lauren",
         "Reebok",
+        "Sam Edelman",
+        "Saucony",
+        "SAXX",
         "Skechers",
+        "Speedo",
+        "Sperry",
         "Steve Madden",
+        "Style & Co.",
+        "Sun + Stone",
+        "Sweaty Betty",
         "The North Face",
-        "Timberland",
         "Tommy Hilfiger",
         "UGG",
         "Under Armour",
@@ -1502,142 +1964,465 @@
       "brand_status": [
         {
           "brand": "adidas",
-          "status": "verified_loaded"
+          "status": "verified_loaded",
+          "verified_chart_count": 7,
+          "verified_categories": [
+            "bottoms",
+            "footwear",
+            "tops"
+          ]
         },
         {
-          "brand": "Burberry",
-          "status": "estimate_only"
+          "brand": "Adrianna Papell",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Aerosoles",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "ALDO",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Alfani",
+          "status": "verified_loaded",
+          "verified_chart_count": 1,
+          "verified_categories": [
+            "tops"
+          ]
+        },
+        {
+          "brand": "Alfred Dunner",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "And Now This",
+          "status": "partial",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Anne Klein",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Bali",
+          "status": "partial",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Bar III",
+          "status": "verified_loaded",
+          "verified_chart_count": 1,
+          "verified_categories": [
+            "tops"
+          ]
+        },
+        {
+          "brand": "Birkenstock",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Calvin Klein",
-          "status": "verified_loaded"
+          "status": "verified_loaded",
+          "verified_chart_count": 6,
+          "verified_categories": [
+            "suits",
+            "tops",
+            "underwear"
+          ]
         },
         {
           "brand": "Carter's",
-          "status": "verified_loaded"
+          "status": "verified_loaded",
+          "verified_chart_count": 2,
+          "verified_categories": [
+            "footwear",
+            "headwear"
+          ]
+        },
+        {
+          "brand": "Charter Club",
+          "status": "verified_loaded",
+          "verified_chart_count": 1,
+          "verified_categories": [
+            "tops"
+          ]
         },
         {
           "brand": "Clarks",
-          "status": "verified_loaded"
+          "status": "verified_loaded",
+          "verified_chart_count": 2,
+          "verified_categories": [
+            "footwear"
+          ]
         },
         {
-          "brand": "Cole Haan",
-          "status": "source_found_not_loaded"
+          "brand": "Club Room",
+          "status": "verified_loaded",
+          "verified_chart_count": 1,
+          "verified_categories": [
+            "tops"
+          ]
         },
         {
-          "brand": "Converse",
-          "status": "verified_loaded"
+          "brand": "Coach",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
-          "brand": "Crocs",
-          "status": "verified_loaded"
+          "brand": "DKNY",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Donna Karan New York",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Epic Threads",
+          "status": "partial",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "First Impressions",
+          "status": "partial",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Free People",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Hugo Boss",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "I.N.C. International Concepts",
+          "status": "verified_loaded",
+          "verified_chart_count": 1,
+          "verified_categories": [
+            "tops"
+          ]
+        },
+        {
+          "brand": "JM Collection",
+          "status": "verified_loaded",
+          "verified_chart_count": 1,
+          "verified_categories": [
+            "bottoms"
+          ]
+        },
+        {
+          "brand": "Jockey",
+          "status": "verified_loaded",
+          "verified_chart_count": 3,
+          "verified_categories": [
+            "underwear"
+          ]
+        },
+        {
+          "brand": "Joe's Jeans",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Karen Scott",
+          "status": "verified_loaded",
+          "verified_chart_count": 1,
+          "verified_categories": [
+            "tops"
+          ]
+        },
+        {
+          "brand": "Karl Lagerfeld Paris",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Lacoste",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Lands' End",
+          "status": "verified_loaded",
+          "verified_chart_count": 3,
+          "verified_categories": [
+            "bottoms",
+            "tops"
+          ]
+        },
+        {
+          "brand": "Lauren Ralph Lauren",
+          "status": "verified_loaded",
+          "verified_chart_count": 3,
+          "verified_categories": [
+            "bottoms",
+            "dresses",
+            "tops"
+          ]
         },
         {
           "brand": "Levi's",
-          "status": "verified_loaded"
+          "status": "verified_loaded",
+          "verified_chart_count": 4,
+          "verified_categories": [
+            "bottoms",
+            "tops"
+          ]
         },
         {
           "brand": "Michael Kors",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Mode of One",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Naturalizer",
-          "status": "verified_loaded"
+          "status": "verified_loaded",
+          "verified_chart_count": 1,
+          "verified_categories": [
+            "footwear"
+          ]
         },
         {
           "brand": "New Balance",
-          "status": "verified_loaded"
+          "status": "verified_loaded",
+          "verified_chart_count": 2,
+          "verified_categories": [
+            "footwear"
+          ]
         },
         {
           "brand": "Nike",
-          "status": "verified_loaded"
+          "status": "verified_loaded",
+          "verified_chart_count": 5,
+          "verified_categories": [
+            "bottoms",
+            "headwear",
+            "tops"
+          ]
+        },
+        {
+          "brand": "Nine West",
+          "status": "verified_loaded",
+          "verified_chart_count": 1,
+          "verified_categories": [
+            "tops"
+          ]
+        },
+        {
+          "brand": "On 34th",
+          "status": "partial",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Polo Ralph Lauren",
-          "status": "verified_loaded"
-        },
-        {
-          "brand": "Ralph Lauren",
-          "status": "estimate_only"
+          "status": "verified_loaded",
+          "verified_chart_count": 4,
+          "verified_categories": [
+            "bottoms",
+            "footwear",
+            "tops"
+          ]
         },
         {
           "brand": "Reebok",
-          "status": "verified_loaded"
+          "status": "verified_loaded",
+          "verified_chart_count": 2,
+          "verified_categories": [
+            "footwear"
+          ]
+        },
+        {
+          "brand": "Sam Edelman",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Saucony",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "SAXX",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Skechers",
-          "status": "verified_loaded"
+          "status": "verified_loaded",
+          "verified_chart_count": 3,
+          "verified_categories": [
+            "footwear"
+          ]
+        },
+        {
+          "brand": "Speedo",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Sperry",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Steve Madden",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Style & Co.",
+          "status": "verified_loaded",
+          "verified_chart_count": 2,
+          "verified_categories": [
+            "bottoms",
+            "dresses"
+          ]
+        },
+        {
+          "brand": "Sun + Stone",
+          "status": "partial",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Sweaty Betty",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "The North Face",
-          "status": "estimate_only"
-        },
-        {
-          "brand": "Timberland",
-          "status": "verified_loaded"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Tommy Hilfiger",
-          "status": "verified_loaded"
+          "status": "verified_loaded",
+          "verified_chart_count": 5,
+          "verified_categories": [
+            "bottoms",
+            "footwear",
+            "outerwear",
+            "tops",
+            "underwear"
+          ]
         },
         {
           "brand": "UGG",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Under Armour",
-          "status": "verified_loaded"
+          "status": "verified_loaded",
+          "verified_chart_count": 7,
+          "verified_categories": [
+            "bottoms",
+            "headwear",
+            "tops"
+          ]
         },
         {
           "brand": "Vans",
-          "status": "verified_loaded"
+          "status": "verified_loaded",
+          "verified_chart_count": 3,
+          "verified_categories": [
+            "footwear"
+          ]
         }
       ],
       "counts": {
-        "verified_loaded": 17,
-        "estimate_only": 8,
-        "source_found_not_loaded": 1
+        "verified_loaded": 26,
+        "estimate_only": 25,
+        "partial": 6
       }
     },
     {
-      "retailer": "Bloomingdale's",
-      "source_url": "https://www.bloomingdales.com/shop/all-designers?id=1001351",
-      "inventory_mode": "dynamic_all_designer_directory_priority_apparel_footwear",
+      "retailer": "Nordstrom",
+      "source_url": "https://www.nordstrom.com/brands-list/",
+      "inventory_mode": "department_store_fashion_brand_directory_snapshot",
       "brands": [
+        "& Other Stories",
+        "1.STATE",
+        "A.L.C.",
+        "A.P.C.",
+        "Acne Studios",
         "adidas",
-        "Adrianna Papell",
+        "AG",
+        "AGOLDE",
+        "ALLSAINTS",
+        "Anine Bing",
+        "Birkenstock",
         "Burberry",
         "Calvin Klein",
         "Carter's",
         "Clarks",
+        "Coach",
         "Cole Haan",
         "Converse",
         "Crocs",
         "DKNY",
         "Free People",
         "Hugo Boss",
+        "Lacoste",
         "Levi's",
         "Michael Kors",
         "Naturalizer",
         "New Balance",
         "Nike",
         "Polo Ralph Lauren",
-        "Lauren Ralph Lauren",
-        "Ralph Lauren",
         "Reebok",
+        "Sam Edelman",
+        "Saucony",
         "Skechers",
+        "SOREL",
+        "Sperry",
         "Steve Madden",
         "The North Face",
         "Timberland",
@@ -1648,126 +2433,951 @@
       ],
       "brand_status": [
         {
-          "brand": "adidas",
-          "status": "verified_loaded"
+          "brand": "& Other Stories",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
-          "brand": "Adrianna Papell",
-          "status": "estimate_only"
+          "brand": "1.STATE",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "A.L.C.",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "A.P.C.",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Acne Studios",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "adidas",
+          "status": "verified_loaded",
+          "verified_chart_count": 7,
+          "verified_categories": [
+            "bottoms",
+            "footwear",
+            "tops"
+          ]
+        },
+        {
+          "brand": "AG",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "AGOLDE",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "ALLSAINTS",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Anine Bing",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Birkenstock",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Burberry",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Calvin Klein",
-          "status": "verified_loaded"
+          "status": "verified_loaded",
+          "verified_chart_count": 6,
+          "verified_categories": [
+            "suits",
+            "tops",
+            "underwear"
+          ]
         },
         {
           "brand": "Carter's",
-          "status": "verified_loaded"
+          "status": "verified_loaded",
+          "verified_chart_count": 2,
+          "verified_categories": [
+            "footwear",
+            "headwear"
+          ]
         },
         {
           "brand": "Clarks",
-          "status": "verified_loaded"
+          "status": "verified_loaded",
+          "verified_chart_count": 2,
+          "verified_categories": [
+            "footwear"
+          ]
+        },
+        {
+          "brand": "Coach",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Cole Haan",
-          "status": "source_found_not_loaded"
+          "status": "partial",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Converse",
-          "status": "verified_loaded"
+          "status": "verified_loaded",
+          "verified_chart_count": 1,
+          "verified_categories": [
+            "footwear"
+          ]
         },
         {
           "brand": "Crocs",
-          "status": "verified_loaded"
+          "status": "verified_loaded",
+          "verified_chart_count": 2,
+          "verified_categories": [
+            "footwear"
+          ]
         },
         {
           "brand": "DKNY",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Free People",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Hugo Boss",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Lacoste",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Levi's",
-          "status": "verified_loaded"
+          "status": "verified_loaded",
+          "verified_chart_count": 4,
+          "verified_categories": [
+            "bottoms",
+            "tops"
+          ]
         },
         {
           "brand": "Michael Kors",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Naturalizer",
-          "status": "verified_loaded"
+          "status": "verified_loaded",
+          "verified_chart_count": 1,
+          "verified_categories": [
+            "footwear"
+          ]
         },
         {
           "brand": "New Balance",
-          "status": "verified_loaded"
+          "status": "verified_loaded",
+          "verified_chart_count": 2,
+          "verified_categories": [
+            "footwear"
+          ]
         },
         {
           "brand": "Nike",
-          "status": "verified_loaded"
+          "status": "verified_loaded",
+          "verified_chart_count": 5,
+          "verified_categories": [
+            "bottoms",
+            "headwear",
+            "tops"
+          ]
         },
         {
           "brand": "Polo Ralph Lauren",
-          "status": "verified_loaded"
-        },
-        {
-          "brand": "Lauren Ralph Lauren",
-          "status": "verified_loaded"
-        },
-        {
-          "brand": "Ralph Lauren",
-          "status": "estimate_only"
+          "status": "verified_loaded",
+          "verified_chart_count": 4,
+          "verified_categories": [
+            "bottoms",
+            "footwear",
+            "tops"
+          ]
         },
         {
           "brand": "Reebok",
-          "status": "verified_loaded"
+          "status": "verified_loaded",
+          "verified_chart_count": 2,
+          "verified_categories": [
+            "footwear"
+          ]
+        },
+        {
+          "brand": "Sam Edelman",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Saucony",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Skechers",
-          "status": "verified_loaded"
+          "status": "verified_loaded",
+          "verified_chart_count": 3,
+          "verified_categories": [
+            "footwear"
+          ]
+        },
+        {
+          "brand": "SOREL",
+          "status": "verified_loaded",
+          "verified_chart_count": 3,
+          "verified_categories": [
+            "footwear"
+          ]
+        },
+        {
+          "brand": "Sperry",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Steve Madden",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "The North Face",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Timberland",
-          "status": "verified_loaded"
+          "status": "verified_loaded",
+          "verified_chart_count": 1,
+          "verified_categories": [
+            "footwear"
+          ]
         },
         {
           "brand": "Tommy Hilfiger",
-          "status": "verified_loaded"
+          "status": "verified_loaded",
+          "verified_chart_count": 5,
+          "verified_categories": [
+            "bottoms",
+            "footwear",
+            "outerwear",
+            "tops",
+            "underwear"
+          ]
         },
         {
           "brand": "UGG",
-          "status": "estimate_only"
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
         },
         {
           "brand": "Under Armour",
-          "status": "verified_loaded"
+          "status": "verified_loaded",
+          "verified_chart_count": 7,
+          "verified_categories": [
+            "bottoms",
+            "headwear",
+            "tops"
+          ]
         },
         {
           "brand": "Vans",
-          "status": "verified_loaded"
+          "status": "verified_loaded",
+          "verified_chart_count": 3,
+          "verified_categories": [
+            "footwear"
+          ]
         }
       ],
       "counts": {
+        "estimate_only": 23,
         "verified_loaded": 18,
-        "estimate_only": 10,
-        "source_found_not_loaded": 1
+        "partial": 1
+      }
+    },
+    {
+      "retailer": "Target",
+      "source_url": "https://corporate.target.com/about/products-services/target-brands",
+      "inventory_mode": "department_store_fashion_brand_directory_snapshot",
+      "brands": [
+        "A New Day",
+        "All in Motion",
+        "Art Class",
+        "Auden",
+        "Ava & Viv",
+        "Cat & Jack",
+        "Cloud Island",
+        "Colsie",
+        "dealworthy",
+        "Future Collective",
+        "Goodfellow & Co.",
+        "JoyLab",
+        "Knox Rose",
+        "Kona Sol",
+        "Original Use",
+        "Shade & Shore",
+        "Stars Above",
+        "Universal Thread",
+        "Wild Fable",
+        "Wondershop"
+      ],
+      "brand_status": [
+        {
+          "brand": "A New Day",
+          "status": "verified_loaded",
+          "verified_chart_count": 2,
+          "verified_categories": [
+            "dresses",
+            "tops"
+          ]
+        },
+        {
+          "brand": "All in Motion",
+          "status": "verified_loaded",
+          "verified_chart_count": 6,
+          "verified_categories": [
+            "bottoms",
+            "tops"
+          ]
+        },
+        {
+          "brand": "Art Class",
+          "status": "verified_loaded",
+          "verified_chart_count": 2,
+          "verified_categories": [
+            "bottoms",
+            "tops"
+          ]
+        },
+        {
+          "brand": "Auden",
+          "status": "verified_loaded",
+          "verified_chart_count": 2,
+          "verified_categories": [
+            "underwear"
+          ]
+        },
+        {
+          "brand": "Ava & Viv",
+          "status": "verified_loaded",
+          "verified_chart_count": 3,
+          "verified_categories": [
+            "bottoms",
+            "dresses",
+            "tops"
+          ]
+        },
+        {
+          "brand": "Cat & Jack",
+          "status": "verified_loaded",
+          "verified_chart_count": 2,
+          "verified_categories": [
+            "bottoms",
+            "tops"
+          ]
+        },
+        {
+          "brand": "Cloud Island",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Colsie",
+          "status": "verified_loaded",
+          "verified_chart_count": 1,
+          "verified_categories": [
+            "underwear"
+          ]
+        },
+        {
+          "brand": "dealworthy",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Future Collective",
+          "status": "partial",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Goodfellow & Co.",
+          "status": "verified_loaded",
+          "verified_chart_count": 1,
+          "verified_categories": [
+            "tops"
+          ]
+        },
+        {
+          "brand": "JoyLab",
+          "status": "verified_loaded",
+          "verified_chart_count": 2,
+          "verified_categories": [
+            "bottoms",
+            "tops"
+          ]
+        },
+        {
+          "brand": "Knox Rose",
+          "status": "verified_loaded",
+          "verified_chart_count": 3,
+          "verified_categories": [
+            "bottoms",
+            "dresses",
+            "tops"
+          ]
+        },
+        {
+          "brand": "Kona Sol",
+          "status": "partial",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Original Use",
+          "status": "verified_loaded",
+          "verified_chart_count": 2,
+          "verified_categories": [
+            "bottoms",
+            "tops"
+          ]
+        },
+        {
+          "brand": "Shade & Shore",
+          "status": "verified_loaded",
+          "verified_chart_count": 2,
+          "verified_categories": [
+            "swimwear"
+          ]
+        },
+        {
+          "brand": "Stars Above",
+          "status": "verified_loaded",
+          "verified_chart_count": 1,
+          "verified_categories": [
+            "underwear"
+          ]
+        },
+        {
+          "brand": "Universal Thread",
+          "status": "verified_loaded",
+          "verified_chart_count": 1,
+          "verified_categories": [
+            "tops"
+          ]
+        },
+        {
+          "brand": "Wild Fable",
+          "status": "verified_loaded",
+          "verified_chart_count": 2,
+          "verified_categories": [
+            "bottoms",
+            "tops"
+          ]
+        },
+        {
+          "brand": "Wondershop",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        }
+      ],
+      "counts": {
+        "verified_loaded": 15,
+        "estimate_only": 3,
+        "partial": 2
+      }
+    },
+    {
+      "retailer": "Walmart",
+      "source_url": "https://www.walmart.com/cp/fashion-brand-directory/3928184",
+      "inventory_mode": "department_store_fashion_brand_directory_snapshot",
+      "brands": [
+        "Airwalk",
+        "AND1",
+        "Athletic Works",
+        "Avia",
+        "Bali",
+        "Ben Hogan",
+        "Brahma",
+        "Carter's",
+        "Casio",
+        "Cate & Chloe",
+        "Celebrity Pink",
+        "Champion",
+        "Chaps",
+        "Claire's",
+        "Crocs",
+        "Disney",
+        "Dr. Scholl's Shoes",
+        "Easy Peasy",
+        "Free Assembly",
+        "Fruit of the Loom",
+        "Garanimals",
+        "Genuine Dickies",
+        "George",
+        "Gildan",
+        "Ground Up",
+        "Hanes",
+        "Herman Survivors",
+        "IZOD",
+        "Jessica Simpson",
+        "Joyspun",
+        "Justice",
+        "Lands' End",
+        "Lee",
+        "Levi's",
+        "LifeStride",
+        "Love & Sports",
+        "M+A by Monica + Andy",
+        "Madden Girl",
+        "Madden NYC",
+        "Marvel",
+        "Miabella",
+        "Modern Moments by Gerber",
+        "Naturalizer",
+        "No Boundaries",
+        "Ozark Trail",
+        "Parade",
+        "Reebok",
+        "Ryka",
+        "Scoop",
+        "Skechers",
+        "Sofia Jeans by Sofia Vergara",
+        "Terra & Sky",
+        "The Pioneer Woman",
+        "Time & Tru",
+        "U.S. Polo Assn.",
+        "Wonder Nation",
+        "Wrangler"
+      ],
+      "brand_status": [
+        {
+          "brand": "Airwalk",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "AND1",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Athletic Works",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Avia",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Bali",
+          "status": "partial",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Ben Hogan",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Brahma",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Carter's",
+          "status": "verified_loaded",
+          "verified_chart_count": 2,
+          "verified_categories": [
+            "footwear",
+            "headwear"
+          ]
+        },
+        {
+          "brand": "Casio",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Cate & Chloe",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Celebrity Pink",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Champion",
+          "status": "verified_loaded",
+          "verified_chart_count": 4,
+          "verified_categories": [
+            "bottoms",
+            "tops"
+          ]
+        },
+        {
+          "brand": "Chaps",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Claire's",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Crocs",
+          "status": "verified_loaded",
+          "verified_chart_count": 2,
+          "verified_categories": [
+            "footwear"
+          ]
+        },
+        {
+          "brand": "Disney",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Dr. Scholl's Shoes",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Easy Peasy",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Free Assembly",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Fruit of the Loom",
+          "status": "verified_loaded",
+          "verified_chart_count": 6,
+          "verified_categories": [
+            "bottoms",
+            "tops",
+            "underwear"
+          ]
+        },
+        {
+          "brand": "Garanimals",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Genuine Dickies",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "George",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Gildan",
+          "status": "partial",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Ground Up",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Hanes",
+          "status": "partial",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Herman Survivors",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "IZOD",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Jessica Simpson",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Joyspun",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Justice",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Lands' End",
+          "status": "verified_loaded",
+          "verified_chart_count": 3,
+          "verified_categories": [
+            "bottoms",
+            "tops"
+          ]
+        },
+        {
+          "brand": "Lee",
+          "status": "verified_loaded",
+          "verified_chart_count": 4,
+          "verified_categories": [
+            "bottoms",
+            "tops"
+          ]
+        },
+        {
+          "brand": "Levi's",
+          "status": "verified_loaded",
+          "verified_chart_count": 4,
+          "verified_categories": [
+            "bottoms",
+            "tops"
+          ]
+        },
+        {
+          "brand": "LifeStride",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Love & Sports",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "M+A by Monica + Andy",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Madden Girl",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Madden NYC",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Marvel",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Miabella",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Modern Moments by Gerber",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Naturalizer",
+          "status": "verified_loaded",
+          "verified_chart_count": 1,
+          "verified_categories": [
+            "footwear"
+          ]
+        },
+        {
+          "brand": "No Boundaries",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Ozark Trail",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Parade",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Reebok",
+          "status": "verified_loaded",
+          "verified_chart_count": 2,
+          "verified_categories": [
+            "footwear"
+          ]
+        },
+        {
+          "brand": "Ryka",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Scoop",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Skechers",
+          "status": "verified_loaded",
+          "verified_chart_count": 3,
+          "verified_categories": [
+            "footwear"
+          ]
+        },
+        {
+          "brand": "Sofia Jeans by Sofia Vergara",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Terra & Sky",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "The Pioneer Woman",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Time & Tru",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "U.S. Polo Assn.",
+          "status": "partial",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Wonder Nation",
+          "status": "estimate_only",
+          "verified_chart_count": 0,
+          "verified_categories": []
+        },
+        {
+          "brand": "Wrangler",
+          "status": "verified_loaded",
+          "verified_chart_count": 1,
+          "verified_categories": [
+            "tops"
+          ]
+        }
+      ],
+      "counts": {
+        "estimate_only": 42,
+        "partial": 4,
+        "verified_loaded": 11
       }
     }
   ]
