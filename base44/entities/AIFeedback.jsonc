@@ -46,6 +46,44 @@
     "actual_size_needed": {
       "type": "string",
       "description": "Size user actually needed"
+    },
+    "fit_result": {
+      "type": "string",
+      "enum": [
+        "too_tight",
+        "ideal",
+        "too_loose",
+        "mixed",
+        "not_tried"
+      ],
+      "description": "Observed real-world fit."
+    },
+    "problem_areas": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Where the item fit poorly, e.g. waist, chest, shoulders, sleeves, toe box."
+    },
+    "kept_item": {
+      "type": "boolean"
+    },
+    "return_reason": {
+      "type": "string"
+    },
+    "brand": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string"
+    },
+    "recommendation_confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "width_code": {
+      "type": "string"
     }
   },
   "required": [],
