@@ -116,6 +116,10 @@ export default function Home() {
   const outfitSuggestions = [
     { name: 'Business Look', image: 'https://media.base44.com/images/public/698951bc103c5b61b68d35b7/153803aec_generated_image.png', style: 'business' },
     { name: 'Casual Fit', image: 'https://media.base44.com/images/public/698951bc103c5b61b68d35b7/c2e2840c5_generated_image.png', style: 'casual' },
+    { name: 'Formal Event', image: 'https://media.base44.com/images/public/698951bc103c5b61b68d35b7/153803aec_generated_image.png', style: 'formal' },
+    { name: 'Evening Look', image: 'https://media.base44.com/images/public/698951bc103c5b61b68d35b7/ed12c091d_generated_image.png', style: 'evening' },
+    { name: 'Outdoor Ready', image: 'https://media.base44.com/images/public/698951bc103c5b61b68d35b7/e30cdb9bf_generated_image.png', style: 'outdoor' },
+    { name: 'Active Day', image: 'https://media.base44.com/images/public/698951bc103c5b61b68d35b7/c2e2840c5_generated_image.png', style: 'active' },
     { name: 'Date Night', image: 'https://media.base44.com/images/public/698951bc103c5b61b68d35b7/ed12c091d_generated_image.png', style: 'nightlife' },
     { name: 'Weekend Style', image: 'https://media.base44.com/images/public/698951bc103c5b61b68d35b7/e30cdb9bf_generated_image.png', style: 'trendy' },
   ];
@@ -146,6 +150,10 @@ export default function Home() {
   const styleCategories = [
     { name: 'Business', image: 'https://media.base44.com/images/public/698951bc103c5b61b68d35b7/153803aec_generated_image.png', path: 'Shop?style=business' },
     { name: 'Casual', image: 'https://media.base44.com/images/public/698951bc103c5b61b68d35b7/c2e2840c5_generated_image.png', path: 'Shop?style=casual' },
+    { name: 'Formal', image: 'https://media.base44.com/images/public/698951bc103c5b61b68d35b7/153803aec_generated_image.png', path: 'Shop?style=formal' },
+    { name: 'Evening', image: 'https://media.base44.com/images/public/698951bc103c5b61b68d35b7/ed12c091d_generated_image.png', path: 'Shop?style=evening' },
+    { name: 'Outdoor', image: 'https://media.base44.com/images/public/698951bc103c5b61b68d35b7/e30cdb9bf_generated_image.png', path: 'Shop?style=outdoor' },
+    { name: 'Active', image: 'https://media.base44.com/images/public/698951bc103c5b61b68d35b7/c2e2840c5_generated_image.png', path: 'Shop?style=active' },
     { name: 'Nightlife', image: 'https://media.base44.com/images/public/698951bc103c5b61b68d35b7/ed12c091d_generated_image.png', path: 'Shop?style=nightlife' },
     { name: 'Trendy', image: 'https://media.base44.com/images/public/698951bc103c5b61b68d35b7/e30cdb9bf_generated_image.png', path: 'Shop?style=trendy' },
   ];
