@@ -2,22 +2,44 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { motion } from 'framer-motion';
 import { Button } from "@/components/ui/button";
-import { Camera, Check, ArrowRight, Loader2, RotateCcw, AlertCircle, Ruler } from 'lucide-react';
+import { Camera, Check, ArrowRight, Loader2, RotateCcw, AlertCircle, Ruler, ShieldCheck } from 'lucide-react';
 import ConciergeGuide from './ConciergeGuide';
 import { measureBodyFromImages } from '@/lib/bodyMeasurement';
-import { formatHeight, formatLength, parseHeightToCm } from '@/lib/measurementUnits';
+import {
+  cmToInches,
+  formatHeight,
+  formatLength,
+  inchesToCm,
+  parseHeightToCm,
+} from '@/lib/measurementUnits';
 import { resolveFileUrl } from '@/lib/privateFiles';
 import { deriveGenericSuggestedSizes } from '@/lib/fitRecommendation';
 
-function buildDisplayMeasurements(valuesCm, unit) {
-  return {
-    height: formatHeight(valuesCm.height, unit),
-    chest: formatLength(valuesCm.chest, unit),
-    waist: formatLength(valuesCm.waist, unit),
-    hips: formatLength(valuesCm.hips, unit),
-    shoulders: formatLength(valuesCm.shoulders, unit),
-    arm_length: formatLength(valuesCm.arm_length, unit),
-  };
+const REVIEW_FIELDS = [
+  { key: 'chest', label: 'Chest', verify: true },
+  { key: 'waist', label: 'Waist', verify: true },
+  { key: 'hips', label: 'Hips', verify: true },
+  { key: 'shoulders', label: 'Shoulder width', verify: false },
+  { key: 'arm_length', label: 'Arm length', verify: false },
+];
+
+function buildDisplayMeasurements(valuesCm, unit, existing = {}) {
+  const next = { ...existing };
+  next.height = formatHeight(valuesCm.height, unit);
+  for (const { key } of REVIEW_FIELDS) {
+    if (Number.isFinite(Number(valuesCm[key]))) {
+      next[key] = formatLength(Number(valuesCm[key]), unit);
+    }
+  }
+  return next;
+}
+
+function reviewValuesFromCm(valuesCm, unit) {
+  return Object.fromEntries(REVIEW_FIELDS.map(({ key }) => {
+    const value = Number(valuesCm?.[key]);
+    if (!Number.isFinite(value)) return [key, ''];
+    return [key, unit === 'metric' ? value.toFixed(1) : cmToInches(value).toFixed(1)];
+  }));
 }
 
 export default function BodyScan({ profile, concierge, onComplete }) {
@@ -39,12 +61,14 @@ export default function BodyScan({ profile, concierge, onComplete }) {
   });
   const [uploading, setUploading] = useState(false);
   const [analyzing, setAnalyzing] = useState(false);
+  const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
-  const [scanQuality, setScanQuality] = useState(null);
+  const [scanResult, setScanResult] = useState(null);
+  const [reviewValues, setReviewValues] = useState({});
+  const [verifiedFields, setVerifiedFields] = useState({});
   const [scanPreviews, setScanPreviews] = useState({});
   const fileInputRef = useRef(null);
 
-  // Resolve stored scan references (private files) to short-lived signed URLs for display.
   useEffect(() => {
     let cancelled = false;
     (async () => {
@@ -63,9 +87,21 @@ export default function BodyScan({ profile, concierge, onComplete }) {
   }, [scans.front, scans.side, scans.back]);
 
   const scanSteps = [
-    { key: 'front', label: 'Front View', instruction: 'Full body visible, facing camera, fitted clothing, arms slightly away from your sides' },
-    { key: 'side', label: 'Side View', instruction: 'Turn exactly 90°, full body visible, arms relaxed, same camera distance' },
-    { key: 'back', label: 'Back View', instruction: 'Full body visible, facing away. Saved for future fit features; front and side drive measurements today.' }
+    {
+      key: 'front',
+      label: 'Front View',
+      instruction: 'Stand straight, face the camera, keep your full body visible, and hold your arms slightly away from your sides.'
+    },
+    {
+      key: 'side',
+      label: 'Side View',
+      instruction: 'Turn exactly 90°, keep your full body visible, and keep your arms relaxed without blocking your torso.'
+    },
+    {
+      key: 'back',
+      label: 'Back View',
+      instruction: 'Face directly away from the camera, stand straight, and keep the same camera position and distance.'
+    }
   ];
 
   const heightCm = useMemo(() => {
@@ -77,6 +113,24 @@ export default function BodyScan({ profile, concierge, onComplete }) {
   const handleUnitChange = (nextUnit) => {
     if (nextUnit === unit) return;
     const currentHeightCm = heightCm;
+
+    if (scanResult) {
+      setReviewValues(prev => {
+        const converted = {};
+        for (const { key } of REVIEW_FIELDS) {
+          const numeric = Number(prev[key]);
+          if (!Number.isFinite(numeric)) {
+            converted[key] = '';
+          } else {
+            converted[key] = nextUnit === 'metric'
+              ? inchesToCm(numeric).toFixed(1)
+              : cmToInches(numeric).toFixed(1);
+          }
+        }
+        return converted;
+      });
+    }
+
     setUnit(nextUnit);
     if (currentHeightCm) {
       setHeightValue(
@@ -87,15 +141,20 @@ export default function BodyScan({ profile, concierge, onComplete }) {
     }
   };
 
+  const clearAnalysis = () => {
+    setScanResult(null);
+    setReviewValues({});
+    setVerifiedFields({});
+    setError('');
+  };
+
   const handleFileChange = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     setUploading(true);
-    setError('');
-    setScanQuality(null);
+    clearAnalysis();
     try {
-      // Body scans are intimate photos: store privately, render only via short-lived signed URLs.
       const { file_uri } = await base44.integrations.Core.UploadPrivateFile({ file });
       const previewUrl = await resolveFileUrl(file_uri);
       setScans(prev => ({ ...prev, [currentScan]: file_uri }));
@@ -114,55 +173,242 @@ export default function BodyScan({ profile, concierge, onComplete }) {
     }
   };
 
-  const handleComplete = async () => {
+  const handleAnalyze = async () => {
     if (!scans.front || !scans.side || !scans.back) return;
-    if (!heightCm || heightCm < 120 || heightCm > 230) {
-      setError('Enter your actual height so the photos can be calibrated to real-world measurements.');
+    if (!heightCm || heightCm < 80 || heightCm > 230) {
+      setError('Enter the customer’s actual height so the photos can be calibrated to real-world measurements.');
       return;
     }
 
     setAnalyzing(true);
     setError('');
     try {
-      const [frontUrl, sideUrl] = await Promise.all([
+      const [frontUrl, sideUrl, backUrl] = await Promise.all([
         resolveFileUrl(scans.front),
         resolveFileUrl(scans.side),
+        resolveFileUrl(scans.back),
       ]);
+
       const result = await measureBodyFromImages({
         frontUrl,
         sideUrl,
+        backUrl,
         heightCm,
       });
 
-      setScanQuality(result.confidence);
-
-      const suggestedSizes = deriveGenericSuggestedSizes(result.measurementsCm);
-
-      await onComplete({
-        body_scan_front: scans.front,
-        body_scan_side: scans.side,
-        body_scan_back: scans.back,
-        measurement_values_cm: result.measurementsCm,
-        measurement_unit: unit,
-        measurement_confidence: result.confidence,
-        measurement_method: result.method,
-        measurement_updated_at: new Date().toISOString(),
-        measurements: buildDisplayMeasurements(result.measurementsCm, unit),
-        suggested_sizes: suggestedSizes,
-      });
+      setScanResult(result);
+      setReviewValues(reviewValuesFromCm(result.measurementsCm, unit));
+      setVerifiedFields({});
     } catch (measurementError) {
       console.error(measurementError);
       setError(
         measurementError?.message ||
-        'We could not get a reliable measurement from these photos. Retake the front and side views.'
+        'We could not get a reliable measurement from these photos. Retake the views and try again.'
       );
     } finally {
       setAnalyzing(false);
     }
   };
 
+  const canonicalReviewedMeasurements = useMemo(() => {
+    if (!scanResult) return null;
+    const values = { height: Number(heightCm) };
+    for (const { key } of REVIEW_FIELDS) {
+      const numeric = Number(reviewValues[key]);
+      if (!Number.isFinite(numeric)) continue;
+      values[key] = unit === 'metric' ? numeric : inchesToCm(numeric);
+    }
+    return values;
+  }, [scanResult, reviewValues, unit, heightCm]);
+
+  const handleConfirm = async () => {
+    if (!scanResult || !canonicalReviewedMeasurements) return;
+    const required = ['height', 'chest', 'waist', 'hips'];
+    if (!required.every(key => Number.isFinite(Number(canonicalReviewedMeasurements[key])))) {
+      setError('Height, chest, waist, and hips are required for the initial fit profile.');
+      return;
+    }
+
+    setSaving(true);
+    setError('');
+    try {
+      const sources = { ...scanResult.measurementSources };
+      const fieldConfidence = { ...scanResult.fieldConfidence, height: 100 };
+
+      for (const { key } of REVIEW_FIELDS) {
+        const original = Number(scanResult.measurementsCm?.[key]);
+        const reviewed = Number(canonicalReviewedMeasurements[key]);
+        const changed = Number.isFinite(original) && Number.isFinite(reviewed) && Math.abs(original - reviewed) >= 0.2;
+
+        if (verifiedFields[key]) {
+          sources[key] = 'customer_tape_verified';
+          fieldConfidence[key] = 100;
+        } else if (changed) {
+          sources[key] = 'customer_corrected';
+          fieldConfidence[key] = Math.max(Number(fieldConfidence[key] || 0), 90);
+        }
+      }
+
+      const verifiedCoreCount = ['chest', 'waist', 'hips'].filter(key => verifiedFields[key]).length;
+      const validationStatus = verifiedCoreCount === 3
+        ? 'verified'
+        : verifiedCoreCount > 0
+          ? 'partially_verified'
+          : 'reviewed';
+
+      const suggestedSizes = deriveGenericSuggestedSizes(canonicalReviewedMeasurements);
+
+      await onComplete({
+        body_scan_front: scans.front,
+        body_scan_side: scans.side,
+        body_scan_back: scans.back,
+        measurement_values_cm: canonicalReviewedMeasurements,
+        measurement_unit: unit,
+        measurement_confidence: scanResult.confidence,
+        measurement_confidence_by_field: fieldConfidence,
+        measurement_sources: sources,
+        measurement_validation_status: validationStatus,
+        measurement_scan_diagnostics: {
+          pose_visibility: scanResult.diagnostics?.pose_visibility,
+          silhouette_coverage: scanResult.diagnostics?.silhouette_coverage,
+          front_back_width_agreement: scanResult.diagnostics?.front_back_width_agreement,
+          orientation_score: scanResult.diagnostics?.orientation_score,
+        },
+        measurement_method: scanResult.method,
+        measurement_updated_at: new Date().toISOString(),
+        measurements: buildDisplayMeasurements(
+          canonicalReviewedMeasurements,
+          unit,
+          profile?.measurements || {}
+        ),
+        suggested_sizes: suggestedSizes,
+      });
+    } catch (saveError) {
+      console.error(saveError);
+      setError('The fit profile could not be saved. Please try again.');
+    } finally {
+      setSaving(false);
+    }
+  };
+
   const allScansComplete = scans.front && scans.side && scans.back;
-  const guideMessage = "I'll use your real height plus front and side photos to estimate your measurements. You'll be able to review or correct them.";
+  const guideMessage = "I'll build your fit profile from three calibrated views, then you'll review the measurements before I use them for sizing.";
+
+  if (scanResult) {
+    return (
+      <div className="max-w-md mx-auto">
+        <ConciergeGuide concierge={concierge} message="I have the scan measurements. Review them now so I know how much confidence to place in future size recommendations." />
+
+        <motion.h1
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          className="text-4xl font-light text-[#2d2d2d] mb-2"
+        >
+          Review Your Fit Profile
+        </motion.h1>
+        <p className="text-[#6b7280] mb-5">
+          Scan quality is <strong>{scanResult.confidence}%</strong>. That score reflects image and pose quality; it is not a guarantee that every measurement is exact.
+        </p>
+
+        <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 mb-5">
+          <div className="flex items-start gap-3">
+            <ShieldCheck className="w-5 h-5 text-emerald-700 mt-0.5 shrink-0" />
+            <div>
+              <p className="text-sm font-medium text-emerald-900">Accuracy safeguard</p>
+              <p className="text-xs text-emerald-800 mt-1 leading-relaxed">
+                If you can, verify chest, waist, and hips with a measuring tape. Mark only measurements you actually checked. Verified values receive the highest fit confidence.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-2xl border border-[#e5e7eb] p-4 mb-5">
+          <div className="flex items-center justify-between gap-3 mb-4">
+            <div>
+              <p className="font-medium text-[#2d2d2d]">Measurements</p>
+              <p className="text-xs text-[#6b7280]">Edit any value that you know is different.</p>
+            </div>
+            <div className="flex rounded-xl border border-[#d1d5db] overflow-hidden">
+              <button
+                type="button"
+                onClick={() => handleUnitChange('imperial')}
+                className={`px-3 py-2 text-xs ${unit === 'imperial' ? 'bg-[#2d2d2d] text-white' : 'bg-white text-[#6b7280]'}`}
+              >
+                in
+              </button>
+              <button
+                type="button"
+                onClick={() => handleUnitChange('metric')}
+                className={`px-3 py-2 text-xs ${unit === 'metric' ? 'bg-[#2d2d2d] text-white' : 'bg-white text-[#6b7280]'}`}
+              >
+                cm
+              </button>
+            </div>
+          </div>
+
+          <div className="mb-4">
+            <label className="text-sm font-medium text-[#2d2d2d]">Height</label>
+            <p className="text-sm text-[#6b7280] mt-1">{formatHeight(Number(heightCm), unit)} • customer supplied</p>
+          </div>
+
+          <div className="space-y-4">
+            {REVIEW_FIELDS.map(field => (
+              <div key={field.key}>
+                <div className="flex items-center justify-between mb-1">
+                  <label className="text-sm font-medium text-[#2d2d2d]">{field.label}</label>
+                  <span className="text-[11px] text-[#6b7280]">
+                    scan confidence {scanResult.fieldConfidence?.[field.key] ?? scanResult.confidence}%
+                  </span>
+                </div>
+                <div className="relative">
+                  <input
+                    type="number"
+                    step="0.1"
+                    value={reviewValues[field.key] ?? ''}
+                    onChange={(e) => setReviewValues(prev => ({ ...prev, [field.key]: e.target.value }))}
+                    className="w-full h-11 rounded-xl border border-[#d1d5db] px-3 pr-12 text-[#2d2d2d]"
+                  />
+                  <span className="absolute right-3 top-3 text-sm text-[#6b7280]">
+                    {unit === 'metric' ? 'cm' : 'in'}
+                  </span>
+                </div>
+                {field.verify && (
+                  <label className="flex items-center gap-2 mt-2 text-xs text-[#6b7280] cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={Boolean(verifiedFields[field.key])}
+                      onChange={(e) => setVerifiedFields(prev => ({ ...prev, [field.key]: e.target.checked }))}
+                    />
+                    I verified this measurement with a tape
+                  </label>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-3">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={clearAnalysis}
+            disabled={saving}
+            className="h-12 rounded-xl"
+          >
+            Retake / Recheck
+          </Button>
+          <Button
+            type="button"
+            onClick={handleConfirm}
+            disabled={saving}
+            className="h-12 bg-[#c9a962] hover:bg-[#b8944d] text-white rounded-xl"
+          >
+            {saving ? <Loader2 className="w-5 h-5 animate-spin" /> : <>Confirm & Continue <ArrowRight className="ml-2 w-4 h-4" /></>}
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-md mx-auto">
@@ -181,19 +427,19 @@ export default function BodyScan({ profile, concierge, onComplete }) {
         transition={{ delay: 0.1 }}
         className="text-[#6b7280] mb-5"
       >
-        Front and side photos are calibrated with your real height. Results are estimates and can be corrected anytime.
+        Three body views are calibrated with your real height. The app rejects weak scans instead of treating them as trustworthy measurements.
       </motion.p>
 
       <div className="bg-white border border-[#e5e7eb] rounded-2xl p-4 mb-5">
         <div className="flex items-center gap-2 mb-3">
           <Ruler className="w-5 h-5 text-[#c9a962]" />
-          <p className="font-medium text-[#2d2d2d]">Your height</p>
+          <p className="font-medium text-[#2d2d2d]">Actual height</p>
         </div>
         <div className="grid grid-cols-[1fr_auto] gap-3">
           <div className="relative">
             <input
               type="number"
-              min={unit === 'metric' ? 120 : 47}
+              min={unit === 'metric' ? 80 : 31.5}
               max={unit === 'metric' ? 230 : 91}
               step="0.1"
               value={heightValue}
@@ -223,29 +469,14 @@ export default function BodyScan({ profile, concierge, onComplete }) {
           </div>
         </div>
         <p className="text-xs text-[#6b7280] mt-2">
-          Accurate height calibration matters more than camera distance. Use your known height, not an estimate.
+          Use measured height, not an estimate. Height is the real-world scale reference for the scan.
         </p>
       </div>
 
-      <div className="grid grid-cols-3 gap-2 mb-5">
-        <div className="bg-[#f8f5f0] rounded-xl p-3 text-center">
-          <p className="text-[#c9a962] text-sm font-semibold">On device</p>
-          <p className="text-[#6b7280] text-xs">Pose analysis</p>
-        </div>
-        <div className="bg-[#f8f5f0] rounded-xl p-3 text-center">
-          <p className="text-[#c9a962] text-sm font-semibold">2 units</p>
-          <p className="text-[#6b7280] text-xs">Metric + imperial</p>
-        </div>
-        <div className="bg-[#f8f5f0] rounded-xl p-3 text-center">
-          <p className="text-[#c9a962] text-sm font-semibold">Reviewable</p>
-          <p className="text-[#6b7280] text-xs">Correct anytime</p>
-        </div>
-      </div>
-
       <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 mb-6 text-left">
-        <p className="text-blue-800 text-sm font-medium mb-1">For better results</p>
+        <p className="text-blue-800 text-sm font-medium mb-1">Capture standard</p>
         <p className="text-blue-700 text-xs leading-relaxed">
-          Use a plain background, fitted clothing, even lighting, the same camera position for front and side, and keep your entire body in frame.
+          Wear fitted clothing, remove bulky outerwear and shoes, use even lighting and a plain contrasting background. Keep the phone vertical and level around waist-to-chest height, avoid wide-angle mode, keep the full body in frame, and do not move the camera between views.
         </p>
       </div>
 
@@ -253,15 +484,6 @@ export default function BodyScan({ profile, concierge, onComplete }) {
         <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-5 flex gap-3">
           <AlertCircle className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
           <p className="text-sm text-red-700">{error}</p>
-        </div>
-      )}
-
-      {scanQuality != null && (
-        <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 mb-5">
-          <p className="text-sm font-medium text-emerald-800">Scan quality: {scanQuality}%</p>
-          <p className="text-xs text-emerald-700 mt-1">
-            This is an image-quality/confidence score, not a guarantee of measurement accuracy.
-          </p>
         </div>
       )}
 
@@ -305,13 +527,14 @@ export default function BodyScan({ profile, concierge, onComplete }) {
               type="button"
               aria-label={`Retake ${currentScan} photo`}
               onClick={() => {
-              setScans(prev => ({ ...prev, [currentScan]: null }));
-              setScanPreviews(prev => {
-                const next = { ...prev };
-                delete next[currentScan];
-                return next;
-              });
-            }}
+                clearAnalysis();
+                setScans(prev => ({ ...prev, [currentScan]: null }));
+                setScanPreviews(prev => {
+                  const next = { ...prev };
+                  delete next[currentScan];
+                  return next;
+                });
+              }}
               className="absolute top-4 right-4 w-10 h-10 bg-black/50 rounded-full flex items-center justify-center"
             >
               <RotateCcw className="w-5 h-5 text-white" />
@@ -348,18 +571,18 @@ export default function BodyScan({ profile, concierge, onComplete }) {
         <p className="text-center text-[#9ca3af] text-sm">Choose the next view above to continue</p>
       ) : (
         <Button
-          onClick={handleComplete}
+          onClick={handleAnalyze}
           disabled={analyzing || !heightCm}
           className="w-full h-14 bg-[#c9a962] hover:bg-[#b8944d] text-white rounded-xl font-medium text-base"
         >
           {analyzing ? (
             <>
               <Loader2 className="w-5 h-5 animate-spin mr-2" />
-              Measuring...
+              Checking scan quality...
             </>
           ) : (
             <>
-              Measure & Continue
+              Analyze Measurements
               <ArrowRight className="ml-2 w-5 h-5" />
             </>
           )}
