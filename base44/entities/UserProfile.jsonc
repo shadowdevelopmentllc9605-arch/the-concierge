@@ -346,6 +346,63 @@
           "type": "number"
         }
       }
+    },
+    "measurement_protocol_version": {
+      "type": "string",
+      "description": "Version of the standardized measurement/capture protocol used for the current fit profile."
+    },
+    "measurement_scan_values_cm": {
+      "type": "object",
+      "description": "Immutable baseline values produced by the latest body scan before customer corrections.",
+      "properties": {
+        "height": {
+          "type": "number"
+        },
+        "chest": {
+          "type": "number"
+        },
+        "bust": {
+          "type": "number"
+        },
+        "underbust": {
+          "type": "number"
+        },
+        "waist": {
+          "type": "number"
+        },
+        "hips": {
+          "type": "number"
+        },
+        "inseam": {
+          "type": "number"
+        },
+        "shoulders": {
+          "type": "number"
+        },
+        "arm_length": {
+          "type": "number"
+        },
+        "neck": {
+          "type": "number"
+        },
+        "head_circumference": {
+          "type": "number"
+        },
+        "foot_length": {
+          "type": "number"
+        },
+        "foot_width": {
+          "type": "number"
+        },
+        "calf_circumference": {
+          "type": "number"
+        }
+      }
+    },
+    "measurement_reference_standard": {
+      "type": "string",
+      "default": "concierge_anthropometry_v1",
+      "description": "Measurement-definition standard used to interpret anatomical landmarks."
     }
   },
   "required": [],
