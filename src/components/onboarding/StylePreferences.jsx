@@ -22,6 +22,30 @@ export default function StylePreferences({ profile, concierge, onComplete }) {
       image: 'https://media.base44.com/images/public/698951bc103c5b61b68d35b7/c2e2840c5_generated_image.png'
     },
     {
+      id: 'formal',
+      name: 'Formal',
+      description: 'Suits, tailored separates, dresses and special-event looks',
+      image: 'https://media.base44.com/images/public/698951bc103c5b61b68d35b7/153803aec_generated_image.png'
+    },
+    {
+      id: 'evening',
+      name: 'Evening',
+      description: 'Dinner, events, evening dresses and elevated separates',
+      image: 'https://media.base44.com/images/public/698951bc103c5b61b68d35b7/ed12c091d_generated_image.png'
+    },
+    {
+      id: 'outdoor',
+      name: 'Outdoor',
+      description: 'Coats, parkas, boots, hats and weather-ready layers',
+      image: 'https://media.base44.com/images/public/698951bc103c5b61b68d35b7/e30cdb9bf_generated_image.png'
+    },
+    {
+      id: 'active',
+      name: 'Active',
+      description: 'Performance apparel, footwear and active accessories',
+      image: 'https://media.base44.com/images/public/698951bc103c5b61b68d35b7/c2e2840c5_generated_image.png'
+    },
+    {
       id: 'nightlife',
       name: 'Nightlife',
       description: 'Jackets, pattern shirts, evening dresses',
