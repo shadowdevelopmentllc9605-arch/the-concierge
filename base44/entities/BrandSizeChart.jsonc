@@ -1,0 +1,168 @@
+{
+  "name": "BrandSizeChart",
+  "type": "object",
+  "properties": {
+    "brand_name": {
+      "type": "string"
+    },
+    "brand_key": {
+      "type": "string"
+    },
+    "parent_name": {
+      "type": "string"
+    },
+    "manufacturer_name": {
+      "type": "string"
+    },
+    "relationship_type": {
+      "type": "string"
+    },
+    "region": {
+      "type": "string",
+      "default": "US"
+    },
+    "audience": {
+      "type": "string",
+      "enum": [
+        "men",
+        "women",
+        "unisex",
+        "kids",
+        "unknown"
+      ]
+    },
+    "category_group": {
+      "type": "string",
+      "enum": [
+        "tops",
+        "bottoms",
+        "dresses",
+        "suits",
+        "outerwear",
+        "underwear",
+        "footwear",
+        "unisex_clothing",
+        "other"
+      ]
+    },
+    "chart_name": {
+      "type": "string"
+    },
+    "fit_type": {
+      "type": "string"
+    },
+    "measurement_basis": {
+      "type": "string",
+      "enum": [
+        "body",
+        "garment",
+        "mixed"
+      ],
+      "default": "body"
+    },
+    "source_url": {
+      "type": "string"
+    },
+    "source_retrieved_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source_type": {
+      "type": "string",
+      "enum": [
+        "official_brand",
+        "official_corporate",
+        "verified_partner",
+        "manual"
+      ]
+    },
+    "active": {
+      "type": "boolean",
+      "default": true
+    },
+    "version": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "size": {
+            "type": "string"
+          },
+          "numeric_equivalent": {
+            "type": "string"
+          },
+          "chest_min_cm": {
+            "type": "number"
+          },
+          "chest_max_cm": {
+            "type": "number"
+          },
+          "waist_min_cm": {
+            "type": "number"
+          },
+          "waist_max_cm": {
+            "type": "number"
+          },
+          "hips_min_cm": {
+            "type": "number"
+          },
+          "hips_max_cm": {
+            "type": "number"
+          },
+          "inseam_min_cm": {
+            "type": "number"
+          },
+          "inseam_max_cm": {
+            "type": "number"
+          },
+          "neck_min_cm": {
+            "type": "number"
+          },
+          "neck_max_cm": {
+            "type": "number"
+          },
+          "sleeve_min_cm": {
+            "type": "number"
+          },
+          "sleeve_max_cm": {
+            "type": "number"
+          },
+          "foot_length_min_cm": {
+            "type": "number"
+          },
+          "foot_length_max_cm": {
+            "type": "number"
+          },
+          "height_min_cm": {
+            "type": "number"
+          },
+          "height_max_cm": {
+            "type": "number"
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "brand_name",
+    "brand_key",
+    "region",
+    "audience",
+    "category_group",
+    "chart_name",
+    "source_url",
+    "entries"
+  ],
+  "rls": {
+    "create": false,
+    "read": true,
+    "update": false,
+    "delete": false
+  }
+}
