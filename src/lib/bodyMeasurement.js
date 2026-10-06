@@ -1,9 +1,14 @@
 import { FilesetResolver, PoseLandmarker } from '@mediapipe/tasks-vision';
 
 const MODEL_URL =
-  'https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task';
+  'https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_full/float16/latest/pose_landmarker_full.task';
 const WASM_URL =
   'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@1.0.1/wasm';
+
+const MIN_HEIGHT_CM = 80;
+const MAX_HEIGHT_CM = 230;
+const MASK_THRESHOLD = 0.5;
+const MIN_POSE_VISIBILITY = 0.62;
 
 let landmarkerPromise;
 
@@ -15,6 +20,8 @@ async function getLandmarker() {
         baseOptions: { modelAssetPath: MODEL_URL },
         runningMode: 'IMAGE',
         numPoses: 1,
+        minPoseDetectionConfidence: 0.65,
+        minPosePresenceConfidence: 0.65,
         outputSegmentationMasks: true,
       });
     })();
@@ -37,17 +44,13 @@ function maskToArray(mask) {
   try {
     const values = mask.getAsFloat32Array?.();
     if (!values) return null;
-    return {
-      values,
-      width: mask.width,
-      height: mask.height,
-    };
+    return { values, width: mask.width, height: mask.height };
   } catch {
     return null;
   }
 }
 
-function getBoundingBox(mask, threshold = 0.5) {
+function getBoundingBox(mask, threshold = MASK_THRESHOLD) {
   if (!mask?.values?.length || !mask.width || !mask.height) return null;
   let minX = mask.width;
   let minY = mask.height;
@@ -71,7 +74,7 @@ function getBoundingBox(mask, threshold = 0.5) {
     : null;
 }
 
-function rowSpan(mask, yNormalized, threshold = 0.5) {
+function rowSpan(mask, yNormalized, threshold = MASK_THRESHOLD) {
   if (!mask?.values?.length || !mask.width || !mask.height) return null;
   const y = Math.max(0, Math.min(mask.height - 1, Math.round(yNormalized * (mask.height - 1))));
   const offset = y * mask.width;
@@ -84,7 +87,6 @@ function rowSpan(mask, yNormalized, threshold = 0.5) {
       maxX = Math.max(maxX, x);
     }
   }
-
   return maxX >= minX ? maxX - minX + 1 : null;
 }
 
@@ -118,161 +120,273 @@ function closeMask(mask) {
   }
 }
 
-export async function measureBodyFromImages({ frontUrl, sideUrl, heightCm }) {
-  if (!frontUrl || !sideUrl) throw new Error('Front and side photos are required.');
-  if (!Number.isFinite(Number(heightCm)) || Number(heightCm) < 120 || Number(heightCm) > 230) {
-    throw new Error('Enter your real height before measuring.');
-  }
-
-  const [frontImage, sideImage, landmarker] = await Promise.all([
-    loadImage(frontUrl),
-    loadImage(sideUrl),
-    getLandmarker(),
-  ]);
-
-  const frontResult = landmarker.detect(frontImage);
-  const frontLandmarks = frontResult.landmarks?.[0];
-  const frontMaskRaw = frontResult.segmentationMasks?.[0]?.clone?.();
-
-  const sideResult = landmarker.detect(sideImage);
-  const sideLandmarks = sideResult.landmarks?.[0];
-  const sideMaskRaw = sideResult.segmentationMasks?.[0]?.clone?.();
-
-  frontResult.close?.();
-  sideResult.close?.();
-
-  if (!frontLandmarks || !sideLandmarks) {
-    closeMask(frontMaskRaw);
-    closeMask(sideMaskRaw);
-    throw new Error('A full body could not be detected in both photos.');
-  }
-  const frontMask = maskToArray(frontMaskRaw);
-  const sideMask = maskToArray(sideMaskRaw);
-  const frontBox = getBoundingBox(frontMask);
-  const sideBox = getBoundingBox(sideMask);
-
-  if (!frontBox || !sideBox || frontBox.height < 50 || sideBox.height < 50) {
-    closeMask(frontMaskRaw);
-    closeMask(sideMaskRaw);
-    throw new Error('The full-body outline could not be isolated. Use a plain background and fitted clothing.');
-  }
-
-  const frontCmPerPx = Number(heightCm) / frontBox.height;
-  const sideCmPerPx = Number(heightCm) / sideBox.height;
-
-  const leftShoulder = frontLandmarks[11];
-  const rightShoulder = frontLandmarks[12];
-  const leftHip = frontLandmarks[23];
-  const rightHip = frontLandmarks[24];
-  const leftElbow = frontLandmarks[13];
-  const leftWrist = frontLandmarks[15];
-
+function torsoLevels(landmarks) {
+  const leftShoulder = landmarks[11];
+  const rightShoulder = landmarks[12];
+  const leftHip = landmarks[23];
+  const rightHip = landmarks[24];
   const shoulderY = (leftShoulder.y + rightShoulder.y) / 2;
   const hipY = (leftHip.y + rightHip.y) / 2;
   const torso = hipY - shoulderY;
-
-  const frontLevels = {
+  return {
     chest: shoulderY + torso * 0.22,
     waist: shoulderY + torso * 0.62,
     hips: hipY + Math.max(0.02, torso * 0.10),
   };
+}
 
-  const sideLeftShoulder = sideLandmarks[11];
-  const sideRightShoulder = sideLandmarks[12];
-  const sideLeftHip = sideLandmarks[23];
-  const sideRightHip = sideLandmarks[24];
-  const sideShoulderY = (sideLeftShoulder.y + sideRightShoulder.y) / 2;
-  const sideHipY = (sideLeftHip.y + sideRightHip.y) / 2;
-  const sideTorso = sideHipY - sideShoulderY;
-  const sideLevels = {
-    chest: sideShoulderY + sideTorso * 0.22,
-    waist: sideShoulderY + sideTorso * 0.62,
-    hips: sideHipY + Math.max(0.02, sideTorso * 0.10),
-  };
+function orientationMetrics(landmarks) {
+  const shoulderSep = Math.abs((landmarks[11]?.x ?? 0) - (landmarks[12]?.x ?? 0));
+  const hipSep = Math.abs((landmarks[23]?.x ?? 0) - (landmarks[24]?.x ?? 0));
+  const shoulderTilt = Math.abs((landmarks[11]?.y ?? 0) - (landmarks[12]?.y ?? 0));
+  const hipTilt = Math.abs((landmarks[23]?.y ?? 0) - (landmarks[24]?.y ?? 0));
+  return { shoulderSep, hipSep, shoulderTilt, hipTilt };
+}
 
-  const frontWidths = {
-    chest: rowSpan(frontMask, frontLevels.chest),
-    waist: rowSpan(frontMask, frontLevels.waist),
-    hips: rowSpan(frontMask, frontLevels.hips),
-  };
-  const sideDepths = {
-    chest: rowSpan(sideMask, sideLevels.chest),
-    waist: rowSpan(sideMask, sideLevels.waist),
-    hips: rowSpan(sideMask, sideLevels.hips),
-  };
+function scanCoverage(box, mask) {
+  if (!box || !mask?.height) return 0;
+  return Math.min(1, box.height / mask.height);
+}
 
-  const chest = ellipseCircumference(
-    frontWidths.chest * frontCmPerPx,
-    sideDepths.chest * sideCmPerPx
-  );
-  const waist = ellipseCircumference(
-    frontWidths.waist * frontCmPerPx,
-    sideDepths.waist * sideCmPerPx
-  );
-  const hips = ellipseCircumference(
-    frontWidths.hips * frontCmPerPx,
-    sideDepths.hips * sideCmPerPx
-  );
+function relativeAgreement(a, b) {
+  if (!(a > 0) || !(b > 0)) return 0;
+  return Math.max(0, 1 - Math.abs(a - b) / ((a + b) / 2));
+}
 
-  const shoulderPixels = distance2d(
-    leftShoulder,
-    rightShoulder,
-    frontImage.naturalWidth,
-    frontImage.naturalHeight
-  );
-  const shoulderScale = Number(heightCm) / Math.max(
-    1,
-    frontBox.height * (frontImage.naturalHeight / frontMask.height)
-  );
+function clampScore(value) {
+  return Math.round(Math.max(0, Math.min(100, value)));
+}
 
-  const upperArm = distance2d(
-    leftShoulder,
-    leftElbow,
-    frontImage.naturalWidth,
-    frontImage.naturalHeight
-  );
-  const forearm = distance2d(
-    leftElbow,
-    leftWrist,
-    frontImage.naturalWidth,
-    frontImage.naturalHeight
-  );
+function assertPlausible(name, value, min, max) {
+  if (!Number.isFinite(value) || value < min || value > max) {
+    throw new Error(`The scan produced an implausible ${name} measurement. Retake the photos with the camera level and your full body visible.`);
+  }
+}
 
-  const visibility = Math.min(
-    avgVisibility(frontLandmarks, [11, 12, 13, 14, 15, 16, 23, 24, 25, 26, 27, 28]),
-    avgVisibility(sideLandmarks, [11, 12, 23, 24, 25, 26, 27, 28])
-  );
+async function analyzeView(url, landmarker) {
+  const image = await loadImage(url);
+  const result = landmarker.detect(image);
+  const landmarks = result.landmarks?.[0];
+  const rawMask = result.segmentationMasks?.[0]?.clone?.();
+  result.close?.();
 
-  const silhouetteCoverage = Math.min(
-    1,
-    Math.min(frontBox.height / frontMask.height, sideBox.height / sideMask.height) / 0.7
-  );
-  const confidence = Math.round(Math.max(0, Math.min(100, visibility * silhouetteCoverage * 100)));
+  if (!landmarks || !rawMask) {
+    closeMask(rawMask);
+    throw new Error('A full body could not be detected in one of the photos.');
+  }
 
-  const measurements = {
-    height: Number(heightCm),
-    chest: chest ? Number(chest.toFixed(1)) : null,
-    waist: waist ? Number(waist.toFixed(1)) : null,
-    hips: hips ? Number(hips.toFixed(1)) : null,
-    shoulders: shoulderPixels ? Number((shoulderPixels * shoulderScale).toFixed(1)) : null,
-    arm_length:
-      upperArm && forearm ? Number(((upperArm + forearm) * shoulderScale).toFixed(1)) : null,
-  };
-
-  closeMask(frontMaskRaw);
-  closeMask(sideMaskRaw);
-
-  if (![measurements.chest, measurements.waist, measurements.hips].every(Number.isFinite)) {
-    throw new Error('The scan did not produce reliable torso measurements. Retake the photos.');
+  const mask = maskToArray(rawMask);
+  const box = getBoundingBox(mask);
+  if (!mask || !box || box.height < 50) {
+    closeMask(rawMask);
+    throw new Error('The full-body outline could not be isolated. Use a plain background and fitted clothing.');
   }
 
   return {
-    measurementsCm: measurements,
-    confidence,
-    method: 'mediapipe_front_side_height_calibrated',
-    notes:
-      confidence >= 80
-        ? 'Good scan quality. Review measurements before using them for fit decisions.'
-        : 'Scan quality is limited. Retake photos or correct measurements manually.',
+    image,
+    landmarks,
+    rawMask,
+    mask,
+    box,
+    levels: torsoLevels(landmarks),
+    orientation: orientationMetrics(landmarks),
+    coverage: scanCoverage(box, mask),
   };
+}
+
+export async function measureBodyFromImages({ frontUrl, sideUrl, backUrl, heightCm }) {
+  if (!frontUrl || !sideUrl || !backUrl) {
+    throw new Error('Front, side, and back photos are required.');
+  }
+
+  const numericHeight = Number(heightCm);
+  if (!Number.isFinite(numericHeight) || numericHeight < MIN_HEIGHT_CM || numericHeight > MAX_HEIGHT_CM) {
+    throw new Error('Enter your real height before measuring.');
+  }
+
+  const landmarker = await getLandmarker();
+  let front;
+  let side;
+  let back;
+
+  try {
+    [front, side, back] = await Promise.all([
+      analyzeView(frontUrl, landmarker),
+      analyzeView(sideUrl, landmarker),
+      analyzeView(backUrl, landmarker),
+    ]);
+
+    const keyIndices = [11, 12, 13, 14, 15, 16, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
+    const frontVisibility = avgVisibility(front.landmarks, keyIndices);
+    const sideVisibility = avgVisibility(side.landmarks, [11, 12, 23, 24, 25, 26, 27, 28, 29, 30]);
+    const backVisibility = avgVisibility(back.landmarks, keyIndices);
+    const poseVisibility = Math.min(frontVisibility, sideVisibility, backVisibility);
+
+    if (poseVisibility < MIN_POSE_VISIBILITY) {
+      throw new Error('Pose detection quality is too low. Retake the photos with even lighting and the full body unobstructed.');
+    }
+
+    if (front.orientation.shoulderTilt > 0.055 || front.orientation.hipTilt > 0.055) {
+      throw new Error('The front photo is tilted or your stance is uneven. Keep the camera level and stand straight.');
+    }
+    if (back.orientation.shoulderTilt > 0.06 || back.orientation.hipTilt > 0.06) {
+      throw new Error('The back photo is tilted or your stance is uneven. Keep the camera level and stand straight.');
+    }
+
+    const frontSideShoulderRatio = side.orientation.shoulderSep / Math.max(front.orientation.shoulderSep, 0.001);
+    const frontSideHipRatio = side.orientation.hipSep / Math.max(front.orientation.hipSep, 0.001);
+    if (frontSideShoulderRatio > 0.72 && frontSideHipRatio > 0.72) {
+      throw new Error('The side photo is not close enough to 90°. Turn fully sideways and retake it.');
+    }
+
+    const silhouetteCoverage = Math.min(front.coverage, side.coverage, back.coverage);
+    if (silhouetteCoverage < 0.58) {
+      throw new Error('Your body is too small in the frame. Move closer while keeping your entire body visible.');
+    }
+
+    const frontScale = numericHeight / front.box.height;
+    const sideScale = numericHeight / side.box.height;
+    const backScale = numericHeight / back.box.height;
+
+    const frontWidths = {
+      chest: rowSpan(front.mask, front.levels.chest),
+      waist: rowSpan(front.mask, front.levels.waist),
+      hips: rowSpan(front.mask, front.levels.hips),
+    };
+    const backWidths = {
+      chest: rowSpan(back.mask, back.levels.chest),
+      waist: rowSpan(back.mask, back.levels.waist),
+      hips: rowSpan(back.mask, back.levels.hips),
+    };
+    const sideDepths = {
+      chest: rowSpan(side.mask, side.levels.chest),
+      waist: rowSpan(side.mask, side.levels.waist),
+      hips: rowSpan(side.mask, side.levels.hips),
+    };
+
+    const frontWidthCm = Object.fromEntries(
+      Object.entries(frontWidths).map(([key, value]) => [key, value ? value * frontScale : null])
+    );
+    const backWidthCm = Object.fromEntries(
+      Object.entries(backWidths).map(([key, value]) => [key, value ? value * backScale : null])
+    );
+    const sideDepthCm = Object.fromEntries(
+      Object.entries(sideDepths).map(([key, value]) => [key, value ? value * sideScale : null])
+    );
+
+    const averagedWidth = {};
+    for (const key of ['chest', 'waist', 'hips']) {
+      const values = [frontWidthCm[key], backWidthCm[key]].filter(Number.isFinite);
+      averagedWidth[key] = values.length ? values.reduce((sum, value) => sum + value, 0) / values.length : null;
+    }
+
+    const chest = ellipseCircumference(averagedWidth.chest, sideDepthCm.chest);
+    const waist = ellipseCircumference(averagedWidth.waist, sideDepthCm.waist);
+    const hips = ellipseCircumference(averagedWidth.hips, sideDepthCm.hips);
+
+    const leftShoulder = front.landmarks[11];
+    const rightShoulder = front.landmarks[12];
+    const leftElbow = front.landmarks[13];
+    const leftWrist = front.landmarks[15];
+
+    const shoulderPixels = distance2d(
+      leftShoulder,
+      rightShoulder,
+      front.image.naturalWidth,
+      front.image.naturalHeight
+    );
+    const imageToMaskY = front.image.naturalHeight / front.mask.height;
+    const shoulderScale = numericHeight / Math.max(1, front.box.height * imageToMaskY);
+
+    const upperArm = distance2d(
+      leftShoulder,
+      leftElbow,
+      front.image.naturalWidth,
+      front.image.naturalHeight
+    );
+    const forearm = distance2d(
+      leftElbow,
+      leftWrist,
+      front.image.naturalWidth,
+      front.image.naturalHeight
+    );
+
+    const measurements = {
+      height: numericHeight,
+      chest: chest ? Number(chest.toFixed(1)) : null,
+      waist: waist ? Number(waist.toFixed(1)) : null,
+      hips: hips ? Number(hips.toFixed(1)) : null,
+      shoulders: shoulderPixels ? Number((shoulderPixels * shoulderScale).toFixed(1)) : null,
+      arm_length: upperArm && forearm
+        ? Number(((upperArm + forearm) * shoulderScale).toFixed(1))
+        : null,
+    };
+
+    assertPlausible('chest', measurements.chest, 45, 190);
+    assertPlausible('waist', measurements.waist, 40, 210);
+    assertPlausible('hip', measurements.hips, 45, 210);
+
+    const widthAgreement = (
+      relativeAgreement(frontWidthCm.chest, backWidthCm.chest) +
+      relativeAgreement(frontWidthCm.waist, backWidthCm.waist) +
+      relativeAgreement(frontWidthCm.hips, backWidthCm.hips)
+    ) / 3;
+
+    const frontBackOrientationAgreement = (
+      relativeAgreement(front.orientation.shoulderSep, back.orientation.shoulderSep) +
+      relativeAgreement(front.orientation.hipSep, back.orientation.hipSep)
+    ) / 2;
+
+    const orientationScore = Math.min(
+      1,
+      Math.max(0, 1 - front.orientation.shoulderTilt / 0.08),
+      Math.max(0, 1 - front.orientation.hipTilt / 0.08),
+      Math.max(0, 1 - back.orientation.shoulderTilt / 0.08),
+      Math.max(0, 1 - back.orientation.hipTilt / 0.08),
+      Math.max(0, 1 - Math.max(frontSideShoulderRatio, frontSideHipRatio) / 0.85)
+    );
+
+    const confidence = clampScore(
+      (poseVisibility * 0.32 + silhouetteCoverage * 0.22 + widthAgreement * 0.26 + orientationScore * 0.20) * 100
+    );
+
+    const torsoFieldConfidence = clampScore(confidence * (0.75 + widthAgreement * 0.25));
+    const lengthFieldConfidence = clampScore(confidence * 0.88);
+
+    return {
+      measurementsCm: measurements,
+      confidence,
+      fieldConfidence: {
+        height: 100,
+        chest: torsoFieldConfidence,
+        waist: torsoFieldConfidence,
+        hips: torsoFieldConfidence,
+        shoulders: lengthFieldConfidence,
+        arm_length: lengthFieldConfidence,
+      },
+      measurementSources: {
+        height: 'customer_supplied',
+        chest: 'three_view_scan_estimate',
+        waist: 'three_view_scan_estimate',
+        hips: 'three_view_scan_estimate',
+        shoulders: 'three_view_scan_estimate',
+        arm_length: 'three_view_scan_estimate',
+      },
+      diagnostics: {
+        pose_visibility: Number((poseVisibility * 100).toFixed(1)),
+        silhouette_coverage: Number((silhouetteCoverage * 100).toFixed(1)),
+        front_back_width_agreement: Number((widthAgreement * 100).toFixed(1)),
+        orientation_score: Number((orientationScore * 100).toFixed(1)),
+        front_back_orientation_agreement: Number((frontBackOrientationAgreement * 100).toFixed(1)),
+      },
+      method: 'mediapipe_full_three_view_height_calibrated_v2',
+      notes: confidence >= 85
+        ? 'Strong scan quality. Review the measurements before using them for high-confidence fit decisions.'
+        : 'Scan quality is usable but not strong enough to treat as verified. Review or confirm key measurements with a tape.',
+    };
+  } finally {
+    closeMask(front?.rawMask);
+    closeMask(side?.rawMask);
+    closeMask(back?.rawMask);
+  }
 }
