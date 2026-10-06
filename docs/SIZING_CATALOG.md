@@ -2,28 +2,29 @@
 
 This repository mirrors the verified sizing reference data used by The Concierge and Concierge Pro.
 
-- Snapshot: 2026-10-06 department-store expansion
-- Verified chart records: 110
-- Distinct brands with verified charts: 49
-- Normalized size rows: 1615
+- Snapshot: 2026-10-06 missing department-store brand expansion
+- Verified chart records: 120
+- Distinct brands with verified charts: 55
+- Normalized size rows: 1730
 - Width-aware footwear rows: 438
 - Brand-family / ownership relationships: 47
 - Initial market focus: US sizing
-- Department-store/private-label expansion: 53 chart records across 31 newly covered brands
+- Department-store/private-label expansion: 63 chart records across 37 newly covered brands
+- Latest verified additions: Original Use, Art Class, Knox Rose, Colsie, Stars Above, and Cremieux
 
 ## Head-to-toe coverage
 
 The catalog supports adult and kids sizing across tops, bottoms, dresses/evening wear, suits/formalwear, underwear/bras, swimwear, outerwear, headwear, and footwear/boots.
 
-- bottoms: 21
-- dresses: 6
+- bottoms: 24
+- dresses: 7
 - footwear: 17
 - headwear: 5
 - outerwear: 4
 - suits: 2
 - swimwear: 2
-- tops: 48
-- underwear: 5
+- tops: 52
+- underwear: 7
 
 ## Advanced footwear fit
 
