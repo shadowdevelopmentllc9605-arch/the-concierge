@@ -110,6 +110,7 @@ export default function PrecisionScan() {
   const params = new URLSearchParams(window.location.search);
   const requestedMode = params.get('mode');
   const returnTo = params.get('return') || 'Profile';
+  const productId = params.get('product');
 
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -307,7 +308,7 @@ export default function PrecisionScan() {
         measurement_method: 'photo_first_plus_calibrated_precision',
       });
 
-      navigate(createPageUrl(returnTo));
+      navigate(productId ? createPageUrl(`ProductDetail?id=${productId}`) : createPageUrl(returnTo));
     } catch (saveError) {
       console.error(saveError);
       setError(saveError?.message || 'The precision measurement could not be saved.');
