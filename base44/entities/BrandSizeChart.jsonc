@@ -180,6 +180,17 @@
           }
         }
       }
+    },
+    "gender_detail": {
+      "type": "string",
+      "enum": [
+        "boys",
+        "girls",
+        "unisex",
+        "not_applicable",
+        "unknown"
+      ],
+      "default": "not_applicable"
     }
   },
   "required": [
