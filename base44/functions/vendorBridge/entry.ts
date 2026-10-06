@@ -107,6 +107,9 @@ export default async function (req: Request): Promise<Response> {
           sizes: item.sizes || [],
           colors: item.colors || [],
           size_chart: item.size_chart || [],
+          footwear_type: item.footwear_type || "all",
+          width_options: item.width_options || [],
+          footwear_fit: item.footwear_fit || {},
           variants: item.variants || [],
           stock_quantity: Number(item.stock_quantity || 0),
           vendor_id: vendor.id,
@@ -181,7 +184,7 @@ export default async function (req: Request): Promise<Response> {
 
         const lineKey =
           item.line_key ||
-          `${externalPurchaseId}:${item.inventory_item_id || productId}:${item.size || ""}:${item.color || ""}`;
+          `${externalPurchaseId}:${item.inventory_item_id || productId}:${item.size || ""}:${item.width_code || ""}:${item.color || ""}`;
 
         const purchases = await base44.asServiceRole.entities.Purchase.filter({
           user_id: userId,
@@ -196,6 +199,7 @@ export default async function (req: Request): Promise<Response> {
             product_price: Number(item.price || 0),
             quantity: Number(item.quantity || 1),
             size: item.size || "",
+            width_code: item.width_code || "",
             color: item.color || "",
             vendor_id: vendor?.id || "",
             vendor_name: businessName || vendor?.business_name || "",
@@ -222,6 +226,7 @@ export default async function (req: Request): Promise<Response> {
             image: item.image || product?.images?.[0] || "",
             item_type: item.name,
             size: item.size || "",
+            width_code: item.width_code || "",
             color: item.color || "",
             style_category: product?.style_type || "other",
             description: item.name,
