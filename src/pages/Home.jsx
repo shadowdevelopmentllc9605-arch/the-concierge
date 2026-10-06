@@ -5,7 +5,7 @@ import { createPageUrl } from '@/utils';
 import { Sparkles, Search, Heart, ShoppingBag, ChevronRight, Store } from 'lucide-react';
 import { motion } from 'framer-motion';
 import PullToRefresh from '@/components/PullToRefresh';
-import { getCategoryGroup, getEffectiveSizeChart, recommendFromSizeChart } from '@/lib/fitRecommendation';
+import { getCategoryGroup, getEffectiveSizeChart, getFitRecommendationPresentation, recommendFromSizeChart } from '@/lib/fitRecommendation';
 
 export default function Home() {
   const navigate = useNavigate();
@@ -83,20 +83,8 @@ export default function Home() {
 
           let size = chartMatch?.blocked ? '' : (chartMatch?.size || '');
           let width = chartMatch?.blocked ? '' : (chartMatch?.width || '');
-          let recommendationLabel = '';
-          if (chartMatch?.size && !chartMatch.blocked) {
-            if (chartMatch.matchType === 'nearest') {
-              recommendationLabel = effectiveChart.source === 'brand_size_chart'
-                ? 'Closest brand fit'
-                : 'Closest product fit';
-            } else {
-              recommendationLabel = chartMatch.fitConfidence === 'high'
-                ? 'High-confidence fit'
-                : chartMatch.fitConfidence === 'medium'
-                  ? 'Fit match'
-                  : 'Low-confidence fit';
-            }
-          }
+          let recommendationSource = chartMatch?.size && !chartMatch.blocked ? effectiveChart.source : '';
+          let recommendationMatchType = chartMatch?.matchType || '';
 
           if (!size && !chartMatch?.blocked) {
             const group = getCategoryGroup(product.category);
@@ -106,8 +94,15 @@ export default function Home() {
               size = product.sizes?.find(value => String(value).startsWith(String(suitBase))) || suitBase;
             }
             if (size && product.sizes?.length && !product.sizes.includes(size)) size = '';
-            if (size) recommendationLabel = 'Profile estimate';
+            if (size) {
+              recommendationSource = 'profile_estimate';
+              recommendationMatchType = '';
+            }
           }
+
+          const recommendationPresentation = size
+            ? getFitRecommendationPresentation(recommendationSource, recommendationMatchType)
+            : { label: '', detail: '', verified: false };
 
           return {
             id: product.id,
@@ -118,7 +113,10 @@ export default function Home() {
             store: vendorNames.get(product.vendor_id) || '',
             size,
             width,
-            recommendationLabel,
+            recommendationLabel: recommendationPresentation.label,
+            recommendationDetail: recommendationPresentation.detail,
+            recommendationVerified: recommendationPresentation.verified,
+            recommendationSource,
             fitConfidence: chartMatch?.fitConfidence || (size ? 'low' : ''),
             fitConfidenceScore: chartMatch?.confidenceScore ?? null,
             tryOnAvailable: Boolean(product.tryOn_image),
@@ -268,8 +266,10 @@ export default function Home() {
                 {item.size && (
                   <div className="absolute bottom-2 left-2 right-2">
                     <div className="bg-white/90 backdrop-blur-sm rounded-xl px-2 py-1.5">
-                      <p className="text-[10px] font-semibold text-green-700">{item.recommendationLabel}</p>
-                      <p className="text-[10px] text-gray-600">Recommended size: {item.size}{item.width ? ' • ' + item.width : ''}</p>
+                      <p className="text-[10px] font-semibold text-green-700">{item.recommendationLabel}: {item.size}{item.width ? ' • ' + item.width : ''}</p>
+                      {item.recommendationDetail && (
+                        <p className="text-[10px] text-gray-600">{item.recommendationDetail}</p>
+                      )}
                     </div>
                   </div>
                 )}
