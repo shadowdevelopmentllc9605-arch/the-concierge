@@ -110,13 +110,16 @@ export function recommendFromSizeChart(sizeChart = [], measurementsCm = {}, opti
   const shoeSize = normalizedUsShoeSize(options.shoeSize);
   const footWidth = finiteNumber(measurementsCm.foot_width);
   if (shoeSize) {
-    let identityCandidates = sizeChart.filter(row =>
-      normalizedSizeValue(row?.us_size || row?.size) === shoeSize
-    );
-    if (identityCandidates.length === 0 && options.gender === 'female') {
+    let identityCandidates = [];
+    if (options.gender === 'female') {
       identityCandidates = sizeChart.filter(row =>
         /^us\s*women/i.test(String(row?.alternate_size || '')) &&
         labeledAlternateValue(row.alternate_size, 'women') === shoeSize
+      );
+    }
+    if (identityCandidates.length === 0) {
+      identityCandidates = sizeChart.filter(row =>
+        normalizedSizeValue(row?.us_size || row?.size) === shoeSize
       );
     }
     const identityMatch = chooseWidthCandidate(identityCandidates, options.shoeWidth, footWidth);
