@@ -66,7 +66,8 @@ export default function Home() {
           const effectiveChart = getEffectiveSizeChart(product, profile, brandCharts);
           const chartMatch = recommendFromSizeChart(
             effectiveChart.entries,
-            profile.measurement_values_cm || {}
+            profile.measurement_values_cm || {},
+            { shoeSize: profile.measurements?.shoe_size, braSize: profile.measurements?.bra_size, gender: profile.gender }
           );
 
           let size = chartMatch?.size || '';
