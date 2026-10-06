@@ -47,6 +47,9 @@
     },
     "external_line_key": {
       "type": "string"
+    },
+    "width_code": {
+      "type": "string"
     }
   },
   "required": [],
