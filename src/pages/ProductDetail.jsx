@@ -5,7 +5,7 @@ import { createPageUrl } from '@/utils';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Heart, ShoppingBag, Sparkles, Check, Loader2 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
-import { getCategoryGroup, getEffectiveSizeChart, normalizeBrandKey, recommendFromSizeChart } from '@/lib/fitRecommendation';
+import { getCategoryGroup, getEffectiveSizeChart, getFitRecommendationPresentation, normalizeBrandKey, recommendFromSizeChart } from '@/lib/fitRecommendation';
 
 export default function ProductDetail() {
   const navigate = useNavigate();
@@ -288,6 +288,10 @@ export default function ProductDetail() {
       (!selectedColor || variant.color === selectedColor)
     );
 
+  const recommendationPresentation = suggestedSize
+    ? getFitRecommendationPresentation(recommendationSource)
+    : { label: '', detail: '', verified: false };
+
   return (
     <div className="min-h-screen bg-[var(--color-background)] pb-32">
       {/* Header */}
@@ -365,7 +369,7 @@ export default function ProductDetail() {
               {suggestedSize && (
                 <span className="text-xs text-[var(--color-accent)] flex items-center gap-1">
                   <Sparkles className="w-3 h-3" />
-                  {recommendationSource === 'brand_size_chart_nearest' ? 'Closest brand fit' : recommendationSource === 'product_size_chart_nearest' ? 'Closest product fit' : recommendationSource === 'profile_estimate' ? 'Profile estimate' : fitConfidence === 'high' ? 'High-confidence fit' : fitConfidence === 'medium' ? 'Fit match' : 'Low-confidence fit'}: {suggestedSize}{suggestedWidth ? ' • ' + suggestedWidth : ''}
+                  {recommendationPresentation.label}: {suggestedSize}{suggestedWidth ? ' • ' + suggestedWidth : ''}
                 </span>
               )}
             </div>
@@ -433,15 +437,18 @@ export default function ProductDetail() {
           </p>
         )}
 
-        {suggestedSize && recommendationSource === 'profile_estimate' && (
+        {suggestedSize && recommendationPresentation.detail && (
           <p className="mt-3 text-xs text-[var(--color-text-secondary)]">
-            This is a general size estimate. Verified brand or retailer product charts take priority when available.
-          </p>
-        )}
-        {suggestedSize && recommendationSource.startsWith('brand_size_chart') && (
-          <p className="mt-3 text-xs text-[var(--color-text-secondary)]">
-            Recommendation uses the verified brand sizing catalog. A retailer-supplied product chart will override it when available.
-            {fitConfidenceScore != null ? ` Fit confidence: ${fitConfidenceScore}%.` : ''}
+            {recommendationPresentation.detail}.
+            {recommendationSource === 'profile_estimate'
+              ? ' This is an estimate; a verified brand or retailer product chart will automatically take priority when available.'
+              : ''}
+            {recommendationSource.startsWith('brand_size_chart')
+              ? ' A retailer-supplied product chart will automatically override the brand chart when available.'
+              : ''}
+            {recommendationPresentation.verified && fitConfidenceScore != null
+              ? ` Fit confidence: ${fitConfidenceScore}%.`
+              : ''}
           </p>
         )}
         {missingFitMeasurements.length > 0 && (
