@@ -14,6 +14,7 @@ import {
 } from '@/lib/measurementUnits';
 import { resolveFileUrl } from '@/lib/privateFiles';
 import { deriveGenericSuggestedSizes } from '@/lib/fitRecommendation';
+import { MEASUREMENT_PROTOCOL_VERSION } from '@/lib/measurementDefinitions';
 
 const REVIEW_FIELDS = [
   { key: 'chest', label: 'Chest', verify: true },
@@ -263,6 +264,9 @@ export default function BodyScan({ profile, concierge, onComplete }) {
         body_scan_side: scans.side,
         body_scan_back: scans.back,
         measurement_values_cm: canonicalReviewedMeasurements,
+        measurement_scan_values_cm: scanResult.measurementsCm,
+        measurement_protocol_version: MEASUREMENT_PROTOCOL_VERSION,
+        measurement_reference_standard: MEASUREMENT_PROTOCOL_VERSION,
         measurement_unit: unit,
         measurement_confidence: scanResult.confidence,
         measurement_confidence_by_field: fieldConfidence,
