@@ -186,7 +186,7 @@ export default function Shop() {
         sizeAdjustmentSteps: product.footwear_fit?.size_adjustment_steps ?? effectiveChart.chart?.size_adjustment_steps ?? 0
       }
     );
-    if (chartMatch?.size) {
+    if (chartMatch?.size && !chartMatch.blocked) {
       const label = chartMatch.matchType === 'nearest'
         ? (effectiveChart.source === 'brand_size_chart' ? 'Closest brand fit' : 'Closest product fit')
         : chartMatch.fitConfidence === 'high'
@@ -199,6 +199,17 @@ export default function Shop() {
         width: chartMatch.width || '',
         label,
         fitConfidence: chartMatch.fitConfidence,
+        confidenceScore: chartMatch.confidenceScore,
+        missingMeasurements: chartMatch.missingMeasurements || []
+      };
+    }
+
+    if (chartMatch?.blocked) {
+      return {
+        size: '',
+        width: '',
+        label: 'More measurements needed',
+        fitConfidence: 'low',
         confidenceScore: chartMatch.confidenceScore,
         missingMeasurements: chartMatch.missingMeasurements || []
       };
