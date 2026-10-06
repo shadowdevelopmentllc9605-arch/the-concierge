@@ -4,7 +4,9 @@ const CATEGORY_GROUPS = {
   dresses: new Set(['dresses', 'dress_skirts', 'skirts', 'evening_dresses']),
   suits: new Set(['suits']),
   underwear: new Set(['underwear', 'bras', 'lingerie', 'sleepwear']),
-  footwear: new Set(['shoes']),
+  footwear: new Set(['shoes', 'boots']),
+  headwear: new Set(['hats']),
+  outerwear: new Set(['coats', 'parkas', 'outerwear']),
 };
 
 function finiteNumber(value) {
@@ -96,11 +98,12 @@ export function recommendFromSizeChart(sizeChart = [], measurementsCm = {}, opti
     hips: finiteNumber(measurementsCm.hips),
     inseam: finiteNumber(measurementsCm.inseam),
     foot_length: finiteNumber(measurementsCm.foot_length),
+    head_circumference: finiteNumber(measurementsCm.head_circumference),
     height: finiteNumber(measurementsCm.height),
     neck: finiteNumber(measurementsCm.neck),
   };
 
-  const measurementKeys = ['chest', 'bust', 'underbust', 'waist', 'hips', 'inseam', 'foot_length', 'height', 'neck'];
+  const measurementKeys = ['chest', 'bust', 'underbust', 'waist', 'hips', 'inseam', 'foot_length', 'head_circumference', 'height', 'neck'];
   const scored = sizeChart
     .map(row => {
       let criteria = 0;
