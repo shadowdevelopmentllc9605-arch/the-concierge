@@ -133,6 +133,9 @@
         },
         "foot_length": {
           "type": "string"
+        },
+        "bra_size": {
+          "type": "string"
         }
       }
     },
