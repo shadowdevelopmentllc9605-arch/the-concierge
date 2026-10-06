@@ -84,7 +84,37 @@ export default function Shop() {
         brands.push(...(page || []));
         if (!page || page.length < brandPageSize) break;
       }
-      setBrandCatalog(brands.filter(brand => brand.active !== false));
+      const mergedBrands = new Map();
+      for (const brand of brands.filter(item => item.active !== false)) {
+        const key = brand.brand_key || brand.brand_name?.toLowerCase().replace(/[^a-z0-9]/g, '');
+        if (!key) continue;
+        const current = mergedBrands.get(key);
+        if (!current) {
+          mergedBrands.set(key, brand);
+          continue;
+        }
+        const retailerByKey = new Map(
+          [...(current.retailer_presence || []), ...(brand.retailer_presence || [])]
+            .map(presence => [presence.retailer_key || presence.retailer_name, presence])
+        );
+        mergedBrands.set(key, {
+          ...current,
+          ...brand,
+          brand_name: current.brand_name || brand.brand_name,
+          aliases: [...new Set([...(current.aliases || []), ...(brand.aliases || [])])],
+          retailer_presence: [...retailerByKey.values()],
+          source_urls: [...new Set([...(current.source_urls || []), ...(brand.source_urls || [])])],
+          verified_categories: [...new Set([...(current.verified_categories || []), ...(brand.verified_categories || [])])],
+          verified_chart_count: Math.max(current.verified_chart_count || 0, brand.verified_chart_count || 0),
+          sizing_status:
+            current.sizing_status === 'verified_loaded' || brand.sizing_status === 'verified_loaded'
+              ? 'verified_loaded'
+              : current.sizing_status === 'partial' || brand.sizing_status === 'partial'
+                ? 'partial'
+                : 'estimate_only'
+        });
+      }
+      setBrandCatalog([...mergedBrands.values()].sort((a, b) => a.brand_name.localeCompare(b.brand_name)));
 
       // Load wishlist
       const wishlistItems = await base44.entities.WishlistItem.filter({ user_id: currentUser.id });
