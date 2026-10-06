@@ -1,0 +1,101 @@
+{
+  "version": "2026-10-06-expanded-department-store-and-brand-site-pass-1",
+  "as_of": "2026-10-06T23:57:00-05:00",
+  "brand_master": {
+    "active_source_records": 1060,
+    "canonical_unique_brands": 976,
+    "duplicate_source_records_merged_at_runtime": 84,
+    "retailer_banners": 16,
+    "sizing_status": {
+      "verified_loaded": 91,
+      "partial": 23,
+      "estimate_only": 862
+    }
+  },
+  "retailer_unique_brand_counts": {
+    "Bealls Florida": 42,
+    "Belk": 32,
+    "Bergdorf Goodman": 41,
+    "Bloomingdale's": 95,
+    "Boscov's": 40,
+    "Dillard's": 58,
+    "JCPenney": 49,
+    "Kohl's": 67,
+    "Macy's": 74,
+    "Neiman Marcus": 56,
+    "Nordstrom": 144,
+    "Nordstrom Rack": 402,
+    "Saks Fifth Avenue": 80,
+    "Target": 20,
+    "Von Maur": 295,
+    "Walmart": 57
+  },
+  "verified_sizing": {
+    "chart_records": 253,
+    "distinct_brand_keys": 91,
+    "normalized_size_rows": 3586,
+    "audience_chart_counts": {
+      "men": 82,
+      "women": 129,
+      "kids": 34,
+      "unisex": 8
+    },
+    "category_chart_counts": {
+      "footwear": 61,
+      "tops": 84,
+      "bottoms": 51,
+      "swimwear": 5,
+      "underwear": 18,
+      "dresses": 18,
+      "outerwear": 8,
+      "headwear": 6,
+      "suits": 2
+    }
+  },
+  "latest_brand_site_upgrades": {
+    "ASICS": [
+      "men footwear",
+      "women footwear",
+      "kids footwear",
+      "men tops",
+      "women tops",
+      "kids tops",
+      "men bottoms",
+      "women bottoms",
+      "kids bottoms"
+    ],
+    "PUMA": [
+      "men footwear",
+      "women footwear",
+      "kids footwear"
+    ],
+    "Saucony": [
+      "men footwear",
+      "women footwear",
+      "baby footwear",
+      "toddler footwear",
+      "kids footwear",
+      "youth footwear",
+      "men tops",
+      "women tops",
+      "men bottoms",
+      "women bottoms"
+    ],
+    "Speedo": [
+      "women swimwear",
+      "men swimwear",
+      "boys swimwear"
+    ],
+    "Sperry": [
+      "women footwear",
+      "men footwear",
+      "kids/youth footwear"
+    ]
+  },
+  "notes": [
+    "Retailer assortments change continuously; this is a dated current snapshot.",
+    "BrandCatalog is the runtime source for brand presence. BrandSizeChart is the runtime source for verified sizing.",
+    "Shop merges duplicate brand_key records at runtime so customers see one canonical brand entry.",
+    "No sizing chart is promoted to verified unless a trustworthy numeric source is available."
+  ]
+}
