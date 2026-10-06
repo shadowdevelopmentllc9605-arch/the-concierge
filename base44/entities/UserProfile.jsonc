@@ -427,6 +427,62 @@
       "type": "string",
       "default": "concierge_anthropometry_v1",
       "description": "Measurement-definition standard used to interpret anatomical landmarks."
+    },
+    "precision_scan_foot_left": {
+      "type": "string",
+      "description": "Private file URI for optional left-foot calibration photo."
+    },
+    "precision_scan_foot_right": {
+      "type": "string",
+      "description": "Private file URI for optional right-foot calibration photo."
+    },
+    "precision_scan_head_front": {
+      "type": "string",
+      "description": "Private file URI for optional calibrated front head photo."
+    },
+    "precision_scan_head_side": {
+      "type": "string",
+      "description": "Private file URI for optional calibrated side head photo."
+    },
+    "precision_measurement_metadata": {
+      "type": "object",
+      "description": "Metadata for optional close-up photo measurements.",
+      "properties": {
+        "reference_type": {
+          "type": "string"
+        },
+        "reference_length_cm": {
+          "type": "number"
+        },
+        "foot_left_length_cm": {
+          "type": "number"
+        },
+        "foot_left_width_cm": {
+          "type": "number"
+        },
+        "foot_right_length_cm": {
+          "type": "number"
+        },
+        "foot_right_width_cm": {
+          "type": "number"
+        },
+        "head_width_cm": {
+          "type": "number"
+        },
+        "head_depth_cm": {
+          "type": "number"
+        },
+        "foot_confidence": {
+          "type": "number"
+        },
+        "head_confidence": {
+          "type": "number"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
     }
   },
   "required": [],
