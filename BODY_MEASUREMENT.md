@@ -12,14 +12,24 @@ The onboarding scan uses the customer's measured height plus three full-body vie
 
 Pose and silhouette analysis runs in the browser with MediaPipe Tasks Vision using the Full pose model. Before measurements are accepted, the scan evaluates pose visibility, full-body coverage, camera/body tilt, side-view orientation, and front/back silhouette agreement. Weak captures are rejected and must be retaken rather than being converted into a high-confidence size recommendation.
 
-The scan currently estimates:
+The photo-first v2 protocol now attempts to estimate:
 
 - height (customer supplied and used as the scale reference)
 - chest circumference
+- bust circumference
+- underbust circumference
 - waist circumference
-- hip circumference
+- hip / seat circumference
+- inseam
 - shoulder width
-- arm length
+- arm / sleeve length
+- neck circumference
+- head circumference
+- foot length
+- foot width
+- calf circumference
+
+Not every field has the same expected precision. Torso measurements generally have stronger geometric evidence in a full-body three-view scan. Smaller-detail measurements such as head circumference, foot width, and some lower-body landmark measurements receive lower confidence unless the image geometry supports them well. The fit engine carries that confidence forward instead of treating all photo-derived numbers equally.
 
 Chest, waist, and hip circumference use the average of the front/back torso widths plus side-view depth. The current v3 contour method follows the torso centerline, ignores disconnected foreground such as separated arms, searches constrained anatomical torso regions for the chest/waist/hip cross-sections, and estimates circumference from an elliptical cross-section. Shoulder width and arm length are derived from pose landmarks. These geometric improvements reduce known failure modes but still require empirical validation against physical reference measurements.
 
@@ -47,22 +57,13 @@ The profile validation state is one of:
 
 A scan-quality score is not the same thing as measurement accuracy. Tape verification is intentionally given greater trust than an image-derived estimate.
 
-## Measurements needed beyond the automatic scan
+## Photo-first fallback and optional verification
 
-The profile supports additional fit measurements that are important for some product categories but are not currently claimed as reliable automatic three-view outputs:
+The product should remain useful for customers who do not own a tape measure and cannot visit a tailor. The three-view scan therefore supplies the best plausible photo-derived estimate for category-relevant measurements when the geometry is adequate.
 
-- bust
-- underbust
-- inseam
-- neck
-- head circumference
-- foot length
-- foot width
-- calf circumference
-- shoe size / width
-- bra size
+A physical tape or ruler is an optional confidence upgrade, not a prerequisite. If the customer supplies or verifies a better value, the app keeps the original scan baseline for validation and promotes the verified value for future fit decisions.
 
-These may be customer supplied or tape/ruler verified. The fit engine should ask for them only when the product/category requires them.
+Some identity-style fields such as a remembered shoe size or bra size remain optional customer inputs. When a small-detail photo estimate is unavailable or too uncertain, the app can lower confidence or request better information rather than inventing precision.
 
 ## Fit recommendation hierarchy
 
