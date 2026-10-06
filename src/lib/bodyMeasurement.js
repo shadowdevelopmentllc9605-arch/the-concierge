@@ -421,17 +421,46 @@ export async function measureBodyFromImages({ frontUrl, sideUrl, backUrl, height
     const backScale = numericHeight / back.box.height;
 
     const scales = { front: frontScale, side: sideScale, back: backScale };
-    const chestSection = selectCrossSection(front, side, back, scales, 0.16, 0.38, 'max');
-    const waistSection = selectCrossSection(front, side, back, scales, 0.45, 0.80, 'min');
+    const chestSection = selectCrossSection(front, side, back, scales, 0.14, 0.34, 'max');
+    const bustSection = selectCrossSection(front, side, back, scales, 0.20, 0.46, 'max');
+    const underbustSection = selectCrossSection(front, side, back, scales, 0.36, 0.56, 'min');
+    const waistSection = selectCrossSection(front, side, back, scales, 0.48, 0.82, 'min');
     const hipSection = selectCrossSection(front, side, back, scales, 0.88, 1.18, 'max');
+    const neckSection = selectCrossSection(front, side, back, scales, -0.18, -0.02, 'min');
 
     if (!chestSection || !waistSection || !hipSection) {
       throw new Error('The torso outline was not clear enough to locate chest, waist, and hip cross-sections. Retake the photos in fitted clothing.');
     }
 
     const chest = chestSection.circumference;
+    const bust = plausibleOrNull(bustSection?.circumference, 45, 200);
+    const underbust = plausibleOrNull(underbustSection?.circumference, 40, 180);
     const waist = waistSection.circumference;
     const hips = hipSection.circumference;
+    const neck = plausibleOrNull(neckSection?.circumference, 20, 70);
+    const crotchY = detectCrotchY(front);
+    const crotchPixelY = Number.isFinite(crotchY)
+      ? crotchY * (front.mask.height - 1)
+      : null;
+    const inseam = plausibleOrNull(
+      Number.isFinite(crotchPixelY)
+        ? (front.box.maxY - crotchPixelY) * frontScale
+        : null,
+      35,
+      125
+    );
+    const calfCircumference = plausibleOrNull(
+      estimateCalfCircumference(front, side, back, scales),
+      20,
+      75
+    );
+    const footLength = plausibleOrNull(estimateFootLength(side, numericHeight), 15, 36);
+    const footWidth = plausibleOrNull(estimateFootWidth(front, frontScale), 5, 16);
+    const headCircumference = plausibleOrNull(
+      estimateHeadCircumference(front, side, back, scales),
+      40,
+      75
+    );
 
     const frontWidthCm = {
       chest: chestSection.frontWidth,
@@ -474,12 +503,20 @@ export async function measureBodyFromImages({ frontUrl, sideUrl, backUrl, height
     const measurements = {
       height: numericHeight,
       chest: chest ? Number(chest.toFixed(1)) : null,
+      bust: bust ? Number(bust.toFixed(1)) : null,
+      underbust: underbust ? Number(underbust.toFixed(1)) : null,
       waist: waist ? Number(waist.toFixed(1)) : null,
       hips: hips ? Number(hips.toFixed(1)) : null,
+      inseam: inseam ? Number(inseam.toFixed(1)) : null,
       shoulders: shoulderPixels ? Number((shoulderPixels * shoulderScale).toFixed(1)) : null,
       arm_length: upperArm && forearm
         ? Number(((upperArm + forearm) * shoulderScale).toFixed(1))
         : null,
+      neck: neck ? Number(neck.toFixed(1)) : null,
+      head_circumference: headCircumference ? Number(headCircumference.toFixed(1)) : null,
+      foot_length: footLength ? Number(footLength.toFixed(1)) : null,
+      foot_width: footWidth ? Number(footWidth.toFixed(1)) : null,
+      calf_circumference: calfCircumference ? Number(calfCircumference.toFixed(1)) : null,
     };
 
     assertPlausible('chest', measurements.chest, 45, 190);
@@ -512,26 +549,39 @@ export async function measureBodyFromImages({ frontUrl, sideUrl, backUrl, height
 
     const torsoFieldConfidence = clampScore(confidence * (0.75 + widthAgreement * 0.25));
     const lengthFieldConfidence = clampScore(confidence * 0.88);
+    const secondaryTorsoConfidence = clampScore(torsoFieldConfidence * 0.86);
+    const lowerBodyConfidence = clampScore(confidence * 0.72);
+    const detailConfidence = clampScore(confidence * 0.58);
+
+    const fieldConfidence = {
+      height: 100,
+      chest: torsoFieldConfidence,
+      bust: secondaryTorsoConfidence,
+      underbust: clampScore(secondaryTorsoConfidence * 0.92),
+      waist: torsoFieldConfidence,
+      hips: torsoFieldConfidence,
+      inseam: Number.isFinite(inseam) ? clampScore(lengthFieldConfidence * 0.82) : 0,
+      shoulders: lengthFieldConfidence,
+      arm_length: lengthFieldConfidence,
+      neck: Number.isFinite(neck) ? secondaryTorsoConfidence : 0,
+      head_circumference: Number.isFinite(headCircumference) ? detailConfidence : 0,
+      foot_length: Number.isFinite(footLength) ? clampScore(confidence * 0.66) : 0,
+      foot_width: Number.isFinite(footWidth) ? clampScore(confidence * 0.52) : 0,
+      calf_circumference: Number.isFinite(calfCircumference) ? lowerBodyConfidence : 0,
+    };
+
+    const measurementSources = { height: 'customer_supplied' };
+    for (const [key, value] of Object.entries(measurements)) {
+      if (key !== 'height' && Number.isFinite(value)) {
+        measurementSources[key] = 'three_view_scan_estimate';
+      }
+    }
 
     return {
       measurementsCm: measurements,
       confidence,
-      fieldConfidence: {
-        height: 100,
-        chest: torsoFieldConfidence,
-        waist: torsoFieldConfidence,
-        hips: torsoFieldConfidence,
-        shoulders: lengthFieldConfidence,
-        arm_length: lengthFieldConfidence,
-      },
-      measurementSources: {
-        height: 'customer_supplied',
-        chest: 'three_view_scan_estimate',
-        waist: 'three_view_scan_estimate',
-        hips: 'three_view_scan_estimate',
-        shoulders: 'three_view_scan_estimate',
-        arm_length: 'three_view_scan_estimate',
-      },
+      fieldConfidence,
+      measurementSources,
       diagnostics: {
         pose_visibility: Number((poseVisibility * 100).toFixed(1)),
         silhouette_coverage: Number((silhouetteCoverage * 100).toFixed(1)),
@@ -539,10 +589,14 @@ export async function measureBodyFromImages({ frontUrl, sideUrl, backUrl, height
         orientation_score: Number((orientationScore * 100).toFixed(1)),
         front_back_orientation_agreement: Number((frontBackOrientationAgreement * 100).toFixed(1)),
         chest_level_fraction: Number(chestSection.fraction.toFixed(3)),
+        bust_level_fraction: bustSection ? Number(bustSection.fraction.toFixed(3)) : null,
+        underbust_level_fraction: underbustSection ? Number(underbustSection.fraction.toFixed(3)) : null,
         waist_level_fraction: Number(waistSection.fraction.toFixed(3)),
         hip_level_fraction: Number(hipSection.fraction.toFixed(3)),
+        neck_level_fraction: neckSection ? Number(neckSection.fraction.toFixed(3)) : null,
+        crotch_detection: Number.isFinite(crotchY) ? 100 : 0,
       },
-      method: 'mediapipe_full_three_view_contour_height_calibrated_v3',
+      method: 'mediapipe_full_three_view_extended_anthropometry_v4',
       notes: confidence >= 85
         ? 'Strong scan quality. Review the measurements before using them for high-confidence fit decisions.'
         : 'Scan quality is usable but not strong enough to treat as verified. Review or confirm key measurements with a tape.',
