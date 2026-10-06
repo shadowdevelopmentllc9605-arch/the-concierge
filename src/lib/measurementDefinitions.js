@@ -100,6 +100,7 @@ export const CATEGORY_MEASUREMENT_REQUIREMENTS = {
   bras: all('bust', 'underbust'),
   lingerie: all('bust', 'underbust', 'hips'),
   sleepwear: all(any('chest', 'bust'), 'waist', 'hips'),
+  swimwear: all('bust', 'waist', 'hips'),
   hats: all('head_circumference'),
   shoes: all('foot_length', 'foot_width'),
   boots: all('foot_length', 'foot_width', 'calf_circumference'),
