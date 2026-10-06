@@ -92,7 +92,7 @@ export default function InStoreCheckout({ open, onClose, store, user }) {
                       <div className="flex-1">
                         <h4 className="font-medium text-[#1a1a1a] text-sm">{item.product_name}</h4>
                         <p className="text-xs text-[#64748b]">
-                          {item.size ? 'Size: ' + item.size + ' • ' : ''}Qty: {item.quantity || 1}
+                          {item.size ? 'Size: ' + item.size : ''}{item.width_code ? ' • Width ' + item.width_code : ''}{(item.size || item.width_code) ? ' • ' : ''}Qty: {item.quantity || 1}
                         </p>
                         <p className="font-semibold text-[#1a1a1a] mt-1">{'$'}{(item.product_price || 0).toFixed(2)}</p>
                       </div>
