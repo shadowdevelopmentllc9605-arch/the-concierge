@@ -13,6 +13,9 @@ This repository mirrors the verified sizing reference data used by The Concierge
 - Total department-store expansion from the original 18-brand baseline: 122 additional chart records across 56 additional verified brands
 - Latest verified additions: Champion, Reebok, Fruit of the Loom, Carter's, Crocs, Lee, Vans, Tommy Hilfiger, Crown & Ivy, Wonderly, Kim Rogers, Worthington, Jockey, Skechers, Eddie Bauer, Polo Ralph Lauren, Lauren Ralph Lauren, Lands' End, and Dockers
 - Retailer audit detail: `docs/DEPARTMENT_STORE_BRAND_AUDIT.md` and `data/department-store-brand-audit.json`
+- Independent brand master: **277 fashion brand records** in `BrandCatalog` / `data/brand-catalog.json`
+- Brand master sizing states: **74 verified**, **25 partial-source**, **178 estimate-only**
+- Brand discovery is intentionally independent from sizing-chart availability so future style/trend layers can use every known department-store brand.
 
 ## Head-to-toe coverage
 
