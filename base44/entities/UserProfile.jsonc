@@ -221,6 +221,131 @@
       "rls": {
         "write": false
       }
+    },
+    "measurement_validation_status": {
+      "type": "string",
+      "enum": [
+        "estimated",
+        "reviewed",
+        "partially_verified",
+        "verified"
+      ],
+      "default": "estimated",
+      "description": "Trust state for the body measurement profile. Verified means key fit measurements were independently confirmed by the customer."
+    },
+    "measurement_sources": {
+      "type": "object",
+      "description": "Per-measurement provenance used by fit-confidence logic.",
+      "properties": {
+        "height": {
+          "type": "string"
+        },
+        "chest": {
+          "type": "string"
+        },
+        "bust": {
+          "type": "string"
+        },
+        "underbust": {
+          "type": "string"
+        },
+        "waist": {
+          "type": "string"
+        },
+        "hips": {
+          "type": "string"
+        },
+        "inseam": {
+          "type": "string"
+        },
+        "shoulders": {
+          "type": "string"
+        },
+        "arm_length": {
+          "type": "string"
+        },
+        "neck": {
+          "type": "string"
+        },
+        "head_circumference": {
+          "type": "string"
+        },
+        "foot_length": {
+          "type": "string"
+        },
+        "foot_width": {
+          "type": "string"
+        },
+        "calf_circumference": {
+          "type": "string"
+        }
+      }
+    },
+    "measurement_confidence_by_field": {
+      "type": "object",
+      "description": "Per-measurement confidence score from 0-100; image-derived confidence is not a guarantee of accuracy.",
+      "properties": {
+        "height": {
+          "type": "number"
+        },
+        "chest": {
+          "type": "number"
+        },
+        "bust": {
+          "type": "number"
+        },
+        "underbust": {
+          "type": "number"
+        },
+        "waist": {
+          "type": "number"
+        },
+        "hips": {
+          "type": "number"
+        },
+        "inseam": {
+          "type": "number"
+        },
+        "shoulders": {
+          "type": "number"
+        },
+        "arm_length": {
+          "type": "number"
+        },
+        "neck": {
+          "type": "number"
+        },
+        "head_circumference": {
+          "type": "number"
+        },
+        "foot_length": {
+          "type": "number"
+        },
+        "foot_width": {
+          "type": "number"
+        },
+        "calf_circumference": {
+          "type": "number"
+        }
+      }
+    },
+    "measurement_scan_diagnostics": {
+      "type": "object",
+      "description": "Non-sensitive scan quality diagnostics used to explain retake requirements.",
+      "properties": {
+        "pose_visibility": {
+          "type": "number"
+        },
+        "silhouette_coverage": {
+          "type": "number"
+        },
+        "front_back_width_agreement": {
+          "type": "number"
+        },
+        "orientation_score": {
+          "type": "number"
+        }
+      }
     }
   },
   "required": [],
