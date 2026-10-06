@@ -184,6 +184,24 @@
           },
           "head_circumference_max_cm": {
             "type": "number"
+          },
+          "foot_width_min_cm": {
+            "type": "number"
+          },
+          "foot_width_max_cm": {
+            "type": "number"
+          },
+          "calf_circumference_min_cm": {
+            "type": "number"
+          },
+          "calf_circumference_max_cm": {
+            "type": "number"
+          },
+          "width_code": {
+            "type": "string"
+          },
+          "width_label": {
+            "type": "string"
           }
         }
       }
@@ -198,6 +216,49 @@
         "unknown"
       ],
       "default": "not_applicable"
+    },
+    "footwear_type": {
+      "type": "string",
+      "enum": [
+        "all",
+        "athletic_running",
+        "athletic_training",
+        "walking",
+        "casual_sneaker",
+        "dress_oxford_derby",
+        "loafer_slipon",
+        "boot_work",
+        "boot_hiking",
+        "boot_fashion",
+        "sandal",
+        "heel_pump",
+        "other"
+      ],
+      "default": "all"
+    },
+    "last_name": {
+      "type": "string"
+    },
+    "width_system": {
+      "type": "string"
+    },
+    "fit_guidance": {
+      "type": "string"
+    },
+    "sock_profile": {
+      "type": "string",
+      "enum": [
+        "thin",
+        "standard",
+        "thick",
+        "varies",
+        "not_applicable"
+      ],
+      "default": "not_applicable"
+    },
+    "size_adjustment_steps": {
+      "type": "number",
+      "description": "Optional official/product-specific half-size step adjustment. 1 = +0.5 US size, -1 = -0.5. Zero/absent means no automatic adjustment."
     }
   },
   "required": [
