@@ -7,15 +7,17 @@ The Concierge now separates **brand discovery** from **verified sizing**. A bran
 
 ## Current canonical layer
 
-- Source BrandCatalog records: **1,074**
-- Canonical unique fashion brands after merging duplicate discoveries: **965**
-- Duplicate discovery records merged by `brand_key`: **109**
+- Active BrandCatalog source records: **1,060**
+- Canonical unique fashion brands after merging duplicate discoveries: **976**
+- Duplicate discovery records merged by `brand_key` at runtime: **84**
 - Retailer banners represented: **16**
-- Unique brands with verified sizing: **90**
-- Unique brands with partial official sizing information: **24**
-- Unique brands currently estimate-only: **851**
-- Live verified size-chart records: **248**
-- Live normalized sizing rows: **3,520**
+- Unique brands with verified sizing: **91**
+- Unique brands with partial official sizing information: **23**
+- Unique brands currently estimate-only: **862**
+- Live verified size-chart records: **253**
+- Live normalized sizing rows: **3,586**
+
+The compact authoritative live-count snapshot is `data/brand-layer-live-summary.json`.
 
 The shopper Shop page uses cursor pagination and merges duplicate brand records at runtime, so the full current catalog can be searched rather than only the first 500 records.
 
