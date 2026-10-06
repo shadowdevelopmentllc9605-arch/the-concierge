@@ -27,6 +27,8 @@ export default function Shop() {
   const [user, setUser] = useState(null);
   const [profile, setProfile] = useState(null);
   const [brandCharts, setBrandCharts] = useState([]);
+  const [brandCatalog, setBrandCatalog] = useState([]);
+  const [brandSearch, setBrandSearch] = useState('');
   const [listening, setListening] = useState(false);
   const [voiceError, setVoiceError] = useState('');
   const specialFilter = urlParams.get('filter') || '';
@@ -74,6 +76,9 @@ export default function Shop() {
 
       const sizeCharts = await base44.entities.BrandSizeChart.filter({ active: true });
       setBrandCharts(sizeCharts);
+
+      const brands = await base44.entities.BrandCatalog.list('brand_name', 500);
+      setBrandCatalog((brands || []).filter(brand => brand.active !== false));
 
       // Load wishlist
       const wishlistItems = await base44.entities.WishlistItem.filter({ user_id: currentUser.id });
@@ -325,7 +330,7 @@ export default function Shop() {
                   <div>
                     <p className="text-sm font-medium text-[var(--color-text-primary)] mb-3">Category</p>
                     <div className="flex flex-wrap gap-2 max-h-48 overflow-y-auto">
-                      {Object.values(categories).flat().map(cat => (
+                      {[...new Set(Object.values(categories).flat())].map(cat => (
                         <button
                           key={cat}
                           onClick={() => setFilters(prev => ({ ...prev, category: prev.category === cat ? '' : cat }))}
@@ -338,6 +343,44 @@ export default function Shop() {
                           {cat.replace(/_/g, ' ')}
                         </button>
                       ))}
+                    </div>
+                  </div>
+
+                  {/* Brand Filter */}
+                  <div>
+                    <div className="flex items-center justify-between mb-3">
+                      <p className="text-sm font-medium text-[var(--color-text-primary)]">Brand</p>
+                      <p className="text-xs text-[var(--color-text-muted)]">{brandCatalog.length} brands</p>
+                    </div>
+                    <Input
+                      value={brandSearch}
+                      onChange={(e) => setBrandSearch(e.target.value)}
+                      placeholder="Search all department-store brands"
+                      className="h-10 mb-3 rounded-xl bg-[var(--color-background-secondary)] border-0 text-[var(--color-text-primary)]"
+                    />
+                    <div className="flex flex-wrap gap-2 max-h-52 overflow-y-auto pr-1">
+                      {brandCatalog
+                        .filter(brand => !brandSearch || brand.brand_name?.toLowerCase().includes(brandSearch.toLowerCase()))
+                        .map(brand => (
+                          <button
+                            key={brand.id || brand.brand_key}
+                            onClick={() => setFilters(prev => ({ ...prev, brand: prev.brand === brand.brand_name ? '' : brand.brand_name }))}
+                            className={`px-3 py-2 rounded-full text-xs transition-colors select-none ${
+                              filters.brand === brand.brand_name
+                                ? 'bg-[var(--color-text-primary)] text-[var(--color-background)]'
+                                : 'bg-[var(--color-background-secondary)] text-[var(--color-text-primary)]'
+                            }`}
+                            title={
+                              brand.sizing_status === 'verified_loaded'
+                                ? 'Verified sizing data available'
+                                : brand.sizing_status === 'partial'
+                                  ? 'Partial sizing data; measurement estimate may be used'
+                                  : 'Measurement-based size estimate available'
+                            }
+                          >
+                            {brand.brand_name}
+                          </button>
+                        ))}
                     </div>
                   </div>
                 </div>
@@ -359,6 +402,15 @@ export default function Shop() {
                 className="h-9 rounded-full px-4 bg-[var(--color-text-primary)] text-[var(--color-background)] text-sm flex items-center gap-2 shrink-0 select-none"
               >
                 {filters.category.replace(/_/g, ' ')}
+                <X className="w-3 h-3" />
+              </button>
+            )}
+            {filters.brand && (
+              <button
+                onClick={() => setFilters(prev => ({ ...prev, brand: '' }))}
+                className="h-9 rounded-full px-4 bg-[var(--color-text-primary)] text-[var(--color-background)] text-sm flex items-center gap-2 shrink-0 select-none"
+              >
+                {filters.brand}
                 <X className="w-3 h-3" />
               </button>
             )}

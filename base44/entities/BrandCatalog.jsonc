@@ -1,0 +1,142 @@
+{
+  "name": "BrandCatalog",
+  "type": "object",
+  "properties": {
+    "brand_name": {
+      "type": "string"
+    },
+    "brand_key": {
+      "type": "string"
+    },
+    "aliases": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "brand_type": {
+      "type": "string",
+      "enum": [
+        "national",
+        "retailer_private_label",
+        "retailer_exclusive",
+        "designer",
+        "licensed",
+        "unknown"
+      ],
+      "default": "unknown"
+    },
+    "parent_name": {
+      "type": "string"
+    },
+    "audiences": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "departments": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "retailer_presence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "retailer_name": {
+            "type": "string"
+          },
+          "retailer_key": {
+            "type": "string"
+          },
+          "source_url": {
+            "type": "string"
+          },
+          "relationship_type": {
+            "type": "string"
+          },
+          "departments": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "active": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      }
+    },
+    "sizing_status": {
+      "type": "string",
+      "enum": [
+        "verified_loaded",
+        "partial",
+        "estimate_only"
+      ],
+      "default": "estimate_only"
+    },
+    "verified_chart_count": {
+      "type": "number",
+      "default": 0
+    },
+    "verified_categories": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "sizing_source_types": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "source_urls": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "last_audited_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "active": {
+      "type": "boolean",
+      "default": true
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "brand_name",
+    "brand_key",
+    "retailer_presence",
+    "sizing_status",
+    "active"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": true,
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
