@@ -31,7 +31,7 @@ The photo-first v2 protocol now attempts to estimate:
 
 Not every field has the same expected precision. Torso measurements generally have stronger geometric evidence in a full-body three-view scan. Smaller-detail measurements such as head circumference, foot width, and some lower-body landmark measurements receive lower confidence unless the image geometry supports them well. The fit engine carries that confidence forward instead of treating all photo-derived numbers equally.
 
-Chest, waist, and hip circumference use the average of the front/back torso widths plus side-view depth. The current v3 contour method follows the torso centerline, ignores disconnected foreground such as separated arms, searches constrained anatomical torso regions for the chest/waist/hip cross-sections, and estimates circumference from an elliptical cross-section. Shoulder width and arm length are derived from pose landmarks. These geometric improvements reduce known failure modes but still require empirical validation against physical reference measurements.
+Chest, waist, and hip circumference use the average of the front/back torso widths plus side-view depth. The current v4 extended-anthropometry method follows the torso centerline, ignores disconnected foreground such as separated arms, searches constrained anatomical regions for relevant cross-sections, and estimates circumference from an elliptical cross-section. Shoulder width and arm length are derived from pose landmarks. These geometric improvements reduce known failure modes but still require empirical validation against physical reference measurements.
 
 Canonical numerical measurements are stored in centimeters; metric and imperial values are display choices only.
 
