@@ -356,6 +356,18 @@
         },
         "hip_level_fraction": {
           "type": "number"
+        },
+        "bust_level_fraction": {
+          "type": "number"
+        },
+        "underbust_level_fraction": {
+          "type": "number"
+        },
+        "neck_level_fraction": {
+          "type": "number"
+        },
+        "crotch_detection": {
+          "type": "number"
         }
       }
     },
