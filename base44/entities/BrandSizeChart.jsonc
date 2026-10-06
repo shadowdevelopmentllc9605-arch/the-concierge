@@ -144,6 +144,39 @@
           },
           "height_max_cm": {
             "type": "number"
+          },
+          "bust_min_cm": {
+            "type": "number"
+          },
+          "bust_max_cm": {
+            "type": "number"
+          },
+          "underbust_min_cm": {
+            "type": "number"
+          },
+          "underbust_max_cm": {
+            "type": "number"
+          },
+          "us_size": {
+            "type": "string"
+          },
+          "uk_size": {
+            "type": "string"
+          },
+          "eu_size": {
+            "type": "string"
+          },
+          "jp_size": {
+            "type": "string"
+          },
+          "alternate_size": {
+            "type": "string"
+          },
+          "band_size": {
+            "type": "string"
+          },
+          "cup_size": {
+            "type": "string"
           }
         }
       }
