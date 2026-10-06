@@ -5,7 +5,7 @@ import { createPageUrl } from '@/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, ChevronLeft, ChevronRight, Heart, ShoppingBag, Sparkles } from 'lucide-react';
 import { Button } from "@/components/ui/button";
-import { getCategoryGroup, getEffectiveSizeChart, recommendFromSizeChart } from '@/lib/fitRecommendation';
+import { getCategoryGroup, getEffectiveSizeChart, getFitRecommendationPresentation, recommendFromSizeChart } from '@/lib/fitRecommendation';
 import { resolveFileUrl } from '@/lib/privateFiles';
 
 export default function TryOn() {
@@ -172,15 +172,14 @@ export default function TryOn() {
   if (recommendedSize && currentProduct?.sizes?.length && !currentProduct.sizes.includes(recommendedSize)) {
     recommendedSize = '';
   }
-  const recommendationLabel = chartMatch?.size
-    ? (chartMatch.matchType === 'nearest'
-      ? (effectiveChart.source === 'brand_size_chart' ? 'Closest brand fit' : 'Closest product fit')
-      : chartMatch.fitConfidence === 'high'
-        ? 'High-confidence fit'
-        : chartMatch.fitConfidence === 'medium'
-          ? 'Fit match'
-          : 'Low-confidence fit')
-    : recommendedSize ? 'Profile estimate' : '';
+  const recommendationSource = chartMatch?.size && !chartMatch.blocked
+    ? effectiveChart.source
+    : recommendedSize
+      ? 'profile_estimate'
+      : '';
+  const recommendationPresentation = recommendedSize
+    ? getFitRecommendationPresentation(recommendationSource, chartMatch?.matchType || '')
+    : { label: '', detail: '', verified: false };
 
   return (
     <div className="min-h-screen bg-[#1a1a1a] relative overflow-hidden">
@@ -301,8 +300,15 @@ export default function TryOn() {
           {userProfile?.suggested_sizes && (
             <div className="flex items-center gap-2 mb-4 text-sm">
               <Sparkles className="w-4 h-4 text-[#c9a962]" />
-              <span className="text-white/60">{recommendationLabel ? `${recommendationLabel}: ` : 'Size: '}</span>
-              <span className="text-white font-medium">{recommendedSize ? recommendedSize + (recommendedWidth ? ' • ' + recommendedWidth : '') : 'Select on product page'}</span>
+              <div>
+                <div>
+                  <span className="text-white/60">{recommendationPresentation.label ? `${recommendationPresentation.label}: ` : 'Size: '}</span>
+                  <span className="text-white font-medium">{recommendedSize ? recommendedSize + (recommendedWidth ? ' • ' + recommendedWidth : '') : 'Select on product page'}</span>
+                </div>
+                {recommendedSize && recommendationPresentation.detail && (
+                  <p className="text-white/50 text-xs mt-0.5">{recommendationPresentation.detail}</p>
+                )}
+              </div>
             </div>
           )}
 
