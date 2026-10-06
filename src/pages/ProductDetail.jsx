@@ -83,7 +83,7 @@ export default function ProductDetail() {
           }
         );
 
-        if (chartMatch?.size) {
+        if (chartMatch?.size && !chartMatch.blocked) {
           setSuggestedSize(chartMatch.size);
           setSuggestedWidth(chartMatch.width || '');
           setFitConfidence(chartMatch.fitConfidence || '');
@@ -98,6 +98,14 @@ export default function ProductDetail() {
               : (chartMatch.matchType === 'nearest' ? 'product_size_chart_nearest' : 'product_size_chart')
           );
         } else {
+          if (chartMatch?.blocked) {
+            setSuggestedSize('');
+            setSuggestedWidth('');
+            setFitConfidence('low');
+            setFitConfidenceScore(chartMatch.confidenceScore ?? null);
+            setMissingFitMeasurements(chartMatch.missingMeasurements || []);
+            setRecommendationSource('measurement_required');
+          }
           const group = getCategoryGroup(product.category);
           let fallback = group ? profile.suggested_sizes?.[group] : '';
 
@@ -109,7 +117,7 @@ export default function ProductDetail() {
               suitBase;
           }
 
-          if (fallback && (!product.sizes?.length || product.sizes.includes(fallback))) {
+          if (!chartMatch?.blocked && fallback && (!product.sizes?.length || product.sizes.includes(fallback))) {
             setSuggestedSize(fallback);
             setRecommendationSource('profile_estimate');
             setFitConfidence('low');
@@ -436,9 +444,9 @@ export default function ProductDetail() {
             {fitConfidenceScore != null ? ` Fit confidence: ${fitConfidenceScore}%.` : ''}
           </p>
         )}
-        {suggestedSize && missingFitMeasurements.length > 0 && (
-          <p className="mt-2 text-xs text-amber-700">
-            Add or verify {missingFitMeasurements.join(', ').replaceAll('_', ' ')} in My Measurements to improve this fit recommendation.
+        {missingFitMeasurements.length > 0 && (
+          <p className="mt-3 text-xs text-amber-700">
+            Fit recommendation paused. Add or verify {missingFitMeasurements.join(', ')} in My Measurements before The Concierge treats a size as reliable.
           </p>
         )}
 
