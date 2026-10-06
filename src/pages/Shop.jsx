@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import PullToRefresh from '@/components/PullToRefresh';
-import { getCategoryGroup, getEffectiveSizeChart, recommendFromSizeChart } from '@/lib/fitRecommendation';
+import { getCategoryGroup, getEffectiveSizeChart, getFitRecommendationPresentation, recommendFromSizeChart } from '@/lib/fitRecommendation';
 
 export default function Shop() {
   const navigate = useNavigate();
@@ -187,17 +187,14 @@ export default function Shop() {
       }
     );
     if (chartMatch?.size && !chartMatch.blocked) {
-      const label = chartMatch.matchType === 'nearest'
-        ? (effectiveChart.source === 'brand_size_chart' ? 'Closest brand fit' : 'Closest product fit')
-        : chartMatch.fitConfidence === 'high'
-          ? 'High-confidence fit'
-          : chartMatch.fitConfidence === 'medium'
-            ? 'Fit match'
-            : 'Low-confidence fit';
+      const presentation = getFitRecommendationPresentation(effectiveChart.source, chartMatch.matchType);
       return {
         size: chartMatch.size,
         width: chartMatch.width || '',
-        label,
+        label: presentation.label,
+        detail: presentation.detail,
+        verified: presentation.verified,
+        source: effectiveChart.source,
         fitConfidence: chartMatch.fitConfidence,
         confidenceScore: chartMatch.confidenceScore,
         missingMeasurements: chartMatch.missingMeasurements || []
@@ -223,7 +220,15 @@ export default function Shop() {
     }
 
     if (size && (!product.sizes?.length || product.sizes.includes(size))) {
-      return { size, label: 'Profile estimate' };
+      const presentation = getFitRecommendationPresentation('profile_estimate');
+      return {
+        size,
+        width: '',
+        label: presentation.label,
+        detail: presentation.detail,
+        verified: presentation.verified,
+        source: 'profile_estimate'
+      };
     }
     return null;
   };
@@ -423,9 +428,14 @@ export default function Shop() {
                   {(() => {
                     const recommendation = getProductRecommendation(product);
                     return recommendation ? (
-                      <p className="text-xs text-[var(--color-accent)] font-medium">
-                        {recommendation.label}: {recommendation.size}{recommendation.width ? ' • ' + recommendation.width : ''}
-                      </p>
+                      <div>
+                        <p className="text-xs text-[var(--color-accent)] font-medium">
+                          {recommendation.label}: {recommendation.size}{recommendation.width ? ' • ' + recommendation.width : ''}
+                        </p>
+                        {recommendation.detail && (
+                          <p className="text-[10px] text-[var(--color-text-muted)] mt-0.5">{recommendation.detail}</p>
+                        )}
+                      </div>
                     ) : (
                       <p className="text-xs text-[var(--color-text-muted)]">Choose size on product page</p>
                     );
