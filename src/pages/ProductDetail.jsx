@@ -225,11 +225,24 @@ export default function ProductDetail() {
   }
 
   const hasVariantStock = Array.isArray(product.variants) && product.variants.length > 0;
+  const widthOptions = Array.from(new Set([
+    ...(product.width_options || []),
+    ...((product.variants || []).map(variant => variant.width_code).filter(Boolean))
+  ])).filter(Boolean);
   const sizeAvailable = (size) =>
     !hasVariantStock ||
     product.variants.some(variant =>
       variant.size === size &&
       Number(variant.stock_quantity || 0) > 0 &&
+      (!selectedWidth || String(variant.width_code || '') === selectedWidth) &&
+      (!selectedColor || variant.color === selectedColor)
+    );
+  const widthAvailable = (width) =>
+    !hasVariantStock ||
+    product.variants.some(variant =>
+      String(variant.width_code || '') === width &&
+      Number(variant.stock_quantity || 0) > 0 &&
+      (!selectedSize || variant.size === selectedSize) &&
       (!selectedColor || variant.color === selectedColor)
     );
   const colorAvailable = (color) =>
@@ -237,13 +250,15 @@ export default function ProductDetail() {
     product.variants.some(variant =>
       variant.color === color &&
       Number(variant.stock_quantity || 0) > 0 &&
-      (!selectedSize || variant.size === selectedSize)
+      (!selectedSize || variant.size === selectedSize) &&
+      (!selectedWidth || String(variant.width_code || '') === selectedWidth)
     );
   const selectionInStock =
     !hasVariantStock ||
     product.variants.some(variant =>
       Number(variant.stock_quantity || 0) > 0 &&
       (!selectedSize || variant.size === selectedSize) &&
+      (!selectedWidth || String(variant.width_code || '') === selectedWidth) &&
       (!selectedColor || variant.color === selectedColor)
     );
 
