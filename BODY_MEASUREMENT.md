@@ -21,7 +21,7 @@ The scan currently estimates:
 - shoulder width
 - arm length
 
-Chest, waist, and hip circumference use the average of the front/back silhouette widths plus side-view depth. Circumference is estimated from an elliptical cross-section. Shoulder width and arm length are derived from pose landmarks.
+Chest, waist, and hip circumference use the average of the front/back torso widths plus side-view depth. The current v3 contour method follows the torso centerline, ignores disconnected foreground such as separated arms, searches constrained anatomical torso regions for the chest/waist/hip cross-sections, and estimates circumference from an elliptical cross-section. Shoulder width and arm length are derived from pose landmarks. These geometric improvements reduce known failure modes but still require empirical validation against physical reference measurements.
 
 Canonical numerical measurements are stored in centimeters; metric and imperial values are display choices only.
 
@@ -99,7 +99,7 @@ A recommendation returns a fit-confidence level and score based on:
 
 The UI uses labels such as **High-confidence fit**, **Fit match**, **Low-confidence fit**, and **Closest brand fit** rather than calling every chart match "verified."
 
-If a chart requires a measurement that the customer has not supplied, the product page can tell the customer which measurement would improve the recommendation.
+If a category requires a measurement that the customer has not supplied, the app pauses the fit recommendation rather than presenting an incomplete match as reliable. It tells the customer which measurement is needed. Body measurements are only matched directly against charts explicitly identified as body-measurement charts; garment or mixed-basis charts are stored for later construction/ease reasoning rather than being treated as body dimensions.
 
 ## Capture standard
 
@@ -122,7 +122,9 @@ For best results:
 
 The measurement layer is not considered empirically "locked" merely because the software builds and the capture safeguards work.
 
-Before claiming validated measurement accuracy, test the system against repeated physical tape measurements on a representative real-user sample. At minimum, record bias, mean/median absolute error, repeatability across repeated scans, and error distribution for each supported automatic measurement. Define acceptance thresholds before the validation study and do not promote a scan-derived field to verified status unless the evidence supports that threshold.
+Before claiming validated measurement accuracy, test the system against repeated physical tape measurements on a representative real-user sample. When a customer verifies a measurement, the app can preserve the original scan baseline and create a MeasurementValidationRecord containing the physical reference and absolute error. The admin-only fitValidationSummary function aggregates available records into sample count, mean/median absolute error, 95th-percentile absolute error, mean bias, and RMSE by measurement. It also summarizes observed fit, keep/return outcomes, and exact labeled-size outcomes from fit feedback.
+
+Repeatability still requires repeated scans of the same participants under the standardized capture protocol. Define acceptance thresholds before the validation study and do not promote a scan-derived field to verified status unless the evidence supports that threshold.
 
 ## Privacy
 
