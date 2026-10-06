@@ -1,64 +1,129 @@
 # Body Measurement & Fit Engine
 
-The Concierge now includes an on-device body measurement workflow intended for clothing fit assistance.
+The Concierge body-fit foundation is designed around a strict rule: a photo estimate is useful evidence, but it is not automatically treated as tailoring-grade ground truth.
 
-## What it does
+## Measurement workflow
 
-- Uses a front and side full-body photo plus the user's real height.
-- Runs pose/silhouette analysis in the browser using MediaPipe Tasks Vision.
-- Estimates:
-  - height
-  - chest circumference
-  - waist circumference
-  - hip circumference
-  - shoulder width
-  - arm length
-- Stores canonical numeric measurements in centimeters.
-- Displays measurements in either metric or imperial units.
-- Lets the user review and manually correct values.
-- Produces a scan-quality/confidence score. This score reflects image/landmark quality, not guaranteed measurement accuracy.
+The onboarding scan uses the customer's measured height plus three full-body views:
 
-## Fit recommendations
+- front
+- exact side
+- back
 
-The app supports two levels of size recommendation:
+Pose and silhouette analysis runs in the browser with MediaPipe Tasks Vision using the Full pose model. Before measurements are accepted, the scan evaluates pose visibility, full-body coverage, camera/body tilt, side-view orientation, and front/back silhouette agreement. Weak captures are rejected and must be retaken rather than being converted into a high-confidence size recommendation.
 
-1. **Product/brand size-chart match**
-   - Preferred path.
-   - A Product may contain a \`size_chart\` with measurement ranges in centimeters.
-   - The customer's canonical measurements are compared directly with those ranges.
+The scan currently estimates:
 
-2. **Generic profile estimate**
-   - Used only when no product size chart is available.
-   - The UI labels this as a profile estimate rather than a brand-specific recommendation.
+- height (customer supplied and used as the scale reference)
+- chest circumference
+- waist circumference
+- hip circumference
+- shoulder width
+- arm length
 
-Retailer-provided product/brand size charts are required for dependable brand-specific sizing. Body measurements alone cannot establish the correct labeled size across brands because brands use different grading and ease.
+Chest, waist, and hip circumference use the average of the front/back silhouette widths plus side-view depth. Circumference is estimated from an elliptical cross-section. Shoulder width and arm length are derived from pose landmarks.
 
-## Capture guidance
+Canonical numerical measurements are stored in centimeters; metric and imperial values are display choices only.
+
+## Review and provenance
+
+Every measurement can carry its own provenance and confidence.
+
+Examples:
+
+- `customer_supplied`
+- `three_view_scan_estimate`
+- `customer_corrected`
+- `customer_tape_verified`
+
+The customer reviews the scan before onboarding continues. Chest, waist, and hips can be explicitly marked as tape-verified. Measurements can also be edited later under Profile → My Measurements.
+
+The profile validation state is one of:
+
+- `estimated`
+- `reviewed`
+- `partially_verified`
+- `verified`
+
+A scan-quality score is not the same thing as measurement accuracy. Tape verification is intentionally given greater trust than an image-derived estimate.
+
+## Measurements needed beyond the automatic scan
+
+The profile supports additional fit measurements that are important for some product categories but are not currently claimed as reliable automatic three-view outputs:
+
+- bust
+- underbust
+- inseam
+- neck
+- head circumference
+- foot length
+- foot width
+- calf circumference
+- shoe size / width
+- bra size
+
+These may be customer supplied or tape/ruler verified. The fit engine should ask for them only when the product/category requires them.
+
+## Fit recommendation hierarchy
+
+The app prefers evidence in this order:
+
+1. retailer/product-specific size chart
+2. verified official brand size chart
+3. generic profile estimate when neither chart is available
+
+A labeled brand size is never inferred solely from the customer's body dimensions when no corresponding brand/product grading information exists.
+
+The fit engine uses category-specific measurement requirements. Examples include:
+
+- suits: chest, waist, height
+- dress shirts: neck, chest, arm/sleeve length
+- pants/jeans: waist, hips, inseam
+- dresses: bust, waist, hips
+- bras: bust and underbust
+- shoes: foot length and width
+- boots: foot length, width, and calf circumference when the chart supports it
+- hats: head circumference
+
+Brand-chart sleeve ranges are normalized to the customer's arm-length measurement so sleeve information is not silently ignored.
+
+## Fit confidence
+
+A recommendation returns a fit-confidence level and score based on:
+
+- exact vs nearest chart match
+- how many category-relevant measurements are present
+- the confidence/provenance of those measurements
+- whether important measurements were customer verified
+- whether the recommendation depends mainly on an identity value such as a remembered shoe or bra size
+
+The UI uses labels such as **High-confidence fit**, **Fit match**, **Low-confidence fit**, and **Closest brand fit** rather than calling every chart match "verified."
+
+If a chart requires a measurement that the customer has not supplied, the product page can tell the customer which measurement would improve the recommendation.
+
+## Capture standard
 
 For best results:
-- fitted clothing
-- plain contrasting background
-- even lighting
-- full body visible from head to feet
-- front view facing the camera
-- side view at 90 degrees
-- same camera position/distance for front and side
-- accurate known height
 
-## Accuracy / limitations
+- use measured height, not estimated height
+- wear fitted clothing
+- remove bulky outerwear and shoes
+- use a plain contrasting background
+- use even lighting
+- keep the full body visible
+- keep the phone vertical and level around waist-to-chest height
+- avoid wide-angle mode
+- do not move the camera between front/side/back views
+- front: face camera, stand straight, arms slightly away from torso
+- side: turn as close to 90° as possible
+- back: face directly away and use the same stance
 
-This is a consumer fit-assistance estimate, not a medical or tailoring-grade measurement instrument. Silhouette-based circumference estimates can be affected by:
-- loose clothing
-- hair crossing the shoulders
-- pose
-- camera perspective
-- lens distortion
-- occlusion
-- background segmentation
-- body shape that is not well represented by an elliptical cross-section
+## Accuracy validation requirement
 
-Users should be able to correct measurements manually, and important fit decisions should be verified against a tape measurement when possible.
+The measurement layer is not considered empirically "locked" merely because the software builds and the capture safeguards work.
+
+Before claiming validated measurement accuracy, test the system against repeated physical tape measurements on a representative real-user sample. At minimum, record bias, mean/median absolute error, repeatability across repeated scans, and error distribution for each supported automatic measurement. Define acceptance thresholds before the validation study and do not promote a scan-derived field to verified status unless the evidence supports that threshold.
 
 ## Privacy
 
-Pose/segmentation inference runs in the browser. The user's uploaded scan images are still stored using the app's existing Base44 upload flow, so storage/privacy disclosures and deletion handling remain important.
+Pose/segmentation inference runs in the browser. Body scan images are uploaded through the app's private-file flow and rendered using short-lived signed URLs. Image retention/deletion disclosures remain important because body-scan photographs are sensitive user content.
