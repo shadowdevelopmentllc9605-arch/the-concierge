@@ -24,7 +24,7 @@ const REVIEW_FIELDS = [
 ];
 
 function buildDisplayMeasurements(valuesCm, unit, existing = {}) {
-  const next = { ...existing };
+  const next = /** @type {Record<string, string>} */ ({ ...existing });
   next.height = formatHeight(valuesCm.height, unit);
   for (const { key } of REVIEW_FIELDS) {
     if (Number.isFinite(Number(valuesCm[key]))) {
