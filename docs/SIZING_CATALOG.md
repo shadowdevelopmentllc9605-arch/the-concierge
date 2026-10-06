@@ -4,14 +4,15 @@ This repository mirrors and documents the sizing reference layer used by The Con
 
 ## Current live sizing database
 
-- Snapshot: 2026-10-06 official-brand-site expansion
-- Verified chart records: **248**
-- Distinct verified brand keys: **90**
-- Normalized size rows: **3,520**
-- Brand master: **965 canonical fashion brands across 16 retailer banners**
-- Sizing status: **90 verified**, **24 partial**, **851 estimate-only**
+- Snapshot: 2026-10-06 expanded department-store + official-brand-site pass
+- Verified chart records: **253**
+- Distinct verified brand keys: **91**
+- Normalized size rows: **3,586**
+- Brand master: **976 canonical fashion brands across 16 retailer banners**
+- Sizing status: **91 verified**, **23 partial**, **862 estimate-only**
+- Verified chart audiences: **82 men**, **129 women**, **34 kids**, **8 unisex**
 
-The authoritative runtime source is the live Base44 `BrandSizeChart` entity. `data/brand-sizing-live-summary.json` records the current live counts. The older full `data/brand-sizing-catalog.json` mirror can temporarily lag when a multi-megabyte export exceeds connector transport limits.
+The authoritative runtime sources are the live Base44 `BrandCatalog` and `BrandSizeChart` entities. `data/brand-layer-live-summary.json` records the current live counts. Large full JSON mirrors can temporarily lag when a multi-megabyte export exceeds connector transport limits.
 
 ## Recommendation priority
 
