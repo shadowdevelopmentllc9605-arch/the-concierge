@@ -1,11 +1,11 @@
 {
-  "version": "2026-10-06-full-department-store-brand-layer-3",
+  "version": "2026-10-06-full-department-store-brand-layer-4",
   "source_record_count": 1074,
-  "record_count": 976,
-  "duplicate_records_merged": 98,
+  "record_count": 965,
+  "duplicate_records_merged": 109,
   "verified_brand_count": 90,
   "partial_brand_count": 24,
-  "estimate_only_brand_count": 862,
+  "estimate_only_brand_count": 851,
   "retailer_count": 16,
   "brands": [
     {
@@ -57,14 +57,14 @@
       "aliases": [
         "& Other Stories"
       ],
-      "last_audited_at": "2026-10-06T23:20:00Z",
+      "last_audited_at": "2026-10-07T00:05:00Z",
       "source_urls": [
+        "https://www.nordstrom.com/brands-list/women/clothing",
         "https://www.nordstrom.com/brands-list/",
-        "https://www.nordstromrack.com/",
-        "https://www.nordstrom.com/brands-list/women/clothing"
+        "https://www.nordstromrack.com/"
       ],
       "active": true,
-      "notes": "Added from current department-store fashion category/brand directory. Official brand sizing is tracked independently.",
+      "notes": "Department-store fashion brand catalog. Retailer presence is independent of whether a verified sizing chart is currently available.",
       "brand_key": "otherstories",
       "audiences": [],
       "departments": [
@@ -78,11 +78,9 @@
           "active": true,
           "retailer_name": "Nordstrom",
           "retailer_key": "nordstrom",
-          "source_url": "https://www.nordstrom.com/brands-list/women/clothing",
+          "source_url": "https://www.nordstrom.com/brands-list/",
           "relationship_type": "carried_brand",
-          "departments": [
-            "fashion"
-          ]
+          "departments": []
         },
         {
           "retailer_name": "Nordstrom Rack",
@@ -738,27 +736,37 @@
       "aliases": [
         "7 For All Mankind"
       ],
-      "last_audited_at": "2026-10-06T23:20:00Z",
+      "last_audited_at": "2026-10-07T00:05:00Z",
       "source_urls": [
+        "https://www.nordstrom.com/brands-list/women/clothing",
         "https://www.vonmaur.com/Brands.aspx",
         "https://www.saksfifthavenue.com/c/designers",
-        "https://www.nordstromrack.com/",
-        "https://www.nordstrom.com/brands-list/women/clothing"
+        "https://www.nordstromrack.com/"
       ],
       "active": true,
-      "notes": "Added from current department-store fashion category/brand directory. Official brand sizing is tracked independently.",
+      "notes": "Fashion brand discovered in a current department-store fashion assortment. Sizing is upgraded independently when a trustworthy official chart is available.",
       "brand_key": "7forallmankind",
       "audiences": [
         "men"
       ],
       "departments": [
-        "men",
-        "fashion"
+        "fashion",
+        "men"
       ],
       "sizing_status": "estimate_only",
       "brand_name": "7 For All Mankind",
       "verified_chart_count": 0,
       "retailer_presence": [
+        {
+          "active": true,
+          "retailer_name": "Nordstrom",
+          "retailer_key": "nordstrom",
+          "source_url": "https://www.nordstrom.com/brands-list/women/clothing",
+          "relationship_type": "carried_brand",
+          "departments": [
+            "fashion"
+          ]
+        },
         {
           "active": true,
           "retailer_name": "Von Maur",
@@ -788,16 +796,6 @@
             "fashion"
           ],
           "active": true
-        },
-        {
-          "active": true,
-          "retailer_name": "Nordstrom",
-          "retailer_key": "nordstrom",
-          "source_url": "https://www.nordstrom.com/brands-list/women/clothing",
-          "relationship_type": "carried_brand",
-          "departments": [
-            "fashion"
-          ]
         }
       ],
       "verified_categories": []
@@ -1264,15 +1262,15 @@
       "aliases": [
         "abercrombie kids"
       ],
-      "last_audited_at": "2026-10-06T23:20:00Z",
+      "last_audited_at": "2026-10-07T00:05:00Z",
       "source_urls": [
+        "https://www.bloomingdales.com/shop/all-designers/clothing-brands-for-women?id=1247196",
         "https://www.belk.com/site.html",
         "https://www.vonmaur.com/Brands.aspx",
-        "https://www.nordstromrack.com/",
-        "https://www.bloomingdales.com/shop/all-designers/clothing-brands-for-women?id=1247196"
+        "https://www.nordstromrack.com/"
       ],
       "active": true,
-      "notes": "Added from current department-store fashion category/brand directory. Official brand sizing is tracked independently.",
+      "notes": "Department-store fashion brand catalog. Retailer presence is independent of whether a verified sizing chart is currently available.",
       "brand_key": "abercrombiekids",
       "audiences": [],
       "departments": [
@@ -1282,6 +1280,16 @@
       "brand_name": "abercrombie kids",
       "verified_chart_count": 0,
       "retailer_presence": [
+        {
+          "active": true,
+          "retailer_name": "Bloomingdale's",
+          "retailer_key": "bloomingdales",
+          "source_url": "https://www.bloomingdales.com/shop/all-designers/clothing-brands-for-women?id=1247196",
+          "relationship_type": "carried_brand",
+          "departments": [
+            "fashion"
+          ]
+        },
         {
           "active": true,
           "retailer_name": "Belk",
@@ -1309,16 +1317,6 @@
             "fashion"
           ],
           "active": true
-        },
-        {
-          "active": true,
-          "retailer_name": "Bloomingdale's",
-          "retailer_key": "bloomingdales",
-          "source_url": "https://www.bloomingdales.com/shop/all-designers/clothing-brands-for-women?id=1247196",
-          "relationship_type": "carried_brand",
-          "departments": [
-            "fashion"
-          ]
         }
       ],
       "verified_categories": []
@@ -1601,26 +1599,36 @@
       "aliases": [
         "Adelyn Rae"
       ],
-      "last_audited_at": "2026-10-06T23:20:00Z",
+      "last_audited_at": "2026-10-07T00:05:00Z",
       "source_urls": [
+        "https://www.nordstrom.com/brands-list/women/clothing",
         "https://www.vonmaur.com/Brands.aspx",
-        "https://www.nordstromrack.com/",
-        "https://www.nordstrom.com/brands-list/women/clothing"
+        "https://www.nordstromrack.com/"
       ],
       "active": true,
-      "notes": "Added from current department-store fashion category/brand directory. Official brand sizing is tracked independently.",
+      "notes": "Fashion brand discovered in a current department-store fashion assortment. Sizing is upgraded independently when a trustworthy official chart is available.",
       "brand_key": "adelynrae",
       "audiences": [
         "women"
       ],
       "departments": [
-        "women",
-        "fashion"
+        "fashion",
+        "women"
       ],
       "sizing_status": "estimate_only",
       "brand_name": "Adelyn Rae",
       "verified_chart_count": 0,
       "retailer_presence": [
+        {
+          "active": true,
+          "retailer_name": "Nordstrom",
+          "retailer_key": "nordstrom",
+          "source_url": "https://www.nordstrom.com/brands-list/women/clothing",
+          "relationship_type": "carried_brand",
+          "departments": [
+            "fashion"
+          ]
+        },
         {
           "active": true,
           "retailer_name": "Von Maur",
@@ -1640,16 +1648,6 @@
             "fashion"
           ],
           "active": true
-        },
-        {
-          "active": true,
-          "retailer_name": "Nordstrom",
-          "retailer_key": "nordstrom",
-          "source_url": "https://www.nordstrom.com/brands-list/women/clothing",
-          "relationship_type": "carried_brand",
-          "departments": [
-            "fashion"
-          ]
         }
       ],
       "verified_categories": []
@@ -2964,22 +2962,22 @@
       "aliases": [
         "ALDO"
       ],
-      "last_audited_at": "2026-10-06T23:20:00Z",
+      "last_audited_at": "2026-10-07T00:05:00Z",
       "source_urls": [
+        "https://www.macys.com/shop/all-brands/mens?id=63581",
         "https://www.macys.com/shop/brands?id=337697",
         "https://www.vonmaur.com/Brands.aspx",
-        "https://www.nordstromrack.com/",
-        "https://www.macys.com/shop/all-brands/mens?id=63581"
+        "https://www.nordstromrack.com/"
       ],
       "active": true,
-      "notes": "Added from current department-store fashion category/brand directory. Official brand sizing is tracked independently.",
+      "notes": "Department-store fashion brand catalog. Retailer presence is independent of whether a verified sizing chart is currently available.",
       "brand_key": "aldo",
       "audiences": [
         "women"
       ],
       "departments": [
-        "women",
-        "fashion"
+        "fashion",
+        "women"
       ],
       "sizing_status": "estimate_only",
       "brand_name": "ALDO",
@@ -2989,11 +2987,9 @@
           "active": true,
           "retailer_name": "Macy's",
           "retailer_key": "macys",
-          "source_url": "https://www.macys.com/shop/all-brands/mens?id=63581",
+          "source_url": "https://www.macys.com/shop/brands?id=337697",
           "relationship_type": "carried_brand",
-          "departments": [
-            "fashion"
-          ]
+          "departments": []
         },
         {
           "retailer_name": "Von Maur",
@@ -3264,58 +3260,6 @@
       "parent_name": "",
       "brand_type": "unknown",
       "aliases": [
-        "Alexander McQueen"
-      ],
-      "last_audited_at": "2026-10-07T00:05:00Z",
-      "source_urls": [
-        "https://www.neimanmarcus.com/c/designers-designer-index-cat000730",
-        "https://www.saksfifthavenue.com/c/designers"
-      ],
-      "active": true,
-      "notes": "Fashion brand discovered in a current department-store fashion assortment. Sizing is upgraded independently when a trustworthy official chart is available.",
-      "brand_key": "alexandermcqueen",
-      "audiences": [
-        "men",
-        "women"
-      ],
-      "departments": [
-        "men",
-        "women",
-        "footwear"
-      ],
-      "sizing_status": "estimate_only",
-      "brand_name": "Alexander McQueen",
-      "verified_chart_count": 0,
-      "retailer_presence": [
-        {
-          "active": true,
-          "retailer_name": "Neiman Marcus",
-          "retailer_key": "neimanmarcus",
-          "source_url": "https://www.neimanmarcus.com/c/designers-designer-index-cat000730",
-          "relationship_type": "carried_brand",
-          "departments": [
-            "men"
-          ]
-        },
-        {
-          "active": true,
-          "retailer_name": "Saks Fifth Avenue",
-          "retailer_key": "saksfifthavenue",
-          "source_url": "https://www.saksfifthavenue.com/c/designers",
-          "relationship_type": "carried_brand",
-          "departments": [
-            "women",
-            "footwear"
-          ]
-        }
-      ],
-      "verified_categories": []
-    },
-    {
-      "sizing_source_types": [],
-      "parent_name": "",
-      "brand_type": "unknown",
-      "aliases": [
         "alexanderwang"
       ],
       "last_audited_at": "2026-10-06T23:20:00Z",
@@ -3462,27 +3406,37 @@
       "aliases": [
         "Alfred Dunner"
       ],
-      "last_audited_at": "2026-10-06T23:20:00Z",
+      "last_audited_at": "2026-10-06T23:50:00Z",
       "source_urls": [
+        "https://www.jcpenney.com/d/brands",
         "https://www.macys.com/shop/brands?id=337697",
         "https://www.vonmaur.com/Brands.aspx",
-        "https://www.boscovs.com/category/shop-by-brands",
-        "https://www.jcpenney.com/d/brands"
+        "https://www.boscovs.com/category/shop-by-brands"
       ],
       "active": true,
-      "notes": "Added from current department-store fashion category/brand directory. Official brand sizing is tracked independently.",
+      "notes": "Department-store fashion brand catalog. Retailer presence is independent of whether a verified sizing chart is currently available.",
       "brand_key": "alfreddunner",
       "audiences": [
         "women"
       ],
       "departments": [
-        "women",
-        "fashion"
+        "fashion",
+        "women"
       ],
       "sizing_status": "estimate_only",
       "brand_name": "Alfred Dunner",
       "verified_chart_count": 0,
       "retailer_presence": [
+        {
+          "active": true,
+          "retailer_name": "JCPenney",
+          "retailer_key": "jcpenney",
+          "source_url": "https://www.jcpenney.com/d/brands",
+          "relationship_type": "carried_brand",
+          "departments": [
+            "fashion"
+          ]
+        },
         {
           "active": true,
           "retailer_name": "Macy's",
@@ -3510,16 +3464,6 @@
             "fashion"
           ],
           "active": true
-        },
-        {
-          "active": true,
-          "retailer_name": "JCPenney",
-          "retailer_key": "jcpenney",
-          "source_url": "https://www.jcpenney.com/d/brands",
-          "relationship_type": "carried_brand",
-          "departments": [
-            "fashion"
-          ]
         }
       ],
       "verified_categories": []
@@ -3923,23 +3867,23 @@
         "ALLSAINTS",
         "AllSaints"
       ],
-      "last_audited_at": "2026-10-06T23:20:00Z",
+      "last_audited_at": "2026-10-07T00:05:00Z",
       "source_urls": [
+        "https://www.bloomingdales.com/shop/all-designers/clothing-brands-for-women?id=1247196",
         "https://www.nordstrom.com/brands-list/",
         "https://www.bloomingdales.com/shop/all-designers?id=1001351",
         "https://www.vonmaur.com/Brands.aspx",
-        "https://www.nordstromrack.com/",
-        "https://www.bloomingdales.com/shop/all-designers/clothing-brands-for-women?id=1247196"
+        "https://www.nordstromrack.com/"
       ],
       "active": true,
-      "notes": "Added from current department-store fashion category/brand directory. Official brand sizing is tracked independently.",
+      "notes": "Department-store fashion brand catalog. Retailer presence is independent of whether a verified sizing chart is currently available.",
       "brand_key": "allsaints",
       "audiences": [
         "women"
       ],
       "departments": [
-        "women",
-        "fashion"
+        "fashion",
+        "women"
       ],
       "sizing_status": "estimate_only",
       "brand_name": "ALLSAINTS",
@@ -3947,21 +3891,19 @@
       "retailer_presence": [
         {
           "active": true,
-          "retailer_name": "Nordstrom",
-          "retailer_key": "nordstrom",
-          "source_url": "https://www.nordstrom.com/brands-list/",
+          "retailer_name": "Bloomingdale's",
+          "retailer_key": "bloomingdales",
+          "source_url": "https://www.bloomingdales.com/shop/all-designers?id=1001351",
           "relationship_type": "carried_brand",
           "departments": []
         },
         {
           "active": true,
-          "retailer_name": "Bloomingdale's",
-          "retailer_key": "bloomingdales",
-          "source_url": "https://www.bloomingdales.com/shop/all-designers/clothing-brands-for-women?id=1247196",
+          "retailer_name": "Nordstrom",
+          "retailer_key": "nordstrom",
+          "source_url": "https://www.nordstrom.com/brands-list/",
           "relationship_type": "carried_brand",
-          "departments": [
-            "fashion"
-          ]
+          "departments": []
         },
         {
           "retailer_name": "Von Maur",
@@ -4410,65 +4352,6 @@
           "retailer_name": "Saks Fifth Avenue",
           "retailer_key": "saksfifthavenue",
           "source_url": "https://www.saksfifthavenue.com/c/designers",
-          "relationship_type": "carried_brand",
-          "departments": [
-            "men"
-          ]
-        }
-      ],
-      "verified_categories": []
-    },
-    {
-      "sizing_source_types": [],
-      "parent_name": "",
-      "brand_type": "unknown",
-      "aliases": [
-        "Amiri"
-      ],
-      "last_audited_at": "2026-10-07T00:05:00Z",
-      "source_urls": [
-        "https://www.neimanmarcus.com/c/designers-designer-index-cat000730",
-        "https://www.saksfifthavenue.com/c/designers",
-        "https://www.nordstromrack.com/"
-      ],
-      "active": true,
-      "notes": "Fashion brand discovered in a current department-store fashion assortment. Sizing is upgraded independently when a trustworthy official chart is available.",
-      "brand_key": "amiri",
-      "audiences": [
-        "men"
-      ],
-      "departments": [
-        "men"
-      ],
-      "sizing_status": "estimate_only",
-      "brand_name": "Amiri",
-      "verified_chart_count": 0,
-      "retailer_presence": [
-        {
-          "active": true,
-          "retailer_name": "Neiman Marcus",
-          "retailer_key": "neimanmarcus",
-          "source_url": "https://www.neimanmarcus.com/c/designers-designer-index-cat000730",
-          "relationship_type": "carried_brand",
-          "departments": [
-            "men"
-          ]
-        },
-        {
-          "active": true,
-          "retailer_name": "Saks Fifth Avenue",
-          "retailer_key": "saksfifthavenue",
-          "source_url": "https://www.saksfifthavenue.com/c/designers",
-          "relationship_type": "carried_brand",
-          "departments": [
-            "men"
-          ]
-        },
-        {
-          "active": true,
-          "retailer_name": "Nordstrom Rack",
-          "retailer_key": "nordstromrack",
-          "source_url": "https://www.nordstromrack.com/",
           "relationship_type": "carried_brand",
           "departments": [
             "men"
@@ -4973,15 +4856,15 @@
       "aliases": [
         "Anine Bing"
       ],
-      "last_audited_at": "2026-10-06T23:20:00Z",
+      "last_audited_at": "2026-10-07T00:05:00Z",
       "source_urls": [
+        "https://www.bloomingdales.com/shop/all-designers/clothing-brands-for-women?id=1247196",
         "https://www.nordstrom.com/brands-list/",
         "https://www.bloomingdales.com/shop/all-designers?id=1001351",
-        "https://www.nordstromrack.com/",
-        "https://www.bloomingdales.com/shop/all-designers/clothing-brands-for-women?id=1247196"
+        "https://www.nordstromrack.com/"
       ],
       "active": true,
-      "notes": "Added from current department-store fashion category/brand directory. Official brand sizing is tracked independently.",
+      "notes": "Department-store fashion brand catalog. Retailer presence is independent of whether a verified sizing chart is currently available.",
       "brand_key": "aninebing",
       "audiences": [],
       "departments": [
@@ -4993,21 +4876,19 @@
       "retailer_presence": [
         {
           "active": true,
-          "retailer_name": "Nordstrom",
-          "retailer_key": "nordstrom",
-          "source_url": "https://www.nordstrom.com/brands-list/",
+          "retailer_name": "Bloomingdale's",
+          "retailer_key": "bloomingdales",
+          "source_url": "https://www.bloomingdales.com/shop/all-designers?id=1001351",
           "relationship_type": "carried_brand",
           "departments": []
         },
         {
           "active": true,
-          "retailer_name": "Bloomingdale's",
-          "retailer_key": "bloomingdales",
-          "source_url": "https://www.bloomingdales.com/shop/all-designers/clothing-brands-for-women?id=1247196",
+          "retailer_name": "Nordstrom",
+          "retailer_key": "nordstrom",
+          "source_url": "https://www.nordstrom.com/brands-list/",
           "relationship_type": "carried_brand",
-          "departments": [
-            "fashion"
-          ]
+          "departments": []
         },
         {
           "retailer_name": "Nordstrom Rack",
@@ -5498,13 +5379,13 @@
       "aliases": [
         "AQUA"
       ],
-      "last_audited_at": "2026-10-06T23:20:00Z",
+      "last_audited_at": "2026-10-06T22:45:00Z",
       "source_urls": [
-        "https://www.bloomingdales.com/shop/all-designers?id=1001351",
-        "https://www.bloomingdales.com/shop/all-designers/clothing-brands-for-women?id=1247196"
+        "https://www.bloomingdales.com/shop/all-designers/clothing-brands-for-women?id=1247196",
+        "https://www.bloomingdales.com/shop/all-designers?id=1001351"
       ],
       "active": true,
-      "notes": "Added from current department-store fashion category/brand directory. Official brand sizing is tracked independently.",
+      "notes": "Department-store fashion brand catalog. Retailer presence is independent of whether a verified sizing chart is currently available.",
       "brand_key": "aqua",
       "audiences": [],
       "departments": [
@@ -5518,11 +5399,9 @@
           "active": true,
           "retailer_name": "Bloomingdale's",
           "retailer_key": "bloomingdales",
-          "source_url": "https://www.bloomingdales.com/shop/all-designers/clothing-brands-for-women?id=1247196",
+          "source_url": "https://www.bloomingdales.com/shop/all-designers?id=1001351",
           "relationship_type": "carried_brand",
-          "departments": [
-            "fashion"
-          ]
+          "departments": []
         }
       ],
       "verified_categories": []
@@ -6091,18 +5970,18 @@
       "parent_name": "",
       "brand_type": "unknown",
       "aliases": [
-        "ASICS",
-        "Asics"
+        "Asics",
+        "ASICS"
       ],
       "last_audited_at": "2026-10-06T23:58:00Z",
       "source_urls": [
-        "https://www.vonmaur.com/Brands.aspx",
-        "https://www.nordstromrack.com/",
+        "https://www.macys.com/shop/all-brands/mens?id=63581",
         "https://www.asics.com/nz/en-nz/size-guide",
-        "https://www.macys.com/shop/all-brands/mens?id=63581"
+        "https://www.vonmaur.com/Brands.aspx",
+        "https://www.nordstromrack.com/"
       ],
       "active": true,
-      "notes": "Added from current department-store fashion category/brand directory. Official brand sizing is tracked independently.",
+      "notes": "Fashion brand discovered in a current department-store fashion assortment. Sizing is upgraded independently when a trustworthy official chart is available.",
       "brand_key": "asics",
       "audiences": [
         "kids",
@@ -6110,15 +5989,25 @@
         "women"
       ],
       "departments": [
+        "fashion",
         "women",
         "men",
-        "footwear",
-        "fashion"
+        "footwear"
       ],
       "sizing_status": "verified_loaded",
-      "brand_name": "ASICS",
+      "brand_name": "Asics",
       "verified_chart_count": 7,
       "retailer_presence": [
+        {
+          "active": true,
+          "retailer_name": "Macy's",
+          "retailer_key": "macys",
+          "source_url": "https://www.macys.com/shop/all-brands/mens?id=63581",
+          "relationship_type": "carried_brand",
+          "departments": [
+            "fashion"
+          ]
+        },
         {
           "active": true,
           "retailer_name": "Von Maur",
@@ -6140,16 +6029,6 @@
             "fashion"
           ],
           "active": true
-        },
-        {
-          "active": true,
-          "retailer_name": "Macy's",
-          "retailer_key": "macys",
-          "source_url": "https://www.macys.com/shop/all-brands/mens?id=63581",
-          "relationship_type": "carried_brand",
-          "departments": [
-            "fashion"
-          ]
         }
       ],
       "verified_categories": [
@@ -6596,13 +6475,13 @@
       "aliases": [
         "Aviator Nation"
       ],
-      "last_audited_at": "2026-10-06T23:20:00Z",
+      "last_audited_at": "2026-10-06T22:45:00Z",
       "source_urls": [
-        "https://www.bloomingdales.com/shop/all-designers?id=1001351",
-        "https://www.bloomingdales.com/shop/all-designers/clothing-brands-for-women?id=1247196"
+        "https://www.bloomingdales.com/shop/all-designers/clothing-brands-for-women?id=1247196",
+        "https://www.bloomingdales.com/shop/all-designers?id=1001351"
       ],
       "active": true,
-      "notes": "Added from current department-store fashion category/brand directory. Official brand sizing is tracked independently.",
+      "notes": "Department-store fashion brand catalog. Retailer presence is independent of whether a verified sizing chart is currently available.",
       "brand_key": "aviatornation",
       "audiences": [],
       "departments": [
@@ -6616,11 +6495,9 @@
           "active": true,
           "retailer_name": "Bloomingdale's",
           "retailer_key": "bloomingdales",
-          "source_url": "https://www.bloomingdales.com/shop/all-designers/clothing-brands-for-women?id=1247196",
+          "source_url": "https://www.bloomingdales.com/shop/all-designers?id=1001351",
           "relationship_type": "carried_brand",
-          "departments": [
-            "fashion"
-          ]
+          "departments": []
         }
       ],
       "verified_categories": []
@@ -7190,29 +7067,39 @@
       "aliases": [
         "Bali"
       ],
-      "last_audited_at": "2026-10-06T23:20:00Z",
+      "last_audited_at": "2026-10-06T23:50:00Z",
       "source_urls": [
+        "https://www.jcpenney.com/d/brands",
         "https://www.walmart.com/cp/fashion-brand-directory/3928184",
         "https://www.kohls.com/feature/brands.jsp",
         "https://www.macys.com/shop/brands?id=337697",
         "https://www.vonmaur.com/Brands.aspx",
-        "https://www.boscovs.com/category/shop-by-brands",
-        "https://www.jcpenney.com/d/brands"
+        "https://www.boscovs.com/category/shop-by-brands"
       ],
       "active": true,
-      "notes": "Added from current department-store fashion category/brand directory. Official brand sizing is tracked independently.",
+      "notes": "Department-store fashion brand catalog. Retailer presence is independent of whether a verified sizing chart is currently available.",
       "brand_key": "bali",
       "audiences": [
         "women"
       ],
       "departments": [
-        "women",
-        "fashion"
+        "fashion",
+        "women"
       ],
       "sizing_status": "partial",
       "brand_name": "Bali",
       "verified_chart_count": 0,
       "retailer_presence": [
+        {
+          "active": true,
+          "retailer_name": "JCPenney",
+          "retailer_key": "jcpenney",
+          "source_url": "https://www.jcpenney.com/d/brands",
+          "relationship_type": "carried_brand",
+          "departments": [
+            "fashion"
+          ]
+        },
         {
           "active": true,
           "retailer_name": "Walmart",
@@ -7256,16 +7143,6 @@
             "fashion"
           ],
           "active": true
-        },
-        {
-          "active": true,
-          "retailer_name": "JCPenney",
-          "retailer_key": "jcpenney",
-          "source_url": "https://www.jcpenney.com/d/brands",
-          "relationship_type": "carried_brand",
-          "departments": [
-            "fashion"
-          ]
         }
       ],
       "verified_categories": []
@@ -7352,68 +7229,6 @@
           "relationship_type": "carried_brand",
           "departments": [
             "footwear"
-          ]
-        }
-      ],
-      "verified_categories": []
-    },
-    {
-      "sizing_source_types": [],
-      "parent_name": "",
-      "brand_type": "unknown",
-      "aliases": [
-        "Balmain"
-      ],
-      "last_audited_at": "2026-10-07T00:05:00Z",
-      "source_urls": [
-        "https://www.neimanmarcus.com/c/designers-designer-index-cat000730",
-        "https://www.saksfifthavenue.com/c/designers",
-        "https://www.nordstromrack.com/"
-      ],
-      "active": true,
-      "notes": "Fashion brand discovered in a current department-store fashion assortment. Sizing is upgraded independently when a trustworthy official chart is available.",
-      "brand_key": "balmain",
-      "audiences": [
-        "men",
-        "women"
-      ],
-      "departments": [
-        "men",
-        "women"
-      ],
-      "sizing_status": "estimate_only",
-      "brand_name": "Balmain",
-      "verified_chart_count": 0,
-      "retailer_presence": [
-        {
-          "active": true,
-          "retailer_name": "Neiman Marcus",
-          "retailer_key": "neimanmarcus",
-          "source_url": "https://www.neimanmarcus.com/c/designers-designer-index-cat000730",
-          "relationship_type": "carried_brand",
-          "departments": [
-            "men"
-          ]
-        },
-        {
-          "active": true,
-          "retailer_name": "Saks Fifth Avenue",
-          "retailer_key": "saksfifthavenue",
-          "source_url": "https://www.saksfifthavenue.com/c/designers",
-          "relationship_type": "carried_brand",
-          "departments": [
-            "women",
-            "men"
-          ]
-        },
-        {
-          "active": true,
-          "retailer_name": "Nordstrom Rack",
-          "retailer_key": "nordstromrack",
-          "source_url": "https://www.nordstromrack.com/",
-          "relationship_type": "carried_brand",
-          "departments": [
-            "men"
           ]
         }
       ],
@@ -7769,26 +7584,36 @@
       "aliases": [
         "BCBG"
       ],
-      "last_audited_at": "2026-10-06T23:20:00Z",
+      "last_audited_at": "2026-10-07T00:05:00Z",
       "source_urls": [
+        "https://www.macys.com/shop/all-brands/mens?id=63581",
         "https://www.vonmaur.com/Brands.aspx",
-        "https://www.nordstromrack.com/",
-        "https://www.macys.com/shop/all-brands/mens?id=63581"
+        "https://www.nordstromrack.com/"
       ],
       "active": true,
-      "notes": "Added from current department-store fashion category/brand directory. Official brand sizing is tracked independently.",
+      "notes": "Fashion brand discovered in a current department-store fashion assortment. Sizing is upgraded independently when a trustworthy official chart is available.",
       "brand_key": "bcbg",
       "audiences": [
         "women"
       ],
       "departments": [
-        "women",
-        "fashion"
+        "fashion",
+        "women"
       ],
       "sizing_status": "estimate_only",
       "brand_name": "BCBG",
       "verified_chart_count": 0,
       "retailer_presence": [
+        {
+          "active": true,
+          "retailer_name": "Macy's",
+          "retailer_key": "macys",
+          "source_url": "https://www.macys.com/shop/all-brands/mens?id=63581",
+          "relationship_type": "carried_brand",
+          "departments": [
+            "fashion"
+          ]
+        },
         {
           "active": true,
           "retailer_name": "Von Maur",
@@ -7808,16 +7633,6 @@
             "fashion"
           ],
           "active": true
-        },
-        {
-          "active": true,
-          "retailer_name": "Macy's",
-          "retailer_key": "macys",
-          "source_url": "https://www.macys.com/shop/all-brands/mens?id=63581",
-          "relationship_type": "carried_brand",
-          "departments": [
-            "fashion"
-          ]
         }
       ],
       "verified_categories": []
@@ -8780,26 +8595,36 @@
       "aliases": [
         "Betsy & Adam"
       ],
-      "last_audited_at": "2026-10-06T23:20:00Z",
+      "last_audited_at": "2026-10-07T00:05:00Z",
       "source_urls": [
+        "https://www.nordstrom.com/brands-list/women/clothing",
         "https://www.vonmaur.com/Brands.aspx",
-        "https://www.nordstromrack.com/",
-        "https://www.nordstrom.com/brands-list/women/clothing"
+        "https://www.nordstromrack.com/"
       ],
       "active": true,
-      "notes": "Added from current department-store fashion category/brand directory. Official brand sizing is tracked independently.",
+      "notes": "Fashion brand discovered in a current department-store fashion assortment. Sizing is upgraded independently when a trustworthy official chart is available.",
       "brand_key": "betsyadam",
       "audiences": [
         "women"
       ],
       "departments": [
-        "women",
-        "fashion"
+        "fashion",
+        "women"
       ],
       "sizing_status": "estimate_only",
       "brand_name": "Betsy & Adam",
       "verified_chart_count": 0,
       "retailer_presence": [
+        {
+          "active": true,
+          "retailer_name": "Nordstrom",
+          "retailer_key": "nordstrom",
+          "source_url": "https://www.nordstrom.com/brands-list/women/clothing",
+          "relationship_type": "carried_brand",
+          "departments": [
+            "fashion"
+          ]
+        },
         {
           "active": true,
           "retailer_name": "Von Maur",
@@ -8819,16 +8644,6 @@
             "fashion"
           ],
           "active": true
-        },
-        {
-          "active": true,
-          "retailer_name": "Nordstrom",
-          "retailer_key": "nordstrom",
-          "source_url": "https://www.nordstrom.com/brands-list/women/clothing",
-          "relationship_type": "carried_brand",
-          "departments": [
-            "fashion"
-          ]
         }
       ],
       "verified_categories": []
@@ -8939,10 +8754,10 @@
       ],
       "last_audited_at": "2026-10-07T00:05:00Z",
       "source_urls": [
-        "https://www.vonmaur.com/Brands.aspx",
+        "https://www.beallsflorida.com/",
         "https://www.nordstromrack.com/",
         "https://www.nordstrom.com/brands-list/women/clothing",
-        "https://www.beallsflorida.com/"
+        "https://www.vonmaur.com/Brands.aspx"
       ],
       "active": true,
       "notes": "Fashion brand discovered in a current department-store fashion assortment. Sizing is upgraded independently when a trustworthy official chart is available.",
@@ -8953,8 +8768,8 @@
       ],
       "departments": [
         "women",
-        "men",
-        "juniors"
+        "juniors",
+        "men"
       ],
       "sizing_status": "estimate_only",
       "brand_name": "Billabong",
@@ -8962,13 +8777,13 @@
       "retailer_presence": [
         {
           "active": true,
-          "retailer_name": "Von Maur",
-          "retailer_key": "vonmaur",
-          "source_url": "https://www.vonmaur.com/Brands.aspx",
+          "retailer_name": "Bealls Florida",
+          "retailer_key": "beallsflorida",
+          "source_url": "https://www.beallsflorida.com/",
           "relationship_type": "carried_brand",
           "departments": [
             "women",
-            "men"
+            "juniors"
           ]
         },
         {
@@ -8993,13 +8808,13 @@
         },
         {
           "active": true,
-          "retailer_name": "Bealls Florida",
-          "retailer_key": "beallsflorida",
-          "source_url": "https://www.beallsflorida.com/",
+          "retailer_name": "Von Maur",
+          "retailer_key": "vonmaur",
+          "source_url": "https://www.vonmaur.com/Brands.aspx",
           "relationship_type": "carried_brand",
           "departments": [
             "women",
-            "juniors"
+            "men"
           ]
         }
       ],
@@ -9162,19 +8977,19 @@
       ],
       "last_audited_at": "2026-10-06T23:58:00Z",
       "source_urls": [
+        "https://www.bloomingdales.com/shop/all-designers/clothing-brands-for-women?id=1247196",
+        "https://www.birkenstock.com/us/us-service-fittingguide/",
         "https://www.macys.com/shop/brands?id=337697",
         "https://www.belk.com/site.html",
         "https://www.nordstrom.com/brands-list/",
         "https://www.bloomingdales.com/shop/all-designers?id=1001351",
-        "https://www.birkenstock.com/us/us-service-fittingguide/",
         "https://www.vonmaur.com/Brands.aspx",
         "https://www.beallsflorida.com/",
         "https://www.saksfifthavenue.com/c/designers",
-        "https://www.nordstromrack.com/",
-        "https://www.bloomingdales.com/shop/all-designers/clothing-brands-for-women?id=1247196"
+        "https://www.nordstromrack.com/"
       ],
       "active": true,
-      "notes": "Added from current department-store fashion category/brand directory. Official brand sizing is tracked independently.",
+      "notes": "Department-store fashion brand catalog. Retailer presence is independent of whether a verified sizing chart is currently available.",
       "brand_key": "birkenstock",
       "audiences": [
         "kids",
@@ -9182,14 +8997,22 @@
         "women"
       ],
       "departments": [
+        "fashion",
         "footwear",
-        "women",
-        "fashion"
+        "women"
       ],
       "sizing_status": "verified_loaded",
       "brand_name": "Birkenstock",
       "verified_chart_count": 3,
       "retailer_presence": [
+        {
+          "active": true,
+          "retailer_name": "Bloomingdale's",
+          "retailer_key": "bloomingdales",
+          "source_url": "https://www.bloomingdales.com/shop/all-designers?id=1001351",
+          "relationship_type": "carried_brand",
+          "departments": []
+        },
         {
           "active": true,
           "retailer_name": "Macy's",
@@ -9213,16 +9036,6 @@
           "source_url": "https://www.nordstrom.com/brands-list/",
           "relationship_type": "carried_brand",
           "departments": []
-        },
-        {
-          "active": true,
-          "retailer_name": "Bloomingdale's",
-          "retailer_key": "bloomingdales",
-          "source_url": "https://www.bloomingdales.com/shop/all-designers/clothing-brands-for-women?id=1247196",
-          "relationship_type": "carried_brand",
-          "departments": [
-            "fashion"
-          ]
         },
         {
           "retailer_name": "Von Maur",
@@ -11246,17 +11059,17 @@
       "aliases": [
         "Burberry"
       ],
-      "last_audited_at": "2026-10-06T23:20:00Z",
+      "last_audited_at": "2026-10-07T00:05:00Z",
       "source_urls": [
+        "https://www.bloomingdales.com/shop/all-designers/clothing-brands-for-women?id=1247196",
         "https://www.nordstrom.com/brands-list/",
         "https://www.bloomingdales.com/shop/all-designers?id=1001351",
         "https://www.neimanmarcus.com/c/designers-designer-index-cat000730",
         "https://www.bergdorfgoodman.com/c/designers-cat000001",
-        "https://www.saksfifthavenue.com/c/designers",
-        "https://www.bloomingdales.com/shop/all-designers/clothing-brands-for-women?id=1247196"
+        "https://www.saksfifthavenue.com/c/designers"
       ],
       "active": true,
-      "notes": "Added from current department-store fashion category/brand directory. Official brand sizing is tracked independently.",
+      "notes": "Department-store fashion brand catalog. Retailer presence is independent of whether a verified sizing chart is currently available.",
       "brand_key": "burberry",
       "audiences": [],
       "departments": [
@@ -11268,21 +11081,19 @@
       "retailer_presence": [
         {
           "active": true,
-          "retailer_name": "Nordstrom",
-          "retailer_key": "nordstrom",
-          "source_url": "https://www.nordstrom.com/brands-list/",
+          "retailer_name": "Bloomingdale's",
+          "retailer_key": "bloomingdales",
+          "source_url": "https://www.bloomingdales.com/shop/all-designers?id=1001351",
           "relationship_type": "carried_brand",
           "departments": []
         },
         {
           "active": true,
-          "retailer_name": "Bloomingdale's",
-          "retailer_key": "bloomingdales",
-          "source_url": "https://www.bloomingdales.com/shop/all-designers/clothing-brands-for-women?id=1247196",
+          "retailer_name": "Nordstrom",
+          "retailer_key": "nordstrom",
+          "source_url": "https://www.nordstrom.com/brands-list/",
           "relationship_type": "carried_brand",
-          "departments": [
-            "fashion"
-          ]
+          "departments": []
         },
         {
           "retailer_name": "Neiman Marcus",
@@ -13009,63 +12820,6 @@
           "retailer_name": "Nordstrom Rack",
           "retailer_key": "nordstromrack",
           "source_url": "https://www.nordstromrack.com/",
-          "relationship_type": "carried_brand",
-          "departments": [
-            "footwear"
-          ]
-        }
-      ],
-      "verified_categories": []
-    },
-    {
-      "sizing_source_types": [],
-      "parent_name": "",
-      "brand_type": "unknown",
-      "aliases": [
-        "Christian Louboutin"
-      ],
-      "last_audited_at": "2026-10-07T00:05:00Z",
-      "source_urls": [
-        "https://www.neimanmarcus.com/c/designers-designer-index-cat000730",
-        "https://www.bergdorfgoodman.com/c/designers-cat000001",
-        "https://www.saksfifthavenue.com/c/designers"
-      ],
-      "active": true,
-      "notes": "Fashion brand discovered in a current department-store fashion assortment. Sizing is upgraded independently when a trustworthy official chart is available.",
-      "brand_key": "christianlouboutin",
-      "audiences": [],
-      "departments": [
-        "footwear"
-      ],
-      "sizing_status": "estimate_only",
-      "brand_name": "Christian Louboutin",
-      "verified_chart_count": 0,
-      "retailer_presence": [
-        {
-          "active": true,
-          "retailer_name": "Neiman Marcus",
-          "retailer_key": "neimanmarcus",
-          "source_url": "https://www.neimanmarcus.com/c/designers-designer-index-cat000730",
-          "relationship_type": "carried_brand",
-          "departments": [
-            "footwear"
-          ]
-        },
-        {
-          "active": true,
-          "retailer_name": "Bergdorf Goodman",
-          "retailer_key": "bergdorfgoodman",
-          "source_url": "https://www.bergdorfgoodman.com/c/designers-cat000001",
-          "relationship_type": "carried_brand",
-          "departments": [
-            "footwear"
-          ]
-        },
-        {
-          "active": true,
-          "retailer_name": "Saks Fifth Avenue",
-          "retailer_key": "saksfifthavenue",
-          "source_url": "https://www.saksfifthavenue.com/c/designers",
           "relationship_type": "carried_brand",
           "departments": [
             "footwear"
@@ -15545,13 +15299,13 @@
       "aliases": [
         "Deer Stags"
       ],
-      "last_audited_at": "2026-10-06T23:20:00Z",
+      "last_audited_at": "2026-10-07T00:05:00Z",
       "source_urls": [
         "https://www.jcpenney.com/d/brands",
         "https://www.nordstromrack.com/"
       ],
       "active": true,
-      "notes": "Added from current department-store fashion category/brand directory. Official brand sizing is tracked independently.",
+      "notes": "Department-store fashion brand catalog. Retailer presence is independent of whether a verified sizing chart is currently available.",
       "brand_key": "deerstags",
       "audiences": [],
       "departments": [
@@ -15567,9 +15321,7 @@
           "retailer_key": "jcpenney",
           "source_url": "https://www.jcpenney.com/d/brands",
           "relationship_type": "carried_brand",
-          "departments": [
-            "fashion"
-          ]
+          "departments": []
         },
         {
           "retailer_name": "Nordstrom Rack",
@@ -15890,14 +15642,14 @@
       "aliases": [
         "Dickies"
       ],
-      "last_audited_at": "2026-10-06T23:20:00Z",
+      "last_audited_at": "2026-10-07T00:05:00Z",
       "source_urls": [
+        "https://www.jcpenney.com/d/brands",
         "https://www.kohls.com/feature/brands.jsp",
-        "https://www.nordstromrack.com/",
-        "https://www.jcpenney.com/d/brands"
+        "https://www.nordstromrack.com/"
       ],
       "active": true,
-      "notes": "Added from current department-store fashion category/brand directory. Official brand sizing is tracked independently.",
+      "notes": "Department-store fashion brand catalog. Retailer presence is independent of whether a verified sizing chart is currently available.",
       "brand_key": "dickies",
       "audiences": [],
       "departments": [
@@ -15907,6 +15659,16 @@
       "brand_name": "Dickies",
       "verified_chart_count": 0,
       "retailer_presence": [
+        {
+          "active": true,
+          "retailer_name": "JCPenney",
+          "retailer_key": "jcpenney",
+          "source_url": "https://www.jcpenney.com/d/brands",
+          "relationship_type": "carried_brand",
+          "departments": [
+            "fashion"
+          ]
+        },
         {
           "active": true,
           "retailer_name": "Kohl's",
@@ -15924,16 +15686,6 @@
             "fashion"
           ],
           "active": true
-        },
-        {
-          "active": true,
-          "retailer_name": "JCPenney",
-          "retailer_key": "jcpenney",
-          "source_url": "https://www.jcpenney.com/d/brands",
-          "relationship_type": "carried_brand",
-          "departments": [
-            "fashion"
-          ]
         }
       ],
       "verified_categories": []
@@ -16260,30 +16012,40 @@
         "official_brand"
       ],
       "parent_name": "",
-      "brand_type": "unknown",
+      "brand_type": "national",
       "aliases": [
         "Dockers"
       ],
       "last_audited_at": "2026-10-07T00:05:00Z",
       "source_urls": [
+        "https://www.jcpenney.com/d/brands",
         "https://www.kohls.com/feature/brands.jsp",
         "https://www.boscovs.com/category/shop-by-brands",
         "https://www.beallsflorida.com/",
-        "https://www.nordstromrack.com/",
-        "https://www.jcpenney.com/d/brands"
+        "https://www.nordstromrack.com/"
       ],
       "active": true,
-      "notes": "Added from current department-store fashion category/brand directory. Official brand sizing is tracked independently.",
+      "notes": "Department-store fashion brand catalog. Retailer presence is independent of whether a verified sizing chart is currently available.",
       "brand_key": "dockers",
       "audiences": [],
       "departments": [
-        "tops",
-        "fashion"
+        "fashion",
+        "tops"
       ],
       "sizing_status": "verified_loaded",
       "brand_name": "Dockers",
       "verified_chart_count": 1,
       "retailer_presence": [
+        {
+          "active": true,
+          "retailer_name": "JCPenney",
+          "retailer_key": "jcpenney",
+          "source_url": "https://www.jcpenney.com/d/brands",
+          "relationship_type": "carried_brand",
+          "departments": [
+            "fashion"
+          ]
+        },
         {
           "active": true,
           "retailer_name": "Kohl's",
@@ -16321,16 +16083,6 @@
             "fashion"
           ],
           "active": true
-        },
-        {
-          "active": true,
-          "retailer_name": "JCPenney",
-          "retailer_key": "jcpenney",
-          "source_url": "https://www.jcpenney.com/d/brands",
-          "relationship_type": "carried_brand",
-          "departments": [
-            "fashion"
-          ]
         }
       ],
       "verified_categories": [
@@ -16344,14 +16096,14 @@
       "aliases": [
         "Dolce Vita"
       ],
-      "last_audited_at": "2026-10-06T23:20:00Z",
+      "last_audited_at": "2026-10-07T00:05:00Z",
       "source_urls": [
+        "https://www.bloomingdales.com/shop/all-designers/clothing-brands-for-women?id=1247196",
         "https://www.belk.com/site.html",
-        "https://www.nordstromrack.com/",
-        "https://www.bloomingdales.com/shop/all-designers/clothing-brands-for-women?id=1247196"
+        "https://www.nordstromrack.com/"
       ],
       "active": true,
-      "notes": "Added from current department-store fashion category/brand directory. Official brand sizing is tracked independently.",
+      "notes": "Department-store fashion brand catalog. Retailer presence is independent of whether a verified sizing chart is currently available.",
       "brand_key": "dolcevita",
       "audiences": [],
       "departments": [
@@ -16361,6 +16113,16 @@
       "brand_name": "Dolce Vita",
       "verified_chart_count": 0,
       "retailer_presence": [
+        {
+          "active": true,
+          "retailer_name": "Bloomingdale's",
+          "retailer_key": "bloomingdales",
+          "source_url": "https://www.bloomingdales.com/shop/all-designers/clothing-brands-for-women?id=1247196",
+          "relationship_type": "carried_brand",
+          "departments": [
+            "fashion"
+          ]
+        },
         {
           "active": true,
           "retailer_name": "Belk",
@@ -16378,16 +16140,6 @@
             "fashion"
           ],
           "active": true
-        },
-        {
-          "active": true,
-          "retailer_name": "Bloomingdale's",
-          "retailer_key": "bloomingdales",
-          "source_url": "https://www.bloomingdales.com/shop/all-designers/clothing-brands-for-women?id=1247196",
-          "relationship_type": "carried_brand",
-          "departments": [
-            "fashion"
-          ]
         }
       ],
       "verified_categories": []
@@ -17171,9 +16923,9 @@
       ],
       "last_audited_at": "2026-10-07T00:05:00Z",
       "source_urls": [
-        "https://www.beallsflorida.com/",
-        "https://www.nordstromrack.com/",
         "https://www.boscovs.com/category/shop-by-brands",
+        "https://www.nordstromrack.com/",
+        "https://www.beallsflorida.com/",
         "https://www.vonmaur.com/Brands.aspx"
       ],
       "active": true,
@@ -17192,9 +16944,9 @@
       "retailer_presence": [
         {
           "active": true,
-          "retailer_name": "Bealls Florida",
-          "retailer_key": "beallsflorida",
-          "source_url": "https://www.beallsflorida.com/",
+          "retailer_name": "Boscov's",
+          "retailer_key": "boscovs",
+          "source_url": "https://www.boscovs.com/category/shop-by-brands",
           "relationship_type": "carried_brand",
           "departments": [
             "women",
@@ -17213,9 +16965,9 @@
         },
         {
           "active": true,
-          "retailer_name": "Boscov's",
-          "retailer_key": "boscovs",
-          "source_url": "https://www.boscovs.com/category/shop-by-brands",
+          "retailer_name": "Bealls Florida",
+          "retailer_key": "beallsflorida",
+          "source_url": "https://www.beallsflorida.com/",
           "relationship_type": "carried_brand",
           "departments": [
             "women",
@@ -17242,13 +16994,13 @@
       "aliases": [
         "Easy Street"
       ],
-      "last_audited_at": "2026-10-06T23:20:00Z",
+      "last_audited_at": "2026-10-06T22:45:00Z",
       "source_urls": [
-        "https://www.kohls.com/feature/brands.jsp",
-        "https://www.jcpenney.com/d/brands"
+        "https://www.jcpenney.com/d/brands",
+        "https://www.kohls.com/feature/brands.jsp"
       ],
       "active": true,
-      "notes": "Added from current department-store fashion category/brand directory. Official brand sizing is tracked independently.",
+      "notes": "Department-store fashion brand catalog. Retailer presence is independent of whether a verified sizing chart is currently available.",
       "brand_key": "easystreet",
       "audiences": [],
       "departments": [
@@ -17260,14 +17012,6 @@
       "retailer_presence": [
         {
           "active": true,
-          "retailer_name": "Kohl's",
-          "retailer_key": "kohls",
-          "source_url": "https://www.kohls.com/feature/brands.jsp",
-          "relationship_type": "carried_brand",
-          "departments": []
-        },
-        {
-          "active": true,
           "retailer_name": "JCPenney",
           "retailer_key": "jcpenney",
           "source_url": "https://www.jcpenney.com/d/brands",
@@ -17275,6 +17019,14 @@
           "departments": [
             "fashion"
           ]
+        },
+        {
+          "active": true,
+          "retailer_name": "Kohl's",
+          "retailer_key": "kohls",
+          "source_url": "https://www.kohls.com/feature/brands.jsp",
+          "relationship_type": "carried_brand",
+          "departments": []
         }
       ],
       "verified_categories": []
@@ -17902,43 +17654,6 @@
           "relationship_type": "carried_brand",
           "departments": [
             "women"
-          ]
-        }
-      ],
-      "verified_categories": []
-    },
-    {
-      "sizing_source_types": [],
-      "parent_name": "",
-      "brand_type": "unknown",
-      "aliases": [
-        "Etro"
-      ],
-      "last_audited_at": "2026-10-07T00:05:00Z",
-      "source_urls": [
-        "https://www.neimanmarcus.com/c/designers-designer-index-cat000730"
-      ],
-      "active": true,
-      "notes": "Fashion brand discovered in a current department-store fashion assortment. Sizing is upgraded independently when a trustworthy official chart is available.",
-      "brand_key": "etro",
-      "audiences": [
-        "men"
-      ],
-      "departments": [
-        "men"
-      ],
-      "sizing_status": "estimate_only",
-      "brand_name": "Etro",
-      "verified_chart_count": 0,
-      "retailer_presence": [
-        {
-          "active": true,
-          "retailer_name": "Neiman Marcus",
-          "retailer_key": "neimanmarcus",
-          "source_url": "https://www.neimanmarcus.com/c/designers-designer-index-cat000730",
-          "relationship_type": "carried_brand",
-          "departments": [
-            "men"
           ]
         }
       ],
@@ -19902,6 +19617,41 @@
       "parent_name": "",
       "brand_type": "unknown",
       "aliases": [
+        "Frye and Co."
+      ],
+      "last_audited_at": "2026-10-06T23:20:00Z",
+      "source_urls": [
+        "https://www.jcpenney.com/d/brands"
+      ],
+      "active": true,
+      "notes": "Added from current department-store fashion category/brand directory. Official brand sizing is tracked independently.",
+      "brand_key": "fryeandco",
+      "audiences": [],
+      "departments": [
+        "fashion"
+      ],
+      "sizing_status": "estimate_only",
+      "brand_name": "Frye and Co.",
+      "verified_chart_count": 0,
+      "retailer_presence": [
+        {
+          "active": true,
+          "retailer_name": "JCPenney",
+          "retailer_key": "jcpenney",
+          "source_url": "https://www.jcpenney.com/d/brands",
+          "relationship_type": "carried_brand",
+          "departments": [
+            "fashion"
+          ]
+        }
+      ],
+      "verified_categories": []
+    },
+    {
+      "sizing_source_types": [],
+      "parent_name": "",
+      "brand_type": "unknown",
+      "aliases": [
         "Frye and Co.",
         "Frye & Co."
       ],
@@ -19934,41 +19684,6 @@
           "source_url": "https://www.belk.com/site.html",
           "relationship_type": "carried_brand",
           "departments": []
-        }
-      ],
-      "verified_categories": []
-    },
-    {
-      "sizing_source_types": [],
-      "parent_name": "",
-      "brand_type": "unknown",
-      "aliases": [
-        "Frye and Co."
-      ],
-      "last_audited_at": "2026-10-06T23:20:00Z",
-      "source_urls": [
-        "https://www.jcpenney.com/d/brands"
-      ],
-      "active": true,
-      "notes": "Added from current department-store fashion category/brand directory. Official brand sizing is tracked independently.",
-      "brand_key": "fryeandco",
-      "audiences": [],
-      "departments": [
-        "fashion"
-      ],
-      "sizing_status": "estimate_only",
-      "brand_name": "Frye and Co.",
-      "verified_chart_count": 0,
-      "retailer_presence": [
-        {
-          "active": true,
-          "retailer_name": "JCPenney",
-          "retailer_key": "jcpenney",
-          "source_url": "https://www.jcpenney.com/d/brands",
-          "relationship_type": "carried_brand",
-          "departments": [
-            "fashion"
-          ]
         }
       ],
       "verified_categories": []
@@ -20549,74 +20264,6 @@
           "source_url": "https://www.dillards.com/search-term/exclusives",
           "relationship_type": "carried_brand",
           "departments": []
-        }
-      ],
-      "verified_categories": []
-    },
-    {
-      "sizing_source_types": [],
-      "parent_name": "",
-      "brand_type": "unknown",
-      "aliases": [
-        "Gianvito Rossi"
-      ],
-      "last_audited_at": "2026-10-07T00:05:00Z",
-      "source_urls": [
-        "https://www.neimanmarcus.com/c/designers-designer-index-cat000730",
-        "https://www.bergdorfgoodman.com/c/designers-cat000001",
-        "https://www.saksfifthavenue.com/c/designers",
-        "https://www.nordstromrack.com/"
-      ],
-      "active": true,
-      "notes": "Fashion brand discovered in a current department-store fashion assortment. Sizing is upgraded independently when a trustworthy official chart is available.",
-      "brand_key": "gianvitorossi",
-      "audiences": [],
-      "departments": [
-        "footwear"
-      ],
-      "sizing_status": "estimate_only",
-      "brand_name": "Gianvito Rossi",
-      "verified_chart_count": 0,
-      "retailer_presence": [
-        {
-          "active": true,
-          "retailer_name": "Neiman Marcus",
-          "retailer_key": "neimanmarcus",
-          "source_url": "https://www.neimanmarcus.com/c/designers-designer-index-cat000730",
-          "relationship_type": "carried_brand",
-          "departments": [
-            "footwear"
-          ]
-        },
-        {
-          "active": true,
-          "retailer_name": "Bergdorf Goodman",
-          "retailer_key": "bergdorfgoodman",
-          "source_url": "https://www.bergdorfgoodman.com/c/designers-cat000001",
-          "relationship_type": "carried_brand",
-          "departments": [
-            "footwear"
-          ]
-        },
-        {
-          "active": true,
-          "retailer_name": "Saks Fifth Avenue",
-          "retailer_key": "saksfifthavenue",
-          "source_url": "https://www.saksfifthavenue.com/c/designers",
-          "relationship_type": "carried_brand",
-          "departments": [
-            "footwear"
-          ]
-        },
-        {
-          "active": true,
-          "retailer_name": "Nordstrom Rack",
-          "retailer_key": "nordstromrack",
-          "source_url": "https://www.nordstromrack.com/",
-          "relationship_type": "carried_brand",
-          "departments": [
-            "footwear"
-          ]
         }
       ],
       "verified_categories": []
@@ -25183,54 +24830,6 @@
       "parent_name": "",
       "brand_type": "unknown",
       "aliases": [
-        "Kiton"
-      ],
-      "last_audited_at": "2026-10-07T00:05:00Z",
-      "source_urls": [
-        "https://www.neimanmarcus.com/c/designers-designer-index-cat000730",
-        "https://www.bergdorfgoodman.com/c/designers-cat000001"
-      ],
-      "active": true,
-      "notes": "Fashion brand discovered in a current department-store fashion assortment. Sizing is upgraded independently when a trustworthy official chart is available.",
-      "brand_key": "kiton",
-      "audiences": [
-        "men"
-      ],
-      "departments": [
-        "men"
-      ],
-      "sizing_status": "estimate_only",
-      "brand_name": "Kiton",
-      "verified_chart_count": 0,
-      "retailer_presence": [
-        {
-          "active": true,
-          "retailer_name": "Neiman Marcus",
-          "retailer_key": "neimanmarcus",
-          "source_url": "https://www.neimanmarcus.com/c/designers-designer-index-cat000730",
-          "relationship_type": "carried_brand",
-          "departments": [
-            "men"
-          ]
-        },
-        {
-          "active": true,
-          "retailer_name": "Bergdorf Goodman",
-          "retailer_key": "bergdorfgoodman",
-          "source_url": "https://www.bergdorfgoodman.com/c/designers-cat000001",
-          "relationship_type": "carried_brand",
-          "departments": [
-            "men"
-          ]
-        }
-      ],
-      "verified_categories": []
-    },
-    {
-      "sizing_source_types": [],
-      "parent_name": "",
-      "brand_type": "unknown",
-      "aliases": [
         "Kiyonna"
       ],
       "last_audited_at": "2026-10-06T23:50:00Z",
@@ -25819,28 +25418,28 @@
       ],
       "last_audited_at": "2026-10-07T00:05:00Z",
       "source_urls": [
+        "https://www.macys.com/shop/all-brands/mens?id=63581",
         "https://www.macys.com/shop/brands?id=337697",
         "https://www.nordstrom.com/brands-list/",
         "https://www.bloomingdales.com/shop/all-designers?id=1001351",
         "https://www.lacoste.com/us/sizeguide",
         "https://www.vonmaur.com/Brands.aspx",
         "https://www.saksfifthavenue.com/c/designers",
-        "https://www.nordstromrack.com/",
-        "https://www.macys.com/shop/all-brands/mens?id=63581"
+        "https://www.nordstromrack.com/"
       ],
       "active": true,
-      "notes": "Added from current department-store fashion category/brand directory. Official brand sizing is tracked independently.",
+      "notes": "Department-store fashion brand catalog. Retailer presence is independent of whether a verified sizing chart is currently available.",
       "brand_key": "lacoste",
       "audiences": [
         "men",
         "women"
       ],
       "departments": [
+        "fashion",
         "bottoms",
         "dresses",
         "footwear",
-        "tops",
-        "fashion"
+        "tops"
       ],
       "sizing_status": "verified_loaded",
       "brand_name": "Lacoste",
@@ -25850,11 +25449,9 @@
           "active": true,
           "retailer_name": "Macy's",
           "retailer_key": "macys",
-          "source_url": "https://www.macys.com/shop/all-brands/mens?id=63581",
+          "source_url": "https://www.macys.com/shop/brands?id=337697",
           "relationship_type": "carried_brand",
-          "departments": [
-            "fashion"
-          ]
+          "departments": []
         },
         {
           "active": true,
@@ -26875,12 +26472,12 @@
       "aliases": [
         "Liz Claiborne"
       ],
-      "last_audited_at": "2026-10-06T23:20:00Z",
+      "last_audited_at": "2026-10-06T22:45:00Z",
       "source_urls": [
         "https://www.jcpenney.com/d/brands"
       ],
       "active": true,
-      "notes": "Added from current department-store fashion category/brand directory. Official brand sizing is tracked independently.",
+      "notes": "Department-store fashion brand catalog. Retailer presence is independent of whether a verified sizing chart is currently available.",
       "brand_key": "lizclaiborne",
       "audiences": [],
       "departments": [
@@ -26896,9 +26493,7 @@
           "retailer_key": "jcpenney",
           "source_url": "https://www.jcpenney.com/d/brands",
           "relationship_type": "carried_brand",
-          "departments": [
-            "fashion"
-          ]
+          "departments": []
         }
       ],
       "verified_categories": []
@@ -29654,33 +29249,41 @@
       "sizing_source_types": [
         "official_brand"
       ],
-      "parent_name": "",
-      "brand_type": "unknown",
+      "parent_name": "New Balance Athletics, Inc.",
+      "brand_type": "national",
       "aliases": [
         "New Balance"
       ],
       "last_audited_at": "2026-10-07T00:05:00Z",
       "source_urls": [
+        "https://www.bloomingdales.com/shop/all-designers/clothing-brands-for-women?id=1247196",
         "https://www.kohls.com/feature/brands.jsp",
         "https://www.macys.com/shop/brands?id=337697",
         "https://www.nordstrom.com/brands-list/",
         "https://www.bloomingdales.com/shop/all-designers?id=1001351",
         "https://www.vonmaur.com/Brands.aspx",
-        "https://www.nordstromrack.com/",
-        "https://www.bloomingdales.com/shop/all-designers/clothing-brands-for-women?id=1247196"
+        "https://www.nordstromrack.com/"
       ],
       "active": true,
-      "notes": "Added from current department-store fashion category/brand directory. Official brand sizing is tracked independently.",
+      "notes": "Department-store fashion brand catalog. Retailer presence is independent of whether a verified sizing chart is currently available.",
       "brand_key": "newbalance",
       "audiences": [],
       "departments": [
-        "footwear",
-        "fashion"
+        "fashion",
+        "footwear"
       ],
       "sizing_status": "verified_loaded",
       "brand_name": "New Balance",
       "verified_chart_count": 2,
       "retailer_presence": [
+        {
+          "active": true,
+          "retailer_name": "Bloomingdale's",
+          "retailer_key": "bloomingdales",
+          "source_url": "https://www.bloomingdales.com/shop/all-designers?id=1001351",
+          "relationship_type": "carried_brand",
+          "departments": []
+        },
         {
           "active": true,
           "retailer_name": "Kohl's",
@@ -29704,16 +29307,6 @@
           "source_url": "https://www.nordstrom.com/brands-list/",
           "relationship_type": "carried_brand",
           "departments": []
-        },
-        {
-          "active": true,
-          "retailer_name": "Bloomingdale's",
-          "retailer_key": "bloomingdales",
-          "source_url": "https://www.bloomingdales.com/shop/all-designers/clothing-brands-for-women?id=1247196",
-          "relationship_type": "carried_brand",
-          "departments": [
-            "fashion"
-          ]
         },
         {
           "retailer_name": "Von Maur",
@@ -29822,13 +29415,14 @@
       "sizing_source_types": [
         "official_brand"
       ],
-      "parent_name": "",
-      "brand_type": "unknown",
+      "parent_name": "NIKE, Inc.",
+      "brand_type": "national",
       "aliases": [
         "Nike"
       ],
       "last_audited_at": "2026-10-07T00:05:00Z",
       "source_urls": [
+        "https://www.bloomingdales.com/shop/all-designers/clothing-brands-for-women?id=1247196",
         "https://www.kohls.com/feature/brands.jsp",
         "https://www.macys.com/shop/brands?id=337697",
         "https://www.jcpenney.com/d/brands",
@@ -29839,23 +29433,30 @@
         "https://www.boscovs.com/category/shop-by-brands",
         "https://www.beallsflorida.com/",
         "https://www.saksfifthavenue.com/c/designers",
-        "https://www.nordstromrack.com/",
-        "https://www.bloomingdales.com/shop/all-designers/clothing-brands-for-women?id=1247196"
+        "https://www.nordstromrack.com/"
       ],
       "active": true,
-      "notes": "Added from current department-store fashion category/brand directory. Official brand sizing is tracked independently.",
+      "notes": "Department-store fashion brand catalog. Retailer presence is independent of whether a verified sizing chart is currently available.",
       "brand_key": "nike",
       "audiences": [],
       "departments": [
+        "fashion",
         "bottoms",
         "headwear",
-        "tops",
-        "fashion"
+        "tops"
       ],
       "sizing_status": "verified_loaded",
       "brand_name": "Nike",
       "verified_chart_count": 5,
       "retailer_presence": [
+        {
+          "active": true,
+          "retailer_name": "Bloomingdale's",
+          "retailer_key": "bloomingdales",
+          "source_url": "https://www.bloomingdales.com/shop/all-designers?id=1001351",
+          "relationship_type": "carried_brand",
+          "departments": []
+        },
         {
           "active": true,
           "retailer_name": "Kohl's",
@@ -29895,16 +29496,6 @@
           "source_url": "https://www.nordstrom.com/brands-list/",
           "relationship_type": "carried_brand",
           "departments": []
-        },
-        {
-          "active": true,
-          "retailer_name": "Bloomingdale's",
-          "retailer_key": "bloomingdales",
-          "source_url": "https://www.bloomingdales.com/shop/all-designers/clothing-brands-for-women?id=1247196",
-          "relationship_type": "carried_brand",
-          "departments": [
-            "fashion"
-          ]
         },
         {
           "retailer_name": "Von Maur",
@@ -32183,43 +31774,6 @@
           "retailer_name": "Von Maur",
           "retailer_key": "vonmaur",
           "source_url": "https://www.vonmaur.com/Brands.aspx",
-          "relationship_type": "carried_brand",
-          "departments": [
-            "women"
-          ]
-        }
-      ],
-      "verified_categories": []
-    },
-    {
-      "sizing_source_types": [],
-      "parent_name": "",
-      "brand_type": "unknown",
-      "aliases": [
-        "Posse"
-      ],
-      "last_audited_at": "2026-10-07T00:05:00Z",
-      "source_urls": [
-        "https://www.bergdorfgoodman.com/c/designers-cat000001"
-      ],
-      "active": true,
-      "notes": "Fashion brand discovered in a current department-store fashion assortment. Sizing is upgraded independently when a trustworthy official chart is available.",
-      "brand_key": "posse",
-      "audiences": [
-        "women"
-      ],
-      "departments": [
-        "women"
-      ],
-      "sizing_status": "estimate_only",
-      "brand_name": "Posse",
-      "verified_chart_count": 0,
-      "retailer_presence": [
-        {
-          "active": true,
-          "retailer_name": "Bergdorf Goodman",
-          "retailer_key": "bergdorfgoodman",
-          "source_url": "https://www.bergdorfgoodman.com/c/designers-cat000001",
           "relationship_type": "carried_brand",
           "departments": [
             "women"
@@ -34692,18 +34246,18 @@
       ],
       "last_audited_at": "2026-10-06T23:58:00Z",
       "source_urls": [
+        "https://www.macys.com/shop/all-brands/mens?id=63581",
+        "https://www.saucony.com/en/content?caid=universal-sizechart",
+        "https://www.saucony.com/en/content?caid=kids-footwear",
         "https://www.macys.com/shop/brands?id=337697",
         "https://www.nordstrom.com/brands-list/",
         "https://www.bloomingdales.com/shop/all-designers?id=1001351",
         "https://www.vonmaur.com/Brands.aspx",
         "https://www.beallsflorida.com/",
-        "https://www.nordstromrack.com/",
-        "https://www.saucony.com/en/content?caid=universal-sizechart",
-        "https://www.saucony.com/en/content?caid=kids-footwear",
-        "https://www.macys.com/shop/all-brands/mens?id=63581"
+        "https://www.nordstromrack.com/"
       ],
       "active": true,
-      "notes": "Added from current department-store fashion category/brand directory. Official brand sizing is tracked independently.",
+      "notes": "Department-store fashion brand catalog. Retailer presence is independent of whether a verified sizing chart is currently available.",
       "brand_key": "saucony",
       "audiences": [
         "kids",
@@ -34721,11 +34275,9 @@
           "active": true,
           "retailer_name": "Macy's",
           "retailer_key": "macys",
-          "source_url": "https://www.macys.com/shop/all-brands/mens?id=63581",
+          "source_url": "https://www.macys.com/shop/brands?id=337697",
           "relationship_type": "carried_brand",
-          "departments": [
-            "fashion"
-          ]
+          "departments": []
         },
         {
           "active": true,
@@ -35812,21 +35364,21 @@
       "sizing_source_types": [
         "official_brand"
       ],
-      "parent_name": "",
-      "brand_type": "unknown",
+      "parent_name": "Columbia Sportswear Company",
+      "brand_type": "national",
       "aliases": [
-        "SOREL",
-        "Sorel"
+        "Sorel",
+        "SOREL"
       ],
       "last_audited_at": "2026-10-07T00:05:00Z",
       "source_urls": [
+        "https://www.bloomingdales.com/shop/all-designers/clothing-brands-for-women?id=1247196",
         "https://www.sorel.com/sizefit?isPage=true",
         "https://www.vonmaur.com/Brands.aspx",
-        "https://www.nordstromrack.com/",
-        "https://www.bloomingdales.com/shop/all-designers/clothing-brands-for-women?id=1247196"
+        "https://www.nordstromrack.com/"
       ],
       "active": true,
-      "notes": "Added from current department-store fashion category/brand directory. Official brand sizing is tracked independently.",
+      "notes": "Verified sizing brand retained in the global brand master. Retailer presence is recorded when confirmed in the current department-store audit.",
       "brand_key": "sorel",
       "audiences": [
         "women",
@@ -35834,13 +35386,23 @@
         "kids"
       ],
       "departments": [
-        "footwear",
-        "fashion"
+        "fashion",
+        "footwear"
       ],
       "sizing_status": "verified_loaded",
-      "brand_name": "SOREL",
+      "brand_name": "Sorel",
       "verified_chart_count": 3,
       "retailer_presence": [
+        {
+          "active": true,
+          "retailer_name": "Bloomingdale's",
+          "retailer_key": "bloomingdales",
+          "source_url": "https://www.bloomingdales.com/shop/all-designers/clothing-brands-for-women?id=1247196",
+          "relationship_type": "carried_brand",
+          "departments": [
+            "fashion"
+          ]
+        },
         {
           "active": true,
           "retailer_name": "Nordstrom",
@@ -35870,16 +35432,6 @@
             "fashion"
           ],
           "active": true
-        },
-        {
-          "active": true,
-          "retailer_name": "Bloomingdale's",
-          "retailer_key": "bloomingdales",
-          "source_url": "https://www.bloomingdales.com/shop/all-designers/clothing-brands-for-women?id=1247196",
-          "relationship_type": "carried_brand",
-          "departments": [
-            "fashion"
-          ]
         }
       ],
       "verified_categories": [
@@ -35996,14 +35548,14 @@
       ],
       "last_audited_at": "2026-10-06T23:58:00Z",
       "source_urls": [
-        "https://www.macys.com/shop/brands?id=337697",
+        "https://www.macys.com/shop/all-brands/mens?id=63581",
         "https://speedo.com/en-us/collections/all-products/products/womens-solid-scoop-neck-swimsuit-black-8a000142002",
         "https://speedo.com/en-us/products/mens-classic-solid-redondo-edge-volley-swim-trunks-navy-800466201529",
         "https://speedo.com/en-us/products/junior-essential-swim-short-black-8124120001",
-        "https://www.macys.com/shop/all-brands/mens?id=63581"
+        "https://www.macys.com/shop/brands?id=337697"
       ],
       "active": true,
-      "notes": "Added from current department-store fashion category/brand directory. Official brand sizing is tracked independently.",
+      "notes": "Department-store fashion brand catalog. Retailer presence is independent of whether a verified sizing chart is currently available.",
       "brand_key": "speedo",
       "audiences": [
         "kids",
@@ -36021,11 +35573,9 @@
           "active": true,
           "retailer_name": "Macy's",
           "retailer_key": "macys",
-          "source_url": "https://www.macys.com/shop/all-brands/mens?id=63581",
+          "source_url": "https://www.macys.com/shop/brands?id=337697",
           "relationship_type": "carried_brand",
-          "departments": [
-            "fashion"
-          ]
+          "departments": []
         }
       ],
       "verified_categories": [
@@ -36043,17 +35593,17 @@
       ],
       "last_audited_at": "2026-10-07T00:05:00Z",
       "source_urls": [
+        "https://www.macys.com/shop/all-brands/mens?id=63581",
         "https://www.macys.com/shop/brands?id=337697",
         "https://www.nordstrom.com/brands-list/",
         "https://www.bloomingdales.com/shop/all-designers?id=1001351",
         "https://www.sperry.com/pages/size-charts",
         "https://www.vonmaur.com/Brands.aspx",
         "https://www.beallsflorida.com/",
-        "https://www.nordstromrack.com/",
-        "https://www.macys.com/shop/all-brands/mens?id=63581"
+        "https://www.nordstromrack.com/"
       ],
       "active": true,
-      "notes": "Added from current department-store fashion category/brand directory. Official brand sizing is tracked independently.",
+      "notes": "Department-store fashion brand catalog. Retailer presence is independent of whether a verified sizing chart is currently available.",
       "brand_key": "sperry",
       "audiences": [
         "kids",
@@ -36061,8 +35611,8 @@
         "women"
       ],
       "departments": [
-        "footwear",
-        "fashion"
+        "fashion",
+        "footwear"
       ],
       "sizing_status": "verified_loaded",
       "brand_name": "Sperry",
@@ -36072,11 +35622,9 @@
           "active": true,
           "retailer_name": "Macy's",
           "retailer_key": "macys",
-          "source_url": "https://www.macys.com/shop/all-brands/mens?id=63581",
+          "source_url": "https://www.macys.com/shop/brands?id=337697",
           "relationship_type": "carried_brand",
-          "departments": [
-            "fashion"
-          ]
+          "departments": []
         },
         {
           "active": true,
@@ -37662,54 +37210,6 @@
           "source_url": "https://www.walmart.com/cp/fashion-brand-directory/3928184",
           "relationship_type": "carried_brand",
           "departments": []
-        }
-      ],
-      "verified_categories": []
-    },
-    {
-      "sizing_source_types": [],
-      "parent_name": "",
-      "brand_type": "unknown",
-      "aliases": [
-        "The Row"
-      ],
-      "last_audited_at": "2026-10-07T00:05:00Z",
-      "source_urls": [
-        "https://www.bergdorfgoodman.com/c/designers-cat000001",
-        "https://www.saksfifthavenue.com/c/designers"
-      ],
-      "active": true,
-      "notes": "Fashion brand discovered in a current department-store fashion assortment. Sizing is upgraded independently when a trustworthy official chart is available.",
-      "brand_key": "therow",
-      "audiences": [
-        "women"
-      ],
-      "departments": [
-        "women"
-      ],
-      "sizing_status": "estimate_only",
-      "brand_name": "The Row",
-      "verified_chart_count": 0,
-      "retailer_presence": [
-        {
-          "active": true,
-          "retailer_name": "Bergdorf Goodman",
-          "retailer_key": "bergdorfgoodman",
-          "source_url": "https://www.bergdorfgoodman.com/c/designers-cat000001",
-          "relationship_type": "carried_brand",
-          "departments": [
-            "women"
-          ]
-        },
-        {
-          "active": true,
-          "retailer_name": "Saks Fifth Avenue",
-          "retailer_key": "saksfifthavenue",
-          "source_url": "https://www.saksfifthavenue.com/c/designers",
-          "relationship_type": "carried_brand",
-          "departments": [
-            "women"
-          ]
         }
       ],
       "verified_categories": []
@@ -39334,63 +38834,6 @@
       "parent_name": "",
       "brand_type": "unknown",
       "aliases": [
-        "Valentino Garavani"
-      ],
-      "last_audited_at": "2026-10-07T00:05:00Z",
-      "source_urls": [
-        "https://www.neimanmarcus.com/c/designers-designer-index-cat000730",
-        "https://www.bergdorfgoodman.com/c/designers-cat000001",
-        "https://www.saksfifthavenue.com/c/designers"
-      ],
-      "active": true,
-      "notes": "Fashion brand discovered in a current department-store fashion assortment. Sizing is upgraded independently when a trustworthy official chart is available.",
-      "brand_key": "valentinogaravani",
-      "audiences": [],
-      "departments": [
-        "footwear"
-      ],
-      "sizing_status": "estimate_only",
-      "brand_name": "Valentino Garavani",
-      "verified_chart_count": 0,
-      "retailer_presence": [
-        {
-          "active": true,
-          "retailer_name": "Neiman Marcus",
-          "retailer_key": "neimanmarcus",
-          "source_url": "https://www.neimanmarcus.com/c/designers-designer-index-cat000730",
-          "relationship_type": "carried_brand",
-          "departments": [
-            "footwear"
-          ]
-        },
-        {
-          "active": true,
-          "retailer_name": "Bergdorf Goodman",
-          "retailer_key": "bergdorfgoodman",
-          "source_url": "https://www.bergdorfgoodman.com/c/designers-cat000001",
-          "relationship_type": "carried_brand",
-          "departments": [
-            "footwear"
-          ]
-        },
-        {
-          "active": true,
-          "retailer_name": "Saks Fifth Avenue",
-          "retailer_key": "saksfifthavenue",
-          "source_url": "https://www.saksfifthavenue.com/c/designers",
-          "relationship_type": "carried_brand",
-          "departments": [
-            "footwear"
-          ]
-        }
-      ],
-      "verified_categories": []
-    },
-    {
-      "sizing_source_types": [],
-      "parent_name": "",
-      "brand_type": "unknown",
-      "aliases": [
         "Van Heusen"
       ],
       "last_audited_at": "2026-10-06T23:20:00Z",
@@ -39862,29 +39305,39 @@
       "aliases": [
         "Vince"
       ],
-      "last_audited_at": "2026-10-06T23:20:00Z",
+      "last_audited_at": "2026-10-07T00:05:00Z",
       "source_urls": [
+        "https://www.bloomingdales.com/shop/all-designers/clothing-brands-for-women?id=1247196",
         "https://www.vonmaur.com/Brands.aspx",
         "https://www.neimanmarcus.com/c/designers-designer-index-cat000730",
         "https://www.bergdorfgoodman.com/c/designers-cat000001",
         "https://www.saksfifthavenue.com/c/designers",
-        "https://www.nordstromrack.com/",
-        "https://www.bloomingdales.com/shop/all-designers/clothing-brands-for-women?id=1247196"
+        "https://www.nordstromrack.com/"
       ],
       "active": true,
-      "notes": "Added from current department-store fashion category/brand directory. Official brand sizing is tracked independently.",
+      "notes": "Fashion brand discovered in a current department-store fashion assortment. Sizing is upgraded independently when a trustworthy official chart is available.",
       "brand_key": "vince",
       "audiences": [
         "women"
       ],
       "departments": [
-        "women",
-        "fashion"
+        "fashion",
+        "women"
       ],
       "sizing_status": "estimate_only",
       "brand_name": "Vince",
       "verified_chart_count": 0,
       "retailer_presence": [
+        {
+          "active": true,
+          "retailer_name": "Bloomingdale's",
+          "retailer_key": "bloomingdales",
+          "source_url": "https://www.bloomingdales.com/shop/all-designers/clothing-brands-for-women?id=1247196",
+          "relationship_type": "carried_brand",
+          "departments": [
+            "fashion"
+          ]
+        },
         {
           "active": true,
           "retailer_name": "Von Maur",
@@ -39934,16 +39387,6 @@
             "fashion"
           ],
           "active": true
-        },
-        {
-          "active": true,
-          "retailer_name": "Bloomingdale's",
-          "retailer_key": "bloomingdales",
-          "source_url": "https://www.bloomingdales.com/shop/all-designers/clothing-brands-for-women?id=1247196",
-          "relationship_type": "carried_brand",
-          "departments": [
-            "fashion"
-          ]
         }
       ],
       "verified_categories": []
@@ -40058,9 +39501,9 @@
       ],
       "last_audited_at": "2026-10-07T00:05:00Z",
       "source_urls": [
-        "https://www.vonmaur.com/Brands.aspx",
+        "https://www.beallsflorida.com/",
         "https://www.nordstromrack.com/",
-        "https://www.beallsflorida.com/"
+        "https://www.vonmaur.com/Brands.aspx"
       ],
       "active": true,
       "notes": "Fashion brand discovered in a current department-store fashion assortment. Sizing is upgraded independently when a trustworthy official chart is available.",
@@ -40078,9 +39521,9 @@
       "retailer_presence": [
         {
           "active": true,
-          "retailer_name": "Von Maur",
-          "retailer_key": "vonmaur",
-          "source_url": "https://www.vonmaur.com/Brands.aspx",
+          "retailer_name": "Bealls Florida",
+          "retailer_key": "beallsflorida",
+          "source_url": "https://www.beallsflorida.com/",
           "relationship_type": "carried_brand",
           "departments": [
             "women",
@@ -40099,9 +39542,9 @@
         },
         {
           "active": true,
-          "retailer_name": "Bealls Florida",
-          "retailer_key": "beallsflorida",
-          "source_url": "https://www.beallsflorida.com/",
+          "retailer_name": "Von Maur",
+          "retailer_key": "vonmaur",
+          "source_url": "https://www.vonmaur.com/Brands.aspx",
           "relationship_type": "carried_brand",
           "departments": [
             "women",
@@ -40968,12 +40411,12 @@
       "aliases": [
         "Xersion"
       ],
-      "last_audited_at": "2026-10-06T23:20:00Z",
+      "last_audited_at": "2026-10-06T22:45:00Z",
       "source_urls": [
         "https://www.jcpenney.com/d/brands"
       ],
       "active": true,
-      "notes": "Added from current department-store fashion category/brand directory. Official brand sizing is tracked independently.",
+      "notes": "Department-store fashion brand catalog. Retailer presence is independent of whether a verified sizing chart is currently available.",
       "brand_key": "xersion",
       "audiences": [],
       "departments": [
@@ -40989,9 +40432,7 @@
           "retailer_key": "jcpenney",
           "source_url": "https://www.jcpenney.com/d/brands",
           "relationship_type": "carried_brand",
-          "departments": [
-            "fashion"
-          ]
+          "departments": []
         }
       ],
       "verified_categories": []
@@ -41248,65 +40689,6 @@
           "relationship_type": "carried_brand",
           "departments": [
             "women"
-          ]
-        }
-      ],
-      "verified_categories": []
-    },
-    {
-      "sizing_source_types": [],
-      "parent_name": "",
-      "brand_type": "unknown",
-      "aliases": [
-        "Zegna"
-      ],
-      "last_audited_at": "2026-10-07T00:05:00Z",
-      "source_urls": [
-        "https://www.neimanmarcus.com/c/designers-designer-index-cat000730",
-        "https://www.bergdorfgoodman.com/c/designers-cat000001",
-        "https://www.saksfifthavenue.com/c/designers"
-      ],
-      "active": true,
-      "notes": "Fashion brand discovered in a current department-store fashion assortment. Sizing is upgraded independently when a trustworthy official chart is available.",
-      "brand_key": "zegna",
-      "audiences": [
-        "men"
-      ],
-      "departments": [
-        "men"
-      ],
-      "sizing_status": "estimate_only",
-      "brand_name": "Zegna",
-      "verified_chart_count": 0,
-      "retailer_presence": [
-        {
-          "active": true,
-          "retailer_name": "Neiman Marcus",
-          "retailer_key": "neimanmarcus",
-          "source_url": "https://www.neimanmarcus.com/c/designers-designer-index-cat000730",
-          "relationship_type": "carried_brand",
-          "departments": [
-            "men"
-          ]
-        },
-        {
-          "active": true,
-          "retailer_name": "Bergdorf Goodman",
-          "retailer_key": "bergdorfgoodman",
-          "source_url": "https://www.bergdorfgoodman.com/c/designers-cat000001",
-          "relationship_type": "carried_brand",
-          "departments": [
-            "men"
-          ]
-        },
-        {
-          "active": true,
-          "retailer_name": "Saks Fifth Avenue",
-          "retailer_key": "saksfifthavenue",
-          "source_url": "https://www.saksfifthavenue.com/c/designers",
-          "relationship_type": "carried_brand",
-          "departments": [
-            "men"
           ]
         }
       ],
