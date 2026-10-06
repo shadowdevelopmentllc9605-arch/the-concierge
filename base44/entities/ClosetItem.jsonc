@@ -24,7 +24,11 @@
         "casual",
         "nightlife",
         "trendy",
-        "other"
+        "other",
+        "formal",
+        "evening",
+        "outdoor",
+        "active"
       ]
     },
     "description": {
