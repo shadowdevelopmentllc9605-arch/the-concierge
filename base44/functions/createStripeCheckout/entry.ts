@@ -13,11 +13,12 @@ function safeOrigin(req: Request) {
   }
 }
 
-function getVariant(product: any, size?: string, color?: string) {
+function getVariant(product: any, size?: string, color?: string, widthCode?: string) {
   if (!Array.isArray(product.variants) || product.variants.length === 0) return null;
   return product.variants.find((variant: any) =>
     String(variant.size || "") === String(size || "") &&
-    String(variant.color || "") === String(color || "")
+    String(variant.color || "") === String(color || "") &&
+    String(variant.width_code || "") === String(widthCode || "")
   ) || null;
 }
 
@@ -60,14 +61,14 @@ export default async function (req: Request): Promise<Response> {
       }
 
       const quantity = Math.max(1, Math.floor(Number(cartItem.quantity || 1)));
-      const variant = getVariant(product, cartItem.size, cartItem.color);
+      const variant = getVariant(product, cartItem.size, cartItem.color, cartItem.width_code);
 
       if (Array.isArray(product.variants) && product.variants.length > 0) {
         if (!variant) {
-          return Response.json({ error: `Choose a valid size/color for ${product.name}.` }, { status: 409 });
+          return Response.json({ error: `Choose a valid size/width/color for ${product.name}.` }, { status: 409 });
         }
         if (quantity > Number(variant.stock_quantity || 0)) {
-          return Response.json({ error: `Not enough stock remains for ${product.name} in that size/color.` }, { status: 409 });
+          return Response.json({ error: `Not enough stock remains for ${product.name} in that size/width/color.` }, { status: 409 });
         }
       } else if (product.linked_pro_inventory_id && quantity > Number(product.stock_quantity || 0)) {
         return Response.json({ error: `Not enough stock remains for ${product.name}.` }, { status: 409 });
@@ -115,6 +116,7 @@ export default async function (req: Request): Promise<Response> {
         unit_price: unitAmount / 100,
         quantity,
         size: cartItem.size || "",
+        width_code: cartItem.width_code || "",
         color: cartItem.color || "",
         vendor_id: product.vendor_id || "",
         vendor_name: vendor?.business_name || "",
@@ -129,11 +131,12 @@ export default async function (req: Request): Promise<Response> {
           product_data: {
             name: product.name,
             tax_code: "txcd_99999999", // Stripe Tax: General - Tangible Goods fallback for launch inventory.
-            description: [product.brand, cartItem.size, cartItem.color].filter(Boolean).join(" · "),
+            description: [product.brand, cartItem.size, cartItem.width_code ? `Width ${cartItem.width_code}` : "", cartItem.color].filter(Boolean).join(" · "),
             images: product.images?.[0] ? [product.images[0]] : undefined,
             metadata: {
               product_id: product.id,
               size: cartItem.size || "",
+              width_code: cartItem.width_code || "",
               color: cartItem.color || "",
             },
           },
