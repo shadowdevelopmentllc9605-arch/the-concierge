@@ -11,6 +11,7 @@ const CATEGORY_GROUPS = {
   dresses: new Set(['dresses', 'dress_skirts', 'skirts', 'evening_dresses']),
   suits: new Set(['suits']),
   underwear: new Set(['underwear', 'bras', 'lingerie', 'sleepwear']),
+  swimwear: new Set(['swimwear']),
   footwear: new Set(['shoes', 'boots']),
   headwear: new Set(['hats']),
   outerwear: new Set(['coats', 'parkas', 'outerwear']),
