@@ -74,22 +74,6 @@ function getBoundingBox(mask, threshold = MASK_THRESHOLD) {
     : null;
 }
 
-function rowSpan(mask, yNormalized, threshold = MASK_THRESHOLD) {
-  if (!mask?.values?.length || !mask.width || !mask.height) return null;
-  const y = Math.max(0, Math.min(mask.height - 1, Math.round(yNormalized * (mask.height - 1))));
-  const offset = y * mask.width;
-  let minX = mask.width;
-  let maxX = -1;
-
-  for (let x = 0; x < mask.width; x += 1) {
-    if (mask.values[offset + x] >= threshold) {
-      minX = Math.min(minX, x);
-      maxX = Math.max(maxX, x);
-    }
-  }
-  return maxX >= minX ? maxX - minX + 1 : null;
-}
-
 function rowSpanAroundCenter(mask, yNormalized, xNormalized, threshold = MASK_THRESHOLD) {
   if (!mask?.values?.length || !mask.width || !mask.height) return null;
   const y = Math.max(0, Math.min(mask.height - 1, Math.round(yNormalized * (mask.height - 1))));
