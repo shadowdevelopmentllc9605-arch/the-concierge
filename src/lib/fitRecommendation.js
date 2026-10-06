@@ -29,6 +29,94 @@ export function getCategoryGroup(category) {
   return null;
 }
 
+const FIT_REQUIREMENTS = {
+  suits: ['chest', 'waist', 'height'],
+  dress_shirts: ['neck', 'chest', 'arm_length'],
+  blouse: ['bust', 'waist'],
+  jackets: ['chest', 'shoulders', 'arm_length'],
+  sports_jackets: ['chest', 'shoulders', 'arm_length'],
+  pants: ['waist', 'hips', 'inseam'],
+  jeans: ['waist', 'hips', 'inseam'],
+  shorts: ['waist', 'hips'],
+  khakis: ['waist', 'hips', 'inseam'],
+  dresses: ['bust', 'waist', 'hips'],
+  evening_dresses: ['bust', 'waist', 'hips'],
+  skirts: ['waist', 'hips'],
+  dress_skirts: ['waist', 'hips'],
+  bras: ['bust', 'underbust'],
+  lingerie: ['bust', 'underbust', 'hips'],
+  underwear: ['waist', 'hips'],
+  sleepwear: ['chest', 'bust', 'waist', 'hips'],
+  shoes: ['foot_length', 'foot_width'],
+  boots: ['foot_length', 'foot_width', 'calf_circumference'],
+  hats: ['head_circumference'],
+  coats: ['chest', 'bust', 'shoulders', 'arm_length'],
+  parkas: ['chest', 'bust', 'shoulders', 'arm_length'],
+  outerwear: ['chest', 'bust', 'shoulders', 'arm_length'],
+};
+
+const GROUP_REQUIREMENTS = {
+  tops: ['chest', 'bust'],
+  bottoms: ['waist', 'hips'],
+  dresses: ['bust', 'waist', 'hips'],
+  suits: ['chest', 'waist', 'height'],
+  underwear: ['waist', 'hips'],
+  footwear: ['foot_length', 'foot_width'],
+  headwear: ['head_circumference'],
+  outerwear: ['chest', 'bust', 'shoulders'],
+};
+
+function fitRequirementKeys(category, categoryGroup) {
+  return FIT_REQUIREMENTS[category] || GROUP_REQUIREMENTS[categoryGroup] || [];
+}
+
+function chartMeasurementKeys(sizeChart = []) {
+  const keys = ['chest', 'bust', 'underbust', 'waist', 'hips', 'inseam', 'foot_length', 'foot_width', 'calf_circumference', 'head_circumference', 'height', 'neck', 'sleeve'];
+  return new Set(keys.filter(key => sizeChart.some(row =>
+    Number.isFinite(finiteNumber(row?.[`${key}_min_cm`])) ||
+    Number.isFinite(finiteNumber(row?.[`${key}_max_cm`]))
+  )));
+}
+
+function buildFitConfidence(sizeChart, measurementsCm, options, exact, criteriaMatched, identityOnly = false) {
+  const categoryGroup = options.categoryGroup || getCategoryGroup(options.category);
+  const required = fitRequirementKeys(options.category, categoryGroup);
+  const chartKeys = chartMeasurementKeys(sizeChart);
+  const applicable = required.filter(key => chartKeys.has(key));
+  const present = applicable.filter(key => Number.isFinite(finiteNumber(measurementsCm?.[key])));
+  const missingMeasurements = applicable.filter(key => !present.includes(key));
+
+  const fieldConfidence = options.measurementConfidenceByField || {};
+  const confidenceValues = present
+    .map(key => finiteNumber(fieldConfidence[key]))
+    .filter(Number.isFinite);
+  const avgFieldConfidence = confidenceValues.length
+    ? confidenceValues.reduce((sum, value) => sum + value, 0) / confidenceValues.length
+    : finiteNumber(options.measurementConfidence);
+
+  const completeness = applicable.length
+    ? present.length / applicable.length
+    : Math.min(1, Number(criteriaMatched || 0) / 2);
+
+  let score = exact ? 62 : 44;
+  score += completeness * 20;
+  if (Number.isFinite(avgFieldConfidence)) score += (avgFieldConfidence / 100) * 12;
+  if (options.validationStatus === 'verified') score += 8;
+  else if (options.validationStatus === 'partially_verified') score += 4;
+  else if (options.validationStatus === 'estimated') score -= 6;
+
+  if (identityOnly) score = Math.min(score, 78);
+  if (criteriaMatched <= 1 && applicable.length > 1) score = Math.min(score, 64);
+
+  const confidenceScore = Math.round(Math.max(0, Math.min(100, score)));
+  return {
+    fitConfidence: confidenceScore >= 85 ? 'high' : confidenceScore >= 65 ? 'medium' : 'low',
+    confidenceScore,
+    missingMeasurements,
+    measurementsUsed: present,
+  };
+}
+
 function normalizedSizeValue(value = '') {
   return String(value).trim().toLowerCase().replace(/\s+/g, '');
 }
