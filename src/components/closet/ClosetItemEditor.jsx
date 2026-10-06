@@ -10,6 +10,10 @@ const COLORS = ['Black', 'White', 'Navy', 'Gray', 'Brown', 'Beige', 'Red', 'Blue
 const STYLE_CATEGORIES = [
   { id: 'business', label: 'Business' },
   { id: 'casual', label: 'Casual' },
+  { id: 'formal', label: 'Formal' },
+  { id: 'evening', label: 'Evening' },
+  { id: 'outdoor', label: 'Outdoor' },
+  { id: 'active', label: 'Active' },
   { id: 'trendy', label: 'Trendy' },
   { id: 'nightlife', label: 'Nightlife' }
 ];
