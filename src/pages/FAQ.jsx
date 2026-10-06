@@ -8,7 +8,8 @@ const FAQS = [
   ['Who can see my wishlist?', 'Your wishlist is private unless you choose to make it public. Accepted friends can only view public wishlist items when your overall wishlist visibility is public.'],
   ['What happens when I check in at a store?', 'For participating linked stores, your check-in can share store-specific wishlist and profile information with Concierge Pro so an employee can assist you.'],
   ['Can the app charge my card yet?', 'Card processing is only enabled when a production payment provider is connected. The app never marks an unsupported card payment successful.'],
-  ['Can I correct or verify a body scan?', 'Yes. Review scan results before continuing, or open Profile → My Measurements later. You can correct any estimate in metric or imperial units and mark measurements you actually checked with a tape or ruler as verified. Verified measurements receive higher confidence in fit recommendations.'],
+  ['Can I correct or verify a body scan?', 'Yes. Review scan results before continuing, or open Profile → My Measurements later. A tape is optional: you can use the photo estimates as-is, correct them if you know a better value, or mark measurements you physically checked as verified.'],
+  ['What if the full-body photo cannot measure my feet or head precisely?', 'Use Profile → Precision Fit Scan, or the Improve Measurement button on footwear/headwear products. Close-up photos use a standard ID-1-sized card as a scale reference and guided tap points to improve foot length, foot width, or head circumference without requiring a tape measure. Use a plain gift/loyalty card or completely cover any personal or payment information.'],
 ];
 
 export default function FAQ() {
