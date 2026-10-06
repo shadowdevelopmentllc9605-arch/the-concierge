@@ -216,6 +216,31 @@ export function selectBrandSizeChart(brandCharts = [], product = {}, profile = {
     }
   }
 
+  if (audience === 'kids') {
+    const childGender = profile?.gender === 'male'
+      ? 'boys'
+      : profile?.gender === 'female'
+        ? 'girls'
+        : 'unknown';
+
+    if (childGender !== 'unknown') {
+      const exactChildGender = audienceCandidates.filter(chart => chart?.gender_detail === childGender);
+      const unisexKids = audienceCandidates.filter(chart => chart?.gender_detail === 'unisex');
+      if (exactChildGender.length) audienceCandidates = exactChildGender;
+      else if (unisexKids.length) audienceCandidates = unisexKids;
+    } else {
+      const unisexKids = audienceCandidates.filter(chart => chart?.gender_detail === 'unisex');
+      if (unisexKids.length) {
+        audienceCandidates = unisexKids;
+      } else {
+        const distinctKidGenders = new Set(
+          audienceCandidates.map(chart => chart?.gender_detail).filter(value => value && value !== 'not_applicable')
+        );
+        if (distinctKidGenders.size > 1) return null;
+      }
+    }
+  }
+
   const productSizes = new Set((product?.sizes || []).map(size => String(size).toLowerCase()));
   if (productSizes.size > 0) {
     const compatible = audienceCandidates.filter(chart =>
