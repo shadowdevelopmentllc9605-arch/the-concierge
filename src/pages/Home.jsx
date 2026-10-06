@@ -77,6 +77,7 @@ export default function Home() {
           );
 
           let size = chartMatch?.size || '';
+          let width = chartMatch?.width || '';
           let recommendationLabel = '';
           if (chartMatch?.size) {
             recommendationLabel = effectiveChart.source === 'brand_size_chart'
@@ -103,6 +104,7 @@ export default function Home() {
             image: product.images?.[0] || '',
             store: vendorNames.get(product.vendor_id) || '',
             size,
+            width,
             recommendationLabel,
             tryOnAvailable: Boolean(product.tryOn_image),
             score
@@ -252,7 +254,7 @@ export default function Home() {
                   <div className="absolute bottom-2 left-2 right-2">
                     <div className="bg-white/90 backdrop-blur-sm rounded-xl px-2 py-1.5">
                       <p className="text-[10px] font-semibold text-green-700">{item.recommendationLabel}</p>
-                      <p className="text-[10px] text-gray-600">Recommended size: {item.size}</p>
+                      <p className="text-[10px] text-gray-600">Recommended size: {item.size}{item.width ? ' • ' + item.width : ''}</p>
                     </div>
                   </div>
                 )}
