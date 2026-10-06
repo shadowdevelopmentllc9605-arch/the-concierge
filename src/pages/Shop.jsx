@@ -77,8 +77,14 @@ export default function Shop() {
       const sizeCharts = await base44.entities.BrandSizeChart.filter({ active: true });
       setBrandCharts(sizeCharts);
 
-      const brands = await base44.entities.BrandCatalog.list('brand_name', 500);
-      setBrandCatalog((brands || []).filter(brand => brand.active !== false));
+      const brandPageSize = 500;
+      const brands = [];
+      for (let skip = 0; skip < 5000; skip += brandPageSize) {
+        const page = await base44.entities.BrandCatalog.list('brand_name', brandPageSize, skip);
+        brands.push(...(page || []));
+        if (!page || page.length < brandPageSize) break;
+      }
+      setBrandCatalog(brands.filter(brand => brand.active !== false));
 
       // Load wishlist
       const wishlistItems = await base44.entities.WishlistItem.filter({ user_id: currentUser.id });
