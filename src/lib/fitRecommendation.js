@@ -45,28 +45,93 @@ function normalizedUsShoeSize(value = '') {
   return match ? match[1] : normalizedSizeValue(text);
 }
 
+function normalizedWidthValue(value = '') {
+  return String(value).trim().toLowerCase().replace(/[^a-z0-9]/g, '');
+}
+
+function canonicalWidthLabel(value = '') {
+  const text = String(value).trim().toLowerCase().replace(/[_-]+/g, ' ');
+  if (!text) return '';
+  if (/extra\s*wide|x\s*wide|xx\s*wide/.test(text)) return 'extrawide';
+  if (/wide/.test(text)) return 'wide';
+  if (/medium|standard|regular/.test(text)) return 'medium';
+  if (/narrow|slim/.test(text)) return 'narrow';
+  return normalizedWidthValue(text);
+}
+
+function widthMatches(row = {}, requested = '') {
+  if (!requested) return false;
+  const requestCode = normalizedWidthValue(requested);
+  const requestLabel = canonicalWidthLabel(requested);
+  return (
+    normalizedWidthValue(row.width_code) === requestCode ||
+    canonicalWidthLabel(row.width_label) === requestLabel
+  );
+}
+
+function widthDistance(row = {}, footWidth) {
+  if (!Number.isFinite(footWidth)) return Number.POSITIVE_INFINITY;
+  const min = finiteNumber(row.foot_width_min_cm);
+  const max = finiteNumber(row.foot_width_max_cm);
+  if (!Number.isFinite(min) && !Number.isFinite(max)) return Number.POSITIVE_INFINITY;
+  const low = Number.isFinite(min) ? min : max;
+  const high = Number.isFinite(max) ? max : min;
+  if (footWidth < low) return low - footWidth;
+  if (footWidth > high) return footWidth - high;
+  return 0;
+}
+
+function chooseWidthCandidate(candidates = [], requestedWidth = '', footWidth = Number.NaN) {
+  if (!candidates.length) return null;
+  if (requestedWidth) {
+    const exact = candidates.find(row => widthMatches(row, requestedWidth));
+    if (exact) return exact;
+  }
+  if (Number.isFinite(footWidth)) {
+    const ranked = candidates
+      .map(row => ({ row, distance: widthDistance(row, footWidth) }))
+      .sort((a, b) => a.distance - b.distance);
+    if (Number.isFinite(ranked[0]?.distance)) return ranked[0].row;
+  }
+  return candidates.find(row => !row.width_code) || candidates[0];
+}
+
+function applyHalfSizeAdjustment(size, steps = 0) {
+  const numeric = Number(size);
+  const adjustment = Number(steps);
+  if (!Number.isFinite(numeric) || !Number.isFinite(adjustment) || adjustment === 0) return String(size);
+  const adjusted = numeric + adjustment * 0.5;
+  return Number.isInteger(adjusted) ? String(adjusted) : String(adjusted).replace(/\.0$/, '');
+}
+
 export function recommendFromSizeChart(sizeChart = [], measurementsCm = {}, options = {}) {
   if (!Array.isArray(sizeChart) || sizeChart.length === 0) return null;
 
   const shoeSize = normalizedUsShoeSize(options.shoeSize);
+  const footWidth = finiteNumber(measurementsCm.foot_width);
   if (shoeSize) {
-    let identityMatch = null;
-    if (options.gender === 'female') {
-      identityMatch = sizeChart.find(row =>
+    let identityCandidates = sizeChart.filter(row =>
+      normalizedSizeValue(row?.us_size || row?.size) === shoeSize
+    );
+    if (identityCandidates.length === 0 && options.gender === 'female') {
+      identityCandidates = sizeChart.filter(row =>
         /^us\s*women/i.test(String(row?.alternate_size || '')) &&
         labeledAlternateValue(row.alternate_size, 'women') === shoeSize
       );
     }
-    identityMatch ||= sizeChart.find(row =>
-      normalizedSizeValue(row?.us_size || row?.size) === shoeSize
-    );
+    const identityMatch = chooseWidthCandidate(identityCandidates, options.shoeWidth, footWidth);
     if (identityMatch) {
+      const adjustedSize = applyHalfSizeAdjustment(identityMatch.size, options.sizeAdjustmentSteps);
       return {
-        size: identityMatch.size,
+        size: adjustedSize,
+        baseSize: identityMatch.size,
+        width: identityMatch.width_code || '',
+        widthLabel: identityMatch.width_label || '',
         source: 'product_size_chart',
         matched: identityMatch,
-        criteriaMatched: 1,
+        criteriaMatched: 1 + (identityMatch.width_code ? 1 : 0),
         matchType: 'exact',
+        sizeAdjusted: adjustedSize !== String(identityMatch.size),
       };
     }
   }
@@ -98,12 +163,14 @@ export function recommendFromSizeChart(sizeChart = [], measurementsCm = {}, opti
     hips: finiteNumber(measurementsCm.hips),
     inseam: finiteNumber(measurementsCm.inseam),
     foot_length: finiteNumber(measurementsCm.foot_length),
+    foot_width: footWidth,
+    calf_circumference: finiteNumber(measurementsCm.calf_circumference),
     head_circumference: finiteNumber(measurementsCm.head_circumference),
     height: finiteNumber(measurementsCm.height),
     neck: finiteNumber(measurementsCm.neck),
   };
 
-  const measurementKeys = ['chest', 'bust', 'underbust', 'waist', 'hips', 'inseam', 'foot_length', 'head_circumference', 'height', 'neck'];
+  const measurementKeys = ['chest', 'bust', 'underbust', 'waist', 'hips', 'inseam', 'foot_length', 'foot_width', 'calf_circumference', 'head_circumference', 'height', 'neck'];
   const scored = sizeChart
     .map(row => {
       let criteria = 0;
@@ -157,12 +224,17 @@ export function recommendFromSizeChart(sizeChart = [], measurementsCm = {}, opti
 
   if (!best) return null;
 
+  const adjustedSize = applyHalfSizeAdjustment(best.row.size, options.sizeAdjustmentSteps);
   return {
-    size: best.row.size,
+    size: adjustedSize,
+    baseSize: best.row.size,
+    width: best.row.width_code || '',
+    widthLabel: best.row.width_label || '',
     source: 'product_size_chart',
     matched: best.row,
     criteriaMatched: best.criteria,
     matchType: best.exact ? 'exact' : 'nearest',
+    sizeAdjusted: adjustedSize !== String(best.row.size),
   };
 }
 
@@ -216,6 +288,16 @@ export function selectBrandSizeChart(brandCharts = [], product = {}, profile = {
     else {
       const distinctAudiences = new Set(candidates.map(chart => chart.audience).filter(Boolean));
       if (distinctAudiences.size > 1) return null;
+    }
+  }
+
+  if (categoryGroup === 'footwear') {
+    const requestedType = product?.footwear_type || 'all';
+    if (requestedType && requestedType !== 'all') {
+      const exactType = audienceCandidates.filter(chart => chart?.footwear_type === requestedType);
+      const allType = audienceCandidates.filter(chart => !chart?.footwear_type || chart?.footwear_type === 'all');
+      if (exactType.length) audienceCandidates = exactType;
+      else if (allType.length) audienceCandidates = allType;
     }
   }
 
