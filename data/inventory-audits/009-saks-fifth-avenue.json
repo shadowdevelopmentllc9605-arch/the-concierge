@@ -1,0 +1,106 @@
+{
+  "snapshot_version": "1.0",
+  "audit_number": "009",
+  "retailer": "Saks Fifth Avenue",
+  "retailer_key": "saksfifthavenue",
+  "exported_at": "2026-10-07T20:25:00Z",
+  "methodology": "SCHEELS/Macy's controlled retailer audit; ProductMaster -> ProductVariant -> RetailerOffer -> ProductSourceRecord; retailer identifiers remain offer/source scoped; no inferred size-color stock or local stock.",
+  "audit_status": "partial_source_limited_server_403",
+  "source_access_note": "Public Saks Fifth Avenue indexed/browser category and PDP surfaces support controlled item-level validation, including exact product details/style codes and selected category pricing. Direct requests from both Base44 application environments to robots.txt, sitemap.xml, category pages and PDP URLs returned HTTP 403. No permitted exhaustive bulk product feed/API or enumerable sitemap source was accessible from the ingestion environment, so exhaustive catalog completion is not claimed and no access-control workaround or high-volume crawl was used.",
+  "image_policy": "Retailer-hosted image URLs were not promoted into public ProductMaster image fields solely because they are publicly visible or attributable.",
+  "price_policy_note": "Price fields were left unset when the current indexed audit surface did not expose a reliable current price; no price was inferred from older or indirect category evidence.",
+  "base44": {
+    "app_name": "The Concierge",
+    "app_id": "698951bc103c5b61b68d35b7",
+    "checkpoint_status": "created after manifests are saved"
+  },
+  "counts": {
+    "catalog_sources": 2,
+    "product_masters": 3,
+    "product_variants": 0,
+    "retailer_offers": 3,
+    "product_source_records": 6,
+    "catalog_ingestion_runs": 2,
+    "canonical_duplicates_found": 0
+  },
+  "architecture_guards": {
+    "retailer_ids_in_product_master": false,
+    "color_only_active_variants": false,
+    "offer_scope": "style",
+    "dedup_status": "review_pending_global_identifier_or_cross-retailer-confirmation"
+  },
+  "products": [
+    {
+      "brand": "Ungaro",
+      "canonical_key": "ungaro:camden-watercolor-print-pleated-cocktail-dress",
+      "product_name": "Camden Watercolor-Print Pleated Cocktail Dress",
+      "department": "women",
+      "seller_product_id": "0400026088221",
+      "retailer_sku": null,
+      "regular_price": null,
+      "current_price": null,
+      "sale_active": false,
+      "url": "https://www.saksfifthavenue.com/product/ungaro-camden-watercolor-print-pleated-cocktail-dress-0400026088221.html",
+      "product_master_id": "6ac6a76e8a1978637e3b367b",
+      "retailer_offer_id": "6ac6a78130b8a4c002d5ffe3"
+    },
+    {
+      "brand": "Burberry",
+      "canonical_key": "burberry:eddie-cotton-pique-slim-fit-polo-shirt",
+      "product_name": "Eddie Cotton Piqué Slim-Fit Polo Shirt",
+      "department": "men",
+      "seller_product_id": "0400026746639",
+      "retailer_sku": null,
+      "regular_price": 395,
+      "current_price": 395,
+      "sale_active": false,
+      "url": "https://www.saksfifthavenue.com/product/burberry-eddie-cotton-piqu%C3%A9-slim-fit-polo-shirt-0400026746639.html",
+      "product_master_id": "6ac6a76e8a1978637e3b367c",
+      "retailer_offer_id": "6ac6a78130b8a4c002d5ffe4"
+    },
+    {
+      "brand": "Burberry",
+      "canonical_key": "burberry:kids-check-cotton-blend-socks",
+      "product_name": "Kid's Check Cotton-Blend Socks",
+      "department": "kids",
+      "seller_product_id": "0400001240566",
+      "retailer_sku": null,
+      "regular_price": null,
+      "current_price": null,
+      "sale_active": false,
+      "url": "https://www.saksfifthavenue.com/product/burberry-kid-s-check-cotton-blend-socks-0400001240566.html",
+      "product_master_id": "6ac6a76e8a1978637e3b367d",
+      "retailer_offer_id": "6ac6a78130b8a4c002d5ffe5"
+    }
+  ],
+  "entity_ids": {
+    "CatalogSource": [
+      "6ac6a759ab699db122e46a65",
+      "6ac6a759ab699db122e46a66"
+    ],
+    "ProductMaster": [
+      "6ac6a76e8a1978637e3b367b",
+      "6ac6a76e8a1978637e3b367c",
+      "6ac6a76e8a1978637e3b367d"
+    ],
+    "ProductVariant": [],
+    "RetailerOffer": [
+      "6ac6a78130b8a4c002d5ffe3",
+      "6ac6a78130b8a4c002d5ffe4",
+      "6ac6a78130b8a4c002d5ffe5"
+    ],
+    "ProductSourceRecord": [
+      "6ac6a794af5c37f1e2826201",
+      "6ac6a794af5c37f1e2826202",
+      "6ac6a794af5c37f1e2826203",
+      "6ac6a794af5c37f1e2826204",
+      "6ac6a794af5c37f1e2826205",
+      "6ac6a794af5c37f1e2826206"
+    ],
+    "CatalogIngestionRun": [
+      "6ac6a7a5b3b6b7a27bf76c11",
+      "6ac6a7a5b3b6b7a27bf76c12"
+    ]
+  },
+  "audited_at": "2026-10-07T20:10:00Z"
+}
