@@ -3915,6 +3915,183 @@
         }
       ],
       "promotions": []
+    },
+    {
+      "brand_name": "APANA",
+      "brand_key": "apana",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"APANA\" official size guide",
+        "\"APANA\" size chart measurements"
+      ],
+      "checked": [],
+      "promotions": []
+    },
+    {
+      "brand_name": "APL",
+      "brand_key": "apl",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"APL\" official size guide",
+        "\"APL\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "athleticpropulsionlabs.com https://www.athleticpropulsionlabs.com",
+          "url": "https://www.athleticpropulsionlabs.com/",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "apl.com https:// www.apl.com",
+          "url": "https://www.apl.com/",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "apl.com https:// www.apl.com \u203a ebusiness \u203a tracking",
+          "url": "https://www.apl.com/ebusiness/tracking",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "athleticpropulsionlabs.com https://www.athleticpropulsionlabs.com \u203a collections \u203a mens -footwear",
+          "url": "https://www.athleticpropulsionlabs.com/collections/mens-footwear",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "aip.org https://pubs.aip.org \u203a aip \u203a apl",
+          "url": "https://pubs.aip.org/aip/apl",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "APNY",
+      "brand_key": "apny",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"APNY\" official size guide",
+        "\"APNY\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "apnyapparel.com https://www. apny apparel.com",
+          "url": "https://www.apnyapparel.com/",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "apnyapparel.com https://www. apny apparel.com \u203a collections \u203a new-arrivals",
+          "url": "https://www.apnyapparel.com/collections/new-arrivals",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "anthonysfla.com https://www.anthonysfla.com \u203a collections \u203a apny-apparel",
+          "url": "https://www.anthonysfla.com/collections/apny-apparel",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Appaman",
+      "brand_key": "appaman",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Appaman\" official size guide",
+        "\"Appaman\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "tripadvisor.com https:// www.tripadvisor.com",
+          "url": "https://www.tripadvisor.com/Attractions-g294205-Activities-Luxor_Nile_River_Valley.html",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "vanillatravels.net https://vanillatravels.net \u203a best- things-to-do-in-luxor",
+          "url": "https://vanillatravels.net/best-things-to-do-in-luxor/",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "hulu.com http://www.app.hulu.com",
+          "url": "http://www.app.hulu.com/",
+          "domain": "app.hulu.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html;charset=utf-8"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Apparis",
+      "brand_key": "apparis",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Apparis\" official size guide",
+        "\"Apparis\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "apparis.com https:// apparis .com",
+          "url": "https://apparis.com/",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "apparis.com https:// apparis .com \u203a collections \u203a shop_all",
+          "url": "https://apparis.com/collections/shop_all",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "saksfifthavenue.com https:// www.saksfifthavenue.com \u203a brand \u203a apparis",
+          "url": "https://www.saksfifthavenue.com/brand/apparis?msockid=3becb62df75d6be800eba1c6f6c76a79",
+          "error": "<HTTPError 403: 'HTTP Forbidden'>"
+        },
+        {
+          "title": "bloomingdales.com https:// www.bloomingdales.com \u203a buy \u203a apparis",
+          "url": "https://www.bloomingdales.com/buy/apparis?msockid=3becb62df75d6be800eba1c6f6c76a79",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "apparis.com https:// apparis .com \u203a collections \u203a view-all-home-collection",
+          "url": "https://apparis.com/collections/view-all-home-collection",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "apparis.com https:// apparis .com \u203a collections \u203a view-all-apparel",
+          "url": "https://apparis.com/collections/view-all-apparel",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "apparis.com https:// apparis .com \u203a collections \u203a view-all-womens-outerwear",
+          "url": "https://apparis.com/collections/view-all-womens-outerwear",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "apparis.com https:// apparis .com \u203a collections \u203a apparis -sale",
+          "url": "https://apparis.com/collections/apparis-sale",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "farfetch.com https://www.farfetch.com \u203a shopping \u203a women \u203a apparis \u203a items.aspx",
+          "url": "https://www.farfetch.com/shopping/women/apparis/items.aspx?msockid=3becb62df75d6be800eba1c6f6c76a79",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "saksfifthavenue.com https:// www.saksfifthavenue.com \u203a brand \u203a apparis",
+          "url": "https://www.saksfifthavenue.com/brand/apparis?msockid=2880b20d288663103c00a5e6292762d1",
+          "error": "<HTTPError 403: 'HTTP Forbidden'>"
+        },
+        {
+          "title": "bloomingdales.com https:// www.bloomingdales.com \u203a buy \u203a apparis",
+          "url": "https://www.bloomingdales.com/buy/apparis?msockid=2880b20d288663103c00a5e6292762d1",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "farfetch.com https://www.farfetch.com \u203a shopping \u203a women \u203a apparis \u203a items.aspx",
+          "url": "https://www.farfetch.com/shopping/women/apparis/items.aspx?msockid=2880b20d288663103c00a5e6292762d1",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
     }
   ],
   "promotions": []
