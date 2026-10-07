@@ -1,0 +1,31 @@
+{
+  "version": "2026-10-06-brand-coverage-before-sizing-precision",
+  "effective_at": "2026-10-07T04:30:00Z",
+  "catalog_policy": {
+    "brand_presence_rule": "A fashion-relevant brand discovered at an audited department store is eligible for BrandCatalog even when no trustworthy numeric brand size chart exists.",
+    "sizing_independence": "Sizing quality must never be used as a reason to omit an otherwise valid fashion brand from the catalog.",
+    "verified_priority": "Verified product-specific or brand-specific numeric sizing always takes priority over generic sizing."
+  },
+  "generic_fallback": {
+    "source": "generic_brand_fallback",
+    "confidence": "low",
+    "label": "Estimated size",
+    "adult_men": ["S","M","L","XL"],
+    "adult_women": ["S","M","L","XL"],
+    "kids_youth": ["S","M","L","XL"],
+    "measurement_driven": true,
+    "supported_apparel_groups": ["tops","bottoms","dresses","outerwear","underwear","swimwear"],
+    "excluded_from_generic_alpha_fallback": ["bras","footwear","suits","headwear"],
+    "notes": "The fallback is derived from customer body measurements and available product alpha-size labels. It is not represented as a precise brand chart and is automatically superseded by verified product or brand sizing."
+  },
+  "retailer_audit_scope": {
+    "retailer_count": 19,
+    "retailers": [
+      "Bealls Florida","Belk","Bergdorf Goodman","Bloomingdale's","Boscov's",
+      "Burlington","Dillard's","JCPenney","Kohl's","Macy's","Marshalls",
+      "Neiman Marcus","Nordstrom","Nordstrom Rack","Saks Fifth Avenue",
+      "T.J. Maxx","Target","Von Maur","Walmart"
+    ],
+    "dynamic_retailer_note": "Off-price and dynamically faceted retailers cannot be truthfully represented as permanently exhaustive. Newly discovered fashion brands are added without waiting for verified sizing."
+  }
+}
