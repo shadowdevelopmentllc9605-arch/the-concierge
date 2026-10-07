@@ -2752,6 +2752,70 @@
         }
       ],
       "promotions": []
+    },
+    {
+      "brand_name": "Amanda & Chelsea",
+      "brand_key": "amandachelsea",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Amanda & Chelsea\" official size guide",
+        "\"Amanda & Chelsea\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "fandom.com https:// amanda -the-adventurer.fandom.com \u203a wiki \u203a Amanda",
+          "url": "https://amanda-the-adventurer.fandom.com/wiki/Amanda",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "amandathe-adventurer.com https:// amanda the-adventurer.com",
+          "url": "https://amandathe-adventurer.com/",
+          "error": "<HTTPError 521: '<none>'>"
+        },
+        {
+          "title": "softonic.com https:// amanda -the-adventurer.en.softonic.com",
+          "url": "https://amanda-the-adventurer.en.softonic.com/",
+          "error": "<HTTPError 412: 'Precondition failed'>"
+        },
+        {
+          "title": "fandom.com https:// amanda -the-adventurer.fandom.com \u203a wiki \u203a Amanda _the_Adventurer",
+          "url": "https://amanda-the-adventurer.fandom.com/wiki/Amanda_the_Adventurer",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Amanda Uprichard",
+      "brand_key": "amandauprichard",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Amanda Uprichard\" official size guide",
+        "\"Amanda Uprichard\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "fandom.com https:// amanda -the-adventurer.fandom.com \u203a wiki \u203a Amanda",
+          "url": "https://amanda-the-adventurer.fandom.com/wiki/Amanda",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "amandathe-adventurer.com https:// amanda the-adventurer.com",
+          "url": "https://amandathe-adventurer.com/",
+          "error": "<HTTPError 521: '<none>'>"
+        },
+        {
+          "title": "softonic.com https:// amanda -the-adventurer.en.softonic.com",
+          "url": "https://amanda-the-adventurer.en.softonic.com/",
+          "error": "<HTTPError 412: 'Precondition failed'>"
+        },
+        {
+          "title": "fandom.com https:// amanda -the-adventurer.fandom.com \u203a wiki \u203a Amanda _the_Adventurer",
+          "url": "https://amanda-the-adventurer.fandom.com/wiki/Amanda_the_Adventurer",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
     }
   ],
   "promotions": []
