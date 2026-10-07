@@ -1,0 +1,32 @@
+{
+  "version": "2026-10-07-scheels-full-inventory-audit-01",
+  "phase": "inventory",
+  "retailer_sequence": 1,
+  "retailer": "SCHEELS",
+  "retailer_key": "scheels",
+  "architecture_changed": false,
+  "audit_status": "partial_source_access_required",
+  "baseline_after_reconciliation": {
+    "product_masters": 3,
+    "active_variants": 8,
+    "active_retailer_offers": 8
+  },
+  "completed_actions": [
+    "Reconciled duplicate pilot rows so The Concierge and Concierge Pro each have one active canonical set.",
+    "Retired duplicate Concierge Pro pilot variants, offers, and source records.",
+    "Attempted a full server-side SCHEELS crawl from the app environment.",
+    "Recorded the full-audit attempt in CatalogIngestionRun and marked the direct HTML source blocked for exhaustive bulk ingestion."
+  ],
+  "source_findings": {
+    "public_robots": "SCHEELS robots.txt allows general pages but disallows /api/ and pagination-style paths/parameters including start and sz.",
+    "server_access": "SCHEELS category and sitemap requests from the Base44 server returned a Cloudflare managed challenge.",
+    "official_affiliate": "SCHEELS' official affiliate program routes applicants to Rakuten/LinkShare.",
+    "official_creator": "SCHEELS' official Creator Program advertises a Simple Product Feed after program approval.",
+    "authorized_feed_requirement": "An approved SCHEELS product-feed source is required for an exhaustive current product, variant, image, price, and availability audit without bypassing site controls."
+  },
+  "data_quality_rule": "Do not create ProductMaster or ProductVariant rows from incomplete search-index snippets when stable identifiers and complete variant evidence are unavailable.",
+  "new_catalog_rows_from_full_attempt": 0,
+  "reason_no_bulk_rows_added": "The public indexed pages are useful for spot validation but are not an exhaustive stable variant feed.",
+  "next_operational_dependency": "Authorized SCHEELS affiliate or creator product-feed access.",
+  "observed_at": "2026-10-07T17:00:00Z"
+}
