@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import argparse, html, json, os, re, sys, time
+import argparse, base64, html, json, os, re, sys, time
 from html.parser import HTMLParser
 from urllib.parse import parse_qs, quote_plus, unquote, urljoin, urlparse
 from urllib.request import Request, urlopen
@@ -119,6 +119,19 @@ class GenericLinkParser(HTMLParser):
             self.links.append((re.sub(r"\s+"," "," ".join(self.buf)).strip(),html.unescape(self.href)))
             self.href=None; self.buf=[]
 
+def decode_bing_redirect(href):
+    try:
+        q=parse_qs(urlparse(href).query)
+        token=q.get("u",[None])[0]
+        if token and token.startswith("a1"):
+            raw=token[2:]
+            raw += "="*((4-len(raw)%4)%4)
+            decoded=base64.urlsafe_b64decode(raw.encode()).decode("utf-8","ignore")
+            if decoded.startswith("http"): return decoded
+    except Exception:
+        pass
+    return href
+
 def search_bing(query):
     url="https://www.bing.com/search?q="+quote_plus(query)
     body,_,_=fetch(url,timeout=18,max_bytes=1_600_000)
@@ -129,8 +142,10 @@ def search_bing(query):
     for title,href in p.links:
         clean=re.sub(r"\s+"," ",title or "").strip()
         if clean.lower() in nav or not clean: continue
-        if href.startswith("https://www.bing.com/ck/") and href not in seen:
-            seen.add(href); out.append((clean,href))
+        if href.startswith("https://www.bing.com/ck/"):
+            target=decode_bing_redirect(href)
+            if target.startswith("http") and target not in seen:
+                seen.add(target); out.append((clean,target))
     return out
 
 def discover_size_links(raw,base_url):
