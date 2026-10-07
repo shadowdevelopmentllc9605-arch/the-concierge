@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-07-dillards-controlled-pilot-006-01",
+  "version": "2026-10-07-dillards-controlled-pilot-006-02",
   "retailer": "Dillard's",
   "retailer_key": "dillards",
   "observed_at": "2026-10-07T18:35:00Z",
@@ -13,7 +13,7 @@
   "records": [
     {
       "product_master": {
-        "canonical_key": "murano|dillards-514226809",
+        "canonical_key": "murano:collezione-canclini-slim-fit-solid-long-sleeve-techno-knit-shirt",
         "brand_name": "Murano",
         "brand_key": "murano",
         "product_name": "Collezione Canclini Slim-Fit Solid Long-Sleeve Techno Knit Shirt",
@@ -21,23 +21,34 @@
         "category": "shirts",
         "subcategory": "button-up shirts",
         "product_type": "long-sleeve shirt",
-        "audiences": ["men"],
-        "age_groups": ["adult"],
-        "materials": ["nylon", "spandex"],
+        "audiences": [
+          "men"
+        ],
+        "age_groups": [
+          "adult"
+        ],
+        "materials": [
+          "nylon",
+          "spandex"
+        ],
         "fit_cut": "slim",
         "sleeve_style": "long sleeve",
         "closure_type": "button-front",
-        "identifier_fingerprint": "dillards|514226809",
-        "image_urls": []
+        "identifier_fingerprint": "murano:collezione-canclini-slim-fit-solid-long-sleeve-techno-knit-shirt",
+        "image_urls": [],
+        "canonical_confidence": 0.85,
+        "dedup_status": "review"
       },
       "observed_variant": {
         "variant_key": "murano|dillards-514226809|color-pale-blue",
         "color_name": "Pale Blue",
         "size_label": null,
-        "rule": "Color-only observed variant; no size/color stock combination inferred."
+        "rule": "Retained only as audit history. Color-only/size-unselected evidence is not an active ProductVariant.",
+        "active": false,
+        "status": "invalidated"
       },
       "retailer_offer": {
-        "offer_key": "dillards|514226809|pale-blue|online",
+        "offer_key": "dillards|514226809|online",
         "seller_product_id": "514226809",
         "retailer_sku": "514226809",
         "current_price": 79.5,
@@ -45,17 +56,30 @@
         "currency": "USD",
         "availability": "unknown",
         "available_online": true,
-        "offer_url": "https://www.dillards.com/p/murano-collezione-canclini-slim-fit-solid-long-sleeve-techno-woven-shirt/514226809"
+        "offer_url": "https://www.dillards.com/p/murano-collezione-canclini-slim-fit-solid-long-sleeve-techno-woven-shirt/514226809",
+        "offer_scope": "style"
       },
       "visible_options": {
-        "sizes": ["XS", "S", "M", "L", "XL", "2XL"],
-        "colors": ["Pale Blue", "Black", "Navy", "White"]
+        "sizes": [
+          "XS",
+          "S",
+          "M",
+          "L",
+          "XL",
+          "2XL"
+        ],
+        "colors": [
+          "Pale Blue",
+          "Black",
+          "Navy",
+          "White"
+        ]
       },
       "item_number": "20246259"
     },
     {
       "product_master": {
-        "canonical_key": "class-club|dillards-519245233",
+        "canonical_key": "class-club:big-boys-ff-stretch-chino-pants",
         "brand_name": "Class Club",
         "brand_key": "class-club",
         "product_name": "Big Boys FF Stretch Chino Pants",
@@ -63,40 +87,63 @@
         "category": "pants",
         "subcategory": "chinos",
         "product_type": "chino pants",
-        "audiences": ["boys"],
-        "age_groups": ["big_kid"],
-        "materials": ["cotton", "spandex"],
+        "audiences": [
+          "boys"
+        ],
+        "age_groups": [
+          "big_kid"
+        ],
+        "materials": [
+          "cotton",
+          "spandex"
+        ],
         "rise": "mid rise",
         "closure_type": "hook-and-zip",
-        "identifier_fingerprint": "dillards|519245233",
-        "image_urls": []
+        "identifier_fingerprint": "class-club:big-boys-ff-stretch-chino-pants",
+        "image_urls": [],
+        "canonical_confidence": 0.85,
+        "dedup_status": "review"
       },
       "observed_variant": {
         "variant_key": "class-club|dillards-519245233|color-soft-khaki",
         "color_name": "Soft Khaki",
         "size_label": null,
-        "rule": "Color-only observed variant; no size/color stock combination inferred."
+        "rule": "Retained only as audit history. Color-only/size-unselected evidence is not an active ProductVariant.",
+        "active": false,
+        "status": "invalidated"
       },
       "retailer_offer": {
-        "offer_key": "dillards|519245233|soft-khaki|online",
+        "offer_key": "dillards|519245233|online",
         "seller_product_id": "519245233",
         "retailer_sku": "519245233",
-        "current_price": 48.0,
-        "regular_price": 48.0,
+        "current_price": 48,
+        "regular_price": 48,
         "currency": "USD",
         "availability": "unknown",
         "available_online": true,
-        "offer_url": "https://www.dillards.com/p/class-club-big-boys-8-20-ff-stretch-chino-pants/519245233"
+        "offer_url": "https://www.dillards.com/p/class-club-big-boys-8-20-ff-stretch-chino-pants/519245233",
+        "offer_scope": "style"
       },
       "visible_options": {
-        "sizes": ["8", "10", "12", "14", "16", "18", "20"],
-        "colors": ["Soft Khaki", "Stone"]
+        "sizes": [
+          "8",
+          "10",
+          "12",
+          "14",
+          "16",
+          "18",
+          "20"
+        ],
+        "colors": [
+          "Soft Khaki",
+          "Stone"
+        ]
       },
       "item_number": "20533407"
     },
     {
       "product_master": {
-        "canonical_key": "antonio-melani|dillards-520912513",
+        "canonical_key": "antonio-melani:carter-short-sleeve-crew-neck-crepe-sheath-midi-dress",
         "brand_name": "Antonio Melani",
         "brand_key": "antonio-melani",
         "product_name": "Carter Short Sleeve Crew Neck Crepe Sheath Midi Dress",
@@ -104,42 +151,75 @@
         "category": "dresses",
         "subcategory": "midi dresses",
         "product_type": "sheath midi dress",
-        "audiences": ["women"],
-        "age_groups": ["adult"],
-        "materials": ["cotton", "elastane"],
+        "audiences": [
+          "women"
+        ],
+        "age_groups": [
+          "adult"
+        ],
+        "materials": [
+          "cotton",
+          "elastane"
+        ],
         "silhouette": "sheath",
         "length_profile": "midi",
         "neckline": "crew neck",
         "sleeve_style": "short sleeve",
         "closure_type": "center-back zipper",
-        "identifier_fingerprint": "dillards|520912513",
-        "image_urls": []
+        "identifier_fingerprint": "antonio-melani:carter-short-sleeve-crew-neck-crepe-sheath-midi-dress",
+        "image_urls": [],
+        "canonical_confidence": 0.85,
+        "dedup_status": "review"
       },
       "observed_variant": {
         "variant_key": "antonio-melani|dillards-520912513|color-black",
         "color_name": "Black",
         "size_label": null,
-        "rule": "Color-only observed variant; no size/color stock combination inferred."
+        "rule": "Retained only as audit history. Color-only/size-unselected evidence is not an active ProductVariant.",
+        "active": false,
+        "status": "invalidated"
       },
       "retailer_offer": {
-        "offer_key": "dillards|520912513|black|online",
+        "offer_key": "dillards|520912513|online",
         "seller_product_id": "520912513",
         "retailer_sku": "520912513",
-        "current_price": 159.0,
-        "regular_price": 159.0,
+        "current_price": 159,
+        "regular_price": 159,
         "currency": "USD",
         "availability": "unknown",
         "available_online": true,
-        "offer_url": "https://www.dillards.com/p/antonio-melani-carter-short-sleeve-crew-neck-crepe-sheath-midi-drees/520912513"
+        "offer_url": "https://www.dillards.com/p/antonio-melani-carter-short-sleeve-crew-neck-crepe-sheath-midi-drees/520912513",
+        "offer_scope": "style"
       },
       "visible_options": {
-        "sizes": ["0", "2", "4", "6", "8", "10", "12", "14", "16", "18"],
-        "colors": ["Black", "Chestnut", "Navy", "Sand"]
+        "sizes": [
+          "0",
+          "2",
+          "4",
+          "6",
+          "8",
+          "10",
+          "12",
+          "14",
+          "16",
+          "18"
+        ],
+        "colors": [
+          "Black",
+          "Chestnut",
+          "Navy",
+          "Sand"
+        ]
       },
       "item_number": "20643323"
     }
   ],
   "image_policy": "No Dillard-hosted product image was promoted into ProductMaster. Attribution alone is not treated as display permission.",
-  "deduplication_rule": "Retailer PDP/color/size representations do not become duplicate ProductMaster rows. Cross-retailer identity is reconciled against brand plus stable identifiers/style evidence when available.",
-  "availability_rule": "Add-to-bag presence and visible option lists are not treated as proof of a specific size-color stock combination."
+  "deduplication_rule": "Retailer product IDs stay on RetailerOffer/ProductSourceRecord. ProductMaster uses manufacturer/global identity when available; otherwise brand + normalized product name is a review candidate.",
+  "availability_rule": "Visible colors/sizes without an explicitly confirmed sellable combination remain source evidence; style-level price offers do not imply variant stock.",
+  "correction": {
+    "corrected_at": "2026-10-07T19:10:00Z",
+    "reason": "Retailer product IDs cannot define global ProductMaster identity, and color-only observations cannot be active apparel variants.",
+    "active_variants_after_correction": 0
+  }
 }
