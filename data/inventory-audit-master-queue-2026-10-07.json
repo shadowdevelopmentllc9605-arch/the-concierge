@@ -29,7 +29,8 @@
           "sequence": 3,
           "name": "Nordstrom",
           "key": "nordstrom",
-          "status": "queued"
+          "status": "partial_source_access_required",
+          "blocker": "Official product sitemaps enumerate 526,058 current product URLs, but the Base44 environment receives an anti-bot/browser interstitial for PDP metadata and the sitemap lacks brand/variant/price/availability fields. Published crawl controls disallow /api/* workarounds. An authorized Nordstrom bulk product source is required for exhaustive ingestion."
         },
         {
           "sequence": 4,
@@ -168,5 +169,5 @@
     "Record prices and availability with freshness timestamps.",
     "Do not treat image attribution as permission; public image display follows the separate image-rights policy."
   ],
-  "updated_at": "2026-10-07T17:29:00Z"
+  "updated_at": "2026-10-07T17:50:46Z"
 }
