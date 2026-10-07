@@ -174,7 +174,14 @@ export default async function (req: Request): Promise<Response> {
       const product = row.product || row;
       const brandName = product.brand_name || product.brand || "Unknown Brand";
       const brandKey = normalizeKey(product.brand_key || brandName) || "unknown-brand";
-      const key = product.canonical_key || canonicalKey({ ...product, brand_key: brandKey });
+      // Retailer-side IDs (SKU, Web ID, PDP/product ID) are offer/source identity, not global ProductMaster identity.
+      // Retailer-owned sources must always derive the canonical key from manufacturer/global identifiers or, as a
+      // review fallback, brand + normalized product name. Non-retailer sources may provide an explicit canonical key.
+      const suppliedCanonicalKey = String(product.canonical_key || "").trim();
+      const key =
+        source.owner_type !== "retailer" && suppliedCanonicalKey
+          ? suppliedCanonicalKey
+          : canonicalKey({ ...product, brand_key: brandKey });
 
       let masters = await base44.asServiceRole.entities.ProductMaster.filter({ canonical_key: key });
       if (!masters[0] && product.primary_gtin) {
