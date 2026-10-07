@@ -1,0 +1,82 @@
+{
+  "name": "RetailerBrandAuditStatus",
+  "type": "object",
+  "properties": {
+    "retailer_name": {
+      "type": "string"
+    },
+    "retailer_key": {
+      "type": "string"
+    },
+    "audit_scope": {
+      "type": "string"
+    },
+    "audit_status": {
+      "type": "string",
+      "enum": [
+        "official_directory_audited",
+        "category_facet_audited",
+        "dynamic_partial",
+        "no_stable_public_directory",
+        "blocked_for_automation",
+        "pending"
+      ]
+    },
+    "audiences": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "source_urls": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "source_record_count": {
+      "type": "number",
+      "default": 0
+    },
+    "audited_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "refresh_required": {
+      "type": "boolean",
+      "default": true
+    },
+    "notes": {
+      "type": "string"
+    },
+    "active": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "retailer_name",
+    "retailer_key",
+    "audit_status",
+    "audited_at",
+    "active"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": true,
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
