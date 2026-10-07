@@ -1,0 +1,125 @@
+{
+  "version": "2026-10-07-inventory-post-audit-safety-stress-006-01",
+  "phase": "inventory",
+  "retailer_sequence": 6,
+  "retailer": "Dillard's",
+  "audit_date": "2026-10-07",
+  "gate_status": "passed_with_known_preexisting_external_configuration_gap",
+  "progression_allowed": true,
+  "apps": {
+    "The Concierge": {
+      "typecheck": "pass",
+      "lint": "pass",
+      "production_build": "pass",
+      "dependency_audit": {
+        "status": "pass",
+        "vulnerabilities": {
+          "info": 0,
+          "low": 0,
+          "moderate": 0,
+          "high": 0,
+          "critical": 0,
+          "total": 0
+        }
+      },
+      "hardcoded_secret_literal_scan": {
+        "status": "pass",
+        "hits": 0
+      },
+      "runtime_stress": {
+        "status": "pass",
+        "requests": 200,
+        "http_200": 200
+      },
+      "unauthorized_bridge_stress": {
+        "status": "pass",
+        "endpoint": "vendorBridge",
+        "probes": 50,
+        "http_401": 50
+      },
+      "custom_entity_rls": {
+        "status": "pass",
+        "entities_reviewed": 32,
+        "issues": 0
+      },
+      "catalog_integrity": {
+        "status": "pass",
+        "duplicate_canonical_keys": 0,
+        "retailer_scoped_active_masters": 0,
+        "active_unconfirmed_pseudo_variants": 0,
+        "orphan_active_offers": 0,
+        "broken_active_source_links": 0,
+        "variants_with_missing_master": 0,
+        "offers_with_missing_variant_ref": 0
+      }
+    },
+    "Concierge Pro": {
+      "typecheck": "pass",
+      "lint": "pass",
+      "production_build": "pass",
+      "dependency_audit": {
+        "status": "pass",
+        "vulnerabilities": {
+          "info": 0,
+          "low": 0,
+          "moderate": 0,
+          "high": 0,
+          "critical": 0,
+          "total": 0
+        }
+      },
+      "hardcoded_secret_literal_scan": {
+        "status": "pass",
+        "hits": 0
+      },
+      "runtime_stress": {
+        "status": "pass",
+        "requests": 200,
+        "http_200": 200
+      },
+      "unauthorized_bridge_stress": {
+        "status": "pass",
+        "endpoint": "receiveCustomerEvent",
+        "probes": 50,
+        "http_401": 50
+      },
+      "custom_entity_rls": {
+        "status": "pass",
+        "entities_reviewed": 24,
+        "issues": 0
+      },
+      "catalog_integrity": {
+        "status": "pass",
+        "duplicate_canonical_keys": 0,
+        "retailer_scoped_active_masters": 0,
+        "active_unconfirmed_pseudo_variants": 0,
+        "orphan_active_offers": 0,
+        "broken_active_source_links": 0,
+        "variants_with_missing_master": 0,
+        "offers_with_missing_variant_ref": 0
+      }
+    }
+  },
+  "cross_app_sync": {
+    "status": "pass",
+    "enabled_in_both_apps": true,
+    "shared_token_present_in_both": true,
+    "shared_tokens_match": true,
+    "secret_exposed": false
+  },
+  "known_preexisting_external_configuration_gaps": [
+    {
+      "system": "Stripe",
+      "status": "preexisting_not_inventory_regression",
+      "shopper_webhook_probe": "HTTP 503 - Stripe webhook is not configured.",
+      "pro_billing_webhook_probe": "HTTP 503 - Stripe billing webhook is not configured.",
+      "gate_effect": "reported separately; does not block inventory progression because it predates and is unrelated to the inventory audit"
+    }
+  ],
+  "notes": [
+    "All safety/stress actions were non-destructive; no fake purchase, payout, customer mutation or business-data mutation was performed.",
+    "The Nordstrom house-brand ProductMaster was reviewed and is not a retailer-ID identity defect; its brand is legitimately Nordstrom and it remains a review candidate.",
+    "The mandatory post-audit safety/stress gate is now part of the inventory master queue and catalog architecture rules for every future retailer audit."
+  ],
+  "observed_at": "2026-10-07T19:30:00Z"
+}
