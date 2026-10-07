@@ -2660,6 +2660,38 @@
         }
       ],
       "promotions": []
+    },
+    {
+      "brand_name": "Alternative Apparel",
+      "brand_key": "alternativeapparel",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Alternative Apparel\" official size guide",
+        "\"Alternative Apparel\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "merriam-webster.com https://www.merriam-webster.com \u203a dictionary \u203a alternative",
+          "url": "https://www.merriam-webster.com/dictionary/alternative",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "alternativeto.net https:// alternative to.net",
+          "url": "https://alternativeto.net/",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "merriam-webster.com https://www.merriam-webster.com \u203a thesaurus \u203a alternative",
+          "url": "https://www.merriam-webster.com/thesaurus/alternative",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "alternativeto.net https:// alternative to.net \u203a browse",
+          "url": "https://alternativeto.net/browse/",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
     }
   ],
   "promotions": []
