@@ -1,0 +1,116 @@
+{
+  "version": "2026-10-07-kohls-full-inventory-audit-004-01",
+  "phase": "inventory",
+  "retailer_sequence": 4,
+  "retailer": "Kohl's",
+  "retailer_key": "kohls",
+  "architecture_changed": false,
+  "audit_status": "partial_source_access_required",
+  "scope": {
+    "catalog_scope": "Concierge fashion inventory: apparel, footwear and fashion accessories. Beauty, home, furniture, jewelry/watches and other non-clothing merchandise are outside this clothing-focused audit except where an item is wearable fashion.",
+    "departments": [
+      {
+        "name": "Women's apparel",
+        "subscope": [
+          "core clothing",
+          "petite",
+          "plus",
+          "maternity",
+          "activewear",
+          "swim"
+        ],
+        "status": "public_department_surface_confirmed_bulk_enumeration_unavailable"
+      },
+      {
+        "name": "Men's apparel",
+        "subscope": [
+          "core clothing",
+          "dress clothing",
+          "suits",
+          "activewear",
+          "big & tall",
+          "swim"
+        ],
+        "status": "public_department_surface_confirmed_bulk_enumeration_unavailable"
+      },
+      {
+        "name": "Juniors/teen apparel",
+        "status": "public_department_surface_confirmed_bulk_enumeration_unavailable"
+      },
+      {
+        "name": "Girls, boys & tween apparel",
+        "status": "public_department_surface_confirmed_bulk_enumeration_unavailable"
+      },
+      {
+        "name": "Baby & toddler apparel",
+        "status": "public_department_surface_confirmed_bulk_enumeration_unavailable"
+      },
+      {
+        "name": "Women's footwear",
+        "status": "public_department_surface_confirmed_bulk_enumeration_unavailable"
+      },
+      {
+        "name": "Men's footwear",
+        "status": "public_department_surface_confirmed_bulk_enumeration_unavailable"
+      },
+      {
+        "name": "Kids & baby footwear",
+        "status": "public_department_surface_confirmed_bulk_enumeration_unavailable"
+      },
+      {
+        "name": "Handbags & fashion accessories",
+        "status": "public_department_surface_confirmed_bulk_enumeration_unavailable"
+      },
+      {
+        "name": "Sports fan apparel",
+        "status": "public_department_surface_confirmed_bulk_enumeration_unavailable"
+      }
+    ]
+  },
+  "source_access": {
+    "official_public_site_map": "https://www.kohls.com/feature/sitemapmain.jsp?icid=ft-shop-site-map",
+    "official_xml_sitemap": "https://www.kohls.com/sitemap.xml",
+    "xml_sitemap_declared_by_robots": true,
+    "base44_direct_sitemap_status": "Akamai HTTP 403",
+    "base44_direct_robots_status": "Akamai HTTP 403",
+    "browser_indexed_category_and_product_pages": "readable for controlled validation",
+    "exhaustive_product_url_count": null
+  },
+  "baseline_after_pilot": {
+    "product_masters_created": 3,
+    "active_variants_created": 3,
+    "active_retailer_offers_created": 3,
+    "active_source_records_created": 9
+  },
+  "completed_actions": [
+    "Recovered the existing shared ProductMaster architecture and SCHEELS/Macy's/Nordstrom controlled inventory methodology without schema changes.",
+    "Confirmed no pre-existing Kohl's RetailerOffer or Kohl's CatalogSource records existed before Inventory Audit #004.",
+    "Confirmed Kohl's public site map exposes the intended clothing, footwear and fashion-accessory department structure.",
+    "Confirmed Kohl's public robots file declares an official XML sitemap.",
+    "Tested the official robots and sitemap endpoints from the Base44 application environment; both returned Akamai HTTP 403.",
+    "Validated three current product pages spanning men's, women's and kids' apparel and created only explicitly observed variants.",
+    "Kept the Levi's offer availability unknown because no size was selected; no size availability was inferred from the general size chart.",
+    "Did not infer local store inventory or stock quantities.",
+    "Did not promote retailer-hosted product images into public ProductMaster image fields because attribution alone does not establish display rights.",
+    "Recorded both a completed controlled verification run and a partial full-audit run in both Base44 apps."
+  ],
+  "source_findings": {
+    "public_department_visibility": "Kohl's public site map and live category pages expose broad fashion department coverage including women, men, juniors, kids, baby, plus, maternity, footwear, accessories and sports-fan apparel.",
+    "product_page_visibility": "Current public product pages expose product name, brand, price, colors, selected size where present, retailer SKU and product details sufficient for controlled row validation.",
+    "bulk_source_gap": "The officially declared XML sitemap cannot be fetched from the Base44 server environment because Akamai returns HTTP 403, preventing reliable exhaustive server-side enumeration.",
+    "dynamic_page_gap": "Category pages are large, dynamic and paginated and are not treated as an exhaustive product/variant/availability feed.",
+    "prohibited_workaround": "No blocked/private endpoint or access-control bypass was used.",
+    "required_for_full_completion": "An authorized Kohl's bulk product feed/API/export or another permitted machine-readable source accessible to the ingestion environment with product identifiers, variants, current price and availability."
+  },
+  "data_quality_rule": "Do not infer unobserved size/color stock, do not treat a size chart as proof that a size is currently offered, and keep retailer-side product IDs/SKUs in offer/source provenance rather than treating them as manufacturer-global identity.",
+  "new_catalog_rows_from_controlled_pilot": {
+    "product_masters": 3,
+    "variants": 3,
+    "retailer_offers": 3,
+    "source_records": 9
+  },
+  "duplicates_created": 0,
+  "next_operational_dependency": "Authorized Kohl's bulk product source accessible from the application environment.",
+  "next_retailer_after_handoff": "#005 JCPenney",
+  "observed_at": "2026-10-07T18:05:00Z"
+}
