@@ -1,0 +1,23 @@
+{
+  "version": "2026-10-07-retailer-audit-027-rally-house-lincoln",
+  "retailer": "Rally House Lincoln",
+  "retailer_key": "rallyhouselincoln",
+  "audit_number": 27,
+  "audited_at": "2026-10-07T15:30:00Z",
+  "audit_status": "official_store_brand_list_audited",
+  "source_urls": [
+    "https://www.rallyhouse.com/stores/lincoln/6100-o-street",
+    "https://www.rallyhouse.com/stores/lincoln/6891-a-street",
+    "https://www.rallyhouse.com/stores/lincoln/321-n-8th-street"
+  ],
+  "confirmed_brand_keys": 16,
+  "new_brand_count": 4,
+  "new_brands": [
+    "WinCraft",
+    "Rally Brand",
+    "Logo Brands",
+    "Legacy"
+  ],
+  "notes": "Retailer audit #27. Current Lincoln Rally House store pages were used to build the fan-apparel/headwear brand set. 16 canonical keys attached; WinCraft, Rally Brand, Logo Brands and Legacy were newly added.",
+  "sizing_policy": "Brand inclusion is independent of verified sizing; compatible apparel may use low-confidence generic S/M/L/XL until verified sizing is available."
+}
