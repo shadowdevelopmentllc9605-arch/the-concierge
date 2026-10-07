@@ -2692,6 +2692,66 @@
         }
       ],
       "promotions": []
+    },
+    {
+      "brand_name": "Altuzarra",
+      "brand_key": "altuzarra",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Altuzarra\" official size guide",
+        "\"Altuzarra\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "altuzarra.com https:// altuzarra .com",
+          "url": "https://altuzarra.com/",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "altuzarra.com https:// altuzarra .com \u203a collections \u203a home",
+          "url": "https://altuzarra.com/collections/home",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "saksfifthavenue.com https://www.saksfifthavenue.com \u203a brand \u203a altuzarra",
+          "url": "https://www.saksfifthavenue.com/brand/altuzarra?msockid=02b44aa789576ca418625d4c88a16d25",
+          "error": "<HTTPError 403: 'HTTP Forbidden'>"
+        },
+        {
+          "title": "altuzarramode.shop https:// altuzarra mode.shop",
+          "url": "https://altuzarramode.shop/",
+          "domain": "altuzarramode.shop",
+          "score": 8,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "bloomingdales.com https://www.bloomingdales.com \u203a buy \u203a altuzarra",
+          "url": "https://www.bloomingdales.com/buy/altuzarra?msockid=02b44aa789576ca418625d4c88a16d25",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "net-a-porter.com https://www.net-a-porter.com \u203a en-us \u203a shop \u203a designer \u203a altuzarra",
+          "url": "https://www.net-a-porter.com/en-us/shop/designer/altuzarra?msockid=02b44aa789576ca418625d4c88a16d25",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "saksfifthavenue.com https://www.saksfifthavenue.com \u203a brand \u203a altuzarra",
+          "url": "https://www.saksfifthavenue.com/brand/altuzarra?msockid=1f3bc641a8d067b90ee6d1aaa918660a",
+          "error": "<HTTPError 403: 'HTTP Forbidden'>"
+        },
+        {
+          "title": "bloomingdales.com https://www.bloomingdales.com \u203a buy \u203a altuzarra",
+          "url": "https://www.bloomingdales.com/buy/altuzarra?msockid=1f3bc641a8d067b90ee6d1aaa918660a",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "net-a-porter.com https://www.net-a-porter.com \u203a en-us \u203a shop \u203a designer \u203a altuzarra",
+          "url": "https://www.net-a-porter.com/en-us/shop/designer/altuzarra?msockid=1f3bc641a8d067b90ee6d1aaa918660a",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
     }
   ],
   "promotions": []
