@@ -71,7 +71,7 @@
           "sequence": 9,
           "name": "Saks Fifth Avenue",
           "key": "saksfifthavenue",
-          "status": "queued"
+          "status": "partial_source_access_required"
         },
         {
           "sequence": 10,
@@ -176,7 +176,7 @@
     "Retailer SKU, Web ID, PDP/product ID or other retailer-specific identifier must never be used as ProductMaster canonical_key or identifier_fingerprint; retailer identifiers belong on RetailerOffer and ProductSourceRecord. If no manufacturer/global identifier is available, use brand + normalized product name as a review candidate.",
     "Do not create an active apparel ProductVariant from color-only or size-unselected evidence; keep the retailer offer at style scope until a sellable size/color combination is explicitly confirmed."
   ],
-  "updated_at": "2026-10-07T20:00:00Z",
+  "updated_at": "2026-10-07T20:25:00Z",
   "post_audit_safety_stress_gate": {
     "required": true,
     "applies_after_every_inventory_audit": true,
@@ -199,11 +199,11 @@
     "pass_rule": "Do not start the next retailer audit until both apps pass the post-audit safety/stress gate, or a specific blocking defect is documented and repaired/retested."
   },
   "latest_post_audit_safety_stress_result": {
-    "retailer_sequence": 8,
-    "retailer": "Neiman Marcus",
-    "result_file": "data/inventory-post-audit-safety-stress-008-neiman-marcus-2026-10-07.json",
+    "retailer_sequence": 9,
+    "retailer": "Saks Fifth Avenue",
+    "result_file": "data/inventory-post-audit-safety-stress-009-saks-fifth-avenue-2026-10-07.json",
     "gate_status": "passed_with_known_preexisting_external_configuration_gap",
     "progression_allowed": true,
-    "tested_at": "2026-10-07T20:00:00Z"
+    "tested_at": "2026-10-07T20:25:00Z"
   }
 }
