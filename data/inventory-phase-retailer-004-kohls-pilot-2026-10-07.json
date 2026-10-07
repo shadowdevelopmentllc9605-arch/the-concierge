@@ -1,0 +1,82 @@
+{
+  "version": "2026-10-07-kohls-inventory-audit-004-01",
+  "phase": "inventory",
+  "retailer_sequence": 4,
+  "retailer": "Kohl's",
+  "retailer_key": "kohls",
+  "audit_status": "controlled_pilot_complete_full_catalog_partial_source_access_required",
+  "architecture_changed": false,
+  "source": {
+    "sitemap_source_key": "kohls_public_sitemap",
+    "html_source_key": "kohls_public_product_html",
+    "sitemap_access_status": "blocked_from_base44_by_akamai_403",
+    "html_access_status": "degraded_for_server_side_bulk_ingestion_but_public_browser_evidence_available",
+    "terms_status": "review_required",
+    "robots_observation": "Kohl's publicly declares https://www.kohls.com/sitemap.xml. No access-control bypass or private endpoint was used."
+  },
+  "pilot_results": {
+    "product_masters_created": 3,
+    "variants_created": 3,
+    "retailer_offers_created": 3,
+    "source_records_created": 9,
+    "failures": 0,
+    "duplicates_created": 0,
+    "offer_scope_note": "Men's Nike Black/XS and kids' Nike Black/SMALL received variant-level in-stock offers because the live pages explicitly showed selected color, selected size, SKU and Add to Cart. The Levi's Lapis Speed SKU received a color-level variant and availability=unknown because no size was selected."
+  },
+  "sampled_products": [
+    {
+      "brand": "Nike",
+      "product": "Men's Nike Club Pullover Fleece Hoodie",
+      "seller_product_id": "prd-7659648",
+      "retailer_sku": "60682702",
+      "department": "Men",
+      "regular_price": 70,
+      "current_price": 60,
+      "offer_scope": "variant",
+      "observed_variant": {
+        "size": "XS",
+        "color": "Black",
+        "availability": "in_stock"
+      }
+    },
+    {
+      "brand": "Levi's",
+      "product": "Women's Levi's® Classic Straight-Leg Jeans",
+      "seller_product_id": "prd-3069612",
+      "retailer_sku": "47865716",
+      "department": "Women",
+      "regular_price": 64.95,
+      "current_price": 39.99,
+      "offer_scope": "variant",
+      "observed_variant": {
+        "size": null,
+        "color": "Lapis Speed",
+        "availability": "unknown"
+      }
+    },
+    {
+      "brand": "Nike",
+      "product": "Kids 8-20 Nike Sportswear Club Embroidered Logo Fleece Pullover Hoodie in Regular & Plus",
+      "seller_product_id": "prd-6120561",
+      "retailer_sku": "55593349",
+      "department": "Kids",
+      "regular_price": 45,
+      "current_price": 33.75,
+      "offer_scope": "variant",
+      "observed_variant": {
+        "size": "SMALL",
+        "color": "Black",
+        "availability": "in_stock"
+      }
+    }
+  ],
+  "deduplication": {
+    "preflight_exact_brand_product_name_matches": 0,
+    "canonical_confidence": 0.85,
+    "dedup_status": "review",
+    "reason": "Kohl's prd IDs and SKUs are retailer-side identifiers. They remain in RetailerOffer/source provenance and are not treated as manufacturer-global product identity."
+  },
+  "image_policy": "Kohl's pages expose retailer-hosted product images, but none were promoted into ProductMaster public image fields. Attribution alone is not treated as display permission.",
+  "next_scope": "Kohl's cannot be called exhaustive until a permitted bulk source accessible to the ingestion environment is available. Do not infer size/color matrices or local stock from general selectors or size charts.",
+  "observed_at": "2026-10-07T18:05:00Z"
+}
