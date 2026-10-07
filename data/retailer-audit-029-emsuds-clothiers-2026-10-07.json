@@ -1,0 +1,17 @@
+{
+  "version": "2026-10-07-retailer-audit-029-emsuds-clothiers",
+  "retailer": "Emsud's Clothiers",
+  "retailer_key": "emsuds",
+  "audit_number": 29,
+  "audited_at": "2026-10-07T15:30:00Z",
+  "audit_status": "published_brand_list_audited",
+  "source_urls": [
+    "https://www.emsuds.com/men-s-gallery",
+    "https://www.emsuds.com/"
+  ],
+  "confirmed_brand_keys": 4,
+  "new_brand_count": 0,
+  "new_brands": [],
+  "notes": "Retailer audit #29. Current Emsud's gallery explicitly identifies Johnston & Murphy, Nunn Bush, Florsheim and Stacy Adams footwear. All four already existed; retailer presence was attached with no new canonical brand creation.",
+  "sizing_policy": "Brand inclusion is independent of verified sizing; compatible apparel may use low-confidence generic S/M/L/XL until verified sizing is available."
+}
