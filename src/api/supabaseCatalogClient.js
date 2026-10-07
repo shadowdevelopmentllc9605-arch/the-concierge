@@ -28,7 +28,6 @@ async function request(table, params = {}) {
   const response = await fetch(buildUrl(table, params), {
     headers: {
       apikey: SUPABASE_PUBLISHABLE_KEY,
-      Authorization: `Bearer ${SUPABASE_PUBLISHABLE_KEY}`,
       Accept: 'application/json',
     },
   });
