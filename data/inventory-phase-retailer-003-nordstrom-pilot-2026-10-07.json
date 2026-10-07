@@ -1,0 +1,76 @@
+{
+  "version": "2026-10-07-nordstrom-inventory-audit-003-01",
+  "phase": "inventory",
+  "retailer_sequence": 3,
+  "retailer": "Nordstrom",
+  "retailer_key": "nordstrom",
+  "audit_status": "controlled_pilot_complete_full_catalog_partial_source_access_required",
+  "architecture_changed": false,
+  "source": {
+    "sitemap_source_key": "nordstrom_public_product_sitemap",
+    "html_source_key": "nordstrom_public_product_html",
+    "sitemap_access_status": "healthy",
+    "html_access_status": "degraded_for_server_side_bulk_ingestion",
+    "terms_status": "review_required",
+    "robots_observation": "Nordstrom publishes https://www.nordstrom.com/sitemap.xml. General product and browse URLs are not blanket-disallowed, while /api/* is disallowed except narrow explicit allowances. Internal API workarounds were not used."
+  },
+  "pilot_results": {
+    "product_masters_created": 3,
+    "variants_created": 1,
+    "retailer_offers_created": 3,
+    "source_records_created": 7,
+    "failures": 0,
+    "duplicates_created": 0,
+    "offer_scope_note": "Two products received style-level offers because current price was visible but no specific live size was exposed. Only the vineyard vines chinos received a ProductVariant and variant-level offer because the public page explicitly showed size 14, Nautical Navy, with only 1 left."
+  },
+  "sampled_products": [
+    {
+      "brand": "Nordstrom",
+      "product": "Non-Iron Trim Fit Solid Cotton Dress Shirt",
+      "item_number": "10403147",
+      "core_product_id": "333333G4MF",
+      "department": "Men",
+      "current_price": 79.50,
+      "offer_scope": "style",
+      "observed_colors": ["White", "Blue Skyway"],
+      "variant_created": false
+    },
+    {
+      "brand": "Petal & Pup",
+      "product": "Emersyn Lace Sheath Dress",
+      "item_number": "10328275",
+      "core_product_id": "333333DQ53",
+      "department": "Women",
+      "current_price": 109.00,
+      "offer_scope": "style",
+      "observed_colors": ["White"],
+      "variant_created": false
+    },
+    {
+      "brand": "vineyard vines",
+      "product": "Kids' Slim Fit Chinos",
+      "item_number": "10423356",
+      "core_product_id": "333333GQRB",
+      "department": "Kids",
+      "current_price": 38.67,
+      "regular_price": 59.50,
+      "offer_scope": "variant",
+      "observed_variant": {
+        "size": "14",
+        "color": "Nautical Navy",
+        "availability": "limited",
+        "stock_quantity": 1
+      },
+      "variant_created": true
+    }
+  ],
+  "deduplication": {
+    "preflight_exact_brand_product_name_matches": 0,
+    "canonical_confidence": 0.82,
+    "dedup_status": "review",
+    "reason": "Nordstrom Item # and Core Product ID are retailer-side identifiers and were kept on RetailerOffer/source provenance rather than treated as global product identity."
+  },
+  "image_policy": "Official product sitemaps expose Nordstrom-hosted image URLs, but none were promoted into ProductMaster public image fields. Attribution alone is not treated as display permission.",
+  "next_scope": "Continue Nordstrom only through permitted public sources or an authorized bulk source. Do not infer size/color matrices from separate selectors and do not use disallowed /api/* paths.",
+  "observed_at": "2026-10-07T17:49:11Z"
+}
