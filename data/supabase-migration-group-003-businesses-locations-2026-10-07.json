@@ -1,0 +1,17 @@
+{
+  "migration_group": "003_businesses_store_locations",
+  "date": "2026-10-07",
+  "source_counts": {"businesses": 1, "business_locations": 0},
+  "supabase": {
+    "tables_created": ["public.businesses", "public.business_locations"],
+    "staging_tables": ["private.base44_business_staging", "private.base44_business_location_staging"],
+    "staged_businesses": 1,
+    "staged_locations": 0,
+    "ownership_rls_policies": 8,
+    "claim_trigger": "on_auth_user_claim_base44_business",
+    "stripe_managed_columns_not_client_writable": true
+  },
+  "production_cutover": "not_live_yet",
+  "status": "database_complete_staged",
+  "next_controlled_group": "employees_and_permissions"
+}
