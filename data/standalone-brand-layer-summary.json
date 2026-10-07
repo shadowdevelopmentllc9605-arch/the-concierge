@@ -1,32 +1,44 @@
 {
   "version": "2026-10-07-standalone-brand-layer-summary",
-  "as_of": "2026-10-07T15:00:00Z",
+  "as_of": "2026-10-07T15:30:00Z",
   "completed_batches": [
     {
       "batch": "001",
-      "checked": 100,
+      "candidates_checked": 100,
       "already_present": 42,
       "added": 58
     },
     {
       "batch": "002",
-      "checked": 203,
+      "candidates_checked": 203,
       "already_present": 146,
       "added": 57
+    },
+    {
+      "batch": "003",
+      "candidates_checked": 206,
+      "already_present": 87,
+      "initially_missing": 119,
+      "added": 111,
+      "intentionally_not_added": 8
     }
   ],
-  "total_candidate_checks": 303,
-  "total_new_brand_records_added": 115,
-  "sizing_policy": "Verified product/brand sizing first; otherwise generic low-confidence S/M/L/XL only for compatible apparel categories.",
-  "next_discovery_focus": [
-    "additional regional mall chains and specialty brands",
-    "emerging DTC labels",
-    "performance niche brands",
-    "lingerie and shapewear specialists",
-    "menswear niche labels",
-    "baby and children's independents",
-    "footwear specialists",
-    "streetwear and skate labels",
-    "independent and luxury designers"
+  "cumulative_candidate_checks": 509,
+  "cumulative_new_brand_records_added": 226,
+  "policy": {
+    "brand_presence_independent_of_sizing": true,
+    "fallback": "generic low-confidence S/M/L/XL for compatible apparel",
+    "verified_brand_or_product_sizing_overrides_fallback": true,
+    "retailers_are_not_automatically_treated_as_product_brands": true
+  },
+  "next_focus": [
+    "house/private labels of specialty retailers that were intentionally excluded as retailer entities",
+    "additional regional US brands",
+    "emerging international DTC labels",
+    "technical outdoor/cycling/running niche labels",
+    "boutique children's labels",
+    "specialty footwear and adaptive footwear",
+    "regional streetwear and skate labels",
+    "new-season independent designers"
   ]
 }
