@@ -361,14 +361,19 @@ def audit_brand(brand,sleep_s=0.35):
     q=f'"{brand["brand_name"]}" size chart size guide'
     result={"brand_name":brand["brand_name"],"brand_key":brand["brand_key"],"old_status":brand.get("sizing_status"),"query":q,"checked":[],"promotions":[]}
     try:
-        links=search_ddg(q)
+        links=search_bing(q)
+        if not links:
+            links=search_ddg(q)
     except Exception as e:
-        result["error"]="search: "+repr(e); return result
-    for title,url in links[:8]:
-        ok,stype=candidate_ok(brand,url)
-        if not ok: continue
+        try:
+            links=search_ddg(q)
+        except Exception as e2:
+            result["error"]="search: "+repr(e)+" / "+repr(e2); return result
+    for title,url in links[:16]:
         try:
             raw,final_url,ctype=fetch(url)
+            ok,stype=candidate_ok(brand,final_url)
+            if not ok: continue
             charts,ptitle,ptext=extract_charts(raw,final_url,brand)
             for c in charts: c["source_type"]=stype
             sc=score_candidate(brand,title,final_url,raw,charts)
