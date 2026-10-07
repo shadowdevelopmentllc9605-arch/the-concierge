@@ -1,0 +1,38 @@
+{
+  "migration_group": "007_orders_checkout_stripe",
+  "date": "2026-10-07",
+  "source_counts": {
+    "orders": 0,
+    "shopper_purchases": 0,
+    "retailer_purchases": 0,
+    "cart_items": 0,
+    "payment_methods": 0,
+    "shipping_addresses": 0
+  },
+  "supabase": {
+    "public_tables": [
+      "public.cart_items",
+      "public.shipping_addresses",
+      "public.payment_methods",
+      "public.orders",
+      "public.order_items",
+      "public.purchases",
+      "public.purchase_items"
+    ],
+    "private_tables": [
+      "private.payment_method_processor_refs",
+      "private.order_payment_refs",
+      "private.stripe_webhook_events",
+      "private.base44_commerce_staging"
+    ],
+    "access_policies": 10,
+    "card_numbers_stored": false,
+    "stripe_references_private": true,
+    "payment_state_server_controlled": true
+  },
+  "production_cutover": "not_live_yet",
+  "stripe_live_configuration": "not_configured",
+  "final_delta_sync_required_before_cutover": true,
+  "status": "database_complete",
+  "next_controlled_group": "notifications"
+}
