@@ -1,0 +1,46 @@
+{
+  "version": "2026-10-06-html-source-pass",
+  "results": [
+    {
+      "brand_name": "Cole Haan",
+      "brand_key": "colehaan",
+      "old_status": "partial",
+      "query": "\"Cole Haan\" size chart size guide",
+      "checked": [],
+      "promotions": []
+    },
+    {
+      "brand_name": "Future Collective",
+      "brand_key": "futurecollective",
+      "old_status": "partial",
+      "query": "\"Future Collective\" size chart size guide",
+      "checked": [],
+      "promotions": []
+    },
+    {
+      "brand_name": "Haggar",
+      "brand_key": "haggar",
+      "old_status": "partial",
+      "query": "\"Haggar\" size chart size guide",
+      "checked": [],
+      "promotions": []
+    },
+    {
+      "brand_name": "Stride Rite",
+      "brand_key": "striderite",
+      "old_status": "partial",
+      "query": "\"Stride Rite\" size chart size guide",
+      "checked": [],
+      "promotions": []
+    },
+    {
+      "brand_name": "Vanity Fair",
+      "brand_key": "vanityfair",
+      "old_status": "partial",
+      "query": "\"Vanity Fair\" size chart size guide",
+      "checked": [],
+      "promotions": []
+    }
+  ],
+  "promotions": []
+}
