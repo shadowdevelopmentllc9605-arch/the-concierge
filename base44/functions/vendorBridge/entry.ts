@@ -92,9 +92,238 @@ export default async function (req: Request): Promise<Response> {
     if (action === "syncCatalog") {
       const vendor = await upsertVendor(base44, body.business, body.locations || []);
       const mappings: any[] = [];
+      const now = new Date();
+      const nowIso = now.toISOString();
+      const staleAfter = new Date(now.getTime() + 24 * 60 * 60 * 1000).toISOString();
+
+      const normalizeKey = (value: any) =>
+        String(value || "")
+          .trim()
+          .toLowerCase()
+          .normalize("NFKD")
+          .replace(/[\\u0300-\\u036f]/g, "")
+          .replace(/&/g, " and ")
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-+|-+$/g, "");
+
+      const normalizeId = (value: any) =>
+        String(value || "").trim().toUpperCase().replace(/[^A-Z0-9]/g, "");
 
       for (const item of body.items || []) {
-        const existing = await base44.asServiceRole.entities.Product.filter({ linked_pro_inventory_id: item.id });
+        const legacyExisting = await base44.asServiceRole.entities.Product.filter({
+          linked_pro_inventory_id: item.id,
+        });
+
+        const brandName = item.brand || "Unknown Brand";
+        const brandKey = normalizeKey(brandName) || "unknown-brand";
+        const styleIdentity =
+          normalizeId(item.style_number) ||
+          normalizeId(item.mpn) ||
+          normalizeId(item.gtin) ||
+          normalizeKey(item.name) ||
+          normalizeId(item.sku) ||
+          "unknown-style";
+        const canonicalKey = `${brandKey}:${styleIdentity}`;
+
+        const existingMasters = await base44.asServiceRole.entities.ProductMaster.filter({
+          canonical_key: canonicalKey,
+        });
+
+        let master: any;
+        if (existingMasters[0]) {
+          await base44.asServiceRole.entities.ProductMaster.update(existingMasters[0].id, {
+            last_seen_at: nowIso,
+            status: "active",
+            active: true,
+          });
+          master = { ...existingMasters[0], last_seen_at: nowIso, status: "active", active: true };
+        } else {
+          master = await base44.asServiceRole.entities.ProductMaster.create({
+            canonical_key: canonicalKey,
+            brand_name: brandName,
+            brand_key: brandKey,
+            product_name: item.name || "Unnamed product",
+            style_number: item.style_number || "",
+            mpn: item.mpn || "",
+            primary_gtin: item.gtin || "",
+            category: item.category || "",
+            product_type: item.category || "",
+            official_description: item.description || "",
+            fit_cut: item.garment_fit?.fit_cut || "unknown",
+            footwear_type: item.footwear_type || "all",
+            primary_image_url: item.images?.[0] || "",
+            image_urls: item.images || [],
+            status: "active",
+            first_seen_at: nowIso,
+            last_seen_at: nowIso,
+            canonical_confidence: 0.8,
+            dedup_status: "canonical",
+            identifier_fingerprint: canonicalKey,
+            legacy_product_ids: [],
+            source_record_count: 0,
+            active: true,
+          });
+        }
+
+        const canonicalVariantIds: string[] = [];
+        const retailerOfferIds: string[] = [];
+        const rawVariants = Array.isArray(item.variants) ? item.variants : [];
+
+        for (const rawVariant of rawVariants) {
+          const globalId =
+            normalizeId(rawVariant.gtin) ||
+            normalizeId(rawVariant.upc) ||
+            normalizeId(rawVariant.ean) ||
+            normalizeId(rawVariant.mpn);
+
+          const variantAttributes = [
+            normalizeKey(rawVariant.size),
+            normalizeKey(rawVariant.color),
+            normalizeKey(rawVariant.width_code),
+            normalizeKey(rawVariant.length_code || rawVariant.inseam),
+          ].filter(Boolean);
+
+          const variantKey = globalId
+            ? `${master.id}:id:${globalId}`
+            : variantAttributes.length
+              ? `${master.id}:attr:${variantAttributes.join(":")}`
+              : `${master.id}:sku:${normalizeId(rawVariant.sku) || "unspecified"}`;
+
+          const existingVariants = await base44.asServiceRole.entities.ProductVariant.filter({
+            variant_key: variantKey,
+          });
+
+          const variantData = {
+            product_master_id: master.id,
+            variant_key: variantKey,
+            sku: rawVariant.sku || "",
+            gtin: rawVariant.gtin || "",
+            upc: rawVariant.upc || "",
+            ean: rawVariant.ean || "",
+            mpn: rawVariant.mpn || "",
+            size_label: rawVariant.size || "",
+            size_region: "US",
+            color_name: rawVariant.color || "",
+            width_code: rawVariant.width_code || "",
+            width_label: rawVariant.width_label || "",
+            length_code: rawVariant.length_code || rawVariant.inseam || "",
+            status: Number(rawVariant.stock_quantity || 0) > 0 ? "active" : "unavailable",
+            last_seen_at: nowIso,
+            identifier_fingerprint: variantKey,
+            active: true,
+          };
+
+          let variant: any;
+          if (existingVariants[0]) {
+            await base44.asServiceRole.entities.ProductVariant.update(existingVariants[0].id, variantData);
+            variant = { ...existingVariants[0], ...variantData };
+          } else {
+            variant = await base44.asServiceRole.entities.ProductVariant.create({
+              ...variantData,
+              first_seen_at: nowIso,
+            });
+          }
+          canonicalVariantIds.push(variant.id);
+
+          const retailerKey = normalizeKey(body.business?.name || body.business?.id || "retailer");
+          const offerKey = `${body.business.id}:${item.location_id || "all"}:${item.id}:${variant.id}`;
+          const existingOffers = await base44.asServiceRole.entities.RetailerOffer.filter({
+            offer_key: offerKey,
+          });
+          const stock = Number(rawVariant.stock_quantity || 0);
+          const offerData = {
+            offer_key: offerKey,
+            product_master_id: master.id,
+            product_variant_id: variant.id,
+            offer_scope: "variant",
+            retailer_name: body.business?.name || "Retailer",
+            retailer_key: retailerKey,
+            business_id: body.business.id,
+            location_id: item.location_id || "",
+            channel: "local_store",
+            retailer_sku: rawVariant.sku || item.sku || "",
+            seller_product_id: item.id,
+            offer_url: item.retailer_product_url || "",
+            currency: "USD",
+            regular_price: Number(item.price || 0),
+            current_price: Number(item.price || 0),
+            sale_active: false,
+            availability: stock > 0 ? "in_stock" : "out_of_stock",
+            stock_quantity: stock,
+            available_in_store: true,
+            fulfillment: "store_only",
+            last_seen_at: nowIso,
+            price_checked_at: nowIso,
+            availability_checked_at: nowIso,
+            stale_after: staleAfter,
+            freshness_status: "fresh",
+            source_confidence: 0.95,
+            active: true,
+          };
+
+          let offer: any;
+          if (existingOffers[0]) {
+            await base44.asServiceRole.entities.RetailerOffer.update(existingOffers[0].id, offerData);
+            offer = { ...existingOffers[0], ...offerData };
+          } else {
+            offer = await base44.asServiceRole.entities.RetailerOffer.create({
+              ...offerData,
+              first_seen_at: nowIso,
+            });
+          }
+          retailerOfferIds.push(offer.id);
+        }
+
+        if (!rawVariants.length) {
+          const retailerKey = normalizeKey(body.business?.name || body.business?.id || "retailer");
+          const offerKey = `${body.business.id}:${item.location_id || "all"}:${item.id}:style`;
+          const existingOffers = await base44.asServiceRole.entities.RetailerOffer.filter({
+            offer_key: offerKey,
+          });
+          const stock = Number(item.stock_quantity || 0);
+          const offerData = {
+            offer_key: offerKey,
+            product_master_id: master.id,
+            product_variant_id: "",
+            offer_scope: "style",
+            retailer_name: body.business?.name || "Retailer",
+            retailer_key: retailerKey,
+            business_id: body.business.id,
+            location_id: item.location_id || "",
+            channel: "local_store",
+            retailer_sku: item.sku || "",
+            seller_product_id: item.id,
+            offer_url: item.retailer_product_url || "",
+            currency: "USD",
+            regular_price: Number(item.price || 0),
+            current_price: Number(item.price || 0),
+            sale_active: false,
+            availability: stock > 0 ? "in_stock" : "out_of_stock",
+            stock_quantity: stock,
+            available_in_store: true,
+            fulfillment: "store_only",
+            last_seen_at: nowIso,
+            price_checked_at: nowIso,
+            availability_checked_at: nowIso,
+            stale_after: staleAfter,
+            freshness_status: "fresh",
+            source_confidence: 0.95,
+            active: true,
+          };
+
+          let offer: any;
+          if (existingOffers[0]) {
+            await base44.asServiceRole.entities.RetailerOffer.update(existingOffers[0].id, offerData);
+            offer = { ...existingOffers[0], ...offerData };
+          } else {
+            offer = await base44.asServiceRole.entities.RetailerOffer.create({
+              ...offerData,
+              first_seen_at: nowIso,
+            });
+          }
+          retailerOfferIds.push(offer.id);
+        }
+
         const productData = {
           name: item.name,
           brand: item.brand || "",
@@ -117,18 +346,36 @@ export default async function (req: Request): Promise<Response> {
           stock_quantity: Number(item.stock_quantity || 0),
           vendor_id: vendor.id,
           linked_pro_inventory_id: item.id,
-          in_stock: Number(item.stock_quantity || 0) > 0 || (item.variants || []).some((v: any) => Number(v.stock_quantity || 0) > 0),
+          in_stock:
+            Number(item.stock_quantity || 0) > 0 ||
+            (item.variants || []).some((v: any) => Number(v.stock_quantity || 0) > 0),
           discontinued: false,
           is_new: Boolean(item.is_new),
+          style_number: item.style_number || "",
+          mpn: item.mpn || "",
+          gtin: item.gtin || "",
+          product_master_id: master.id,
+          canonical_variant_ids: canonicalVariantIds,
+          retailer_offer_ids: retailerOfferIds,
+          catalog_migration_status: "linked",
+          catalog_migrated_at: nowIso,
         };
-        let product;
-        if (existing[0]) {
-          await base44.asServiceRole.entities.Product.update(existing[0].id, productData);
-          product = { ...existing[0], ...productData };
+
+        let product: any;
+        if (legacyExisting[0]) {
+          await base44.asServiceRole.entities.Product.update(legacyExisting[0].id, productData);
+          product = { ...legacyExisting[0], ...productData };
         } else {
           product = await base44.asServiceRole.entities.Product.create(productData);
         }
-        mappings.push({ inventoryId: item.id, productId: product.id });
+
+        mappings.push({
+          inventoryId: item.id,
+          productId: product.id,
+          productMasterId: master.id,
+          variantIds: canonicalVariantIds,
+          offerIds: retailerOfferIds,
+        });
       }
 
       const incomingIds = new Set((body.items || []).map((item: any) => item.id));
@@ -140,6 +387,17 @@ export default async function (req: Request): Promise<Response> {
             in_stock: false,
             discontinued: true,
           });
+          for (const offerId of product.retailer_offer_ids || []) {
+            const offers = await base44.asServiceRole.entities.RetailerOffer.filter({ id: offerId });
+            if (offers[0]) {
+              await base44.asServiceRole.entities.RetailerOffer.update(offers[0].id, {
+                availability: "out_of_stock",
+                active: false,
+                last_seen_at: nowIso,
+                freshness_status: "stale",
+              });
+            }
+          }
           deactivated += 1;
         }
       }
