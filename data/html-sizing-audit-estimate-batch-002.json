@@ -3888,6 +3888,33 @@
         }
       ],
       "promotions": []
+    },
+    {
+      "brand_name": "Another Tomorrow",
+      "brand_key": "anothertomorrow",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Another Tomorrow\" official size guide",
+        "\"Another Tomorrow\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "merriam-webster.com https:// www.merriam-webster.com \u203a dictionary \u203a another",
+          "url": "https://www.merriam-webster.com/dictionary/another",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "merriam-webster.com https:// www.merriam-webster.com \u203a thesaurus \u203a another",
+          "url": "https://www.merriam-webster.com/thesaurus/another",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "fandom.com https:// another .fandom.com",
+          "url": "https://another.fandom.com/wiki/Main_Page",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
     }
   ],
   "promotions": []
