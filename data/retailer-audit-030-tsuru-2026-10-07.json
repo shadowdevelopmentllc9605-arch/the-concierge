@@ -1,0 +1,19 @@
+{
+  "version": "2026-10-07-retailer-audit-030-tsuru",
+  "retailer": "Tsuru",
+  "retailer_key": "tsuru",
+  "audit_number": 30,
+  "audited_at": "2026-10-07T15:30:00Z",
+  "audit_status": "partial_local_directory_audited",
+  "source_urls": [
+    "https://downtownlincoln.org/go/tsuru"
+  ],
+  "confirmed_brand_keys": 4,
+  "new_brand_count": 2,
+  "new_brands": [
+    "Gentle Fawn",
+    "LAmade"
+  ],
+  "notes": "Retailer audit #30. Current Downtown Lincoln listing was treated cautiously because several names are ambiguous or not independently verifiable. Only Miss Me, Free People, Gentle Fawn and LAmade were promoted/attached; Gentle Fawn and LAmade were independently confirmed active current apparel brands. Ambiguous legacy names were not bulk-imported.",
+  "sizing_policy": "Brand inclusion is independent of verified sizing; compatible apparel may use low-confidence generic S/M/L/XL until verified sizing is available."
+}
