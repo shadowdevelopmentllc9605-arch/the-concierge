@@ -54,3 +54,17 @@ The shopper app also exposes an admin-only **catalogBatchIngest** backend functi
 4. Track provenance and freshness.
 5. Run FashionIntelligence only after factual data is loaded.
 6. Move UI surfaces from legacy Product records to canonical records gradually.
+
+## Mandatory post-audit safety/stress gate
+Every inventory audit must end with a safety and stress test on both **The Concierge** and **Concierge Pro** before the next retailer audit begins.
+
+Required gate:
+1. Typecheck, ESLint, and production build must pass in both apps.
+2. Production dependencies must be audited; any newly introduced high/critical vulnerability blocks progression.
+3. Catalog/database integrity must pass: no retailer-scoped ProductMaster identity, no unconfirmed active pseudo-variants, no orphaned active RetailerOffers, no newly introduced duplicate canonical masters, and valid source/freshness relationships.
+4. Run source-secret scanning, RLS/entity security review, authentication/authorization checks, and bridge signature/unauthorized rejection checks where applicable.
+5. Run safe, non-destructive repeated/concurrent runtime requests against major app routes and harmless auth-boundary probes.
+6. Report known pre-existing external configuration gaps separately so an unrelated condition such as Stripe configuration is not falsely attributed to the inventory audit.
+7. Save the post-audit result and a restore checkpoint in both Base44 apps; keep the rule/results synchronized to both GitHub repositories.
+
+**Progression rule:** do not start the next retailer audit until both apps pass this gate, or a specific blocking defect is documented, repaired, and retested.
