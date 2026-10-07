@@ -3716,6 +3716,38 @@
         }
       ],
       "promotions": []
+    },
+    {
+      "brand_name": "Angels Forever Young",
+      "brand_key": "angelsforeveryoung",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Angels Forever Young\" official size guide",
+        "\"Angels Forever Young\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "mlb.com https://www.mlb.com \u203a angels",
+          "url": "https://www.mlb.com/angels?msockid=1c3a86c8c47d6e0f1be49123c5826f45",
+          "error": "<HTTPError 403: 'Access Denied'>"
+        },
+        {
+          "title": "mlb.com https://www. mlb .com \u203a angels \u203a news",
+          "url": "https://www.mlb.com/angels/news?msockid=1c3a86c8c47d6e0f1be49123c5826f45",
+          "error": "<HTTPError 403: 'Access Denied'>"
+        },
+        {
+          "title": "mlb.com https://www.mlb.com \u203a angels",
+          "url": "https://www.mlb.com/angels?msockid=3bd2e0a1578b66b32ddcf74a5655673c",
+          "error": "<HTTPError 403: 'Access Denied'>"
+        },
+        {
+          "title": "mlb.com https://www. mlb .com \u203a angels \u203a news",
+          "url": "https://www.mlb.com/angels/news?msockid=3bd2e0a1578b66b32ddcf74a5655673c",
+          "error": "<HTTPError 403: 'Access Denied'>"
+        }
+      ],
+      "promotions": []
     }
   ],
   "promotions": []
