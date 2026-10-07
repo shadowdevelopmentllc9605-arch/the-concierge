@@ -2202,6 +2202,242 @@
         }
       ],
       "promotions": []
+    },
+    {
+      "brand_name": "Alice + Olivia",
+      "brand_key": "aliceolivia",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Alice + Olivia\" official size guide",
+        "\"Alice + Olivia\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "aliceapp.com https://www. alice app.com \u203a login \u203a auth",
+          "url": "https://www.aliceapp.com/login/auth",
+          "domain": "aliceapp.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html;charset=utf-8"
+        },
+        {
+          "title": "alicetraining.com https://www. alice training.com",
+          "url": "https://www.alicetraining.com/",
+          "domain": "alicetraining.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        },
+        {
+          "title": "unitedforalice.org https://www.unitedfor alice .org",
+          "url": "https://www.unitedforalice.org/",
+          "domain": "unitedforalice.org",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "unitedforalice.org https://unitedfor alice .org \u203a meet- alice",
+          "url": "https://unitedforalice.org/meet-alice",
+          "domain": "unitedforalice.org",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "alice.org https://www. alice .org \u203a get- alice",
+          "url": "https://www.alice.org/get-alice/alice-3/",
+          "domain": "alice.org",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        },
+        {
+          "title": "alice.org https://www. alice .org \u203a get- alice",
+          "url": "https://www.alice.org/get-alice/",
+          "domain": "alice.org",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Alice and Olivia",
+      "brand_key": "aliceandolivia",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Alice and Olivia\" official size guide",
+        "\"Alice and Olivia\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "aliceapp.com https://www. alice app.com \u203a login \u203a auth",
+          "url": "https://www.aliceapp.com/login/auth",
+          "domain": "aliceapp.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html;charset=utf-8"
+        },
+        {
+          "title": "alice.org https://www. alice .org \u203a get- alice",
+          "url": "https://www.alice.org/get-alice/alice-3/",
+          "domain": "alice.org",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        },
+        {
+          "title": "alice.org https://www. alice .org \u203a get- alice",
+          "url": "https://www.alice.org/get-alice/",
+          "domain": "alice.org",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        },
+        {
+          "title": "unitedforalice.org https://www.unitedfor alice .org",
+          "url": "https://www.unitedforalice.org/",
+          "domain": "unitedforalice.org",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "alicetraining.com https://www. alice training.com",
+          "url": "https://www.alicetraining.com/",
+          "domain": "alicetraining.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "ALIGNE",
+      "brand_key": "aligne",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"ALIGNE\" official size guide",
+        "\"ALIGNE\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "aligne.co https:// aligne .co",
+          "url": "https://aligne.co/",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "aligne.co https:// aligne .co \u203a en-us \u203a collections \u203a all",
+          "url": "https://aligne.co/en-us/collections/all",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "revolve.com https://www.revolve.com \u203a aligne \u203a br",
+          "url": "https://www.revolve.com/aligne/br/6462a1/?msockid=155e0c31a8ff6b860a291bdaa96d6af2",
+          "error": "TimeoutError('The read operation timed out')"
+        },
+        {
+          "title": "anthropologie.com https:// www.anthropologie.com \u203a brands \u203a aligne",
+          "url": "https://www.anthropologie.com/brands/aligne?msockid=155e0c31a8ff6b860a291bdaa96d6af2",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "anthropologie.com https:// www.anthropologie.com \u203a en-gb \u203a brands \u203a aligne",
+          "url": "https://www.anthropologie.com/en-gb/brands/aligne?msockid=155e0c31a8ff6b860a291bdaa96d6af2",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "revolve.com https://www.revolve.com \u203a aligne \u203a br",
+          "url": "https://www.revolve.com/aligne/br/6462a1/?msockid=328c425095386b91212255bb94fd6a32",
+          "error": "TimeoutError('The read operation timed out')"
+        },
+        {
+          "title": "anthropologie.com https:// www.anthropologie.com \u203a brands \u203a aligne",
+          "url": "https://www.anthropologie.com/brands/aligne?msockid=328c425095386b91212255bb94fd6a32",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "anthropologie.com https:// www.anthropologie.com \u203a en-gb \u203a brands \u203a aligne",
+          "url": "https://www.anthropologie.com/en-gb/brands/aligne?msockid=328c425095386b91212255bb94fd6a32",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "All in Favor",
+      "brand_key": "allinfavor",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"All in Favor\" official size guide",
+        "\"All in Favor\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "merriam-webster.com https:// www.merriam-webster.com \u203a dictionary \u203a all",
+          "url": "https://www.merriam-webster.com/dictionary/all",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "britannica.com https:// www.britannica.com \u203a dictionary \u203a all",
+          "url": "https://www.britannica.com/dictionary/all",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "collinsdictionary.com https:// www.collinsdictionary.com \u203a dictionary \u203a english \u203a all",
+          "url": "https://www.collinsdictionary.com/dictionary/english/all",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Allbirds",
+      "brand_key": "allbirds",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Allbirds\" official size guide",
+        "\"Allbirds\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "allbirds.com https://www. allbirds .com",
+          "url": "https://www.allbirds.com/",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "allbirds.com https://www. allbirds .com \u203a collections \u203a womens",
+          "url": "https://www.allbirds.com/collections/womens",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "allbirdsstores.com https://www. allbirds stores.com",
+          "url": "https://www.allbirdsstores.com/",
+          "domain": "allbirdsstores.com",
+          "score": 8,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        },
+        {
+          "title": "allbirds.com https://www. allbirds .com \u203a collections \u203a mens",
+          "url": "https://www.allbirds.com/collections/mens",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "allbirds.com https://www. allbirds .com \u203a collections \u203a sale-womens-shoes",
+          "url": "https://www.allbirds.com/collections/sale-womens-shoes",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "allbirds.com https://www. allbirds .com \u203a collections \u203a all-shoes-mens-and-womens",
+          "url": "https://www.allbirds.com/collections/all-shoes-mens-and-womens",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        }
+      ],
+      "promotions": []
     }
   ],
   "promotions": []
