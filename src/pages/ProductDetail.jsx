@@ -5,7 +5,7 @@ import { createPageUrl } from '@/utils';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Heart, ShoppingBag, Sparkles, Check, Loader2 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
-import { getCategoryGroup, getEffectiveSizeChart, getFitRecommendationPresentation, normalizeBrandKey, recommendFromSizeChart } from '@/lib/fitRecommendation';
+import { deriveGenericFallbackSize, getCategoryGroup, getEffectiveSizeChart, getFitRecommendationPresentation, normalizeBrandKey, recommendFromSizeChart } from '@/lib/fitRecommendation';
 
 export default function ProductDetail() {
   const navigate = useNavigate();
@@ -106,8 +106,19 @@ export default function ProductDetail() {
             setMissingFitMeasurements(chartMatch.missingMeasurements || []);
             setRecommendationSource('measurement_required');
           }
+          const genericFallback = !chartMatch?.blocked
+            ? deriveGenericFallbackSize(product, profile)
+            : null;
+          if (genericFallback?.size) {
+            setSuggestedSize(genericFallback.size);
+            setRecommendationSource('generic_brand_fallback');
+            setFitConfidence('low');
+            setFitConfidenceScore(null);
+            setMissingFitMeasurements([]);
+          }
+
           const group = getCategoryGroup(product.category);
-          let fallback = group ? profile.suggested_sizes?.[group] : '';
+          let fallback = genericFallback?.size || (group ? profile.suggested_sizes?.[group] : '');
 
           // Suits often store values like 40R while the profile fallback is 40.
           if (product.category === 'suits' && profile.suggested_sizes?.suits) {
@@ -117,7 +128,7 @@ export default function ProductDetail() {
               suitBase;
           }
 
-          if (!chartMatch?.blocked && fallback && (!product.sizes?.length || product.sizes.includes(fallback))) {
+          if (!genericFallback?.size && !chartMatch?.blocked && fallback && (!product.sizes?.length || product.sizes.includes(fallback))) {
             setSuggestedSize(fallback);
             setRecommendationSource('profile_estimate');
             setFitConfidence('low');
