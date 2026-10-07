@@ -1,0 +1,53 @@
+{
+  "version": "2026-10-07-standalone-brand-layer-batch-004",
+  "audited_at": "2026-10-07T16:05:00Z",
+  "scope": "Private/house labels, regional U.S. brands, adaptive apparel/footwear, technical outdoor/cycling, boutique children's labels, and newer independent designers.",
+  "methodology": {
+    "initial_candidates_checked": 159,
+    "already_present_at_start": 47,
+    "initially_missing": 112,
+    "added_from_initial_missing": 99,
+    "additional_current_house_labels_discovered_during_validation": 4,
+    "total_added": 103,
+    "held_for_further_verification": 13,
+    "duplicate_brand_keys_created": 0,
+    "sizing_policy": "Brand inclusion is independent of sizing. Verified product/brand sizing overrides the generic low-confidence S/M/L/XL fallback for compatible apparel."
+  },
+  "added_counts_by_lane": {
+    "private_house_labels": 21,
+    "regional_us_labels": 19,
+    "adaptive_clothing_footwear": 12,
+    "technical_outdoor_cycling": 24,
+    "boutique_childrens": 19,
+    "newer_independent_designers": 8
+  },
+  "additional_house_labels_discovered": [
+    "West of Melrose",
+    "Tillys",
+    "PAC 1980",
+    "PS Basics"
+  ],
+  "held_for_further_verification": [
+    "Cleo + Wolf",
+    "Wonderwest",
+    "Brothers & Sons",
+    "Franki by Francesca's",
+    "EVSIE",
+    "m jeans by maurices",
+    "24/7 by maurices",
+    "Seven7 Adaptive",
+    "Easy Access Clothing",
+    "Harbison",
+    "5000",
+    "Commission",
+    "Puppets and Puppets"
+  ],
+  "validation_notes": [
+    "Tillys currently identifies RSQ, Full Tilt, West of Melrose and Tillys as owned brands.",
+    "Zumiez currently presents A.LAB and Ninth Hall as exclusive labels; Empyre and Zine remain active brand storefronts.",
+    "PacSun currently carries LA Hearts and identifies PAC 1980 and PS Basics in current fashion merchandising.",
+    "Current adaptive-market sources confirm active specialists including IZ Adaptive, Silverts, BILLY Footwear, MagnaReady, No Limbits and Joe & Bella.",
+    "Current cycling sources continue to identify Pas Normal Studios, Velocio, Rapha, ASSOS, Q36.5, Endura, Pearl Izumi and related technical brands.",
+    "Current official storefronts confirm active emerging designers including Jane Wade, LEBLANCSTUDIOS, Elena Velez, Connor McKnight, Wiederhoeft, Gabe Gordon and Dauphinette."
+  ]
+}
