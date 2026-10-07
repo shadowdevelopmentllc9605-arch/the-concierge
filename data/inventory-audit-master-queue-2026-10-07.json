@@ -43,7 +43,8 @@
           "sequence": 5,
           "name": "JCPenney",
           "key": "jcpenney",
-          "status": "queued"
+          "status": "partial_source_access_required",
+          "blocker": "JCPenney controlled product/category evidence is usable, but direct Base44 server requests to robots.txt, sitemap.xml, a men's category page and the visible /v1/search-service route returned Akamai HTTP 403 Access Denied. Controlled item-level validation was completed, but exhaustive product/variant ingestion requires an authorized bulk source accessible to the ingestion environment."
         },
         {
           "sequence": 6,
@@ -170,7 +171,9 @@
     "Prefer official APIs/feeds; then authorized feeds; then structured/public HTML within published crawl controls.",
     "Do not bypass access controls or blocked APIs.",
     "Record prices and availability with freshness timestamps.",
-    "Do not treat image attribution as permission; public image display follows the separate image-rights policy."
+    "Do not treat image attribution as permission; public image display follows the separate image-rights policy.",
+    "Retailer SKU, Web ID, PDP/product ID or other retailer-specific identifier must never be used as ProductMaster canonical_key or identifier_fingerprint; retailer identifiers belong on RetailerOffer and ProductSourceRecord. If no manufacturer/global identifier is available, use brand + normalized product name as a review candidate.",
+    "Do not create an active apparel ProductVariant from color-only or size-unselected evidence; keep the retailer offer at style scope until a sellable size/color combination is explicitly confirmed."
   ],
-  "updated_at": "2026-10-07T18:55:00Z"
+  "updated_at": "2026-10-07T19:20:00Z"
 }
