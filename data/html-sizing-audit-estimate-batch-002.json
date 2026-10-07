@@ -2595,6 +2595,71 @@
         }
       ],
       "promotions": []
+    },
+    {
+      "brand_name": "Alpine Swiss",
+      "brand_key": "alpineswiss",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Alpine Swiss\" official size guide",
+        "\"Alpine Swiss\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "alpine-usa.com https://www. alpine -usa.com",
+          "url": "https://www.alpine-usa.com/",
+          "domain": "alpine-usa.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "alpinebank.com https://www. alpine bank.com",
+          "url": "https://www.alpinebank.com/",
+          "domain": "alpinebank.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        },
+        {
+          "title": "alpinecars.com https://www. alpine cars.com",
+          "url": "https://www.alpinecars.com/",
+          "domain": "alpinecars.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html"
+        },
+        {
+          "title": "alpine-usa.com https://www. alpine -usa.com \u203a products",
+          "url": "https://www.alpine-usa.com/products",
+          "domain": "alpine-usa.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "alpinebank.com https://www. alpine bank.com \u203a personal-banking \u203a online-mobile-banking",
+          "url": "https://www.alpinebank.com/personal-banking/online-mobile-banking",
+          "domain": "alpinebank.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        },
+        {
+          "title": "alpinevalleyohio.com https://www. alpine valleyohio.com",
+          "url": "https://www.alpinevalleyohio.com/",
+          "domain": "alpinevalleyohio.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "alpineaudiohub.com https:// alpine audiohub.com",
+          "url": "https://alpineaudiohub.com/",
+          "error": "<HTTPError 500: 'Internal Server Error'>"
+        }
+      ],
+      "promotions": []
     }
   ],
   "promotions": []

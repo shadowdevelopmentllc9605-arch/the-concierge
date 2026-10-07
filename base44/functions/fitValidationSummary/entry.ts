@@ -82,7 +82,7 @@ function summarizeMeasurement(records: any[], field: string) {
 export default async function (req: Request): Promise<Response> {
   try {
     const base44 = createClientFromRequest(req);
-    const user = await base44.auth.me();
+    const user = await base44.auth.me().catch(() => null);
     if (!user || user.role !== "admin") {
       return Response.json({ error: "Admin access required" }, { status: 403 });
     }
