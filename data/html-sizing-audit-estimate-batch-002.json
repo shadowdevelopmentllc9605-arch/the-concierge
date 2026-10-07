@@ -2056,6 +2056,125 @@
       ],
       "checked": [],
       "promotions": []
+    },
+    {
+      "brand_name": "Alexandre Birman",
+      "brand_key": "alexandrebirman",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Alexandre Birman\" official size guide",
+        "\"Alexandre Birman\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "alexandrefamilyfarm.com https:// alexandre familyfarm.com \u203a pages \u203a store-locator",
+          "url": "https://alexandrefamilyfarm.com/pages/store-locator",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "babynames.com https://babynames.com \u203a name \u203a Alexandre",
+          "url": "https://babynames.com/name/Alexandre",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "alexandrefamilyfarm.com https:// alexandre familyfarm.com \u203a collections \u203a all",
+          "url": "https://alexandrefamilyfarm.com/collections/all",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Alexia Admor",
+      "brand_key": "alexiaadmor",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Alexia Admor\" official size guide",
+        "\"Alexia Admor\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "sciencedirect.com https://www.sciencedirect.com \u203a topics \u203a neuroscience \u203a alexia",
+          "url": "https://www.sciencedirect.com/topics/neuroscience/alexia",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "medslpcollective.com https://medslpcollective.com \u203a wp-content \u203a uploads \u203a MedSLP...",
+          "url": "https://medslpcollective.com/wp-content/uploads/2023/10/MedSLPCollective-Handout-Alexia-Assessment-and-Treatment.pdf?t=65206aaac4168",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Alfred Dunner",
+      "brand_key": "alfreddunner",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Alfred Dunner\" official size guide",
+        "\"Alfred Dunner\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "alfred.camera https:// alfred .camera",
+          "url": "https://alfred.camera/",
+          "domain": "alfred.camera",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html"
+        },
+        {
+          "title": "alfred.com https://www. alfred .com",
+          "url": "https://www.alfred.com/",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "alfred.camera https:// alfred .camera \u203a webapp",
+          "url": "https://alfred.camera/webapp/viewer/",
+          "domain": "alfred.camera",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html"
+        },
+        {
+          "title": "alfred.com https://www. alfred .com \u203a pages \u203a catalogs",
+          "url": "https://www.alfred.com/pages/catalogs",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "alfredapp.com https://www. alfred app.com",
+          "url": "https://www.alfredapp.com/",
+          "domain": "alfredapp.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        },
+        {
+          "title": "helloalfred.com https://www.hello alfred .com",
+          "url": "https://www.helloalfred.com/",
+          "domain": "helloalfred.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        },
+        {
+          "title": "get-alfred.ai https://get- alfred .ai",
+          "url": "https://get-alfred.ai/",
+          "domain": "get-alfred.ai",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "stlouisfed.org https:// alfred .stlouisfed.org",
+          "url": "https://alfred.stlouisfed.org/",
+          "domain": "alfred.stlouisfed.org",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        }
+      ],
+      "promotions": []
     }
   ],
   "promotions": []

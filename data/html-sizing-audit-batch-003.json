@@ -1,0 +1,117 @@
+{
+  "version": "2026-10-06-html-source-pass-batch-003",
+  "as_of": "2026-10-07T01:44:00Z",
+  "method": {
+    "batching": "small_resumable_html_batches",
+    "source_priority": ["official_brand", "official_corporate", "verified_partner"],
+    "promotion_rule": "Promote only numeric sizing whose source, unit, audience/category scope, and body-vs-garment measurement basis can be verified.",
+    "audience_rule": "Test adult women, adult men, unisex, infant, toddler, kids and youth independently when applicable.",
+    "scope_rule": "Do not generalize a product-family or fit-specific chart to unrelated categories."
+  },
+  "promotions": [
+    {
+      "brand_name": "'47",
+      "brand_key": "47",
+      "old_status": "estimate_only",
+      "new_status": "partial",
+      "category_group": "headwear",
+      "audience": "men",
+      "age_group": "adult",
+      "chart_name": "'47 Franchise fitted cap size guide",
+      "source_type": "official_brand",
+      "source_url": "https://www.47brand.com/products/indiana-hoosiers-classic-47-franchise",
+      "measurement_basis": "body",
+      "numeric_rows": 5,
+      "notes": "Official Franchise fitted-cap head-circumference chart. Adjustable headwear and apparel remain unpromoted."
+    },
+    {
+      "brand_name": "'47 Brand",
+      "brand_key": "47brand",
+      "old_status": "estimate_only",
+      "new_status": "partial",
+      "category_group": "headwear",
+      "audience": "men",
+      "age_group": "adult",
+      "chart_name": "'47 Franchise fitted cap size guide (alias key)",
+      "source_type": "official_brand",
+      "source_url": "https://www.47brand.com/products/indiana-hoosiers-classic-47-franchise",
+      "measurement_basis": "body",
+      "numeric_rows": 5,
+      "notes": "Retailer-name alias mirror of the same official Franchise chart; not a second independent sizing system."
+    },
+    {
+      "brand_name": "Hanes",
+      "brand_key": "hanes",
+      "old_status": "partial",
+      "new_status": "partial",
+      "category_group": "tops",
+      "audience": "unisex",
+      "age_group": "adult",
+      "chart_name": "Hanes Beefy-T unisex heavyweight tee body size guide",
+      "source_type": "official_brand",
+      "source_url": "https://www.hanes.com/products/hanes-beefy-t-unisex-heavyweight-cotton-t-shirt/o5180",
+      "measurement_basis": "body",
+      "numeric_rows": 9,
+      "notes": "Official product-family chart through 6XL. It is not generalized to all Hanes women's, kids, underwear, fleece or slim-fit systems."
+    },
+    {
+      "brand_name": "2(X)IST",
+      "brand_key": "2xist",
+      "old_status": "estimate_only",
+      "new_status": "partial",
+      "category_group": "underwear",
+      "audience": "men",
+      "age_group": "adult",
+      "chart_name": "2(X)IST men's body size chart",
+      "source_type": "verified_partner",
+      "official_site_checked": "https://2xist.com/collections/all-product/products/cotton-stretch-no-show-brief-3-pack-1216",
+      "source_url": "https://www.nordstrom.com/sizeguides/2029_sizeguide.pdf",
+      "measurement_basis": "body",
+      "numeric_rows": 4,
+      "notes": "Official product pages confirm men's underwear size labels; numerical chest/waist table is from Nordstrom's brand-specific guide."
+    },
+    {
+      "brand_name": "Haggar",
+      "brand_key": "haggar",
+      "old_status": "partial",
+      "new_status": "partial",
+      "category_group": "bottoms",
+      "audience": "men",
+      "age_group": "adult",
+      "chart_name": "Haggar men's regular pants body size guide",
+      "source_type": "verified_partner",
+      "official_site_checked": "https://www.haggar.com/pages/fit-guide",
+      "source_url": "https://digitalcontent.target.com/itemcontent/sizecharts/htmlfragments/men-bottoms/haggar/regular-plus-big-tall.html",
+      "measurement_basis": "body",
+      "numeric_rows": 13,
+      "notes": "Regular bottoms only. Official Haggar fit families checked first; numerical waist/seat measurements are from Target's brand-specific HTML chart."
+    },
+    {
+      "brand_name": "Haggar",
+      "brand_key": "haggar",
+      "old_status": "partial",
+      "new_status": "partial",
+      "category_group": "bottoms",
+      "audience": "men",
+      "age_group": "adult",
+      "chart_name": "Haggar men's big & tall pants body size guide",
+      "source_type": "verified_partner",
+      "official_site_checked": "https://www.haggar.com/pages/fit-guide",
+      "source_url": "https://digitalcontent.target.com/itemcontent/sizecharts/htmlfragments/men-bottoms/haggar/regular-plus-big-tall.html",
+      "measurement_basis": "body",
+      "numeric_rows": 9,
+      "notes": "Big/Tall bottoms only. Shirts, suits, boys and unrelated fit systems remain unpromoted."
+    }
+  ],
+  "not_promoted": [
+    {
+      "brand_name": "& Other Stories",
+      "brand_key": "otherstories",
+      "reason": "Official size-guide page defines body measurement landmarks but states that numeric size charts vary by product; no universal numeric table was safe to promote."
+    }
+  ],
+  "stored_chart_records_added_per_app": 6,
+  "stored_size_rows_added_per_app": 45,
+  "semantic_unique_charts_added_per_app": 5,
+  "note": "One of the six stored charts is the retailer-alias mirror for '47 Brand."
+}
