@@ -1,0 +1,19 @@
+{
+  "version": "2026-10-07-retailer-audit-021-buckle",
+  "retailer": "Buckle",
+  "retailer_key": "buckle",
+  "audited_at": "2026-10-07T15:45:00Z",
+  "local_context": "Lincoln, Nebraska Buckle locations at Gateway Mall and SouthPointe.",
+  "method": "Current official Buckle corporate women/men/youth owned-brand pages plus current Buckle assortment pages, canonicalized against BrandCatalog.",
+  "confirmed_product_brand_keys": 48,
+  "newly_created_in_shopper_app": 23,
+  "naming_normalizations": [
+    {
+      "current_name": "Gimmicks",
+      "canonical_brand_key": "gimmicksbybke",
+      "canonical_name": "Gimmicks by BKE"
+    }
+  ],
+  "sizing_policy": "Verified product/brand sizing first; otherwise low-confidence generic S/M/L/XL for compatible apparel.",
+  "completeness_note": "Current dated retailer snapshot; Buckle assortment changes over time."
+}
