@@ -22,7 +22,8 @@
           "sequence": 2,
           "name": "Macy's",
           "key": "macys",
-          "status": "controlled_pilot_complete_full_catalog_pending"
+          "status": "partial_source_access_required",
+          "blocker": "Department structure and sample products are publicly indexable, but exhaustive Base44 ingestion is blocked by HTTP 403 and Macy's published crawl controls prohibit internal search/catalog/v1 workarounds. Authorized bulk product access is required."
         },
         {
           "sequence": 3,
@@ -167,5 +168,5 @@
     "Record prices and availability with freshness timestamps.",
     "Do not treat image attribution as permission; public image display follows the separate image-rights policy."
   ],
-  "updated_at": "2026-10-07T17:19:00Z"
+  "updated_at": "2026-10-07T17:29:00Z"
 }
