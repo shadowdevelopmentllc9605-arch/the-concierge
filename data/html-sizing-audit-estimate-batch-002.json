@@ -2500,6 +2500,60 @@
         }
       ],
       "promotions": []
+    },
+    {
+      "brand_name": "Alo Yoga",
+      "brand_key": "aloyoga",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Alo Yoga\" official size guide",
+        "\"Alo Yoga\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "aloyoga.com https://www. aloyoga .com",
+          "url": "https://www.aloyoga.com/",
+          "domain": "aloyoga.com",
+          "score": 8,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "aloyoga.com https://www. alo yoga.com \u203a pages \u203a new-to- alo",
+          "url": "https://www.aloyoga.com/pages/new-to-alo",
+          "domain": "aloyoga.com",
+          "score": 8,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "aloyoga.com https://link. alo yoga.com",
+          "url": "https://www.aloyoga.com/",
+          "domain": "aloyoga.com",
+          "score": 8,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "aloyoga.com https://wellnessclub. alo yoga.com",
+          "url": "https://wellnessclub.aloyoga.com/",
+          "domain": "wellnessclub.aloyoga.com",
+          "score": 8,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "revolve.com https://www.revolve.com \u203a alo \u203a br",
+          "url": "https://www.revolve.com/alo/br/41307e/?msockid=0aa269fe970a6a6018c57e1596856bea",
+          "error": "TimeoutError('The read operation timed out')"
+        },
+        {
+          "title": "revolve.com https://www.revolve.com \u203a alo \u203a br",
+          "url": "https://www.revolve.com/alo/br/41307e/?msockid=164761755c876cb83718769e5d0c6df1",
+          "error": "TimeoutError('The read operation timed out')"
+        }
+      ],
+      "promotions": []
     }
   ],
   "promotions": []
