@@ -1,0 +1,280 @@
+{
+  "version": "2026-10-06-html-source-pass",
+  "results": [
+    {
+      "brand_name": "A.P.C.",
+      "brand_key": "apc",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"A.P.C.\" official size guide",
+        "\"A.P.C.\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "merriam-webster.com https:// www.merriam-webster.com \u203a dictionary \u203a a",
+          "url": "https://www.merriam-webster.com/dictionary/a",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Aaeda",
+      "brand_key": "aaeda",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Aaeda\" official size guide",
+        "\"Aaeda\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "oliviarodrigo.com https://www.oliviarodrigo.com",
+          "url": "https://www.oliviarodrigo.com/",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "oliviarodrigo.com https://shopuk.oliviarodrigo.com",
+          "url": "https://shopuk.oliviarodrigo.com/",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "oliviarodrigo.com https://store.oliviarodrigo.com \u203a pages \u203a tour",
+          "url": "https://store.oliviarodrigo.com/pages/tour",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "oliviarodrigo.com https://shopes.oliviarodrigo.com \u203a products \u203a olivia-rodrigo-you-seem...",
+          "url": "https://shopes.oliviarodrigo.com/products/olivia-rodrigo-you-seem-pretty-sad-for-a-girl-so-in-love-apple-music-exclusive-feminine-intuition-vinilo-lenticular-pink-cover",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "oliviarodrigo.com https://shopuk.oliviarodrigo.com \u203a collections \u203a tops-tees",
+          "url": "https://shopuk.oliviarodrigo.com/collections/tops-tees",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "oliviarodrigo.com https://shopes.oliviarodrigo.com \u203a collections \u203a tops-camisetas",
+          "url": "https://shopes.oliviarodrigo.com/collections/tops-camisetas",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "oliviarodrigo.com https://store.oliviarodrigo.com \u203a products \u203a logo-portable-cassette...",
+          "url": "https://store.oliviarodrigo.com/products/logo-portable-cassette-player-and-headphones-set",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "oliviarodrigo.com https://shopau.oliviarodrigo.com",
+          "url": "https://shopau.oliviarodrigo.com/",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "oliviarodrigo.com https://shopde.oliviarodrigo.com",
+          "url": "https://shopde.oliviarodrigo.com/",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Abercrombie & Fitch",
+      "brand_key": "abercrombiefitch",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Abercrombie & Fitch\" official size guide",
+        "\"Abercrombie & Fitch\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "abercrombie.com https://www. abercrombie .com",
+          "url": "https://www.abercrombie.com/shop/us",
+          "domain": "abercrombie.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "abercrombie.com https://www. abercrombie .com \u203a shop \u203a wd \u203a womens",
+          "url": "https://www.abercrombie.com/shop/us/womens?originalStore=wd",
+          "domain": "abercrombie.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "abercrombie.com https://www. abercrombie .com \u203a shop \u203a us \u203a kids",
+          "url": "https://www.abercrombie.com/shop/us/kids",
+          "domain": "abercrombie.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "abercrombie.com https://www. abercrombie .com \u203a shop \u203a us \u203a sale",
+          "url": "https://www.abercrombie.com/shop/us/sale",
+          "domain": "abercrombie.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "abercrombie.com https://www. abercrombie .com \u203a shop \u203a us \u203a new",
+          "url": "https://www.abercrombie.com/shop/us/new",
+          "domain": "abercrombie.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "abercrombie.com https://www. abercrombie .com \u203a shop \u203a us \u203a womens-new-arrivals",
+          "url": "https://www.abercrombie.com/shop/us/womens-new-arrivals",
+          "domain": "abercrombie.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "abercrombie.com https://www. abercrombie .com \u203a storelocator",
+          "url": "https://www.abercrombie.com/shop/StoreLocator?catalogId=10901&storeId=10051&langId=-1",
+          "domain": "abercrombie.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "abercrombie kids",
+      "brand_key": "abercrombiekids",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"abercrombie kids\" official size guide",
+        "\"abercrombie kids\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "abercrombie.com https://www. abercrombie .com",
+          "url": "https://www.abercrombie.com/shop/us",
+          "domain": "abercrombie.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "abercrombie.com https://www. abercrombie .com \u203a shop \u203a wd \u203a womens",
+          "url": "https://www.abercrombie.com/shop/us/womens?originalStore=wd",
+          "domain": "abercrombie.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "abercrombie.com https://www. abercrombie .com \u203a shop \u203a us \u203a kids",
+          "url": "https://www.abercrombie.com/shop/us/kids",
+          "domain": "abercrombie.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "abercrombie.com https://www. abercrombie .com \u203a shop \u203a us \u203a sale",
+          "url": "https://www.abercrombie.com/shop/us/sale",
+          "domain": "abercrombie.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "abercrombie.com https://www. abercrombie .com \u203a shop \u203a us \u203a new",
+          "url": "https://www.abercrombie.com/shop/us/new",
+          "domain": "abercrombie.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "abercrombie.com https://www. abercrombie .com \u203a shop \u203a us \u203a womens-new-arrivals",
+          "url": "https://www.abercrombie.com/shop/us/womens-new-arrivals",
+          "domain": "abercrombie.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "abercrombie.com https://www. abercrombie .com \u203a storelocator",
+          "url": "https://www.abercrombie.com/shop/StoreLocator?catalogId=10901&storeId=10051&langId=-1",
+          "domain": "abercrombie.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "ABLE",
+      "brand_key": "able",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"ABLE\" official size guide",
+        "\"ABLE\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "oklahoma.gov https://oklahoma.gov \u203a able -commission \u203a licensing \u203a online-licensing...",
+          "url": "https://oklahoma.gov/able-commission/licensing/online-licensing-portal.html",
+          "error": "URLError(SSLCertVerificationError(1, \"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'oklahoma.gov'. (_ssl.c:1016)\"))"
+        },
+        {
+          "title": "oklahoma.gov https://oklahoma.gov \u203a able -commission",
+          "url": "https://oklahoma.gov/able-commission.html",
+          "error": "URLError(SSLCertVerificationError(1, \"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'oklahoma.gov'. (_ssl.c:1016)\"))"
+        },
+        {
+          "title": "ableclothing.com https://www. able clothing.com",
+          "url": "https://www.ableclothing.com/",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "ablenow.com https://www. able now.com",
+          "url": "https://www.ablenow.com/",
+          "domain": "ablenow.com",
+          "score": 8,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        },
+        {
+          "title": "merriam-webster.com https:// www.merriam-webster.com \u203a dictionary \u203a able",
+          "url": "https://www.merriam-webster.com/dictionary/able",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "ablenrc.org https://www. able nrc.org \u203a what-is- able \u203a what-are- able -accounts",
+          "url": "https://www.ablenrc.org/what-is-able/what-are-able-accounts/",
+          "domain": "ablenrc.org",
+          "score": 8,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        },
+        {
+          "title": "ableunited.com https://www. ableunited .com \u203a getting-started \u203a for-individuals",
+          "url": "https://www.ableunited.com/getting-started/for-individuals",
+          "domain": "ableunited.com",
+          "score": 8,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "ablenrc.org https://www. able nrc.org",
+          "url": "https://www.ablenrc.org/",
+          "domain": "ablenrc.org",
+          "score": 8,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        }
+      ],
+      "promotions": []
+    }
+  ],
+  "promotions": []
+}

@@ -1,0 +1,1548 @@
+{
+  "version": "2026-10-06-html-source-pass",
+  "results": [
+    {
+      "brand_name": "A.P.C.",
+      "brand_key": "apc",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"A.P.C.\" official size guide",
+        "\"A.P.C.\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "merriam-webster.com https:// www.merriam-webster.com \u203a dictionary \u203a a",
+          "url": "https://www.merriam-webster.com/dictionary/a",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Aaeda",
+      "brand_key": "aaeda",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Aaeda\" official size guide",
+        "\"Aaeda\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "studentaid.gov https://studentaid.gov \u203a apply-for-aid \u203a fafsa",
+          "url": "https://studentaid.gov/h/apply-for-aid/fafsa",
+          "error": "TimeoutError('The read operation timed out')"
+        },
+        {
+          "title": "studentaid.gov https://studentaid.gov \u203a fsa-id \u203a sign-in \u203a landing",
+          "url": "https://studentaid.gov/fsa-id/sign-in/landing",
+          "error": "TimeoutError('The read operation timed out')"
+        },
+        {
+          "title": "studentaid.gov https://studentaid.gov",
+          "url": "https://studentaid.gov/",
+          "error": "TimeoutError('The read operation timed out')"
+        },
+        {
+          "title": "studentaid.gov https://studentaid.gov \u203a help-center \u203a contact",
+          "url": "https://studentaid.gov/help-center/contact",
+          "error": "TimeoutError('The read operation timed out')"
+        },
+        {
+          "title": "studentaid.gov https://studentaid.gov \u203a apply-for-aid \u203a fafsa \u203a fafsa-deadlines",
+          "url": "https://studentaid.gov/apply-for-aid/fafsa/fafsa-deadlines",
+          "error": "TimeoutError('The read operation timed out')"
+        },
+        {
+          "title": "studentaid.gov https://studentaid.gov \u203a apply-for-aid \u203a fafsa \u203a review-and-correct \u203a correct",
+          "url": "https://studentaid.gov/apply-for-aid/fafsa/review-and-correct/correct",
+          "error": "TimeoutError('The read operation timed out')"
+        },
+        {
+          "title": "studentaid.gov https://studentaid.gov \u203a fafsa-apply",
+          "url": "https://studentaid.gov/fafsa-apply/",
+          "error": "TimeoutError('The read operation timed out')"
+        },
+        {
+          "title": "studentaid.gov https://studentaid.gov \u203a help \u203a fafsa",
+          "url": "https://studentaid.gov/help/fafsa",
+          "error": "TimeoutError('The read operation timed out')"
+        },
+        {
+          "title": "studentaid.gov https://studentaid.gov \u203a fafsa-app \u203a ROLES",
+          "url": "https://studentaid.gov/fafsa-app/ROLES",
+          "error": "TimeoutError('The read operation timed out')"
+        },
+        {
+          "title": "tripadvisor.com https:// www.tripadvisor.com",
+          "url": "https://www.tripadvisor.com/Attraction_Review-g58349-d6434065-Reviews-Crossroads_Shopping_Center-Bellevue_Washington.html",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Abercrombie & Fitch",
+      "brand_key": "abercrombiefitch",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Abercrombie & Fitch\" official size guide",
+        "\"Abercrombie & Fitch\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "abercrombie.com https://www. abercrombie .com",
+          "url": "https://www.abercrombie.com/shop/us",
+          "domain": "abercrombie.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "abercrombie.com https://www. abercrombie .com \u203a shop \u203a us \u203a kids",
+          "url": "https://www.abercrombie.com/shop/us/kids",
+          "domain": "abercrombie.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "abercrombie.com https://www. abercrombie .com \u203a shop \u203a wd \u203a womens",
+          "url": "https://www.abercrombie.com/shop/us/womens?originalStore=wd",
+          "domain": "abercrombie.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "abercrombie.com https://www. abercrombie .com \u203a shop \u203a View AllStores DisplayView",
+          "url": "https://www.abercrombie.com/shop/ViewAllStoresDisplayView?storeId=10051&catalogId=10901&langId=-1",
+          "domain": "abercrombie.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "abercrombie.com https://www. abercrombie .com \u203a storelocator",
+          "url": "https://www.abercrombie.com/shop/StoreLocator?catalogId=10901&storeId=10051&langId=-1",
+          "domain": "abercrombie.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "abercrombie kids",
+      "brand_key": "abercrombiekids",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"abercrombie kids\" official size guide",
+        "\"abercrombie kids\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "abercrombie.com https://www. abercrombie .com",
+          "url": "https://www.abercrombie.com/shop/us",
+          "domain": "abercrombie.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "abercrombie.com https://www. abercrombie .com \u203a shop \u203a us \u203a kids",
+          "url": "https://www.abercrombie.com/shop/us/kids",
+          "domain": "abercrombie.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "abercrombie.com https://www. abercrombie .com \u203a shop \u203a wd \u203a womens",
+          "url": "https://www.abercrombie.com/shop/us/womens?originalStore=wd",
+          "domain": "abercrombie.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "abercrombie.com https://www. abercrombie .com \u203a shop \u203a View AllStores DisplayView",
+          "url": "https://www.abercrombie.com/shop/ViewAllStoresDisplayView?storeId=10051&catalogId=10901&langId=-1",
+          "domain": "abercrombie.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "abercrombie.com https://www. abercrombie .com \u203a storelocator",
+          "url": "https://www.abercrombie.com/shop/StoreLocator?catalogId=10901&storeId=10051&langId=-1",
+          "domain": "abercrombie.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "ABLE",
+      "brand_key": "able",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"ABLE\" official size guide",
+        "\"ABLE\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "oklahoma.gov https://oklahoma.gov \u203a able -commission \u203a licensing \u203a online-licensing...",
+          "url": "https://oklahoma.gov/able-commission/licensing/online-licensing-portal.html",
+          "error": "URLError(SSLCertVerificationError(1, \"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'oklahoma.gov'. (_ssl.c:1016)\"))"
+        },
+        {
+          "title": "oklahoma.gov https://oklahoma.gov \u203a able -commission",
+          "url": "https://oklahoma.gov/able-commission.html",
+          "error": "URLError(SSLCertVerificationError(1, \"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'oklahoma.gov'. (_ssl.c:1016)\"))"
+        },
+        {
+          "title": "ableclothing.com https://www. able clothing.com",
+          "url": "https://www.ableclothing.com/",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "ablenow.com https://www. able now.com",
+          "url": "https://www.ablenow.com/",
+          "domain": "ablenow.com",
+          "score": 8,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        },
+        {
+          "title": "merriam-webster.com https:// www.merriam-webster.com \u203a dictionary \u203a able",
+          "url": "https://www.merriam-webster.com/dictionary/able",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "ablenrc.org https://www. able nrc.org \u203a what-is- able \u203a what-are- able -accounts",
+          "url": "https://www.ablenrc.org/what-is-able/what-are-able-accounts/",
+          "domain": "ablenrc.org",
+          "score": 8,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        },
+        {
+          "title": "ableunited.com https://www. ableunited .com \u203a getting-started \u203a for-individuals",
+          "url": "https://www.ableunited.com/getting-started/for-individuals",
+          "domain": "ableunited.com",
+          "score": 8,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "ablenrc.org https://www. able nrc.org",
+          "url": "https://www.ablenrc.org/",
+          "domain": "ablenrc.org",
+          "score": 8,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Abound",
+      "brand_key": "abound",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Abound\" official size guide",
+        "\"Abound\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "aboundcu.com https://www. abound cu.com",
+          "url": "https://www.aboundcu.com/",
+          "domain": "aboundcu.com",
+          "score": 8,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "aboundcu.com https://my. abound cu.com",
+          "url": "https://my.aboundcu.com/login",
+          "domain": "my.aboundcu.com",
+          "score": 8,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "aboundcu.com https://www. abound cu.com \u203a accounts \u203a digital-services \u203a digital-banking",
+          "url": "https://www.aboundcu.com/accounts/digital-services/digital-banking",
+          "domain": "aboundcu.com",
+          "score": 8,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "aboundcu.com https://loans. abound cu.com",
+          "url": "https://loans.aboundcu.com/",
+          "domain": "loans.aboundcu.com",
+          "score": 8,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "joinabound.com https://www.join abound .com",
+          "url": "https://www.joinabound.com/",
+          "domain": "joinabound.com",
+          "score": 8,
+          "chart_count": 0,
+          "content_type": "text/html"
+        },
+        {
+          "title": "merriam-webster.com https:// www.merriam-webster.com \u203a dictionary \u203a abound",
+          "url": "https://www.merriam-webster.com/dictionary/abound",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "getabound.com https://www.get abound .com",
+          "url": "https://www.getabound.com/",
+          "domain": "getabound.com",
+          "score": 8,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "getabound.com https://apply.get abound .com",
+          "url": "https://apply.getabound.com/",
+          "domain": "apply.getabound.com",
+          "score": 8,
+          "chart_count": 0,
+          "content_type": "text/html"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "ABRAND",
+      "brand_key": "abrand",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"ABRAND\" official size guide",
+        "\"ABRAND\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "abrandjeans.com https:// abrand jeans.com",
+          "url": "https://abrandjeans.com/",
+          "domain": "abrandjeans.com",
+          "score": 10,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "abrandjeans.com https:// abrand jeans.com \u203a collections \u203a womens",
+          "url": "https://abrandjeans.com/collections/womens",
+          "domain": "abrandjeans.com",
+          "score": 10,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "revolve.com https://www.revolve.com \u203a abrand \u203a br",
+          "url": "https://www.revolve.com/abrand/br/8e9f39/?msockid=2f0b21f33e376fbc379836183f4e6eaa",
+          "error": "TimeoutError('The read operation timed out')"
+        },
+        {
+          "title": "universalstore.com https://www.universalstore.com \u203a collections \u203a abrand",
+          "url": "https://www.universalstore.com/collections/abrand",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "beginningboutique.com https://www.beginningboutique.com \u203a collections \u203a abrand",
+          "url": "https://www.beginningboutique.com/collections/abrand",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "generalpants.com https://www.generalpants.com \u203a collections \u203a abrand",
+          "url": "https://www.generalpants.com/collections/abrand",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "urbanoutfitters.com https://www.urbanoutfitters.com \u203a brands \u203a abrand -jeans",
+          "url": "https://www.urbanoutfitters.com/brands/abrand-jeans?msockid=2f0b21f33e376fbc379836183f4e6eaa",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "revolve.com https://www.revolve.com \u203a abrand \u203a br",
+          "url": "https://www.revolve.com/abrand/br/8e9f39/?msockid=1b68dea14897607d150bc94a49856138",
+          "error": "TimeoutError('The read operation timed out')"
+        },
+        {
+          "title": "urbanoutfitters.com https://www.urbanoutfitters.com \u203a brands \u203a abrand -jeans",
+          "url": "https://www.urbanoutfitters.com/brands/abrand-jeans?msockid=1b68dea14897607d150bc94a49856138",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Accouch\u00e9e",
+      "brand_key": "accouche",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Accouch\u00e9e\" official size guide",
+        "\"Accouch\u00e9e\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "stackexchange.com https://webapps.stackexchange.com \u203a questions",
+          "url": "https://webapps.stackexchange.com/questions/91236/how-can-i-recover-my-old-facebook-account",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Ace & Jig",
+      "brand_key": "acejig",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Ace & Jig\" official size guide",
+        "\"Ace & Jig\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "acehardware.com https://www. ace hardware.com",
+          "url": "https://www.acehardware.com/?msockid=36e0b12bee0663d30560a6c0efed626d",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "acehardware.com https://www. ace hardware.com \u203a departments",
+          "url": "https://www.acehardware.com/departments?msockid=36e0b12bee0663d30560a6c0efed626d",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "storeopeninghours.com https://www.storeopeninghours.com",
+          "url": "https://www.storeopeninghours.com/ace-hardware-west-43rd-street-minneapolis-mn",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "storeopeninghours.com https://www.storeopeninghours.com \u203a ... \u203a minneapolis - mn",
+          "url": "https://www.storeopeninghours.com/retailers/ace-hardware/minneapolis-mn",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "acehardware.com https://www. ace hardware.com",
+          "url": "https://www.acehardware.com/?msockid=1d217f86abbb60a91ed6686daa946176",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "acehardware.com https://www. ace hardware.com \u203a departments",
+          "url": "https://www.acehardware.com/departments?msockid=1d217f86abbb60a91ed6686daa946176",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Acler",
+      "brand_key": "acler",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Acler\" official size guide",
+        "\"Acler\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "shopacler.com https://shop acler .com",
+          "url": "https://shopacler.com/",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "saksfifthavenue.com https:// www.saksfifthavenue.com \u203a brand \u203a acler",
+          "url": "https://www.saksfifthavenue.com/brand/acler?msockid=0b95ddf24bfc676b35d1ca194aac6635",
+          "error": "<HTTPError 403: 'HTTP Forbidden'>"
+        },
+        {
+          "title": "farfetch.com https://www.farfetch.com \u203a shopping \u203a women \u203a acler \u203a items.aspx",
+          "url": "https://www.farfetch.com/shopping/women/acler/items.aspx?msockid=0b95ddf24bfc676b35d1ca194aac6635",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "shopacler.com https://shop acler .com \u203a collections",
+          "url": "https://shopacler.com/collections/",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "revolve.com https://www.revolve.com \u203a acler \u203a br",
+          "url": "https://www.revolve.com/acler/br/532394/?msockid=0b95ddf24bfc676b35d1ca194aac6635",
+          "error": "TimeoutError('The read operation timed out')"
+        },
+        {
+          "title": "saksfifthavenue.com https:// www.saksfifthavenue.com \u203a acler",
+          "url": "https://www.saksfifthavenue.com/c/sale-2/acler?msockid=0b95ddf24bfc676b35d1ca194aac6635",
+          "error": "<HTTPError 403: 'HTTP Forbidden'>"
+        },
+        {
+          "title": "anthropologie.com https:// www.anthropologie.com \u203a brands \u203a acler",
+          "url": "https://www.anthropologie.com/brands/acler?msockid=0b95ddf24bfc676b35d1ca194aac6635",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "saksfifthavenue.com https:// www.saksfifthavenue.com \u203a brand \u203a acler",
+          "url": "https://www.saksfifthavenue.com/brand/acler?msockid=3360585c444a61d90d774fb74506606d",
+          "error": "<HTTPError 403: 'HTTP Forbidden'>"
+        },
+        {
+          "title": "farfetch.com https://www.farfetch.com \u203a shopping \u203a women \u203a acler \u203a items.aspx",
+          "url": "https://www.farfetch.com/shopping/women/acler/items.aspx?msockid=3360585c444a61d90d774fb74506606d",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "revolve.com https://www.revolve.com \u203a acler \u203a br",
+          "url": "https://www.revolve.com/acler/br/532394/?msockid=3360585c444a61d90d774fb74506606d",
+          "error": "TimeoutError('The read operation timed out')"
+        },
+        {
+          "title": "saksfifthavenue.com https:// www.saksfifthavenue.com \u203a acler",
+          "url": "https://www.saksfifthavenue.com/c/sale-2/acler?msockid=3360585c444a61d90d774fb74506606d",
+          "error": "<HTTPError 403: 'HTTP Forbidden'>"
+        },
+        {
+          "title": "anthropologie.com https:// www.anthropologie.com \u203a brands \u203a acler",
+          "url": "https://www.anthropologie.com/brands/acler?msockid=3360585c444a61d90d774fb74506606d",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Acne Studios",
+      "brand_key": "acnestudios",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Acne Studios\" official size guide",
+        "\"Acne Studios\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "mayoclinic.org https://www.mayoclinic.org \u203a diseases-conditions \u203a acne",
+          "url": "https://www.mayoclinic.org/diseases-conditions/acne/symptoms-causes/syc-20368047",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "acnestudios.com https://www. acnestudios .com",
+          "url": "https://www.acnestudios.com/us/en/home",
+          "domain": "acnestudios.com",
+          "score": 10,
+          "chart_count": 0,
+          "content_type": "text/html;charset=UTF-8"
+        },
+        {
+          "title": "Size guide",
+          "url": "https://www.acnestudios.com/us/en/help/size-guide.html",
+          "domain": "acnestudios.com",
+          "score": 13,
+          "chart_count": 0,
+          "content_type": "text/html;charset=UTF-8"
+        },
+        {
+          "title": "acne.org https://www. acne .org \u203a what-is- acne",
+          "url": "https://www.acne.org/what-is-acne",
+          "domain": "acne.org",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Adelyn Rae",
+      "brand_key": "adelynrae",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Adelyn Rae\" official size guide",
+        "\"Adelyn Rae\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "thebump.com https:// www.thebump.com \u203a adelyn -baby-name",
+          "url": "https://www.thebump.com/b/adelyn-baby-name",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "wisdomlib.org https://www.wisdomlib.org \u203a names \u203a adelyn",
+          "url": "https://www.wisdomlib.org/names/adelyn",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "aden + anais",
+      "brand_key": "adenanais",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"aden + anais\" official size guide",
+        "\"aden + anais\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "britannica.com https:// www.britannica.com \u203a place \u203a Aden",
+          "url": "https://www.britannica.com/place/Aden",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "aden.org https://www. aden .org",
+          "url": "https://www.aden.org/",
+          "domain": "aden.org",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "aden.io https://www. aden .io",
+          "url": "https://www.aden.io/",
+          "error": "URLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1016)'))"
+        },
+        {
+          "title": "britannica.com https:// www.britannica.com \u203a place \u203a Gulf-of-Aden",
+          "url": "https://www.britannica.com/place/Gulf-of-Aden",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "aden.org https://www. aden .org \u203a pa",
+          "url": "https://www.aden.org/p/pa/",
+          "error": "TimeoutError('The read operation timed out')"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Adidas by Stella McCartney",
+      "brand_key": "adidasbystellamccartney",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Adidas by Stella McCartney\" official size guide",
+        "\"Adidas by Stella McCartney\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "adidas.com https://www. adidas .com",
+          "url": "https://www.adidas.com/us?msockid=02d26f17a7726025334378fca609611c",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "adidas.com https://www. adidas .com \u203a us \u203a welcome",
+          "url": "https://www.adidas.com/us/welcome?msockid=02d26f17a7726025334378fca609611c",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "dickssportinggoods.com https://www.dickssportinggoods.com \u203a brand-shop \u203a adidas",
+          "url": "https://www.dickssportinggoods.com/s/brand-shop/adidas?msockid=02d26f17a7726025334378fca609611c",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "adidas.co.uk https://www. adidas .co.uk",
+          "url": "https://www.adidas.co.uk/?msockid=02d26f17a7726025334378fca609611c",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "adidas.com https://www. adidas .com \u203a us \u203a shoes",
+          "url": "https://www.adidas.com/us/shoes?msockid=02d26f17a7726025334378fca609611c",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "adidas.com https://www. adidas .com \u203a us \u203a originals",
+          "url": "https://www.adidas.com/us/originals?msockid=02d26f17a7726025334378fca609611c",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "adidas.com https://www. adidas .com \u203a us \u203a men-shoes",
+          "url": "https://www.adidas.com/us/men-shoes?msockid=02d26f17a7726025334378fca609611c",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "adidas.com https://www. adidas .com \u203a us \u203a sale",
+          "url": "https://www.adidas.com/us/sale?msockid=02d26f17a7726025334378fca609611c",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "adidas.com https://www. adidas .com",
+          "url": "https://www.adidas.com/us?msockid=3c5bad17cb8f6c091463bafccae96dfd",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "adidas.com https://www. adidas .com \u203a us \u203a welcome",
+          "url": "https://www.adidas.com/us/welcome?msockid=3c5bad17cb8f6c091463bafccae96dfd",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "dickssportinggoods.com https://www.dickssportinggoods.com \u203a brand-shop \u203a adidas",
+          "url": "https://www.dickssportinggoods.com/s/brand-shop/adidas?msockid=3c5bad17cb8f6c091463bafccae96dfd",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "adidas.co.uk https://www. adidas .co.uk",
+          "url": "https://www.adidas.co.uk/?msockid=3c5bad17cb8f6c091463bafccae96dfd",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "adidas.com https://www. adidas .com \u203a us \u203a shoes",
+          "url": "https://www.adidas.com/us/shoes?msockid=3c5bad17cb8f6c091463bafccae96dfd",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "adidas.com https://www. adidas .com \u203a us \u203a originals",
+          "url": "https://www.adidas.com/us/originals?msockid=3c5bad17cb8f6c091463bafccae96dfd",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "adidas.com https://www. adidas .com \u203a us \u203a men-shoes",
+          "url": "https://www.adidas.com/us/men-shoes?msockid=3c5bad17cb8f6c091463bafccae96dfd",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "adidas.com https://www. adidas .com \u203a us \u203a sale",
+          "url": "https://www.adidas.com/us/sale?msockid=3c5bad17cb8f6c091463bafccae96dfd",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Adidas Golf",
+      "brand_key": "adidasgolf",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Adidas Golf\" official size guide",
+        "\"Adidas Golf\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "adidas.com https://www. adidas .com",
+          "url": "https://www.adidas.com/us?msockid=342574b3cd146f8e3d7e6358cc876ed7",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "adidas.com https://www. adidas .com \u203a us \u203a welcome",
+          "url": "https://www.adidas.com/us/welcome?msockid=342574b3cd146f8e3d7e6358cc876ed7",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "dickssportinggoods.com https://www.dickssportinggoods.com \u203a brand-shop \u203a adidas",
+          "url": "https://www.dickssportinggoods.com/s/brand-shop/adidas?msockid=342574b3cd146f8e3d7e6358cc876ed7",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "adidas.co.uk https://www. adidas .co.uk",
+          "url": "https://www.adidas.co.uk/?msockid=342574b3cd146f8e3d7e6358cc876ed7",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "adidas.com https://www. adidas .com \u203a us \u203a shoes",
+          "url": "https://www.adidas.com/us/shoes?msockid=342574b3cd146f8e3d7e6358cc876ed7",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "adidas.com https://www. adidas .com \u203a us \u203a originals",
+          "url": "https://www.adidas.com/us/originals?msockid=342574b3cd146f8e3d7e6358cc876ed7",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "adidas.com https://www. adidas .com \u203a us \u203a men-shoes",
+          "url": "https://www.adidas.com/us/men-shoes?msockid=342574b3cd146f8e3d7e6358cc876ed7",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "adidas.com https://www. adidas .com \u203a us \u203a sale",
+          "url": "https://www.adidas.com/us/sale?msockid=342574b3cd146f8e3d7e6358cc876ed7",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "adidas.com https://www. adidas .com",
+          "url": "https://www.adidas.com/us?msockid=00c4c01ccb636b831b79d7f7cad66ace",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "adidas.com https://www. adidas .com \u203a us \u203a welcome",
+          "url": "https://www.adidas.com/us/welcome?msockid=00c4c01ccb636b831b79d7f7cad66ace",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "dickssportinggoods.com https://www.dickssportinggoods.com \u203a brand-shop \u203a adidas",
+          "url": "https://www.dickssportinggoods.com/s/brand-shop/adidas?msockid=00c4c01ccb636b831b79d7f7cad66ace",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "adidas.co.uk https://www. adidas .co.uk",
+          "url": "https://www.adidas.co.uk/?msockid=00c4c01ccb636b831b79d7f7cad66ace",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "adidas.com https://www. adidas .com \u203a us \u203a shoes",
+          "url": "https://www.adidas.com/us/shoes?msockid=00c4c01ccb636b831b79d7f7cad66ace",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "adidas.com https://www. adidas .com \u203a us \u203a originals",
+          "url": "https://www.adidas.com/us/originals?msockid=00c4c01ccb636b831b79d7f7cad66ace",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "adidas.com https://www. adidas .com \u203a us \u203a men-shoes",
+          "url": "https://www.adidas.com/us/men-shoes?msockid=00c4c01ccb636b831b79d7f7cad66ace",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "adidas.com https://www. adidas .com \u203a us \u203a sale",
+          "url": "https://www.adidas.com/us/sale?msockid=00c4c01ccb636b831b79d7f7cad66ace",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Adidas Originals",
+      "brand_key": "adidasoriginals",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Adidas Originals\" official size guide",
+        "\"Adidas Originals\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "adidas.com https://www. adidas .com",
+          "url": "https://www.adidas.com/us?msockid=38f3b6bc8c696da4102ca1578d7a6c65",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "adidas.com https://www. adidas .com \u203a us \u203a welcome",
+          "url": "https://www.adidas.com/us/welcome?msockid=38f3b6bc8c696da4102ca1578d7a6c65",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "dickssportinggoods.com https://www.dickssportinggoods.com \u203a brand-shop \u203a adidas",
+          "url": "https://www.dickssportinggoods.com/s/brand-shop/adidas?msockid=38f3b6bc8c696da4102ca1578d7a6c65",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "adidas.co.uk https://www. adidas .co.uk",
+          "url": "https://www.adidas.co.uk/?msockid=38f3b6bc8c696da4102ca1578d7a6c65",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "adidas.com https://www. adidas .com \u203a us \u203a shoes",
+          "url": "https://www.adidas.com/us/shoes?msockid=38f3b6bc8c696da4102ca1578d7a6c65",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "adidas.com https://www. adidas .com \u203a us \u203a originals",
+          "url": "https://www.adidas.com/us/originals?msockid=38f3b6bc8c696da4102ca1578d7a6c65",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "adidas.com https://www. adidas .com \u203a us \u203a men-shoes",
+          "url": "https://www.adidas.com/us/men-shoes?msockid=38f3b6bc8c696da4102ca1578d7a6c65",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "adidas.com https://www. adidas .com \u203a us \u203a sale",
+          "url": "https://www.adidas.com/us/sale?msockid=38f3b6bc8c696da4102ca1578d7a6c65",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "adidas.com https://www. adidas .com",
+          "url": "https://www.adidas.com/us?msockid=133622698ac662e1040935828b0d636d",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "adidas.com https://www. adidas .com \u203a us \u203a welcome",
+          "url": "https://www.adidas.com/us/welcome?msockid=133622698ac662e1040935828b0d636d",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "dickssportinggoods.com https://www.dickssportinggoods.com \u203a brand-shop \u203a adidas",
+          "url": "https://www.dickssportinggoods.com/s/brand-shop/adidas?msockid=133622698ac662e1040935828b0d636d",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "adidas.co.uk https://www. adidas .co.uk",
+          "url": "https://www.adidas.co.uk/?msockid=133622698ac662e1040935828b0d636d",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "adidas.com https://www. adidas .com \u203a us \u203a shoes",
+          "url": "https://www.adidas.com/us/shoes?msockid=133622698ac662e1040935828b0d636d",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "adidas.com https://www. adidas .com \u203a us \u203a originals",
+          "url": "https://www.adidas.com/us/originals?msockid=133622698ac662e1040935828b0d636d",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "adidas.com https://www. adidas .com \u203a us \u203a men-shoes",
+          "url": "https://www.adidas.com/us/men-shoes?msockid=133622698ac662e1040935828b0d636d",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "adidas.com https://www. adidas .com \u203a us \u203a sale",
+          "url": "https://www.adidas.com/us/sale?msockid=133622698ac662e1040935828b0d636d",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "ADIDAS X FARM RIO",
+      "brand_key": "adidasxfarmrio",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"ADIDAS X FARM RIO\" official size guide",
+        "\"ADIDAS X FARM RIO\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "adidas.com https://www. adidas .com",
+          "url": "https://www.adidas.com/us?msockid=350a2cb89b2c6a6406f73b539a0c6b68",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "adidas.com https://www. adidas .com \u203a us \u203a welcome",
+          "url": "https://www.adidas.com/us/welcome?msockid=350a2cb89b2c6a6406f73b539a0c6b68",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "dickssportinggoods.com https://www.dickssportinggoods.com \u203a brand-shop \u203a adidas",
+          "url": "https://www.dickssportinggoods.com/s/brand-shop/adidas?msockid=350a2cb89b2c6a6406f73b539a0c6b68",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "adidas.co.uk https://www. adidas .co.uk",
+          "url": "https://www.adidas.co.uk/?msockid=350a2cb89b2c6a6406f73b539a0c6b68",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "adidas.com https://www. adidas .com \u203a us \u203a shoes",
+          "url": "https://www.adidas.com/us/shoes?msockid=350a2cb89b2c6a6406f73b539a0c6b68",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "adidas.com https://www. adidas .com \u203a us \u203a originals",
+          "url": "https://www.adidas.com/us/originals?msockid=350a2cb89b2c6a6406f73b539a0c6b68",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "adidas.com https://www. adidas .com \u203a us \u203a men-shoes",
+          "url": "https://www.adidas.com/us/men-shoes?msockid=350a2cb89b2c6a6406f73b539a0c6b68",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "adidas.com https://www. adidas .com \u203a us \u203a sale",
+          "url": "https://www.adidas.com/us/sale?msockid=350a2cb89b2c6a6406f73b539a0c6b68",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "adidas.com https://www. adidas .com",
+          "url": "https://www.adidas.com/us?msockid=0194462171d065992b7f51ca70ca64f7",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "adidas.com https://www. adidas .com \u203a us \u203a welcome",
+          "url": "https://www.adidas.com/us/welcome?msockid=0194462171d065992b7f51ca70ca64f7",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "dickssportinggoods.com https://www.dickssportinggoods.com \u203a brand-shop \u203a adidas",
+          "url": "https://www.dickssportinggoods.com/s/brand-shop/adidas?msockid=0194462171d065992b7f51ca70ca64f7",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "adidas.co.uk https://www. adidas .co.uk",
+          "url": "https://www.adidas.co.uk/?msockid=0194462171d065992b7f51ca70ca64f7",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "adidas.com https://www. adidas .com \u203a us \u203a shoes",
+          "url": "https://www.adidas.com/us/shoes?msockid=0194462171d065992b7f51ca70ca64f7",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "adidas.com https://www. adidas .com \u203a us \u203a originals",
+          "url": "https://www.adidas.com/us/originals?msockid=0194462171d065992b7f51ca70ca64f7",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "adidas.com https://www. adidas .com \u203a us \u203a men-shoes",
+          "url": "https://www.adidas.com/us/men-shoes?msockid=0194462171d065992b7f51ca70ca64f7",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "adidas.com https://www. adidas .com \u203a us \u203a sale",
+          "url": "https://www.adidas.com/us/sale?msockid=0194462171d065992b7f51ca70ca64f7",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Adonna",
+      "brand_key": "adonna",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Adonna\" official size guide",
+        "\"Adonna\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "office.com https:// outlook .office.com",
+          "url": "https://outlook.office.com/mail/",
+          "error": "<HTTPError 417: 'Expectation Failed'>"
+        },
+        {
+          "title": "ranker.com https:// www.ranker.com \u203a list \u203a all- voice - coaches \u203a danielle-seabrook",
+          "url": "https://www.ranker.com/list/all-voice-coaches/danielle-seabrook",
+          "error": "<HTTPError 401: 'Unauthorized'>"
+        },
+        {
+          "title": "parade.com https://parade.com \u203a parade \u203a the-voice - winners -list",
+          "url": "https://parade.com/1051235/parade/the-voice-winners-list/",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "people.com https://people.com",
+          "url": "https://people.com/see-all-the-voice-coaches-by-season-11911819",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Adore Me",
+      "brand_key": "adoreme",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Adore Me\" official size guide",
+        "\"Adore Me\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "merriam-webster.com https://www.merriam-webster.com \u203a dictionary \u203a adore",
+          "url": "https://www.merriam-webster.com/dictionary/adore",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "adorebeauty.com.au https://www. adore beauty.com.au",
+          "url": "https://www.adorebeauty.com.au/",
+          "domain": "adorebeauty.com.au",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "merriam-webster.com https://www.merriam-webster.com \u203a thesaurus \u203a adore",
+          "url": "https://www.merriam-webster.com/thesaurus/adore",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "collinsdictionary.com https://www.collinsdictionary.com \u203a dictionary \u203a english \u203a adore",
+          "url": "https://www.collinsdictionary.com/dictionary/english/adore",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Adrianna Papell",
+      "brand_key": "adriannapapell",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Adrianna Papell\" official size guide",
+        "\"Adrianna Papell\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "adriannapapell.com https://www. adrianna papell.com",
+          "url": "https://www.adriannapapell.com/",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "adriannapapell.com https://www. adrianna papell.com \u203a collections \u203a adrianna -by- adrianna -papell",
+          "url": "https://www.adriannapapell.com/collections/adrianna-by-adrianna-papell",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "babynames.com https://babynames.com \u203a name \u203a ADRIANNA",
+          "url": "https://babynames.com/name/ADRIANNA",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "macys.com https://www.macys.com \u203a shop \u203a womens \u203a clothing \u203a Brand \u203a Adrianna",
+          "url": "https://www.macys.com/shop/womens/clothing/Brand/Adrianna?id=188851&msockid=0c75c13eeb6b645b170dd6d5ea0465c0",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "macys.com https://www.macys.com \u203a ... \u203a Brand \u203a Adrianna",
+          "url": "https://www.macys.com/shop/womens/clothing/dresses/Brand/Adrianna?id=5449&msockid=0c75c13eeb6b645b170dd6d5ea0465c0",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "macys.com https://www.macys.com \u203a shop \u203a womens \u203a clothing \u203a Brand \u203a Adrianna",
+          "url": "https://www.macys.com/shop/womens/clothing/Brand/Adrianna?id=188851&msockid=36089d36f7c26ff50dd68addf6bc6e3c",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "macys.com https://www.macys.com \u203a ... \u203a Brand \u203a Adrianna",
+          "url": "https://www.macys.com/shop/womens/clothing/dresses/Brand/Adrianna?id=5449&msockid=36089d36f7c26ff50dd68addf6bc6e3c",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "AdventureWear 360",
+      "brand_key": "adventurewear360",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"AdventureWear 360\" official size guide",
+        "\"AdventureWear 360\" size chart measurements"
+      ],
+      "checked": [],
+      "promotions": []
+    },
+    {
+      "brand_name": "AELFRIC EDEN",
+      "brand_key": "aelfriceden",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"AELFRIC EDEN\" official size guide",
+        "\"AELFRIC EDEN\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "aelfriceden.com https://www. aelfric eden.com",
+          "url": "https://www.aelfriceden.com/",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "aelfriceden.com https://www. aelfric eden.com \u203a collections \u203a shop-all",
+          "url": "https://www.aelfriceden.com/collections/shop-all",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "britannica.com https:// www.britannica.com \u203a biography \u203a Aelfric -Anglo-Saxon...",
+          "url": "https://www.britannica.com/biography/Aelfric-Anglo-Saxon-scholar",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Aeropostale",
+      "brand_key": "aeropostale",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Aeropostale\" official size guide",
+        "\"Aeropostale\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "aeropostale.com https://www. aeropostale .com",
+          "url": "https://www.aeropostale.com/",
+          "domain": "aeropostale.com",
+          "score": 10,
+          "chart_count": 0,
+          "content_type": "text/html;charset=UTF-8"
+        },
+        {
+          "title": "Size Charts",
+          "url": "https://www.aeropostale.com/size-charts/size-charts.html",
+          "domain": "aeropostale.com",
+          "score": 13,
+          "chart_count": 0,
+          "content_type": "text/html;charset=UTF-8"
+        },
+        {
+          "title": "aeropostale.com https://www. aeropostale .com \u203a creatable",
+          "url": "https://www.aeropostale.com/creatable/home",
+          "domain": "aeropostale.com",
+          "score": 10,
+          "chart_count": 0,
+          "content_type": "text/html"
+        },
+        {
+          "title": "Size Charts",
+          "url": "https://www.aeropostale.com/size-charts/size-charts.html",
+          "domain": "aeropostale.com",
+          "score": 13,
+          "chart_count": 0,
+          "content_type": "text/html;charset=UTF-8"
+        },
+        {
+          "title": "aeropostale.com https://stores. aeropostale .com",
+          "url": "https://stores.aeropostale.com/",
+          "domain": "stores.aeropostale.com",
+          "score": 10,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "aeropostaleusa.com https://www. aeropostale usa.com",
+          "url": "https://www.aeropostaleusa.com/",
+          "domain": "aeropostaleusa.com",
+          "score": 10,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        },
+        {
+          "title": "Size Chart",
+          "url": "https://www.aeropostaleusa.com/pages/size-chart",
+          "domain": "aeropostaleusa.com",
+          "score": 13,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        },
+        {
+          "title": "aeropostale.com https://stores. aeropostale .com \u203a search",
+          "url": "https://stores.aeropostale.com/search",
+          "domain": "stores.aeropostale.com",
+          "score": 10,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "aeropostaleusa.com https://www. aeropostale usa.com \u203a listing \u203a home.html",
+          "url": "https://www.aeropostaleusa.com/listing/home.html",
+          "domain": "aeropostaleusa.com",
+          "score": 10,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        },
+        {
+          "title": "Size Chart",
+          "url": "https://www.aeropostaleusa.com/pages/size-chart",
+          "domain": "aeropostaleusa.com",
+          "score": 13,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        },
+        {
+          "title": "aeropostale.com https://www. aeropostale .com \u203a women-teen- girls \u203a clothing",
+          "url": "https://www.aeropostale.com/women-teen-girls/clothing/",
+          "domain": "aeropostale.com",
+          "score": 10,
+          "chart_count": 0,
+          "content_type": "text/html;charset=UTF-8"
+        },
+        {
+          "title": "Size Charts",
+          "url": "https://www.aeropostale.com/size-charts/size-charts.html",
+          "domain": "aeropostale.com",
+          "score": 13,
+          "chart_count": 0,
+          "content_type": "text/html;charset=UTF-8"
+        },
+        {
+          "title": "aeropostale.com https://www. aeropostale .com \u203a fb-lp",
+          "url": "https://www.aeropostale.com/fb-lp/",
+          "domain": "aeropostale.com",
+          "score": 10,
+          "chart_count": 0,
+          "content_type": "text/html;charset=UTF-8"
+        },
+        {
+          "title": "Size Charts",
+          "url": "https://www.aeropostale.com/size-charts/size-charts.html",
+          "domain": "aeropostale.com",
+          "score": 13,
+          "chart_count": 0,
+          "content_type": "text/html;charset=UTF-8"
+        },
+        {
+          "title": "aeropostale.com https://www. aeropostale .com \u203a collections",
+          "url": "https://www.aeropostale.com/collections/",
+          "domain": "aeropostale.com",
+          "score": 10,
+          "chart_count": 0,
+          "content_type": "text/html;charset=UTF-8"
+        },
+        {
+          "title": "Size Charts",
+          "url": "https://www.aeropostale.com/size-charts/size-charts.html",
+          "domain": "aeropostale.com",
+          "score": 13,
+          "chart_count": 0,
+          "content_type": "text/html;charset=UTF-8"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Aerosoles",
+      "brand_key": "aerosoles",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Aerosoles\" official size guide",
+        "\"Aerosoles\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "aerosoles.com https://www. aerosoles .com",
+          "url": "https://www.aerosoles.com/",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "aerosoles.com https://www. aerosoles .com \u203a collections \u203a shop-all-shoes",
+          "url": "https://www.aerosoles.com/collections/shop-all-shoes",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "macys.com https://www.macys.com \u203a shop \u203a womens \u203a shoes \u203a Brand \u203a Aerosoles",
+          "url": "https://www.macys.com/shop/womens/shoes/Brand/Aerosoles?id=56233&msockid=3601c6ca61a46d330428d12160586cf4",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "qvc.com https://www.qvc.com \u203a shoes \u203a aerosoles \u203a c.html",
+          "url": "https://www.qvc.com/c/shoes/aerosoles/-/1doux-1z141et/c.html?msockid=3601c6ca61a46d330428d12160586cf4",
+          "error": "<HTTPError 418: \"I'm a teapot\">"
+        },
+        {
+          "title": "aerosolesus.com https://www. aerosoles us.com \u203a shop \u203a catalog \u203a home.html",
+          "url": "https://www.aerosolesus.com/shop/catalog/home.html",
+          "domain": "aerosolesus.com",
+          "score": 10,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        },
+        {
+          "title": "Size Chart",
+          "url": "https://www.aerosolesus.com/pages/size-chart",
+          "domain": "aerosolesus.com",
+          "score": 13,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        },
+        {
+          "title": "macys.com https://www.macys.com \u203a shop \u203a womens \u203a shoes \u203a Brand \u203a Aerosoles",
+          "url": "https://www.macys.com/shop/womens/shoes/Brand/Aerosoles?id=56233&msockid=312bcd58dc7c66633ce8dab3ddba675f",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "qvc.com https://www.qvc.com \u203a shoes \u203a aerosoles \u203a c.html",
+          "url": "https://www.qvc.com/c/shoes/aerosoles/-/1doux-1z141et/c.html?msockid=312bcd58dc7c66633ce8dab3ddba675f",
+          "error": "<HTTPError 418: \"I'm a teapot\">"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Aerothotic",
+      "brand_key": "aerothotic",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Aerothotic\" official size guide",
+        "\"Aerothotic\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "ticketmaster.com https:// www.ticketmaster.com \u203a artist",
+          "url": "https://www.ticketmaster.com/artist/824144?msockid=1a1f2d43427a608702a03aa843b76173",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "climatepledgearena.com https://climatepledgearena.com \u203a event",
+          "url": "https://climatepledgearena.com/event/maroon-5-25/",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "maroon5sin.com https:// maroon5 sin.com \u203a pages \u203a tour",
+          "url": "https://maroon5sin.com/pages/tour",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "maroon5.store https:// maroon5 .store \u203a pages \u203a tour",
+          "url": "https://maroon5.store/pages/tour",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "concertarchives.org https://www.concertarchives.org \u203a bands",
+          "url": "https://www.concertarchives.org/bands/maroon-5--2",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "climatepledgearena.com https://climatepledgearena.com",
+          "url": "https://climatepledgearena.com/maroon-5-announces-us-arena-tour/",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Aetrex",
+      "brand_key": "aetrex",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Aetrex\" official size guide",
+        "\"Aetrex\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "aetrex.com https://www. aetrex .com",
+          "url": "https://www.aetrex.com/",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "aetrex.com https://www. aetrex .com \u203a pages \u203a women-footwear",
+          "url": "https://www.aetrex.com/pages/women-footwear",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "comfortoneshoes.com https://comfortoneshoes.com \u203a collections \u203a aetrex",
+          "url": "https://comfortoneshoes.com/collections/aetrex",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "AFRM",
+      "brand_key": "afrm",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"AFRM\" official size guide",
+        "\"AFRM\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "shopafrm.com https://shop afrm .com",
+          "url": "https://shopafrm.com/",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "shopafrm.com https://shop afrm .com \u203a collections \u203a dresses",
+          "url": "https://shopafrm.com/collections/dresses",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "asos.com https:// www.asos.com \u203a us \u203a women \u203a a-to-z-of-brands \u203a afrm \u203a cat",
+          "url": "https://www.asos.com/us/women/a-to-z-of-brands/afrm/cat/?cid=50795&msockid=08b4212054296766325f36cb55c5663a",
+          "error": "TimeoutError('The read operation timed out')"
+        },
+        {
+          "title": "revolve.com https://www.revolve.com \u203a afrm \u203a br",
+          "url": "https://www.revolve.com/afrm/br/5c78ab/?msockid=08b4212054296766325f36cb55c5663a",
+          "error": "TimeoutError('The read operation timed out')"
+        },
+        {
+          "title": "army.mil https:// www.hrc.army.mil \u203a content \u203a Armed Forces Reserve Medal",
+          "url": "https://www.hrc.army.mil/content/Armed%20Forces%20Reserve%20Medal",
+          "error": "URLError(TimeoutError('timed out'))"
+        },
+        {
+          "title": "asos.com https:// www.asos.com \u203a us \u203a women \u203a a-to-z-of-brands \u203a afrm \u203a cat",
+          "url": "https://www.asos.com/us/women/a-to-z-of-brands/afrm/cat/?cid=50795&msockid=1d1ca38da7166d0737d2b466a6836c2c",
+          "error": "TimeoutError('The read operation timed out')"
+        },
+        {
+          "title": "revolve.com https://www.revolve.com \u203a afrm \u203a br",
+          "url": "https://www.revolve.com/afrm/br/5c78ab/?msockid=1d1ca38da7166d0737d2b466a6836c2c",
+          "error": "TimeoutError('The read operation timed out')"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "AFRM LOS ANGELES",
+      "brand_key": "afrmlosangeles",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"AFRM LOS ANGELES\" official size guide",
+        "\"AFRM LOS ANGELES\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "shopafrm.com https://shop afrm .com",
+          "url": "https://shopafrm.com/",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "shopafrm.com https://shop afrm .com \u203a collections \u203a dresses",
+          "url": "https://shopafrm.com/collections/dresses",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "asos.com https:// www.asos.com \u203a us \u203a women \u203a a-to-z-of-brands \u203a afrm \u203a cat",
+          "url": "https://www.asos.com/us/women/a-to-z-of-brands/afrm/cat/?cid=50795&msockid=0ee4a74fa7256b030719b0a4a6356a3f",
+          "error": "TimeoutError('The read operation timed out')"
+        },
+        {
+          "title": "revolve.com https://www.revolve.com \u203a afrm \u203a br",
+          "url": "https://www.revolve.com/afrm/br/5c78ab/?msockid=0ee4a74fa7256b030719b0a4a6356a3f",
+          "error": "TimeoutError('The read operation timed out')"
+        },
+        {
+          "title": "army.mil https:// www.hrc.army.mil \u203a content \u203a Armed Forces Reserve Medal",
+          "url": "https://www.hrc.army.mil/content/Armed%20Forces%20Reserve%20Medal",
+          "error": "URLError(TimeoutError('timed out'))"
+        },
+        {
+          "title": "asos.com https:// www.asos.com \u203a us \u203a women \u203a a-to-z-of-brands \u203a afrm \u203a cat",
+          "url": "https://www.asos.com/us/women/a-to-z-of-brands/afrm/cat/?cid=50795&msockid=0d9a0af233666368365b1d1932b9628e",
+          "error": "TimeoutError('The read operation timed out')"
+        },
+        {
+          "title": "revolve.com https://www.revolve.com \u203a afrm \u203a br",
+          "url": "https://www.revolve.com/afrm/br/5c78ab/?msockid=0d9a0af233666368365b1d1932b9628e",
+          "error": "TimeoutError('The read operation timed out')"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "After Six",
+      "brand_key": "aftersix",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"After Six\" official size guide",
+        "\"After Six\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "merriam-webster.com https:// www.merriam-webster.com \u203a dictionary \u203a after",
+          "url": "https://www.merriam-webster.com/dictionary/after",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "AG",
+      "brand_key": "ag",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"AG\" official size guide",
+        "\"AG\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "ks.gov https://www.agriculture. ks .gov",
+          "url": "https://www.agriculture.ks.gov/",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "ks.gov https://www. ag . ks .gov \u203a file-a-complaint",
+          "url": "https://www.ag.ks.gov/file-a-complaint",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "agweb.com https://www.agweb.com \u203a news",
+          "url": "https://www.agweb.com/news",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    }
+  ],
+  "promotions": []
+}
