@@ -1,0 +1,485 @@
+{
+  "version": "2026-10-06-html-source-pass",
+  "results": [
+    {
+      "brand_name": "'47",
+      "brand_key": "47",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"'47\" official size guide",
+        "\"'47\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "47brand.com https://www. 47 brand.com",
+          "url": "https://www.47brand.com/",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "47brand.com https://www. 47 brand.com \u203a collections",
+          "url": "https://www.47brand.com/collections/47-franchise",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "& Other Stories",
+      "brand_key": "otherstories",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"& Other Stories\" official size guide",
+        "\"& Other Stories\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "merriam-webster.com https:// www.merriam-webster.com \u203a dictionary \u203a other",
+          "url": "https://www.merriam-webster.com/dictionary/other",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "merriam-webster.com https:// www.merriam-webster.com \u203a thesaurus \u203a other",
+          "url": "https://www.merriam-webster.com/thesaurus/other",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "1.STATE",
+      "brand_key": "1state",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"1.STATE\" official size guide",
+        "\"1.STATE\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "wikiwand.com https://www.wikiwand.com \u203a en",
+          "url": "https://www.wikiwand.com/en/1",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "fandom.com https://numbers.fandom.com \u203a wiki",
+          "url": "https://numbers.fandom.com/wiki/1",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "fandom.com https://math.fandom.com \u203a wiki",
+          "url": "https://math.fandom.com/wiki/1_(number)",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "11 Honor\u00e9",
+      "brand_key": "11honor",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"11 Honor\u00e9\" official size guide",
+        "\"11 Honor\u00e9\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "windowsreport.com https://windowsreport.com",
+          "url": "https://windowsreport.com/windows-11-26h2-how-to-download-and-install/",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "14th & Union",
+      "brand_key": "14thunion",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"14th & Union\" official size guide",
+        "\"14th & Union\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "congress.gov https://constitution.congress.gov \u203a constitution",
+          "url": "https://constitution.congress.gov/constitution/amendment-14/",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "britannica.com https:// www.britannica.com \u203a topic \u203a Fourteenth-Amendment",
+          "url": "https://www.britannica.com/topic/Fourteenth-Amendment",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "1822 Denim",
+      "brand_key": "1822denim",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"1822 Denim\" official size guide",
+        "\"1822 Denim\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "1822denim.com https:// 1822 denim.com",
+          "url": "https://1822denim.com/",
+          "domain": "1822denim.com",
+          "score": 8,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "1822denim.com https:// 1822denim .com \u203a collections \u203a all",
+          "url": "https://1822denim.com/collections/all",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "1901",
+      "brand_key": "1901",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"1901\" official size guide",
+        "\"1901\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "1901inc.com https://www. 1901 inc.com",
+          "url": "https://www.1901inc.com/",
+          "domain": "1901inc.com",
+          "score": 8,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        },
+        {
+          "title": "the1901projectchicago.com https://www.the 1901 projectchicago.com",
+          "url": "https://www.the1901projectchicago.com/",
+          "domain": "the1901projectchicago.com",
+          "score": 8,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "1946 by Ballin",
+      "brand_key": "1946byballin",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"1946 by Ballin\" official size guide",
+        "\"1946 by Ballin\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "1946themovie.com https://www. 1946 themovie.com",
+          "url": "https://www.1946themovie.com/",
+          "domain": "1946themovie.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html;charset=utf-8"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "21 Saints",
+      "brand_key": "21saints",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"21 Saints\" official size guide",
+        "\"21 Saints\" size chart measurements"
+      ],
+      "checked": [],
+      "promotions": []
+    },
+    {
+      "brand_name": "24/7 Comfort Apparel",
+      "brand_key": "247comfortapparel",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"24/7 Comfort Apparel\" official size guide",
+        "\"24/7 Comfort Apparel\" size chart measurements"
+      ],
+      "checked": [],
+      "promotions": []
+    },
+    {
+      "brand_name": "26 International",
+      "brand_key": "26international",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"26 International\" official size guide",
+        "\"26 International\" size chart measurements"
+      ],
+      "checked": [],
+      "promotions": []
+    },
+    {
+      "brand_name": "2XU",
+      "brand_key": "2xu",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"2XU\" official size guide",
+        "\"2XU\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "2xu.com https:// 2xu .com",
+          "url": "https://2xu.com/",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "2xu.com https:// 2xu .com \u203a collections \u203a all",
+          "url": "https://2xu.com/collections/all",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "2xu.com https://us. 2xu .com",
+          "url": "https://us.2xu.com/",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "2xu.com https://us. 2xu .com \u203a collections \u203a all",
+          "url": "https://us.2xu.com/collections/all",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "2xu.com https://ca. 2xu .com",
+          "url": "https://ca.2xu.com/",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "2xu.com https://teams. 2xu .com \u203a collections \u203a goodlife-range",
+          "url": "https://teams.2xu.com/collections/goodlife-range",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "3 Brand",
+      "brand_key": "3brand",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"3 Brand\" official size guide",
+        "\"3 Brand\" size chart measurements"
+      ],
+      "checked": [],
+      "promotions": []
+    },
+    {
+      "brand_name": "3.1 Phillip Lim",
+      "brand_key": "31philliplim",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"3.1 Phillip Lim\" official size guide",
+        "\"3.1 Phillip Lim\" size chart measurements"
+      ],
+      "checked": [],
+      "promotions": []
+    },
+    {
+      "brand_name": "34 Heritage",
+      "brand_key": "34heritage",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"34 Heritage\" official size guide",
+        "\"34 Heritage\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "34heritage.com https:// 34 heritage.com",
+          "url": "https://34heritage.com/",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "4th & Reckless",
+      "brand_key": "4threckless",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"4th & Reckless\" official size guide",
+        "\"4th & Reckless\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "merriam-webster.com https:// www.merriam-webster.com \u203a dictionary \u203a fourth",
+          "url": "https://www.merriam-webster.com/dictionary/fourth",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "525 America",
+      "brand_key": "525america",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"525 America\" official size guide",
+        "\"525 America\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "525america.com https://www. 525 america.com",
+          "url": "https://www.525america.com/",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "525america.com https://www. 525 america.com \u203a collections \u203a shop-all",
+          "url": "https://www.525america.com/collections/shop-all",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "revolve.com https://www.revolve.com \u203a br",
+          "url": "https://www.revolve.com/525-america/br/062720/?msockid=2c0fbadebc5a670e3c92ad35bd116654",
+          "error": "TimeoutError('The read operation timed out')"
+        },
+        {
+          "title": "evereve.com https://evereve.com \u203a collections",
+          "url": "https://evereve.com/collections/525",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "bloomingdales.com https:// www.bloomingdales.com \u203a buy",
+          "url": "https://www.bloomingdales.com/buy/525-america-sweaters?msockid=2c0fbadebc5a670e3c92ad35bd116654",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "revolve.com https://www.revolve.com \u203a br",
+          "url": "https://www.revolve.com/525-america/br/062720/?msockid=22ffd415ed4c6d57111ac3feeca66c5a",
+          "error": "TimeoutError('The read operation timed out')"
+        },
+        {
+          "title": "bloomingdales.com https:// www.bloomingdales.com \u203a buy",
+          "url": "https://www.bloomingdales.com/buy/525-america-sweaters?msockid=22ffd415ed4c6d57111ac3feeca66c5a",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "7 Diamonds",
+      "brand_key": "7diamonds",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"7 Diamonds\" official size guide",
+        "\"7 Diamonds\" size chart measurements"
+      ],
+      "checked": [],
+      "promotions": []
+    },
+    {
+      "brand_name": "7 For All Mankind",
+      "brand_key": "7forallmankind",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"7 For All Mankind\" official size guide",
+        "\"7 For All Mankind\" size chart measurements"
+      ],
+      "checked": [],
+      "promotions": []
+    },
+    {
+      "brand_name": "90 DEGREE BY REFLEX",
+      "brand_key": "90degreebyreflex",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"90 DEGREE BY REFLEX\" official size guide",
+        "\"90 DEGREE BY REFLEX\" size chart measurements"
+      ],
+      "checked": [],
+      "promotions": []
+    },
+    {
+      "brand_name": "A COLLECTIVE STORY",
+      "brand_key": "acollectivestory",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"A COLLECTIVE STORY\" official size guide",
+        "\"A COLLECTIVE STORY\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "merriam-webster.com https:// www.merriam-webster.com \u203a dictionary \u203a a",
+          "url": "https://www.merriam-webster.com/dictionary/a",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "A Loves A",
+      "brand_key": "alovesa",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"A Loves A\" official size guide",
+        "\"A Loves A\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "merriam-webster.com https:// www.merriam-webster.com \u203a dictionary \u203a a",
+          "url": "https://www.merriam-webster.com/dictionary/a",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "A PEA IN THE POD",
+      "brand_key": "apeainthepod",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"A PEA IN THE POD\" official size guide",
+        "\"A PEA IN THE POD\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "merriam-webster.com https:// www.merriam-webster.com \u203a dictionary \u203a a",
+          "url": "https://www.merriam-webster.com/dictionary/a",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "A. Veer",
+      "brand_key": "aveer",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"A. Veer\" official size guide",
+        "\"A. Veer\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "merriam-webster.com https:// www.merriam-webster.com \u203a dictionary \u203a a",
+          "url": "https://www.merriam-webster.com/dictionary/a",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "A.L.C.",
+      "brand_key": "alc",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"A.L.C.\" official size guide",
+        "\"A.L.C.\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "merriam-webster.com https:// www.merriam-webster.com \u203a dictionary \u203a a",
+          "url": "https://www.merriam-webster.com/dictionary/a",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    }
+  ],
+  "promotions": []
+}
