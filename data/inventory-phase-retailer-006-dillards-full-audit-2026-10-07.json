@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-07-dillards-full-inventory-audit-006-01",
+  "version": "2026-10-07-dillards-full-inventory-audit-006-02",
   "phase": "inventory",
   "retailer_sequence": 6,
   "retailer": "Dillard's",
@@ -9,13 +9,34 @@
   "scope": {
     "catalog_scope": "Concierge fashion inventory: apparel, footwear and fashion accessories. Beauty, home and other non-fashion merchandise are outside this clothing-focused audit except where an item is wearable fashion.",
     "fashion_sitemaps": [
-      {"section": "women", "product_url_occurrences": 21954},
-      {"section": "men", "product_url_occurrences": 11794},
-      {"section": "lingerie", "product_url_occurrences": 2327},
-      {"section": "kids", "product_url_occurrences": 10708},
-      {"section": "handbags", "product_url_occurrences": 3766},
-      {"section": "accessories", "product_url_occurrences": 10747},
-      {"section": "shoes", "product_url_occurrences": 11186}
+      {
+        "section": "women",
+        "product_url_occurrences": 21954
+      },
+      {
+        "section": "men",
+        "product_url_occurrences": 11794
+      },
+      {
+        "section": "lingerie",
+        "product_url_occurrences": 2327
+      },
+      {
+        "section": "kids",
+        "product_url_occurrences": 10708
+      },
+      {
+        "section": "handbags",
+        "product_url_occurrences": 3766
+      },
+      {
+        "section": "accessories",
+        "product_url_occurrences": 10747
+      },
+      {
+        "section": "shoes",
+        "product_url_occurrences": 11186
+      }
     ]
   },
   "source_access": {
@@ -39,11 +60,23 @@
         "dillards_product_id": "514226809",
         "item_number": "20246259",
         "current_price_usd": 79.5,
-        "visible_sizes": ["XS", "S", "M", "L", "XL", "2XL"],
-        "visible_colors": ["Pale Blue", "Black", "Navy", "White"],
-        "created_variant": {"color": "Pale Blue", "size": null},
+        "visible_sizes": [
+          "XS",
+          "S",
+          "M",
+          "L",
+          "XL",
+          "2XL"
+        ],
+        "visible_colors": [
+          "Pale Blue",
+          "Black",
+          "Navy",
+          "White"
+        ],
         "availability": "unknown",
-        "url": "https://www.dillards.com/p/murano-collezione-canclini-slim-fit-solid-long-sleeve-techno-woven-shirt/514226809"
+        "url": "https://www.dillards.com/p/murano-collezione-canclini-slim-fit-solid-long-sleeve-techno-woven-shirt/514226809",
+        "active_variant_created": false
       },
       {
         "department": "kids",
@@ -51,12 +84,23 @@
         "product_name": "Big Boys FF Stretch Chino Pants",
         "dillards_product_id": "519245233",
         "item_number": "20533407",
-        "current_price_usd": 48.0,
-        "visible_sizes": ["8", "10", "12", "14", "16", "18", "20"],
-        "visible_colors": ["Soft Khaki", "Stone"],
-        "created_variant": {"color": "Soft Khaki", "size": null},
+        "current_price_usd": 48,
+        "visible_sizes": [
+          "8",
+          "10",
+          "12",
+          "14",
+          "16",
+          "18",
+          "20"
+        ],
+        "visible_colors": [
+          "Soft Khaki",
+          "Stone"
+        ],
         "availability": "unknown",
-        "url": "https://www.dillards.com/p/class-club-big-boys-8-20-ff-stretch-chino-pants/519245233"
+        "url": "https://www.dillards.com/p/class-club-big-boys-8-20-ff-stretch-chino-pants/519245233",
+        "active_variant_created": false
       },
       {
         "department": "women",
@@ -64,23 +108,42 @@
         "product_name": "Carter Short Sleeve Crew Neck Crepe Sheath Midi Dress",
         "dillards_product_id": "520912513",
         "item_number": "20643323",
-        "current_price_usd": 159.0,
-        "visible_sizes": ["0", "2", "4", "6", "8", "10", "12", "14", "16", "18"],
-        "visible_colors": ["Black", "Chestnut", "Navy", "Sand"],
-        "created_variant": {"color": "Black", "size": null},
+        "current_price_usd": 159,
+        "visible_sizes": [
+          "0",
+          "2",
+          "4",
+          "6",
+          "8",
+          "10",
+          "12",
+          "14",
+          "16",
+          "18"
+        ],
+        "visible_colors": [
+          "Black",
+          "Chestnut",
+          "Navy",
+          "Sand"
+        ],
         "availability": "unknown",
-        "url": "https://www.dillards.com/p/antonio-melani-carter-short-sleeve-crew-neck-crepe-sheath-midi-drees/520912513"
+        "url": "https://www.dillards.com/p/antonio-melani-carter-short-sleeve-crew-neck-crepe-sheath-midi-drees/520912513",
+        "active_variant_created": false
       }
     ],
     "new_rows_per_app": {
       "catalog_sources": 2,
       "product_masters": 3,
-      "product_variants": 3,
+      "active_product_variants": 0,
+      "invalidated_variant_records_retained_for_audit": 3,
       "retailer_offers": 3,
-      "product_source_records": 9,
-      "catalog_ingestion_runs": 2
+      "active_product_source_records": 6,
+      "invalidated_variant_source_records_retained_for_audit": 3,
+      "original_ingestion_runs": 2,
+      "correction_runs": 1
     },
-    "data_quality_rule": "Visible size and color lists are not cross-multiplied into sellable variants unless a source explicitly confirms the combination. The default rendered color was stored as a color-only observed ProductVariant; no size or stock state was invented."
+    "data_quality_rule": "Visible size/color lists are source evidence only. No active ProductVariant is retained unless a sellable size/color/width combination is explicitly confirmed. Dillard's prices remain style-level RetailerOffers."
   },
   "completion_status": {
     "url_discovery": "complete_for_seven_fashion_sitemaps",
@@ -92,5 +155,17 @@
   "image_policy": "Dillard-hosted image URLs were not promoted into public ProductMaster image fields. Attribution or a copyright disclaimer alone is not treated as permission to display retailer/brand imagery.",
   "duplicates_created": 0,
   "next_retailer_after_handoff": "#007 Bloomingdale's",
-  "observed_at": "2026-10-07T18:35:00Z"
+  "observed_at": "2026-10-07T18:35:00Z",
+  "integrity_correction": {
+    "corrected_at": "2026-10-07T19:10:00Z",
+    "root_cause": "The manual pilot path incorrectly used Dillard's retailer product IDs in ProductMaster canonical identity and promoted default-color observations into active ProductVariant rows.",
+    "repaired_state": [
+      "Three ProductMaster canonical keys now use brand + normalized product name as review candidates because no manufacturer style/MPN/GTIN was verified.",
+      "Dillard's product IDs remain only as retailer/source identifiers.",
+      "Three color-only ProductVariant rows were invalidated and retained only for audit history.",
+      "Three Dillard's offers were detached from those variants and converted to style scope.",
+      "A correction CatalogIngestionRun was recorded in both apps."
+    ],
+    "duplicates_created": 0
+  }
 }
