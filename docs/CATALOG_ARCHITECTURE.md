@@ -32,10 +32,10 @@ Prefer identifiers in this order:
 4. Canonical normalized brand/style key
 5. Brand + product name only as a review candidate
 
-Retailer SKU is not treated as a global product identity.
+Retailer SKU, Web ID, PDP/product ID, or other retailer-specific identifier is never treated as global ProductMaster identity. Those identifiers belong on RetailerOffer and ProductSourceRecord. A retailer-owned source cannot set ProductMaster canonical_key from its own product ID; if no manufacturer/global identifier is available, brand + normalized product name is retained only as a review candidate.
 
 ## Variant rule
-Only create variants that a source explicitly confirms. Never generate every possible size/color combination just because separate size and color lists exist.
+Only create variants that a source explicitly confirms. Never generate every possible size/color combination just because separate size and color lists exist. A color-only or size-unselected apparel observation is source evidence, not an active ProductVariant; keep the retailer offer at style scope until a sellable variant combination is explicitly confirmed.
 
 ## Offer rule
 Price, sale price, availability, stock, fulfillment, and store location live on RetailerOffer. When a store stops carrying a product, the offer is marked inactive or out of stock; ProductMaster is retained.
