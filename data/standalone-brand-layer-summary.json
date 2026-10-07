@@ -1,0 +1,32 @@
+{
+  "version": "2026-10-07-standalone-brand-layer-summary",
+  "as_of": "2026-10-07T15:00:00Z",
+  "completed_batches": [
+    {
+      "batch": "001",
+      "checked": 100,
+      "already_present": 42,
+      "added": 58
+    },
+    {
+      "batch": "002",
+      "checked": 203,
+      "already_present": 146,
+      "added": 57
+    }
+  ],
+  "total_candidate_checks": 303,
+  "total_new_brand_records_added": 115,
+  "sizing_policy": "Verified product/brand sizing first; otherwise generic low-confidence S/M/L/XL only for compatible apparel categories.",
+  "next_discovery_focus": [
+    "additional regional mall chains and specialty brands",
+    "emerging DTC labels",
+    "performance niche brands",
+    "lingerie and shapewear specialists",
+    "menswear niche labels",
+    "baby and children's independents",
+    "footwear specialists",
+    "streetwear and skate labels",
+    "independent and luxury designers"
+  ]
+}
