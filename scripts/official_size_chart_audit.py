@@ -148,6 +148,24 @@ def search_bing(query):
                 seen.add(target); out.append((clean,target))
     return out
 
+def search_google(query):
+    url="https://www.google.com/search?q="+quote_plus(query)+"&num=20"
+    body,_,_=fetch(url,timeout=18,max_bytes=1_800_000)
+    p=GenericLinkParser(); p.feed(body)
+    out=[]; seen=set()
+    for title,href in p.links:
+        clean=re.sub(r"\s+"," ",title or "").strip()
+        target=html.unescape(href or "")
+        if target.startswith("/url?"):
+            q=parse_qs(urlparse(target).query)
+            target=(q.get("q") or q.get("url") or [""])[0]
+        if not target.startswith("http"): continue
+        d=domain_of(target)
+        if not d or d.endswith("google.com") or d.endswith("googleusercontent.com"): continue
+        if target in seen: continue
+        seen.add(target); out.append((clean,target))
+    return out
+
 def discover_size_links(raw,base_url):
     p=GenericLinkParser()
     try: p.feed(raw)
@@ -397,17 +415,24 @@ def score_candidate(brand,title,url,raw,charts):
     return s
 
 def audit_brand(brand,sleep_s=0.35):
-    q=f'"{brand["brand_name"]}" size chart size guide'
-    result={"brand_name":brand["brand_name"],"brand_key":brand["brand_key"],"old_status":brand.get("sizing_status"),"query":q,"checked":[],"promotions":[]}
-    try:
-        links=search_bing(q)
-        if not links:
-            links=search_ddg(q)
-    except Exception as e:
-        try:
-            links=search_ddg(q)
-        except Exception as e2:
-            result["error"]="search: "+repr(e)+" / "+repr(e2); return result
+    queries=[
+        f'"{brand["brand_name"]}" official size guide',
+        f'"{brand["brand_name"]}" size chart measurements',
+    ]
+    result={"brand_name":brand["brand_name"],"brand_key":brand["brand_key"],"old_status":brand.get("sizing_status"),"queries":queries,"checked":[],"promotions":[]}
+    links=[]; seen_links=set(); errors=[]
+    for q in queries:
+        for fn in (search_google,search_bing,search_ddg):
+            try:
+                found=fn(q)
+            except Exception as e:
+                errors.append(f"{fn.__name__}: {e!r}")
+                continue
+            for title,url in found:
+                if url in seen_links: continue
+                seen_links.add(url); links.append((title,url))
+    if not links and errors:
+        result["error"]="search: "+" / ".join(errors[:6]); return result
     for title,url in links[:24]:
         try:
             raw,final_url,ctype=fetch(url)
