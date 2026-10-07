@@ -339,11 +339,14 @@ export default function Shop() {
               </SheetTrigger>
               <SheetContent
                 side="bottom"
-                className="h-[70vh] rounded-t-3xl bg-[var(--color-surface)] text-[var(--color-text-primary)] border-[var(--color-border)]"
+                className="z-[60] h-[70vh] rounded-t-3xl bg-[var(--color-surface)] text-[var(--color-text-primary)] border-[var(--color-border)] opacity-100"
                 style={{
+                  zIndex: 60,
                   backgroundColor: 'var(--color-surface)',
                   color: 'var(--color-text-primary)',
                   borderColor: 'var(--color-border)',
+                  opacity: 1,
+                  isolation: 'isolate',
                 }}
               >
                 <SheetHeader>

@@ -3748,6 +3748,146 @@
         }
       ],
       "promotions": []
+    },
+    {
+      "brand_name": "Angie",
+      "brand_key": "angie",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Angie\" official size guide",
+        "\"Angie\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "angi.com https://www. angi .com",
+          "url": "https://www.angi.com/?msockid=244b670bdedf6e1023a170e0dfec6f54",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "angi.com https://www. angi .com \u203a landing \u203a angie s-list",
+          "url": "https://www.angi.com/landing/angies-list?msockid=244b670bdedf6e1023a170e0dfec6f54",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "getangie.com https://get angie .com",
+          "url": "https://getangie.com/",
+          "domain": "getangie.com",
+          "score": 8,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "genius.com https://genius.com \u203a The-rolling-stones- angie -lyrics",
+          "url": "https://genius.com/The-rolling-stones-angie-lyrics",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "angi.com https://www. angi .com",
+          "url": "https://www.angi.com/?msockid=18e899ee2cb76e2937908e052d256f17",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "angi.com https://www. angi .com \u203a landing \u203a angie s-list",
+          "url": "https://www.angi.com/landing/angies-list?msockid=18e899ee2cb76e2937908e052d256f17",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Anine Bing",
+      "brand_key": "aninebing",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Anine Bing\" official size guide",
+        "\"Anine Bing\" size chart measurements"
+      ],
+      "checked": [],
+      "promotions": []
+    },
+    {
+      "brand_name": "Anna & Ava",
+      "brand_key": "annaava",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Anna & Ava\" official size guide",
+        "\"Anna & Ava\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "annanurse.org https://www. anna nurse.org",
+          "url": "https://www.annanurse.org/",
+          "domain": "annanurse.org",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        },
+        {
+          "title": "fandom.com https://disney.fandom.com \u203a wiki \u203a Anna",
+          "url": "https://disney.fandom.com/wiki/Anna",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Anna Sui",
+      "brand_key": "annasui",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Anna Sui\" official size guide",
+        "\"Anna Sui\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "annanurse.org https://www. anna nurse.org",
+          "url": "https://www.annanurse.org/",
+          "domain": "annanurse.org",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        },
+        {
+          "title": "fandom.com https://disney.fandom.com \u203a wiki \u203a Anna",
+          "url": "https://disney.fandom.com/wiki/Anna",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Anne Cole",
+      "brand_key": "annecole",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Anne Cole\" official size guide",
+        "\"Anne Cole\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "fandom.com https:// anne -with-an-e.fandom.com \u203a wiki \u203a Anne_(TV_series )",
+          "url": "https://anne-with-an-e.fandom.com/wiki/Anne_(TV_series)",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Anne Klein",
+      "brand_key": "anneklein",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Anne Klein\" official size guide",
+        "\"Anne Klein\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "fandom.com https:// anne -with-an-e.fandom.com \u203a wiki \u203a Anne_(TV_series )",
+          "url": "https://anne-with-an-e.fandom.com/wiki/Anne_(TV_series)",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
     }
   ],
   "promotions": []
