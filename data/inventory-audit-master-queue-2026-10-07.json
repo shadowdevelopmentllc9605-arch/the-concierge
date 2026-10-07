@@ -56,7 +56,8 @@
           "sequence": 7,
           "name": "Bloomingdale's",
           "key": "bloomingdales",
-          "status": "queued"
+          "status": "partial_bulk_metadata_source_required",
+          "blocker": "Bloomingdale's public category and PDP surfaces provide stable Web IDs, current price, product details and visible options for controlled item-level ingestion, and robots.txt advertises an official XML sitemap index. However, the current permitted audit transport could not enumerate that XML index and no permitted bulk product metadata feed/API or exhaustive apparel URL export was identified. Exhaustive ProductMaster/variant/offer completion is therefore not claimed."
         },
         {
           "sequence": 8,
@@ -171,5 +172,5 @@
     "Record prices and availability with freshness timestamps.",
     "Do not treat image attribution as permission; public image display follows the separate image-rights policy."
   ],
-  "updated_at": "2026-10-07T18:35:00Z"
+  "updated_at": "2026-10-07T18:55:00Z"
 }
