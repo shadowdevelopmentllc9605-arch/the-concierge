@@ -12,32 +12,158 @@
       "tier": 1,
       "name": "Major department and mass retailers",
       "stores": [
-        {"sequence":1,"name":"SCHEELS","key":"scheels","status":"partial_source_access_required"},
-        {"sequence":2,"name":"Macy's","key":"macys","status":"partial_source_access_required","blocker":"Department structure and sample products are publicly indexable, but exhaustive Base44 ingestion is blocked by HTTP 403 and Macy's published crawl controls prohibit internal search/catalog/v1 workarounds. Authorized bulk product access is required."},
-        {"sequence":3,"name":"Nordstrom","key":"nordstrom","status":"partial_source_access_required","blocker":"Official product sitemaps enumerate 526,058 current product URLs, but the Base44 environment receives an anti-bot/browser interstitial for PDP metadata and the sitemap lacks brand/variant/price/availability fields. Published crawl controls disallow /api/* workarounds. An authorized Nordstrom bulk product source is required for exhaustive ingestion."},
-        {"sequence":4,"name":"Kohl's","key":"kohls","status":"partial_source_access_required","blocker":"Kohl's public site map/category/product pages expose controlled fashion evidence and robots declares an official XML sitemap, but direct Base44 server requests to robots.txt and sitemap.xml receive Akamai HTTP 403. Dynamic category pages are not treated as an exhaustive product/variant feed. An authorized bulk product source accessible to the ingestion environment is required for exhaustive completion."},
-        {"sequence":5,"name":"JCPenney","key":"jcpenney","status":"queued"},
-        {"sequence":6,"name":"Dillard's","key":"dillards","status":"queued"},
-        {"sequence":7,"name":"Bloomingdale's","key":"bloomingdales","status":"queued"},
-        {"sequence":8,"name":"Neiman Marcus","key":"neimanmarcus","status":"queued"},
-        {"sequence":9,"name":"Saks Fifth Avenue","key":"saksfifthavenue","status":"queued"},
-        {"sequence":10,"name":"Bergdorf Goodman","key":"bergdorfgoodman","status":"queued"},
-        {"sequence":11,"name":"Von Maur","key":"vonmaur","status":"queued"},
-        {"sequence":12,"name":"Belk","key":"belk","status":"queued"},
-        {"sequence":13,"name":"Boscov's","key":"boscovs","status":"queued"},
-        {"sequence":14,"name":"Bealls Florida","key":"beallsflorida","status":"queued"},
-        {"sequence":15,"name":"Nordstrom Rack","key":"nordstromrack","status":"queued"},
-        {"sequence":16,"name":"Burlington","key":"burlington","status":"queued_dynamic"},
-        {"sequence":17,"name":"T.J. Maxx","key":"tjmaxx","status":"queued_dynamic"},
-        {"sequence":18,"name":"Marshalls","key":"marshalls","status":"queued_dynamic"},
-        {"sequence":19,"name":"Target","key":"target","status":"queued"},
-        {"sequence":20,"name":"Walmart","key":"walmart","status":"queued"}
+        {
+          "sequence": 1,
+          "name": "SCHEELS",
+          "key": "scheels",
+          "status": "partial_source_access_required"
+        },
+        {
+          "sequence": 2,
+          "name": "Macy's",
+          "key": "macys",
+          "status": "partial_source_access_required",
+          "blocker": "Department structure and sample products are publicly indexable, but exhaustive Base44 ingestion is blocked by HTTP 403 and Macy's published crawl controls prohibit internal search/catalog/v1 workarounds. Authorized bulk product access is required."
+        },
+        {
+          "sequence": 3,
+          "name": "Nordstrom",
+          "key": "nordstrom",
+          "status": "partial_source_access_required",
+          "blocker": "Official product sitemaps enumerate 526,058 current product URLs, but the Base44 environment receives an anti-bot/browser interstitial for PDP metadata and the sitemap lacks brand/variant/price/availability fields. Published crawl controls disallow /api/* workarounds. An authorized Nordstrom bulk product source is required for exhaustive ingestion."
+        },
+        {
+          "sequence": 4,
+          "name": "Kohl's",
+          "key": "kohls",
+          "status": "partial_source_access_required",
+          "blocker": "Kohl's public site map/category/product pages expose controlled fashion evidence and robots declares an official XML sitemap, but direct Base44 server requests to robots.txt and sitemap.xml receive Akamai HTTP 403. Dynamic category pages are not treated as an exhaustive product/variant feed. An authorized bulk product source accessible to the ingestion environment is required for exhaustive completion."
+        },
+        {
+          "sequence": 5,
+          "name": "JCPenney",
+          "key": "jcpenney",
+          "status": "queued"
+        },
+        {
+          "sequence": 6,
+          "name": "Dillard's",
+          "key": "dillards",
+          "status": "partial_bulk_metadata_source_required",
+          "blocker": "Official Dillard's fashion sitemaps expose 71,678 unique product URLs and public PDP HTML is directly reachable from both Base44 environments, but the sitemap does not include complete product/variant/live-price/availability metadata. Exhaustive completion from public HTML would require tens of thousands of individual PDP requests; no permitted official bulk product metadata feed/API was identified, so a high-volume crawl was not used as a substitute."
+        },
+        {
+          "sequence": 7,
+          "name": "Bloomingdale's",
+          "key": "bloomingdales",
+          "status": "queued"
+        },
+        {
+          "sequence": 8,
+          "name": "Neiman Marcus",
+          "key": "neimanmarcus",
+          "status": "queued"
+        },
+        {
+          "sequence": 9,
+          "name": "Saks Fifth Avenue",
+          "key": "saksfifthavenue",
+          "status": "queued"
+        },
+        {
+          "sequence": 10,
+          "name": "Bergdorf Goodman",
+          "key": "bergdorfgoodman",
+          "status": "queued"
+        },
+        {
+          "sequence": 11,
+          "name": "Von Maur",
+          "key": "vonmaur",
+          "status": "queued"
+        },
+        {
+          "sequence": 12,
+          "name": "Belk",
+          "key": "belk",
+          "status": "queued"
+        },
+        {
+          "sequence": 13,
+          "name": "Boscov's",
+          "key": "boscovs",
+          "status": "queued"
+        },
+        {
+          "sequence": 14,
+          "name": "Bealls Florida",
+          "key": "beallsflorida",
+          "status": "queued"
+        },
+        {
+          "sequence": 15,
+          "name": "Nordstrom Rack",
+          "key": "nordstromrack",
+          "status": "queued"
+        },
+        {
+          "sequence": 16,
+          "name": "Burlington",
+          "key": "burlington",
+          "status": "queued_dynamic"
+        },
+        {
+          "sequence": 17,
+          "name": "T.J. Maxx",
+          "key": "tjmaxx",
+          "status": "queued_dynamic"
+        },
+        {
+          "sequence": 18,
+          "name": "Marshalls",
+          "key": "marshalls",
+          "status": "queued_dynamic"
+        },
+        {
+          "sequence": 19,
+          "name": "Target",
+          "key": "target",
+          "status": "queued"
+        },
+        {
+          "sequence": 20,
+          "name": "Walmart",
+          "key": "walmart",
+          "status": "queued"
+        }
       ]
     },
-    {"tier":2,"name":"Independent/direct brand stores","status":"queued_after_tier_1","ordering_rule":"Generate from the shared BrandCatalog after Tier 1; prioritize brands appearing across the most audited retailers, then work downward so ProductMaster reuse increases and duplicate creation decreases."},
-    {"tier":3,"name":"Local and regional retailers","status":"queued_after_tier_2","known_stores":["Buckle","The Fort","Fleet Feet Lincoln","3 Daughters Boutique","Threads + Footloose & Fancy","Pattino","Rally House Lincoln","Boot Barn Lincoln","Emsud's Clothiers","Tsuru"],"ordering_rule":"Audit current local assortment after the national ProductMaster is mature; attach local offers to existing masters first and create new masters only for genuinely missing styles."}
+    {
+      "tier": 2,
+      "name": "Independent/direct brand stores",
+      "status": "queued_after_tier_1",
+      "ordering_rule": "Generate from the shared BrandCatalog after Tier 1; prioritize brands appearing across the most audited retailers, then work downward so ProductMaster reuse increases and duplicate creation decreases."
+    },
+    {
+      "tier": 3,
+      "name": "Local and regional retailers",
+      "status": "queued_after_tier_2",
+      "known_stores": [
+        "Buckle",
+        "The Fort",
+        "Fleet Feet Lincoln",
+        "3 Daughters Boutique",
+        "Threads + Footloose & Fancy",
+        "Pattino",
+        "Rally House Lincoln",
+        "Boot Barn Lincoln",
+        "Emsud's Clothiers",
+        "Tsuru"
+      ],
+      "ordering_rule": "Audit current local assortment after the national ProductMaster is mature; attach local offers to existing masters first and create new masters only for genuinely missing styles."
+    }
   ],
-  "data_quality_rules":[
+  "data_quality_rules": [
     "Do not infer unobserved size/color stock.",
     "Do not create duplicate ProductMaster rows when a canonical style already exists.",
     "Prefer official APIs/feeds; then authorized feeds; then structured/public HTML within published crawl controls.",
@@ -45,5 +171,5 @@
     "Record prices and availability with freshness timestamps.",
     "Do not treat image attribution as permission; public image display follows the separate image-rights policy."
   ],
-  "updated_at":"2026-10-07T18:10:04Z"
+  "updated_at": "2026-10-07T18:35:00Z"
 }
