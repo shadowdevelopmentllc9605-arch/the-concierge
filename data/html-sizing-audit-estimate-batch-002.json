@@ -4092,6 +4092,237 @@
         }
       ],
       "promotions": []
+    },
+    {
+      "brand_name": "AQUA",
+      "brand_key": "aqua",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"AQUA\" official size guide",
+        "\"AQUA\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "aquawater.com https://www. aqua water.com \u203a ways-pay-your-bill",
+          "url": "https://www.aquawater.com/ways-pay-your-bill",
+          "domain": "aquawater.com",
+          "score": 8,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        },
+        {
+          "title": "aquawater.com https://www. aqua water.com \u203a customers \u203a aqua -eportal",
+          "url": "https://www.aquawater.com/customers/aqua-eportal",
+          "domain": "aquawater.com",
+          "score": 8,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        },
+        {
+          "title": "aquafinance.com https://www. aqua finance.com \u203a make-a-payment",
+          "url": "https://www.aquafinance.com/make-a-payment?action=index",
+          "domain": "aquafinance.com",
+          "score": 8,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        },
+        {
+          "title": "aquaeportal.com https://www. aqua eportal.com",
+          "url": "https://www.aquaeportal.com/eportal/",
+          "domain": "aquaeportal.com",
+          "score": 8,
+          "chart_count": 0,
+          "content_type": "text/html"
+        },
+        {
+          "title": "aquafinance.com https://www. aqua finance.com",
+          "url": "https://www.aquafinance.com/",
+          "domain": "aquafinance.com",
+          "score": 8,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        },
+        {
+          "title": "adobe.com https:// aqua .adobe.com",
+          "url": "https://aqua.adobe.com/",
+          "domain": "aqua.adobe.com",
+          "score": 8,
+          "chart_count": 0,
+          "content_type": "text/html;charset=utf-8"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Aquatalia",
+      "brand_key": "aquatalia",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Aquatalia\" official size guide",
+        "\"Aquatalia\" size chart measurements"
+      ],
+      "checked": [],
+      "promotions": []
+    },
+    {
+      "brand_name": "Aquazzura",
+      "brand_key": "aquazzura",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Aquazzura\" official size guide",
+        "\"Aquazzura\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "aquazzura.com https://www. aquazzura .com",
+          "url": "https://www.aquazzura.com/us_en",
+          "domain": "aquazzura.com",
+          "score": 8,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "aquazzura.com https://www. aquazzura .com \u203a us_en \u203a home",
+          "url": "https://www.aquazzura.com/us_en/home",
+          "domain": "aquazzura.com",
+          "score": 8,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "farfetch.com https://www.farfetch.com \u203a shopping \u203a women \u203a aquazzura \u203a items.aspx",
+          "url": "https://www.farfetch.com/shopping/women/aquazzura/items.aspx?msockid=2caba988ed3c6e77235ebe63ec166f3f",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "bloomingdales.com https://www.bloomingdales.com \u203a buy \u203a aquazzura",
+          "url": "https://www.bloomingdales.com/buy/aquazzura?msockid=2caba988ed3c6e77235ebe63ec166f3f",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "saksfifthavenue.com https://www.saksfifthavenue.com \u203a brand \u203a aquazzura",
+          "url": "https://www.saksfifthavenue.com/brand/aquazzura?msockid=2caba988ed3c6e77235ebe63ec166f3f",
+          "error": "<HTTPError 403: 'HTTP Forbidden'>"
+        },
+        {
+          "title": "net-a-porter.com https://www.net-a-porter.com \u203a en-us \u203a shop \u203a designer \u203a aquazzura",
+          "url": "https://www.net-a-porter.com/en-us/shop/designer/aquazzura?msockid=2caba988ed3c6e77235ebe63ec166f3f",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "aquazzura.nyc http:// aquazzura .nyc",
+          "url": "http://aquazzura.nyc/",
+          "domain": "aquazzura.nyc",
+          "score": 8,
+          "chart_count": 0,
+          "content_type": "text/html"
+        },
+        {
+          "title": "saksfifthavenue.com https://www.saksfifthavenue.com \u203a shoes \u203a shoes \u203a aquazzura",
+          "url": "https://www.saksfifthavenue.com/c/shoes/shoes/aquazzura?msockid=2caba988ed3c6e77235ebe63ec166f3f",
+          "error": "<HTTPError 403: 'HTTP Forbidden'>"
+        },
+        {
+          "title": "farfetch.com https://www.farfetch.com \u203a shopping \u203a women \u203a aquazzura \u203a items.aspx",
+          "url": "https://www.farfetch.com/shopping/women/aquazzura/items.aspx?msockid=3bc5c549d3e26c463ff3d2a2d2cb6d9a",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "bloomingdales.com https://www.bloomingdales.com \u203a buy \u203a aquazzura",
+          "url": "https://www.bloomingdales.com/buy/aquazzura?msockid=3bc5c549d3e26c463ff3d2a2d2cb6d9a",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "saksfifthavenue.com https://www.saksfifthavenue.com \u203a brand \u203a aquazzura",
+          "url": "https://www.saksfifthavenue.com/brand/aquazzura?msockid=3bc5c549d3e26c463ff3d2a2d2cb6d9a",
+          "error": "<HTTPError 403: 'HTTP Forbidden'>"
+        },
+        {
+          "title": "net-a-porter.com https://www.net-a-porter.com \u203a en-us \u203a shop \u203a designer \u203a aquazzura",
+          "url": "https://www.net-a-porter.com/en-us/shop/designer/aquazzura?msockid=3bc5c549d3e26c463ff3d2a2d2cb6d9a",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "saksfifthavenue.com https://www.saksfifthavenue.com \u203a shoes \u203a aquazzura",
+          "url": "https://www.saksfifthavenue.com/c/shoes/aquazzura?msockid=3bc5c549d3e26c463ff3d2a2d2cb6d9a",
+          "error": "<HTTPError 403: 'HTTP Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Ara",
+      "brand_key": "ara",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Ara\" official size guide",
+        "\"Ara\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "ausrad.com https://www.ausrad.com",
+          "url": "https://www.ausrad.com/",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "ausrad.com https://www.ausrad.com \u203a patients",
+          "url": "https://www.ausrad.com/patients/",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Architect",
+      "brand_key": "architect",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Architect\" official size guide",
+        "\"Architect\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "bbb.org https://www.bbb.org \u203a us \u203a la \u203a oak-grove \u203a category \u203a architect",
+          "url": "https://www.bbb.org/us/la/oak-grove/category/architect",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "merriam-webster.com https://www.merriam-webster.com \u203a dictionary \u203a architect",
+          "url": "https://www.merriam-webster.com/dictionary/architect",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "britannica.com https://www.britannica.com \u203a topic \u203a architecture",
+          "url": "https://www.britannica.com/topic/architecture",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "architecturaldigest.com https://www. architect uraldigest.com \u203a story \u203a what-does-an- architect -do",
+          "url": "https://www.architecturaldigest.com/story/what-does-an-architect-do",
+          "domain": "architecturaldigest.com",
+          "score": 8,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "AREA",
+      "brand_key": "area",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"AREA\" official size guide",
+        "\"AREA\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "merriam-webster.com https:// www.merriam-webster.com \u203a dictionary \u203a area",
+          "url": "https://www.merriam-webster.com/dictionary/area",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
     }
   ],
   "promotions": []
