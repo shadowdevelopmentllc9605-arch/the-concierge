@@ -1,0 +1,69 @@
+{
+  "version": "2026-10-07-nordstrom-full-inventory-audit-003-01",
+  "phase": "inventory",
+  "retailer_sequence": 3,
+  "retailer": "Nordstrom",
+  "retailer_key": "nordstrom",
+  "architecture_changed": false,
+  "audit_status": "partial_source_access_required",
+  "scope": {
+    "catalog_scope": "Concierge fashion inventory: apparel, footwear and fashion accessories. Beauty, home, furniture, jewelry/watches and other non-clothing merchandise are outside this clothing-focused audit except where an item is wearable fashion.",
+    "departments": [
+      {"name": "Women's apparel", "subscope": ["core clothing", "dresses", "petite", "plus", "maternity", "designer"], "status": "official_sitemap_enumerated_bulk_metadata_extraction_unavailable"},
+      {"name": "Men's apparel", "subscope": ["core clothing", "suits", "dress clothing", "activewear", "big & tall"], "status": "official_sitemap_enumerated_bulk_metadata_extraction_unavailable"},
+      {"name": "Girls, boys & tween apparel", "status": "official_sitemap_enumerated_bulk_metadata_extraction_unavailable"},
+      {"name": "Baby & toddler apparel", "status": "official_sitemap_enumerated_bulk_metadata_extraction_unavailable"},
+      {"name": "Women's footwear", "status": "official_sitemap_enumerated_bulk_metadata_extraction_unavailable"},
+      {"name": "Men's footwear", "status": "official_sitemap_enumerated_bulk_metadata_extraction_unavailable"},
+      {"name": "Kids & baby footwear", "status": "official_sitemap_enumerated_bulk_metadata_extraction_unavailable"},
+      {"name": "Handbags & fashion accessories", "status": "official_sitemap_enumerated_bulk_metadata_extraction_unavailable"}
+    ]
+  },
+  "sitemap_inventory": {
+    "root": "https://www.nordstrom.com/sitemap.xml",
+    "sitemaps_in_root": 84,
+    "product_sitemap_shards": 53,
+    "product_urls_enumerated": 526058,
+    "shards_1_through_52": 10000,
+    "shard_53": 6058,
+    "lastmod_observation": "Sampled product sitemap records were last modified 2026-10-06 and included Nordstrom-hosted image URLs.",
+    "important_scope_note": "526,058 is the complete product-URL count exposed by Nordstrom's product sitemap shards, not a fashion-only item count. Fashion classification still requires reliable product metadata."
+  },
+  "baseline_after_pilot": {
+    "product_masters_created": 3,
+    "active_variants_created": 1,
+    "active_retailer_offers_created": 3,
+    "active_source_records_created": 7
+  },
+  "completed_actions": [
+    "Recovered the existing shared ProductMaster architecture and Macy's/SCHEELS inventory methodology without schema changes.",
+    "Verified no pre-existing Nordstrom CatalogSource, RetailerOffer or Nordstrom ingestion-run records existed in either Base44 app before this audit.",
+    "Confirmed the official Nordstrom robots file and sitemap index are reachable from the Base44 environment.",
+    "Enumerated all 53 official Nordstrom product sitemap shards and counted 526,058 current product URLs.",
+    "Confirmed direct Base44 retrieval of browse and product pages returns an HTTP 200 browser/anti-bot interstitial rather than dependable product content.",
+    "Did not use /api/* or other internal workarounds because Nordstrom's published crawl rules disallow that path family.",
+    "Loaded a three-product controlled pilot using current public Nordstrom product evidence and created only one variant where a live size/color/stock combination was explicitly shown.",
+    "Did not promote Nordstrom-hosted image URLs into public ProductMaster image fields because attribution does not establish display rights.",
+    "Recorded the audit as a partial CatalogIngestionRun in both Base44 apps."
+  ],
+  "source_findings": {
+    "robots": "Nordstrom publishes a sitemap and permits ordinary public browse/product URLs while disallowing /api/* except explicitly allowed subpaths. No disallowed internal API was used.",
+    "sitemap_access": "The official sitemap is fully reachable from the Base44 environment and provides exhaustive URL enumeration plus last-modified dates and image URLs.",
+    "product_page_server_access": "Direct Base44 requests to public browse and PDP URLs return a browser/anti-bot interstitial that does not expose stable product name, brand, price, structured data or variant fields for bulk parsing.",
+    "public_rendered_visibility": "Current rendered/indexed public Nordstrom pages can expose reliable individual product facts such as brand, product name, price, colors, item number, Core Product ID and sometimes a selected size/availability state.",
+    "exhaustive_gap": "The sitemap itself does not identify fashion department, brand, complete variants, price or availability. Rendered/indexed product pages are useful for controlled validation but are not a stable 526,058-product bulk feed.",
+    "prohibited_workaround": "Internal /api/* paths were not used because published crawl controls disallow them.",
+    "required_for_full_completion": "An authorized Nordstrom/Impact publisher product catalog or feed, an official API/export, or another permitted bulk source that exposes product metadata, variants, current price and availability to the ingestion environment."
+  },
+  "data_quality_rule": "Do not treat sitemap URL presence as a complete ProductMaster record, and do not create ProductVariant combinations from separate color and size lists unless a source explicitly confirms the combination.",
+  "new_catalog_rows_from_controlled_pilot": {
+    "product_masters": 3,
+    "variants": 1,
+    "retailer_offers": 3,
+    "source_records": 7
+  },
+  "duplicates_created": 0,
+  "next_operational_dependency": "Authorized Nordstrom bulk product source with product/variant/price/availability metadata.",
+  "next_retailer_after_handoff": "#004 Kohl's",
+  "observed_at": "2026-10-07T17:49:11Z"
+}
