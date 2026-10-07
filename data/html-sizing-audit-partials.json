@@ -1,0 +1,901 @@
+{
+  "version": "2026-10-06-html-source-pass",
+  "results": [
+    {
+      "brand_name": "a.n.a",
+      "brand_key": "ana",
+      "old_status": "partial",
+      "queries": [
+        "\"a.n.a\" official size guide",
+        "\"a.n.a\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "merriam-webster.com https:// www.merriam-webster.com \u203a dictionary \u203a a",
+          "url": "https://www.merriam-webster.com/dictionary/a",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Allison Daley",
+      "brand_key": "allisondaley",
+      "old_status": "partial",
+      "queries": [
+        "\"Allison Daley\" official size guide",
+        "\"Allison Daley\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "allisontransmission.com https://www. allison transmission.com",
+          "url": "https://www.allisontransmission.com/",
+          "domain": "allisontransmission.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "allisontransmission.com https://www. allisontransmission .com \u203a applications--products \u203a products",
+          "url": "https://www.allisontransmission.com/applications--products/products",
+          "domain": "allisontransmission.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "allisonoffhighway.com https:// allison offhighway.com",
+          "url": "https://allisonoffhighway.com/",
+          "domain": "allisonoffhighway.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        },
+        {
+          "title": "allisontransmission.com https:// allison transmission.com \u203a aftermarket-and-channel \u203a parts-and...",
+          "url": "https://allisontransmission.com/aftermarket-and-channel/parts-and-service/allison-hub",
+          "domain": "allisontransmission.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "allisontransmission.com https://www. allisontransmission .com \u203a company",
+          "url": "https://www.allisontransmission.com/company/",
+          "domain": "allisontransmission.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "And Now This",
+      "brand_key": "andnowthis",
+      "old_status": "partial",
+      "queries": [
+        "\"And Now This\" official size guide",
+        "\"And Now This\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "merriam-webster.com https:// www.merriam-webster.com \u203a dictionary \u203a and",
+          "url": "https://www.merriam-webster.com/dictionary/and",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Arizona",
+      "brand_key": "arizona",
+      "old_status": "partial",
+      "queries": [
+        "\"Arizona\" official size guide",
+        "\"Arizona\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "az.gov https://az.gov",
+          "url": "https://az.gov/",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "visitarizona.com https://www.visit arizona .com",
+          "url": "https://www.visitarizona.com/",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "britannica.com https://www.britannica.com \u203a place \u203a Arizona -state",
+          "url": "https://www.britannica.com/place/Arizona-state",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "usnews.com https://travel.usnews.com \u203a rankings \u203a best-places-to-visit-in-arizona",
+          "url": "https://travel.usnews.com/rankings/best-places-to-visit-in-arizona/",
+          "error": "TimeoutError('The read operation timed out')"
+        },
+        {
+          "title": "arizona.edu https://www. arizona .edu",
+          "url": "https://www.arizona.edu/",
+          "domain": "arizona.edu",
+          "score": 8,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Bali",
+      "brand_key": "bali",
+      "old_status": "partial",
+      "queries": [
+        "\"Bali\" official size guide",
+        "\"Bali\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "tripadvisor.com https://www.tripadvisor.com",
+          "url": "https://www.tripadvisor.com/Attractions-g294226-Activities-Bali.html",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "tripadvisor.com https://www. tripadvisor .com",
+          "url": "https://www.tripadvisor.com/Tourism-g294226-Bali-Vacations.html",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "visitbali.com https://visit bali .com",
+          "url": "https://visitbali.com/",
+          "domain": "visitbali.com",
+          "score": 8,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "britannica.com https://www.britannica.com \u203a place \u203a Bali -island-and-province-Indonesia",
+          "url": "https://www.britannica.com/place/Bali-island-and-province-Indonesia",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Cole Haan",
+      "brand_key": "colehaan",
+      "old_status": "partial",
+      "queries": [
+        "\"Cole Haan\" official size guide",
+        "\"Cole Haan\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "colehaan.com https://www. colehaan .com",
+          "url": "https://www.colehaan.com/",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "kohls.com https://www.kohls.com",
+          "url": "https://www.kohls.com/?msockid=30261613117c6ba8151301f810be6a97",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "merriam-webster.com https://www.merriam-webster.com \u203a dictionary \u203a cole",
+          "url": "https://www.merriam-webster.com/dictionary/cole",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "colehaan.com https://www. cole haan.com \u203a collections \u203a shoes",
+          "url": "https://www.colehaan.com/collections/shoes",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "kohls.com https://www.kohls.com",
+          "url": "https://www.kohls.com/?msockid=0395d78420056346222cc06f21626240",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Epic Threads",
+      "brand_key": "epicthreads",
+      "old_status": "partial",
+      "queries": [
+        "\"Epic Threads\" official size guide",
+        "\"Epic Threads\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "getepic.com https://www.get epic .com \u203a sign-in",
+          "url": "https://www.getepic.com/sign-in",
+          "domain": "getepic.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html"
+        },
+        {
+          "title": "epic.org https:// epic .org",
+          "url": "https://epic.org/",
+          "domain": "epic.org",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        },
+        {
+          "title": "epic.com https:// www.epic.com",
+          "url": "https://www.epic.com/",
+          "domain": "epic.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "epicgames.com https://www. epic games.com \u203a site",
+          "url": "https://www.epicgames.com/site/home",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "epic.com https:// www.epic.com \u203a software",
+          "url": "https://www.epic.com/software/",
+          "domain": "epic.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "epicgames.com https://www. epicgames .com \u203a site \u203a news",
+          "url": "https://www.epicgames.com/site/news",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "getepic.com https://www.get epic .com \u203a students",
+          "url": "https://www.getepic.com/students",
+          "domain": "getepic.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "epicgames.com https://store. epic games.com \u203a download",
+          "url": "https://store.epicgames.com/download?lang=en-US",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "First Impressions",
+      "brand_key": "firstimpressions",
+      "old_status": "partial",
+      "queries": [
+        "\"First Impressions\" official size guide",
+        "\"First Impressions\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "firstchicagoinsurance.com https://www. firstchicago insurance.com \u203a Home \u203a Contact",
+          "url": "https://www.firstchicagoinsurance.com/Home/Contact",
+          "domain": "firstchicagoinsurance.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "bankatfirst.com https://www.bankat first .com \u203a personal.html",
+          "url": "https://www.bankatfirst.com/personal.html",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "firstinspires.org https://www. first inspires.org",
+          "url": "https://www.firstinspires.org/",
+          "domain": "firstinspires.org",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        },
+        {
+          "title": "firstchicagoinsurance.com https://www. firstchicago insurance.com \u203a Service \u203a Payment",
+          "url": "https://www.firstchicagoinsurance.com/Service/Payment",
+          "domain": "firstchicagoinsurance.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "state.il.us https://www.dhs.state. il .us \u203a page.aspx",
+          "url": "https://www.dhs.state.il.us/page.aspx?item=92316",
+          "error": "URLError(TimeoutError('timed out'))"
+        },
+        {
+          "title": "first-online.bank https://www. first -online.bank",
+          "url": "https://www.first-online.bank/",
+          "domain": "first-online.bank",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html;charset=utf-8"
+        },
+        {
+          "title": "merriam-webster.com https://www.merriam-webster.com \u203a dictionary \u203a first",
+          "url": "https://www.merriam-webster.com/dictionary/first",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Future Collective",
+      "brand_key": "futurecollective",
+      "old_status": "partial",
+      "queries": [
+        "\"Future Collective\" official size guide",
+        "\"Future Collective\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "merriam-webster.com https://www.merriam-webster.com \u203a dictionary \u203a future",
+          "url": "https://www.merriam-webster.com/dictionary/future",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "futureelectronics.com https://www. future electronics.com",
+          "url": "https://www.futureelectronics.com/",
+          "error": "TimeoutError('The read operation timed out')"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Gianni Bini",
+      "brand_key": "giannibini",
+      "old_status": "partial",
+      "queries": [
+        "\"Gianni Bini\" official size guide",
+        "\"Gianni Bini\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "fool.com https://support.fool.com \u203a hc \u203a en-us \u203a articles",
+          "url": "https://support.fool.com/hc/en-us/articles/360036472614-Account-settings",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "fool.com https://support.fool.com \u203a hc \u203a en-us \u203a articles",
+          "url": "https://support.fool.com/hc/en-us/articles/360046428594-Motley-Fool-Live-Information",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "allegiantair.com https://www.allegiantair.com",
+          "url": "https://www.allegiantair.com/?msockid=1bcba83afa6161133418bfd1fbdf6048",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "allegiantair.com https://www.allegiantair.com \u203a route-map",
+          "url": "https://www.allegiantair.com/route-map?msockid=1bcba83afa6161133418bfd1fbdf6048",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "allegiantair.com https://ta.allegiantair.com \u203a manage-travel",
+          "url": "https://ta.allegiantair.com/manage-travel",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "allegiantair.com http://ta.allegiantair.com \u203a my-trips",
+          "url": "http://ta.allegiantair.com/my-trips",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "allegiantair.com https://www.allegiantair.com \u203a reservations-ticketing",
+          "url": "https://www.allegiantair.com/reservations-ticketing?msockid=1bcba83afa6161133418bfd1fbdf6048",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "allegiantair.com https://www.allegiantair.com \u203a en \u203a flights-to-myrtle-beach",
+          "url": "https://www.allegiantair.com/en/flights-to-myrtle-beach?msockid=1bcba83afa6161133418bfd1fbdf6048",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Gildan",
+      "brand_key": "gildan",
+      "old_status": "partial",
+      "queries": [
+        "\"Gildan\" official size guide",
+        "\"Gildan\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "gildan.com https://www. gildan .com \u203a us",
+          "url": "https://www.gildan.com/us/en/",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "gildan.com https://www. gildan .com \u203a ))",
+          "url": "https://www.gildan.com/%29%29",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "gildan.com https://retail. gildan .com",
+          "url": "https://retail.gildan.com/",
+          "domain": "retail.gildan.com",
+          "score": 10,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        },
+        {
+          "title": "Size Chart",
+          "url": "https://retail.gildan.com/size-chart/",
+          "domain": "retail.gildan.com",
+          "score": 13,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        },
+        {
+          "title": "gildancorp.com https:// gildan corp.com \u203a en",
+          "url": "https://gildancorp.com/en/",
+          "domain": "gildancorp.com",
+          "score": 8,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "gildan-apparel.com https://www. gildan -apparel.com \u203a shop",
+          "url": "https://www.gildan-apparel.com/shop/",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "gildan.com https://retail. gildan .com \u203a men \u203a t-shirts",
+          "url": "https://retail.gildan.com/men/t-shirts/",
+          "domain": "retail.gildan.com",
+          "score": 10,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        },
+        {
+          "title": "Size Chart",
+          "url": "https://retail.gildan.com/size-chart/",
+          "domain": "retail.gildan.com",
+          "score": 13,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        },
+        {
+          "title": "michaels.com https://www.michaels.com \u203a shop \u203a apparel-crafts \u203a t-shirts-clothing \u203a gildan",
+          "url": "https://www.michaels.com/shop/apparel-crafts/t-shirts-clothing/gildan",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "gildancorp.com https:// gildan corp.com \u203a en \u203a brands \u203a Gildan",
+          "url": "https://gildancorp.com/en/brands/Gildan/",
+          "domain": "gildancorp.com",
+          "score": 8,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "ssactivewear.com https://www.ssactivewear.com \u203a ps \u203a gildan",
+          "url": "https://www.ssactivewear.com/ps/gildan",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Haggar",
+      "brand_key": "haggar",
+      "old_status": "partial",
+      "queries": [
+        "\"Haggar\" official size guide",
+        "\"Haggar\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "haggar.com https://www. haggar .com",
+          "url": "https://www.haggar.com/",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "haggar.com https://www. haggar .com \u203a collections \u203a all",
+          "url": "https://www.haggar.com/collections/all",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "haggarwear.com https:// haggar wear.com",
+          "url": "https://haggarwear.com/",
+          "domain": "haggarwear.com",
+          "score": 8,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "macys.com https://www.macys.com \u203a shop \u203a brands \u203a haggar",
+          "url": "https://www.macys.com/shop/brands/haggar?id=59234&msockid=18f871a6ed256616399e664decbe67cd",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "menswearhouse.com https://www.menswearhouse.com \u203a mens-brands \u203a haggar",
+          "url": "https://www.menswearhouse.com/c/mens-brands/haggar",
+          "error": "TimeoutError('The read operation timed out')"
+        },
+        {
+          "title": "haggarwear.com https:// haggar wear.com \u203a store",
+          "url": "https://haggarwear.com/store",
+          "domain": "haggarwear.com",
+          "score": 8,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "macys.com https://www.macys.com \u203a shop \u203a brands \u203a haggar",
+          "url": "https://www.macys.com/shop/brands/haggar?id=59234&msockid=09a17182d1be6442397d6669d0a565bf",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Hanes",
+      "brand_key": "hanes",
+      "old_status": "partial",
+      "queries": [
+        "\"Hanes\" official size guide",
+        "\"Hanes\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "hanes.com https://www. hanes .com",
+          "url": "https://www.hanes.com/",
+          "error": "<HTTPError 405: 'Method Not Allowed'>"
+        },
+        {
+          "title": "hanes.com https://www. hanes .com \u203a women",
+          "url": "https://www.hanes.com/women",
+          "error": "<HTTPError 405: 'Method Not Allowed'>"
+        },
+        {
+          "title": "onehanesplace.com https://www.one hanes place.com",
+          "url": "https://www.onehanesplace.com/",
+          "error": "<HTTPError 405: 'Method Not Allowed'>"
+        },
+        {
+          "title": "onehanesplace.com https://www.one hanes place.com \u203a brands \u203a hanes",
+          "url": "https://www.onehanesplace.com/brands/hanes",
+          "error": "<HTTPError 405: 'Method Not Allowed'>"
+        },
+        {
+          "title": "hanesstore.com https://www. hanes store.com",
+          "url": "https://www.hanesstore.com/",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Kona Sol",
+      "brand_key": "konasol",
+      "old_status": "partial",
+      "queries": [
+        "\"Kona Sol\" official size guide",
+        "\"Kona Sol\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "konaworld.com https://www. kona world.com",
+          "url": "https://www.konaworld.com/",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "gohawaii.com https://www.gohawaii.com \u203a islands \u203a hawaii-big-island \u203a regions \u203a kona",
+          "url": "https://www.gohawaii.com/islands/hawaii-big-island/regions/kona",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "tripadvisor.com https://www.tripadvisor.com",
+          "url": "https://www.tripadvisor.com/Tourism-g60872-Kailua_Kona_Island_of_Hawaii_Hawaii-Vacations.html",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Nunn Bush",
+      "brand_key": "nunnbush",
+      "old_status": "partial",
+      "queries": [
+        "\"Nunn Bush\" official size guide",
+        "\"Nunn Bush\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "accuweather.com https:// www.accuweather.com \u203a en \u203a us \u203a seattle \u203a weather -forecast",
+          "url": "https://www.accuweather.com/en/us/seattle/98104/weather-forecast/351409",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "accuweather.com https:// www.accuweather.com \u203a en \u203a us \u203a seattle \u203a hourly - weather -forecast",
+          "url": "https://www.accuweather.com/en/us/seattle/98104/hourly-weather-forecast/351409",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "On 34th",
+      "brand_key": "on34th",
+      "old_status": "partial",
+      "queries": [
+        "\"On 34th\" official size guide",
+        "\"On 34th\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "on.com https://www. on .com \u203a en-us",
+          "url": "https://www.on.com/en-us/?msockid=025426ca0fe6646d208e31210e01659e",
+          "domain": "on.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html;charset=utf-8"
+        },
+        {
+          "title": "on.com https://www. on .com \u203a en-us \u203a shop \u203a running",
+          "url": "https://www.on.com/en-us/shop/running?msockid=025426ca0fe6646d208e31210e01659e",
+          "domain": "on.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html;charset=utf-8"
+        },
+        {
+          "title": "on.com https://app. on .com \u203a en-us",
+          "url": "https://www.on.com/en-us/",
+          "domain": "on.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html;charset=utf-8"
+        },
+        {
+          "title": "dickssportinggoods.com https:// www.dickssportinggoods.com \u203a brand-shop \u203a shop- on",
+          "url": "https://www.dickssportinggoods.com/s/brand-shop/shop-on?msockid=025426ca0fe6646d208e31210e01659e",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "on.com https://www. on .com \u203a en-us",
+          "url": "https://www.on.com/en-us/?msockid=0ae8dbfacd3d653d04b0cc11ccc164e4",
+          "domain": "on.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html;charset=utf-8"
+        },
+        {
+          "title": "on.com https://www. on .com \u203a en-us \u203a shop \u203a running",
+          "url": "https://www.on.com/en-us/shop/running?msockid=0ae8dbfacd3d653d04b0cc11ccc164e4",
+          "domain": "on.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html;charset=utf-8"
+        },
+        {
+          "title": "dickssportinggoods.com https:// www.dickssportinggoods.com \u203a brand-shop \u203a shop- on",
+          "url": "https://www.dickssportinggoods.com/s/brand-shop/shop-on?msockid=0ae8dbfacd3d653d04b0cc11ccc164e4",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "St. John's Bay",
+      "brand_key": "stjohnsbay",
+      "old_status": "partial",
+      "queries": [
+        "\"St. John's Bay\" official size guide",
+        "\"St. John's Bay\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "st.com https://www.st.com",
+          "url": "https://www.st.com/content/st_com/en.html",
+          "error": "TimeoutError('The read operation timed out')"
+        },
+        {
+          "title": "st.com https://www. st .com \u203a content \u203a st _com \u203a en \u203a browse.html",
+          "url": "https://www.st.com/content/st_com/en/browse.html",
+          "error": "TimeoutError('The read operation timed out')"
+        },
+        {
+          "title": "st.com https://ccm. st .com",
+          "url": "https://ccm.st.com/",
+          "error": "URLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1016)'))"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Stafford",
+      "brand_key": "stafford",
+      "old_status": "partial",
+      "queries": [
+        "\"Stafford\" official size guide",
+        "\"Stafford\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "staffordct.gov https://www. stafford ct.gov",
+          "url": "https://www.staffordct.gov/",
+          "domain": "staffordct.gov",
+          "score": 8,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        },
+        {
+          "title": "go2stafford.com https://www.go2 stafford .com",
+          "url": "https://www.go2stafford.com/",
+          "domain": "go2stafford.com",
+          "score": 8,
+          "chart_count": 0,
+          "content_type": "text/html"
+        },
+        {
+          "title": "staffordcountyva.gov https://www. stafford countyva.gov",
+          "url": "https://www.staffordcountyva.gov/",
+          "domain": "staffordcountyva.gov",
+          "score": 8,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        },
+        {
+          "title": "pro-football-reference.com https://www.pro-football-reference.com \u203a players",
+          "url": "https://www.pro-football-reference.com/players/S/StafMa00.htm",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "staffordtshirts.com https:// stafford tshirts.com",
+          "url": "https://staffordtshirts.com/",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "staffordmotorspeedway.com https:// stafford motorspeedway.com",
+          "url": "https://staffordmotorspeedway.com/",
+          "domain": "staffordmotorspeedway.com",
+          "score": 8,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        },
+        {
+          "title": "visitstaffordshire.com https://www.visit stafford shire.com \u203a ... \u203a stafford",
+          "url": "https://www.visitstaffordshire.com/be-inspired/explore-our-destinations/stafford/",
+          "domain": "visitstaffordshire.com",
+          "score": 8,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Stride Rite",
+      "brand_key": "striderite",
+      "old_status": "partial",
+      "queries": [
+        "\"Stride Rite\" official size guide",
+        "\"Stride Rite\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "zhihu.com https://www.zhihu.com \u203a question",
+          "url": "https://www.zhihu.com/question/2056888704334144521",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "zhihu.com https://www.zhihu.com \u203a question",
+          "url": "https://www.zhihu.com/question/2031417400504082455",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Stylus",
+      "brand_key": "stylus",
+      "old_status": "partial",
+      "queries": [
+        "\"Stylus\" official size guide",
+        "\"Stylus\" size chart measurements"
+      ],
+      "checked": [],
+      "promotions": []
+    },
+    {
+      "brand_name": "Sun + Stone",
+      "brand_key": "sunstone",
+      "old_status": "partial",
+      "queries": [
+        "\"Sun + Stone\" official size guide",
+        "\"Sun + Stone\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "britannica.com https:// www.britannica.com \u203a place \u203a Sun",
+          "url": "https://www.britannica.com/place/Sun",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "U.S. Polo Assn.",
+      "brand_key": "uspoloassn",
+      "old_status": "partial",
+      "queries": [
+        "\"U.S. Polo Assn.\" official size guide",
+        "\"U.S. Polo Assn.\" size chart measurements"
+      ],
+      "checked": [],
+      "promotions": []
+    },
+    {
+      "brand_name": "Vanity Fair",
+      "brand_key": "vanityfair",
+      "old_status": "partial",
+      "queries": [
+        "\"Vanity Fair\" official size guide",
+        "\"Vanity Fair\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "homedepot.com https://www.homedepot.com \u203a Bath- Bathroom-Vanities",
+          "url": "https://www.homedepot.com/b/Bath-Bathroom-Vanities/N-5yc1vZcfv3",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "wayfair.com https://www.wayfair.com \u203a home-improvement \u203a bathroom-vanities-c...",
+          "url": "https://www.wayfair.com/home-improvement/sb0/bathroom-vanities-c527058.html?msockid=32c1f9da8f0367af3e03ee318e0d66e1",
+          "domain": "wayfair.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "wayfair.com https://www.wayfair.com \u203a shop-product-type \u203a cat",
+          "url": "https://www.wayfair.com/shop-product-type/cat/vanities-c523535.html?msockid=32c1f9da8f0367af3e03ee318e0d66e1",
+          "domain": "wayfair.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "merriam-webster.com https://www.merriam-webster.com \u203a dictionary \u203a vanity",
+          "url": "https://www.merriam-webster.com/dictionary/vanity",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "macys.com https://www.macys.com \u203a shop \u203a home \u203a furniture-mattress \u203a bedroom \u203a ...",
+          "url": "https://www.macys.com/shop/home/furniture-mattress/bedroom/vanities?id=223850&msockid=32c1f9da8f0367af3e03ee318e0d66e1",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "wayfair.com https://www.wayfair.com \u203a home-improvement \u203a bathroom-vanities-c...",
+          "url": "https://www.wayfair.com/home-improvement/sb0/bathroom-vanities-c527058.html?msockid=34f4679e45d762770b7c7075447c63ef",
+          "domain": "wayfair.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "wayfair.com https://www.wayfair.com \u203a shop-product-type \u203a cat",
+          "url": "https://www.wayfair.com/shop-product-type/cat/vanities-c523535.html?msockid=34f4679e45d762770b7c7075447c63ef",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "macys.com https://www.macys.com \u203a shop \u203a home \u203a furniture-mattress \u203a bedroom \u203a ...",
+          "url": "https://www.macys.com/shop/home/furniture-mattress/bedroom/vanities?id=223850&msockid=34f4679e45d762770b7c7075447c63ef",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    }
+  ],
+  "promotions": []
+}
