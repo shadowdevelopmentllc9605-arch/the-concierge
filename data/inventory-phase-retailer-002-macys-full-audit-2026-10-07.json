@@ -1,0 +1,108 @@
+{
+  "version": "2026-10-07-macys-full-inventory-audit-002-01",
+  "phase": "inventory",
+  "retailer_sequence": 2,
+  "retailer": "Macy's",
+  "retailer_key": "macys",
+  "architecture_changed": false,
+  "audit_status": "partial_source_access_required",
+  "scope": {
+    "catalog_scope": "Concierge fashion inventory: apparel, footwear and fashion accessories; beauty, home, furniture, jewelry/watches and toys are outside this clothing-focused audit except where an item is apparel.",
+    "departments": [
+      {
+        "name": "Women's apparel",
+        "subscope": [
+          "core clothing",
+          "plus",
+          "petite",
+          "maternity"
+        ],
+        "public_url": "https://www.macys.com/shop/womens/clothing?id=188851",
+        "status": "public_index_visible_bulk_ingestion_blocked"
+      },
+      {
+        "name": "Juniors & teen",
+        "public_url": "https://www.macys.com/shop/womens/clothing/junior-teen?id=60983",
+        "status": "public_index_visible_bulk_ingestion_blocked"
+      },
+      {
+        "name": "Men's apparel",
+        "subscope": [
+          "core clothing",
+          "big & tall"
+        ],
+        "public_url": "https://www.macys.com/shop/mens/clothing?id=197651",
+        "status": "public_index_visible_bulk_ingestion_blocked"
+      },
+      {
+        "name": "Girls, boys & tween apparel",
+        "public_url": "https://www.macys.com/shop/kids-baby/kids?id=188671",
+        "status": "public_index_visible_bulk_ingestion_blocked"
+      },
+      {
+        "name": "Baby & toddler apparel",
+        "public_url": "https://www.macys.com/shop/kids-baby?id=5991",
+        "status": "public_index_visible_bulk_ingestion_blocked"
+      },
+      {
+        "name": "Women's footwear",
+        "public_url": "https://www.macys.com/shop/womens/shoes?id=56233",
+        "status": "public_index_visible_bulk_ingestion_blocked"
+      },
+      {
+        "name": "Men's footwear",
+        "public_url": "https://www.macys.com/shop/mens/shoes?id=55822",
+        "status": "public_index_visible_bulk_ingestion_blocked"
+      },
+      {
+        "name": "Kids & baby footwear",
+        "status": "public_navigation_visible_bulk_ingestion_blocked"
+      },
+      {
+        "name": "Handbags & fashion accessories",
+        "public_url": "https://www.macys.com/shop/handbags-accessories?id=69719",
+        "status": "public_index_visible_bulk_ingestion_blocked"
+      },
+      {
+        "name": "Sports fan apparel",
+        "public_url": "https://www.macys.com/s/sports-fan-shop/",
+        "status": "public_index_visible_bulk_ingestion_blocked"
+      }
+    ]
+  },
+  "baseline_after_reconciliation": {
+    "product_masters": 3,
+    "active_variants": 30,
+    "active_retailer_offers": 3,
+    "active_source_records": 36
+  },
+  "completed_actions": [
+    "Recovered and validated the Macy's controlled pilot in both Base44 apps and both GitHub repositories.",
+    "Verified both Base44 apps contain the same three canonical Macy's ProductMasters, 30 active observed ProductVariants, three active live RetailerOffers, and 36 active ProductSourceRecords.",
+    "Mapped the current Macy's fashion department structure from official public navigation/indexable category pages.",
+    "Reviewed Macy's current robots directives and preserved the restriction against search, catalog, v1 and other disallowed internal paths.",
+    "Attempted permitted server-side retrieval from the Base44 environment for the published sitemap index, women's category, men's category, kids category and a known pilot product page, spacing requests by five seconds; all returned HTTP 403.",
+    "Did not create catalog rows from search-engine snippets or partial category extracts because they are not exhaustive variant/availability evidence.",
+    "Marked the Macy's source degraded for bulk ingestion while retaining the controlled pilot as valid sourced data."
+  ],
+  "source_findings": {
+    "robots": "Macy's robots.txt disallows /search*, /shop/search*, /catalog*, /v1/* and multiple filtered/faceted paths; it publishes sitemap indexes and includes a 5-second ClaudeBot crawl delay.",
+    "public_web_visibility": "Official Macy's sitemap/navigation and fashion category pages remain publicly indexable and expose current department structure and sample live products.",
+    "base44_server_access": "The Base44 server received HTTP 403 for the published XML sitemap index, women's category, men's category, kids category and known pilot product page during the exhaustive audit attempt.",
+    "exhaustive_gap": "Public search/index pages do not provide a complete, stable product+variant+price+availability feed. Using them as if exhaustive would create false completeness and likely miss or misstate variants.",
+    "prohibited_workaround": "Internal/search/catalog/v1 endpoints were not used because published crawl controls disallow them.",
+    "required_for_full_completion": "An authorized Macy's product/merchant/affiliate feed, official API, or other permitted bulk export accessible from the ingestion environment."
+  },
+  "data_quality_rule": "Do not create ProductMaster, ProductVariant or RetailerOffer rows from incomplete snippets when stable identifiers, complete variant evidence and current availability cannot be verified.",
+  "new_catalog_rows_from_full_attempt": 0,
+  "retained_pilot_rows": {
+    "product_masters": 3,
+    "variants": 30,
+    "retailer_offers": 3,
+    "source_records": 36
+  },
+  "duplicates_created": 0,
+  "next_operational_dependency": "Authorized Macy's bulk product source or a permitted public bulk source that is accessible from the ingestion environment.",
+  "next_retailer_after_handoff": "#003 Nordstrom",
+  "observed_at": "2026-10-07T17:29:00Z"
+}
