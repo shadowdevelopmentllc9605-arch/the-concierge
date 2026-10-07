@@ -6,92 +6,182 @@
     "Buckle (#21)",
     "The Fort (#22)"
   ],
-  "retailers_audited": [
+  "retailers": [
     {
       "audit_number": 23,
       "retailer": "Fleet Feet Lincoln",
       "retailer_key": "fleetfeetlincoln",
       "unique_brand_keys": 18,
-      "new_brands": 4
+      "new_brands": [
+        "Mizuno",
+        "Balega",
+        "CEP",
+        "Injinji"
+      ],
+      "source": "https://www.fleetfeet.com/s/lincoln/about/brands-we-carry-2"
     },
     {
       "audit_number": 24,
       "retailer": "3 Daughters Boutique",
       "retailer_key": "3daughtersboutique",
       "unique_brand_keys": 9,
-      "new_brands": 1
+      "new_brands": [
+        "Olive & Pique"
+      ],
+      "source": "https://3daughtersboutique.com/blogs/news/welcome-to-three-daughters-boutique"
     },
     {
       "audit_number": 25,
       "retailer": "Threads + Footloose & Fancy",
       "retailer_key": "threadsfootloose",
       "unique_brand_keys": 76,
-      "new_brands": 28
+      "new_brands": [
+        "Bucketlist",
+        "Chinese Laundry",
+        "Comfy Luxe",
+        "EMU Australia",
+        "EOS",
+        "Farm to Feet",
+        "Gola",
+        "Grade & Gather",
+        "Haflinger",
+        "Hidden",
+        "Katin",
+        "Kelsi Dagger",
+        "Lou & Co",
+        "Maive",
+        "Miou Muse",
+        "Mono B",
+        "Mystree",
+        "Panache Apparel Co.",
+        "Portland Gear",
+        "Rainbow Sandals",
+        "SAOLA",
+        "Scandal Italy",
+        "Soulstar",
+        "Sweetkama",
+        "The Bee & The Fox",
+        "Tyler Madison",
+        "Vustra",
+        "Wanakome"
+      ],
+      "source": "https://www.footlooseandfancy.com/brands/"
     },
     {
       "audit_number": 26,
       "retailer": "Pattino",
       "retailer_key": "pattino",
       "unique_brand_keys": 33,
-      "new_brands": 16
+      "new_brands": [
+        "Oncept",
+        "Paper Label",
+        "Ann Mashburn",
+        "INTENTIONALLY BLANK",
+        "AMO Denim",
+        "Ciao Lucia",
+        "Officine Creative",
+        "Rita Row",
+        "Thinking MU",
+        "Lingua Franca",
+        "Emerson Fry",
+        "Silent D",
+        "Either/OR",
+        "Charlotte Stone",
+        "Cordani",
+        "Alohas"
+      ],
+      "sources": [
+        "https://www.shoppattino.com/pages/about-us",
+        "https://app.garmentory.com/sale/boutiques/lincoln/pattino"
+      ]
     },
     {
       "audit_number": 27,
       "retailer": "Rally House Lincoln",
       "retailer_key": "rallyhouselincoln",
       "unique_brand_keys": 16,
-      "new_brands": 4
+      "new_brands": [
+        "WinCraft",
+        "Rally Brand",
+        "Logo Brands",
+        "Legacy"
+      ],
+      "source": "https://www.rallyhouse.com/stores/lincoln/6100-o-street"
     },
     {
       "audit_number": 28,
       "retailer": "Boot Barn Lincoln",
       "retailer_key": "bootbarnlincoln",
       "unique_brand_keys": 15,
-      "new_brands": 5
+      "new_brands": [
+        "Gibson",
+        "RANK 45",
+        "Brothers & Sons",
+        "Cowboygirl by Jenna Paulette",
+        "Blue Ranchwear"
+      ],
+      "source": "https://www.bootbarn.com/op/best-western-clothing-brands"
     },
     {
       "audit_number": 29,
       "retailer": "Emsud's Clothiers",
       "retailer_key": "emsuds",
       "unique_brand_keys": 4,
-      "new_brands": 0
+      "new_brands": [],
+      "source": "https://www.emsuds.com/men-s-gallery"
     },
     {
       "audit_number": 30,
       "retailer": "Tsuru",
       "retailer_key": "tsuru",
       "unique_brand_keys": 4,
-      "new_brands": 2
+      "new_brands": [
+        "Gentle Fawn",
+        "LAmade"
+      ],
+      "source": "https://downtownlincoln.org/go/tsuru",
+      "note": "Partial conservative audit; ambiguous or legacy names in the local directory listing were not bulk-imported."
     }
   ],
   "total_unique_retailer_brand_references": 175,
   "total_new_canonical_brands_added": 60,
-  "concierge_pro_sync_repairs_before_new_additions": 10,
-  "sizing_policy": "Brand inclusion does not require verified sizing. Verified product/brand sizing takes priority; compatible apparel can use the low-confidence measurement-driven generic S/M/L/XL fallback.",
-  "skipped_or_dynamic_retailers": [
+  "concierge_pro_sync_repairs": 10,
+  "sync_repair_keys": [
+    "autry",
+    "bedstu",
+    "bila77",
+    "bytogether",
+    "darntough",
+    "dressforum",
+    "merrypeople",
+    "velvetbygrahamspencer",
+    "wear4",
+    "xirena"
+  ],
+  "skipped_or_dynamic": [
     {
       "retailer": "Sierra Lincoln",
       "reason": "off-price rotating inventory; no stable local exhaustive public brand directory"
     },
     {
       "retailer": "Lincoln Running Company",
-      "reason": "current public storefront exposes product categories but not a stable crawlable brand directory"
+      "reason": "current storefront exposes categories but not a stable crawlable brand directory"
     },
     {
       "retailer": "555 Boutique",
-      "reason": "current site states it carries many brands but does not publish a stable named brand directory"
+      "reason": "current site says it carries many brands but does not publish a stable named brand directory"
     },
     {
       "retailer": "The Nine's Boutique by Linnie Lou",
-      "reason": "current site exposes products and weekly arrivals but not a stable named brand directory"
+      "reason": "weekly/dynamic products but no stable named brand directory"
     },
     {
       "retailer": "Madida Clothing",
-      "reason": "current site primarily merchandises product collections rather than a stable vendor/brand directory"
+      "reason": "current site merchandises products/collections rather than a stable vendor directory"
     },
     {
       "retailer": "Curio",
-      "reason": "current site describes small ethical brands but does not publish a stable named brand directory"
+      "reason": "current site describes small ethical brands but does not publish a stable named directory"
     },
     {
       "retailer": "Select Style",
@@ -101,5 +191,6 @@
       "retailer": "Vickeridge",
       "reason": "no reliable current public brand directory found in this pass"
     }
-  ]
+  ],
+  "sizing_policy": "Catalog inclusion does not require verified sizing. Verified product/brand sizing takes priority; compatible apparel may use the low-confidence measurement-driven generic S/M/L/XL fallback."
 }
