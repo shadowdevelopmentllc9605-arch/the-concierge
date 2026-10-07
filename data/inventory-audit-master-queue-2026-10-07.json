@@ -175,5 +175,34 @@
     "Retailer SKU, Web ID, PDP/product ID or other retailer-specific identifier must never be used as ProductMaster canonical_key or identifier_fingerprint; retailer identifiers belong on RetailerOffer and ProductSourceRecord. If no manufacturer/global identifier is available, use brand + normalized product name as a review candidate.",
     "Do not create an active apparel ProductVariant from color-only or size-unselected evidence; keep the retailer offer at style scope until a sellable size/color combination is explicitly confirmed."
   ],
-  "updated_at": "2026-10-07T19:20:00Z"
+  "updated_at": "2026-10-07T19:30:00Z",
+  "post_audit_safety_stress_gate": {
+    "required": true,
+    "applies_after_every_inventory_audit": true,
+    "blocks_next_retailer": true,
+    "apps": [
+      "The Concierge",
+      "Concierge Pro"
+    ],
+    "required_checks": [
+      "TypeScript/typecheck passes.",
+      "ESLint/lint passes.",
+      "Production build passes.",
+      "Production dependency audit has no unresolved high/critical vulnerability introduced by the audit.",
+      "Catalog integrity passes: no retailer-scoped ProductMaster identity, no unconfirmed active pseudo-variants, no orphaned active RetailerOffers, no newly introduced duplicate canonical masters, and source/freshness links remain valid.",
+      "Security safety checks pass: source-code secret scan, entity/RLS coverage review, authentication/authorization boundary checks, and bridge-secret/signature rejection checks where applicable.",
+      "Safe runtime stress test passes on both apps using non-destructive requests, including repeated/concurrent major-route requests and harmless unauthorized/auth-boundary probes.",
+      "Known pre-existing external configuration gaps are reported separately and are not falsely attributed to the inventory audit.",
+      "A post-audit test result and restore checkpoint are saved for both Base44 apps and the relevant manifests/rules are synchronized to both GitHub repositories."
+    ],
+    "pass_rule": "Do not start the next retailer audit until both apps pass the post-audit safety/stress gate, or a specific blocking defect is documented and repaired/retested."
+  },
+  "latest_post_audit_safety_stress_result": {
+    "retailer_sequence": 6,
+    "retailer": "Dillard's",
+    "result_file": "data/inventory-post-audit-safety-stress-006-dillards-2026-10-07.json",
+    "gate_status": "passed_with_known_preexisting_external_configuration_gap",
+    "progression_allowed": true,
+    "tested_at": "2026-10-07T19:30:00Z"
+  }
 }
