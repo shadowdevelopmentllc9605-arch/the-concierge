@@ -106,6 +106,29 @@ def search_ddg(query):
             out.append((title,u))
     return out
 
+class GenericLinkParser(HTMLParser):
+    def __init__(self):
+        super().__init__(); self.links=[]; self.href=None; self.buf=[]
+    def handle_starttag(self,tag,attrs):
+        if tag=="a":
+            self.href=dict(attrs).get("href"); self.buf=[]
+    def handle_data(self,data):
+        if self.href is not None: self.buf.append(data)
+    def handle_endtag(self,tag):
+        if tag=="a" and self.href is not None:
+            self.links.append((re.sub(r"\s+"," "," ".join(self.buf)).strip(),html.unescape(self.href)))
+            self.href=None; self.buf=[]
+
+def search_bing(query):
+    url="https://www.bing.com/search?q="+quote_plus(query)
+    body,_,_=fetch(url,timeout=18,max_bytes=1_600_000)
+    p=GenericLinkParser(); p.feed(body)
+    out=[]; seen=set()
+    for title,href in p.links:
+        if href.startswith("https://www.bing.com/ck/") and href not in seen:
+            seen.add(href); out.append((title,href))
+    return out
+
 class TableParser(HTMLParser):
     def __init__(self):
         super().__init__(); self.tables=[]; self.stack=[]; self.cur_table=None; self.cur_row=None; self.cur_cell=None
