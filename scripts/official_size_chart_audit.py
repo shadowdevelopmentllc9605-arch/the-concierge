@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import argparse, html, json, os, re, sys, time
 from html.parser import HTMLParser
-from urllib.parse import parse_qs, quote_plus, unquote, urlparse
+from urllib.parse import parse_qs, quote_plus, unquote, urljoin, urlparse
 from urllib.request import Request, urlopen
 from urllib.error import HTTPError, URLError
 
@@ -124,10 +124,31 @@ def search_bing(query):
     body,_,_=fetch(url,timeout=18,max_bytes=1_600_000)
     p=GenericLinkParser(); p.feed(body)
     out=[]; seen=set()
+    nav={"web","images","videos","maps","news","flights","shopping","privacy and cookies",
+         "legal","advertise","about our ads","help","consumer health privacy","learn more"}
     for title,href in p.links:
+        clean=re.sub(r"\s+"," ",title or "").strip()
+        if clean.lower() in nav or not clean: continue
         if href.startswith("https://www.bing.com/ck/") and href not in seen:
-            seen.add(href); out.append((title,href))
+            seen.add(href); out.append((clean,href))
     return out
+
+def discover_size_links(raw,base_url):
+    p=GenericLinkParser()
+    try: p.feed(raw)
+    except Exception: return []
+    base_domain=domain_of(base_url)
+    out=[]; seen=set()
+    for title,href in p.links:
+        u=urljoin(base_url,href or "")
+        if not u.startswith("http") or domain_of(u)!=base_domain: continue
+        hay=(title+" "+u).lower()
+        if not any(k in hay for k in ("size guide","size-guide","size chart","size-chart","sizing","fit guide","fit-guide")):
+            continue
+        u=u.split("#")[0]
+        if u in seen: continue
+        seen.add(u); out.append((title or "size guide",u))
+    return out[:12]
 
 class TableParser(HTMLParser):
     def __init__(self):
@@ -340,7 +361,8 @@ def candidate_ok(brand,url):
     rd=retailer_domains_for(brand)
     is_retailer=any(d==x or d.endswith("."+x) for x in TRUSTED_RETAILERS)
     if is_retailer:
-        if private and any(d==x or d.endswith("."+x) or x.endswith("."+d) for x in rd):
+        retailer_match=any(d==x or d.endswith("."+x) or x.endswith("."+d) for x in rd)
+        if retailer_match and (private or d=="digitalcontent.target.com"):
             return True,"verified_partner"
         return False,None
     if any(d==x or d.endswith("."+x) for x in BLOCKED): return False,None
@@ -350,6 +372,8 @@ def candidate_ok(brand,url):
 def score_candidate(brand,title,url,raw,charts):
     d=domain_of(url); s=0
     if brand_domain_match(brand["brand_name"],d): s+=4
+    brand_token=norm(brand["brand_name"])
+    if len(brand_token)>=4 and brand_token in norm(title+" "+url+" "+strip_text(raw)[:8000]): s+=4
     t=(title+" "+url).lower()
     if any(x in t for x in ["size-chart","sizechart","size-guide","sizeguide","sizing","fit-guide","fitguide"]): s+=3
     page=strip_text(raw)[:50000].lower()
@@ -369,22 +393,33 @@ def audit_brand(brand,sleep_s=0.35):
             links=search_ddg(q)
         except Exception as e2:
             result["error"]="search: "+repr(e)+" / "+repr(e2); return result
-    for title,url in links[:16]:
+    for title,url in links[:24]:
         try:
             raw,final_url,ctype=fetch(url)
             ok,stype=candidate_ok(brand,final_url)
             if not ok: continue
-            charts,ptitle,ptext=extract_charts(raw,final_url,brand)
-            for c in charts: c["source_type"]=stype
-            sc=score_candidate(brand,title,final_url,raw,charts)
-            result["checked"].append({"title":title,"url":final_url,"domain":domain_of(final_url),"score":sc,"chart_count":len(charts),"content_type":ctype})
-            if sc>=9 and charts:
-                # retain only non-unknown audience and well-scoped charts, or generic charts as partial evidence
-                for c in charts:
-                    if c["audience"]!="unknown":
-                        result["promotions"].append(c)
-                if result["promotions"]:
-                    break
+            candidates=[(title,final_url,raw,ctype)]
+            for ititle,iu in discover_size_links(raw,final_url):
+                try:
+                    iraw,ifinal,ictype=fetch(iu)
+                    candidates.append((ititle,ifinal,iraw,ictype))
+                except Exception:
+                    pass
+            for ctitle,curl,craw,cctype in candidates:
+                ok2,stype2=candidate_ok(brand,curl)
+                if not ok2: continue
+                charts,ptitle,ptext=extract_charts(craw,curl,brand)
+                for c in charts: c["source_type"]=stype2
+                sc=score_candidate(brand,ctitle,curl,craw,charts)
+                result["checked"].append({"title":ctitle,"url":curl,"domain":domain_of(curl),"score":sc,"chart_count":len(charts),"content_type":cctype})
+                if sc>=13 and charts:
+                    for c in charts:
+                        if c["audience"]!="unknown":
+                            result["promotions"].append(c)
+                    if result["promotions"]:
+                        break
+            if result["promotions"]:
+                break
         except (HTTPError,URLError,TimeoutError,ValueError) as e:
             result["checked"].append({"title":title,"url":url,"error":repr(e)})
         except Exception as e:
