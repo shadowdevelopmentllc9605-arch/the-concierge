@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import { base44 } from '@/api/base44Client';
 import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
@@ -6,7 +7,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Search, SlidersHorizontal, X, Heart, ShoppingBag, Store, Sparkles, Mic, MicOff } from 'lucide-react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import PullToRefresh from '@/components/PullToRefresh';
 import { getCategoryGroup, getEffectiveSizeChart, getFitRecommendationPresentation, recommendFromSizeChart } from '@/lib/fitRecommendation';
 
@@ -29,6 +29,7 @@ export default function Shop() {
   const [brandCharts, setBrandCharts] = useState([]);
   const [brandCatalog, setBrandCatalog] = useState([]);
   const [brandSearch, setBrandSearch] = useState('');
+  const [filterOpen, setFilterOpen] = useState(false);
   const [listening, setListening] = useState(false);
   const [voiceError, setVoiceError] = useState('');
   const specialFilter = urlParams.get('filter') || '';
@@ -330,109 +331,17 @@ export default function Shop() {
 
           {/* Filter Pills */}
           <div className="flex gap-2 overflow-x-auto no-scrollbar pb-2">
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button variant="outline" className="h-9 rounded-full px-4 border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)] shrink-0 select-none">
-                  <SlidersHorizontal className="w-4 h-4 mr-2" />
-                  Filters
-                </Button>
-              </SheetTrigger>
-              <SheetContent
-                side="bottom"
-                className="z-[60] h-[70vh] rounded-t-3xl bg-[var(--color-surface)] text-[var(--color-text-primary)] border-[var(--color-border)] opacity-100"
-                style={{
-                  zIndex: 60,
-                  backgroundColor: 'var(--color-surface)',
-                  color: 'var(--color-text-primary)',
-                  borderColor: 'var(--color-border)',
-                  opacity: 1,
-                  isolation: 'isolate',
-                }}
-              >
-                <SheetHeader>
-                  <SheetTitle className="text-[var(--color-text-primary)]">Filters</SheetTitle>
-                </SheetHeader>
-                <div className="mt-6 space-y-6">
-                  {/* Style Filter */}
-                  <div>
-                    <p className="text-sm font-medium text-[var(--color-text-primary)] mb-3">Style</p>
-                    <div className="flex flex-wrap gap-2">
-                      {['business', 'casual', 'formal', 'evening', 'outdoor', 'active', 'nightlife', 'trendy'].map(style => (
-                        <button
-                          key={style}
-                          onClick={() => setFilters(prev => ({ ...prev, style: prev.style === style ? '' : style }))}
-                          className={`px-4 py-2 rounded-full text-sm capitalize transition-colors select-none ${
-                            filters.style === style
-                              ? 'bg-[var(--color-text-primary)] text-[var(--color-background)]'
-                              : 'bg-[var(--color-background-secondary)] text-[var(--color-text-primary)]'
-                          }`}
-                        >
-                          {style}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Category Filter */}
-                  <div>
-                    <p className="text-sm font-medium text-[var(--color-text-primary)] mb-3">Category</p>
-                    <div className="flex flex-wrap gap-2 max-h-48 overflow-y-auto">
-                      {[...new Set(Object.values(categories).flat())].map(cat => (
-                        <button
-                          key={cat}
-                          onClick={() => setFilters(prev => ({ ...prev, category: prev.category === cat ? '' : cat }))}
-                          className={`px-4 py-2 rounded-full text-sm capitalize transition-colors select-none ${
-                            filters.category === cat
-                              ? 'bg-[var(--color-text-primary)] text-[var(--color-background)]'
-                              : 'bg-[var(--color-background-secondary)] text-[var(--color-text-primary)]'
-                          }`}
-                        >
-                          {cat.replace(/_/g, ' ')}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Brand Filter */}
-                  <div>
-                    <div className="flex items-center justify-between mb-3">
-                      <p className="text-sm font-medium text-[var(--color-text-primary)]">Brand</p>
-                      <p className="text-xs text-[var(--color-text-secondary)]">{brandCatalog.length} brands</p>
-                    </div>
-                    <Input
-                      value={brandSearch}
-                      onChange={(e) => setBrandSearch(e.target.value)}
-                      placeholder="Search all department-store brands"
-                      className="h-10 mb-3 rounded-xl bg-[var(--color-background-secondary)] border border-[var(--color-border)] text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)]"
-                    />
-                    <div className="flex flex-wrap gap-2 max-h-52 overflow-y-auto pr-1">
-                      {brandCatalog
-                        .filter(brand => !brandSearch || brand.brand_name?.toLowerCase().includes(brandSearch.toLowerCase()))
-                        .map(brand => (
-                          <button
-                            key={brand.id || brand.brand_key}
-                            onClick={() => setFilters(prev => ({ ...prev, brand: prev.brand === brand.brand_name ? '' : brand.brand_name }))}
-                            className={`px-3 py-2 rounded-full text-xs transition-colors select-none ${
-                              filters.brand === brand.brand_name
-                                ? 'bg-[var(--color-text-primary)] text-[var(--color-background)]'
-                                : 'bg-[var(--color-background-secondary)] text-[var(--color-text-primary)]'
-                            }`}
-                            title={
-                              brand.sizing_status === 'verified_loaded'
-                                ? 'Verified sizing data available'
-                                : brand.sizing_status === 'partial'
-                                  ? 'Partial sizing data; measurement estimate may be used'
-                                  : 'Measurement-based size estimate available'
-                            }
-                          >
-                            {brand.brand_name}
-                          </button>
-                        ))}
-                    </div>
-                  </div>
-                </div>
-              </SheetContent>
-            </Sheet>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setFilterOpen(true)}
+              aria-haspopup="dialog"
+              aria-expanded={filterOpen}
+              className="h-9 rounded-full px-4 border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)] shrink-0 select-none"
+            >
+              <SlidersHorizontal className="w-4 h-4 mr-2" />
+              Filters
+            </Button>
 
             {filters.style && (
               <button
@@ -464,6 +373,148 @@ export default function Shop() {
           </div>
         </div>
       </div>
+
+      {filterOpen && typeof document !== 'undefined' && createPortal(
+        <div
+          className="fixed inset-0"
+          style={{ zIndex: 2147483000 }}
+          role="presentation"
+        >
+          <button
+            type="button"
+            aria-label="Close filters"
+            onClick={() => setFilterOpen(false)}
+            className="absolute inset-0 w-full h-full"
+            style={{ backgroundColor: 'rgba(0, 0, 0, 0.55)' }}
+          />
+
+          <section
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="shop-filter-title"
+            className="absolute inset-x-0 bottom-0 h-[70vh] rounded-t-3xl border-t shadow-2xl overflow-hidden"
+            style={{
+              zIndex: 2147483001,
+              backgroundColor: '#ffffff',
+              color: '#18181b',
+              borderColor: '#d4d4d8',
+            }}
+          >
+            <div
+              className="h-full overflow-y-auto px-6 pt-5 pb-8"
+              style={{ backgroundColor: '#ffffff', color: '#18181b' }}
+            >
+              <div className="flex items-center justify-between mb-6">
+                <h2 id="shop-filter-title" className="text-lg font-semibold text-zinc-900">
+                  Filters
+                </h2>
+                <button
+                  type="button"
+                  onClick={() => setFilterOpen(false)}
+                  aria-label="Close filters"
+                  className="w-10 h-10 rounded-full flex items-center justify-center border border-zinc-300 bg-white text-zinc-900"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <div className="space-y-6">
+                <div>
+                  <p className="text-sm font-semibold text-zinc-900 mb-3">Style</p>
+                  <div className="flex flex-wrap gap-2">
+                    {['business', 'casual', 'formal', 'evening', 'outdoor', 'active', 'nightlife', 'trendy'].map(style => (
+                      <button
+                        key={style}
+                        type="button"
+                        onClick={() => setFilters(prev => ({ ...prev, style: prev.style === style ? '' : style }))}
+                        className={`px-4 py-2 rounded-full text-sm capitalize border transition-colors select-none ${
+                          filters.style === style
+                            ? 'bg-zinc-900 text-white border-zinc-900'
+                            : 'bg-zinc-100 text-zinc-900 border-zinc-300'
+                        }`}
+                      >
+                        {style}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <p className="text-sm font-semibold text-zinc-900 mb-3">Category</p>
+                  <div className="flex flex-wrap gap-2 max-h-48 overflow-y-auto">
+                    {[...new Set(Object.values(categories).flat())].map(cat => (
+                      <button
+                        key={cat}
+                        type="button"
+                        onClick={() => setFilters(prev => ({ ...prev, category: prev.category === cat ? '' : cat }))}
+                        className={`px-4 py-2 rounded-full text-sm capitalize border transition-colors select-none ${
+                          filters.category === cat
+                            ? 'bg-zinc-900 text-white border-zinc-900'
+                            : 'bg-zinc-100 text-zinc-900 border-zinc-300'
+                        }`}
+                      >
+                        {cat.replace(/_/g, ' ')}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <p className="text-sm font-semibold text-zinc-900">Brand</p>
+                    <p className="text-xs text-zinc-600">{brandCatalog.length} brands</p>
+                  </div>
+                  <Input
+                    value={brandSearch}
+                    onChange={(e) => setBrandSearch(e.target.value)}
+                    placeholder="Search all department-store brands"
+                    className="h-10 mb-3 rounded-xl border border-zinc-300 bg-white text-zinc-900 placeholder:text-zinc-500"
+                    style={{
+                      backgroundColor: '#ffffff',
+                      color: '#18181b',
+                      borderColor: '#d4d4d8',
+                    }}
+                  />
+                  <div className="flex flex-wrap gap-2 max-h-52 overflow-y-auto pr-1">
+                    {brandCatalog
+                      .filter(brand => !brandSearch || brand.brand_name?.toLowerCase().includes(brandSearch.toLowerCase()))
+                      .map(brand => (
+                        <button
+                          key={brand.id || brand.brand_key}
+                          type="button"
+                          onClick={() => setFilters(prev => ({ ...prev, brand: prev.brand === brand.brand_name ? '' : brand.brand_name }))}
+                          className={`px-3 py-2 rounded-full text-xs border transition-colors select-none ${
+                            filters.brand === brand.brand_name
+                              ? 'bg-zinc-900 text-white border-zinc-900'
+                              : 'bg-zinc-100 text-zinc-900 border-zinc-300'
+                          }`}
+                          title={
+                            brand.sizing_status === 'verified_loaded'
+                              ? 'Verified sizing data available'
+                              : brand.sizing_status === 'partial'
+                                ? 'Partial sizing data; measurement estimate may be used'
+                                : 'Measurement-based size estimate available'
+                          }
+                        >
+                          {brand.brand_name}
+                        </button>
+                      ))}
+                  </div>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setFilterOpen(false)}
+                className="w-full h-12 mt-7 rounded-xl bg-zinc-900 text-white font-medium"
+              >
+                Done
+              </button>
+            </div>
+          </section>
+        </div>,
+        document.body
+      )}
 
       {/* Products Grid */}
       <div className="px-6 pt-4">
