@@ -544,6 +544,14 @@ export function getFitRecommendationPresentation(source = '', matchType = '') {
     };
   }
 
+  if (normalizedSource === 'generic_brand_fallback') {
+    return {
+      label: 'Estimated size',
+      detail: 'Generic S–XL fallback based on your body measurements; a verified product or brand chart will automatically take priority',
+      verified: false,
+    };
+  }
+
   if (normalizedSource === 'product_size_chart' || normalizedSource === 'brand_size_chart') {
     return {
       label: nearest ? 'Closest verified fit' : 'Verified fit',
@@ -597,6 +605,86 @@ function letterSizeFromWaist(waistCm) {
   if (waist < 96) return 'L';
   if (waist < 104) return 'XL';
   return 'XXL';
+}
+
+const GENERIC_ALPHA_ORDER = ['S', 'M', 'L', 'XL'];
+
+function alphaBucket(value, upperBounds = []) {
+  const numeric = finiteNumber(value);
+  if (!Number.isFinite(numeric)) return '';
+  for (let index = 0; index < upperBounds.length; index += 1) {
+    if (numeric <= upperBounds[index]) return GENERIC_ALPHA_ORDER[index] || '';
+  }
+  return 'XL';
+}
+
+function largerAlphaSize(...sizes) {
+  const ranked = sizes
+    .map(size => GENERIC_ALPHA_ORDER.indexOf(size))
+    .filter(index => index >= 0);
+  return ranked.length ? GENERIC_ALPHA_ORDER[Math.max(...ranked)] : '';
+}
+
+function canonicalAlphaSize(value = '') {
+  const normalized = String(value).trim().toLowerCase().replace(/[^a-z0-9]/g, '');
+  if (['s', 'sm', 'small'].includes(normalized)) return 'S';
+  if (['m', 'md', 'med', 'medium'].includes(normalized)) return 'M';
+  if (['l', 'lg', 'large'].includes(normalized)) return 'L';
+  if (['xl', 'xlarge', 'extralarge', '1x'].includes(normalized)) return 'XL';
+  return '';
+}
+
+function productAlphaLabel(productSizes = [], canonical = '') {
+  if (!canonical) return '';
+  if (!Array.isArray(productSizes) || productSizes.length === 0) return canonical;
+  const match = productSizes.find(size => canonicalAlphaSize(size) === canonical);
+  return match || '';
+}
+
+export function deriveGenericFallbackSize(product = {}, profile = {}) {
+  const group = getCategoryGroup(product?.category);
+  const supportedGroups = new Set(['tops', 'bottoms', 'dresses', 'outerwear', 'underwear', 'swimwear']);
+  if (!group || !supportedGroups.has(group) || product?.category === 'bras') return null;
+
+  const measurements = profile?.measurement_values_cm || {};
+  const audience = getSizingAudience(profile);
+  let canonical = '';
+
+  if (audience === 'kids') {
+    const ageGroup = getSizingAgeGroup(profile);
+    if (!['kids', 'youth'].includes(ageGroup)) return null;
+    canonical =
+      alphaBucket(measurements.height, [122, 137, 152]) ||
+      alphaBucket(measurements.chest || measurements.bust, [64, 72, 80]);
+  } else if (audience === 'women') {
+    const bust = measurements.bust || measurements.chest;
+    const bustSize = alphaBucket(bust, [90, 98, 106]);
+    const waistSize = alphaBucket(measurements.waist, [71, 79, 89]);
+    const hipSize = alphaBucket(measurements.hips, [94, 102, 112]);
+
+    if (group === 'tops' || group === 'outerwear') canonical = bustSize;
+    else if (group === 'dresses') canonical = largerAlphaSize(bustSize, waistSize, hipSize);
+    else canonical = largerAlphaSize(waistSize, hipSize);
+  } else if (audience === 'men') {
+    const chestSize = alphaBucket(measurements.chest, [94, 104, 114]);
+    const waistSize = alphaBucket(measurements.waist, [81, 91, 101]);
+    canonical = (group === 'tops' || group === 'outerwear') ? chestSize : waistSize;
+  } else {
+    const chestSize = alphaBucket(measurements.chest || measurements.bust, [94, 104, 114]);
+    const waistSize = alphaBucket(measurements.waist, [81, 91, 101]);
+    canonical = (group === 'tops' || group === 'outerwear') ? chestSize : largerAlphaSize(chestSize, waistSize);
+  }
+
+  const size = productAlphaLabel(product?.sizes || [], canonical);
+  if (!size) return null;
+
+  return {
+    size,
+    source: 'generic_brand_fallback',
+    audience,
+    fitConfidence: 'low',
+    confidenceScore: null,
+  };
 }
 
 export function deriveGenericSuggestedSizes(measurementsCm = {}) {
