@@ -1,62 +1,34 @@
 {
-  "version": "2026-10-06-official-brand-site-expansion-live-summary",
-  "as_of": "2026-10-06",
+  "version": "2026-10-06-html-source-pass-batch-003-live-summary",
+  "as_of": "2026-10-07T01:50:00Z",
   "authoritative_source": "Base44 BrandSizeChart live entity",
-  "chart_count": 248,
-  "distinct_brand_count": 90,
-  "size_row_count": 3520,
-  "note": "This lightweight manifest reflects the live sizing database. The full data/brand-sizing-catalog.json mirror may lag when a full multi-megabyte export exceeds connector transport limits.",
-  "latest_official_brand_site_additions": [
-    {
-      "brand": "Carter's",
-      "coverage": [
-        "kids underwear",
-        "baby/toddler/kids bottoms",
-        "baby/toddler/kids footwear",
-        "adult family tops",
-        "women tops/dresses",
-        "headwear"
-      ],
-      "audiences": [
-        "kids",
-        "women",
-        "unisex"
-      ],
-      "source": "https://www.carters.com/size-chart"
-    },
-    {
-      "brand": "Playtex",
-      "coverage": [
-        "bra band/cup availability"
-      ],
-      "audiences": [
-        "women"
-      ],
-      "source": "https://www.playtexbras.com/bras/new-now/all-bras"
-    },
-    {
-      "brand": "Maidenform",
-      "coverage": [
-        "bra band/cup availability"
-      ],
-      "audiences": [
-        "women"
-      ],
-      "source": "https://www.maidenform.com/bras"
-    },
-    {
-      "brand": "Speedo",
-      "coverage": [
-        "women swimwear",
-        "men swimwear",
-        "boys swimwear"
-      ],
-      "audiences": [
-        "women",
-        "men",
-        "kids"
-      ],
-      "source": "https://speedo.com/en-us/pages/size-guides"
-    }
-  ]
+  "chart_count": 441,
+  "distinct_brand_count": 133,
+  "size_row_count": 5223,
+  "audience_chart_counts": {
+    "men": 141,
+    "women": 210,
+    "kids": 80,
+    "unisex": 10
+  },
+  "category_chart_counts": {
+    "footwear": 77,
+    "tops": 139,
+    "bottoms": 108,
+    "swimwear": 15,
+    "underwear": 34,
+    "dresses": 31,
+    "outerwear": 19,
+    "headwear": 11,
+    "suits": 7
+  },
+  "latest_html_verified_batch": {
+    "stored_chart_records_added": 6,
+    "stored_size_rows_added": 45,
+    "semantic_unique_charts_added": 5,
+    "brand_keys": ["47", "47brand", "hanes", "2xist", "haggar"],
+    "categories": ["headwear", "tops", "underwear", "bottoms"],
+    "audit_file": "data/html-sizing-audit-batch-003.json"
+  },
+  "note": "This lightweight manifest reflects the live sizing database. The full data/brand-sizing-catalog.json mirror may lag when a full multi-megabyte export exceeds connector transport limits."
 }

@@ -2175,6 +2175,33 @@
         }
       ],
       "promotions": []
+    },
+    {
+      "brand_name": "Ali Miles",
+      "brand_key": "alimiles",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Ali Miles\" official size guide",
+        "\"Ali Miles\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "aliexpress.com https://www. ali express.com",
+          "url": "https://www.aliexpress.com/",
+          "error": "<HTTPError 302: 'The HTTP server returned a redirect error that would lead to an infinite loop.\\nThe last 30x error message was:\\nMoved Temporarily'>"
+        },
+        {
+          "title": "aliexpress.com https://mx. ali express.com",
+          "url": "https://mx.aliexpress.com/",
+          "error": "<HTTPError 302: 'The HTTP server returned a redirect error that would lead to an infinite loop.\\nThe last 30x error message was:\\nMoved Temporarily'>"
+        },
+        {
+          "title": "britannica.com https://www.britannica.com \u203a biography \u203a Muhammad-Ali -boxer",
+          "url": "https://www.britannica.com/biography/Muhammad-Ali-boxer",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
     }
   ],
   "promotions": []
