@@ -1,0 +1,179 @@
+{
+  "name": "RetailerOffer",
+  "type": "object",
+  "description": "Retailer-specific price, availability and fulfillment for a canonical product or variant.",
+  "properties": {
+    "offer_key": {
+      "type": "string",
+      "description": "Stable key for retailer + seller product/variant + location/channel."
+    },
+    "product_master_id": {
+      "type": "string"
+    },
+    "product_variant_id": {
+      "type": "string"
+    },
+    "offer_scope": {
+      "type": "string",
+      "enum": [
+        "style",
+        "variant"
+      ],
+      "default": "variant"
+    },
+    "retailer_name": {
+      "type": "string"
+    },
+    "retailer_key": {
+      "type": "string"
+    },
+    "business_id": {
+      "type": "string",
+      "description": "Concierge Pro business ID when the retailer is directly connected."
+    },
+    "location_id": {
+      "type": "string"
+    },
+    "channel": {
+      "type": "string",
+      "enum": [
+        "brand_dtc",
+        "department_store",
+        "specialty",
+        "marketplace",
+        "local_store",
+        "other",
+        "unknown"
+      ],
+      "default": "unknown"
+    },
+    "retailer_sku": {
+      "type": "string"
+    },
+    "seller_product_id": {
+      "type": "string"
+    },
+    "offer_url": {
+      "type": "string"
+    },
+    "currency": {
+      "type": "string",
+      "default": "USD"
+    },
+    "regular_price": {
+      "type": "number"
+    },
+    "current_price": {
+      "type": "number"
+    },
+    "sale_price": {
+      "type": "number"
+    },
+    "sale_active": {
+      "type": "boolean",
+      "default": false
+    },
+    "availability": {
+      "type": "string",
+      "enum": [
+        "in_stock",
+        "out_of_stock",
+        "limited",
+        "preorder",
+        "backorder",
+        "unknown"
+      ],
+      "default": "unknown"
+    },
+    "stock_quantity": {
+      "type": "number"
+    },
+    "available_online": {
+      "type": "boolean"
+    },
+    "available_in_store": {
+      "type": "boolean"
+    },
+    "fulfillment": {
+      "type": "string",
+      "enum": [
+        "shipping",
+        "pickup",
+        "shipping_and_pickup",
+        "store_only",
+        "unknown"
+      ],
+      "default": "unknown"
+    },
+    "first_seen_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "last_seen_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "price_checked_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "availability_checked_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "stale_after": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "freshness_status": {
+      "type": "string",
+      "enum": [
+        "fresh",
+        "aging",
+        "stale",
+        "unknown"
+      ],
+      "default": "unknown"
+    },
+    "source_record_id": {
+      "type": "string"
+    },
+    "source_confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "default": 1
+    },
+    "active": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "offer_key",
+    "product_master_id",
+    "retailer_name",
+    "retailer_key",
+    "currency",
+    "availability",
+    "active"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": true,
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

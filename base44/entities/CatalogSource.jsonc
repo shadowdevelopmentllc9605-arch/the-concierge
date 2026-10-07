@@ -1,0 +1,173 @@
+{
+  "name": "CatalogSource",
+  "type": "object",
+  "description": "Registry of approved catalog ingestion sources ordered by trust and extraction priority.",
+  "properties": {
+    "source_key": {
+      "type": "string"
+    },
+    "source_name": {
+      "type": "string"
+    },
+    "owner_type": {
+      "type": "string",
+      "enum": [
+        "brand",
+        "retailer",
+        "manufacturer",
+        "affiliate_partner",
+        "merchant",
+        "manual",
+        "other"
+      ]
+    },
+    "owner_name": {
+      "type": "string"
+    },
+    "owner_key": {
+      "type": "string"
+    },
+    "brand_key": {
+      "type": "string"
+    },
+    "retailer_key": {
+      "type": "string"
+    },
+    "source_type": {
+      "type": "string",
+      "enum": [
+        "official_api",
+        "affiliate_feed",
+        "merchant_feed",
+        "csv_xml",
+        "json_ld",
+        "sitemap",
+        "category_page",
+        "html",
+        "manual"
+      ]
+    },
+    "priority_rank": {
+      "type": "number",
+      "minimum": 1,
+      "maximum": 9,
+      "description": "1 is preferred. Default ladder: official API/feed -> structured data -> sitemap/category -> HTML -> manual."
+    },
+    "endpoint_url": {
+      "type": "string"
+    },
+    "auth_type": {
+      "type": "string",
+      "enum": [
+        "none",
+        "api_key",
+        "oauth",
+        "feed_credentials",
+        "other"
+      ],
+      "default": "none"
+    },
+    "refresh_interval_minutes": {
+      "type": "number",
+      "default": 1440
+    },
+    "supports_products": {
+      "type": "boolean",
+      "default": true
+    },
+    "supports_variants": {
+      "type": "boolean",
+      "default": true
+    },
+    "supports_price": {
+      "type": "boolean",
+      "default": false
+    },
+    "supports_availability": {
+      "type": "boolean",
+      "default": false
+    },
+    "supports_images": {
+      "type": "boolean",
+      "default": true
+    },
+    "terms_status": {
+      "type": "string",
+      "enum": [
+        "approved",
+        "review_required",
+        "restricted",
+        "unknown"
+      ],
+      "default": "unknown"
+    },
+    "health_status": {
+      "type": "string",
+      "enum": [
+        "healthy",
+        "degraded",
+        "blocked",
+        "pending",
+        "disabled"
+      ],
+      "default": "pending"
+    },
+    "last_attempt_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "last_success_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "consecutive_failures": {
+      "type": "number",
+      "default": 0
+    },
+    "parser_version": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "enabled": {
+      "type": "boolean",
+      "default": true
+    },
+    "active": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "source_key",
+    "source_name",
+    "owner_type",
+    "source_type",
+    "priority_rank",
+    "enabled",
+    "active"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

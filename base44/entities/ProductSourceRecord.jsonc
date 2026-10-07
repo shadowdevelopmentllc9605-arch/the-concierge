@@ -1,0 +1,153 @@
+{
+  "name": "ProductSourceRecord",
+  "type": "object",
+  "description": "Provenance and freshness record for canonical products, variants, retailer offers, and derived intelligence.",
+  "properties": {
+    "entity_type": {
+      "type": "string",
+      "enum": [
+        "product_master",
+        "product_variant",
+        "retailer_offer",
+        "fashion_intelligence"
+      ]
+    },
+    "entity_id": {
+      "type": "string"
+    },
+    "catalog_source_id": {
+      "type": "string"
+    },
+    "source_type": {
+      "type": "string",
+      "enum": [
+        "official_api",
+        "affiliate_feed",
+        "merchant_feed",
+        "csv_xml",
+        "json_ld",
+        "sitemap",
+        "category_page",
+        "html",
+        "manual",
+        "other"
+      ]
+    },
+    "source_owner_type": {
+      "type": "string",
+      "enum": [
+        "brand",
+        "retailer",
+        "manufacturer",
+        "partner",
+        "manual",
+        "other"
+      ]
+    },
+    "source_owner_name": {
+      "type": "string"
+    },
+    "source_owner_key": {
+      "type": "string"
+    },
+    "source_url": {
+      "type": "string"
+    },
+    "source_identifier": {
+      "type": "string",
+      "description": "Source-side SKU, style number, GTIN, URL key, or other stable identifier."
+    },
+    "observed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "verified_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "stale_after": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "freshness_status": {
+      "type": "string",
+      "enum": [
+        "fresh",
+        "aging",
+        "stale",
+        "unreachable",
+        "unknown"
+      ],
+      "default": "unknown"
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "default": 1
+    },
+    "evidence_fields": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "checksum": {
+      "type": "string"
+    },
+    "raw_payload_ref": {
+      "type": "string",
+      "description": "Optional reference to retained authorized source payload; do not store large raw pages directly here."
+    },
+    "parser_version": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "replaced",
+        "invalid"
+      ],
+      "default": "active"
+    },
+    "supersedes_source_record_id": {
+      "type": "string"
+    },
+    "active": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "entity_type",
+    "entity_id",
+    "source_type",
+    "source_owner_type",
+    "observed_at",
+    "status",
+    "active"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

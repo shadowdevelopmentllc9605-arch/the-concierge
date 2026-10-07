@@ -1,0 +1,152 @@
+{
+  "name": "FashionIntelligence",
+  "type": "object",
+  "description": "Derived fashion/style interpretation kept separate from factual manufacturer and retailer data.",
+  "properties": {
+    "product_master_id": {
+      "type": "string"
+    },
+    "model_version": {
+      "type": "string"
+    },
+    "derived_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "factual_snapshot_version": {
+      "type": "string"
+    },
+    "style_archetypes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "aesthetic_tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "trend_tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "occasion_tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "season_tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "outfit_roles": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "compatible_categories": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "formality_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "versatility_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "trend_relevance_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "attributes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          },
+          "confidence": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "rationale": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "source_fields_used": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "overall_confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "human_reviewed": {
+      "type": "boolean",
+      "default": false
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "needs_review",
+        "superseded"
+      ],
+      "default": "active"
+    },
+    "active": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "product_master_id",
+    "model_version",
+    "derived_at",
+    "status",
+    "active"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": true,
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

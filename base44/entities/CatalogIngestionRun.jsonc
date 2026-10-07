@@ -1,0 +1,120 @@
+{
+  "name": "CatalogIngestionRun",
+  "type": "object",
+  "description": "Audit trail for each catalog synchronization/import run.",
+  "properties": {
+    "catalog_source_id": {
+      "type": "string"
+    },
+    "source_key": {
+      "type": "string"
+    },
+    "run_type": {
+      "type": "string",
+      "enum": [
+        "full",
+        "incremental",
+        "price_availability",
+        "verification",
+        "manual"
+      ],
+      "default": "incremental"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "queued",
+        "running",
+        "completed",
+        "partial",
+        "failed",
+        "cancelled"
+      ],
+      "default": "queued"
+    },
+    "started_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "completed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "discovered_count": {
+      "type": "number",
+      "default": 0
+    },
+    "product_created_count": {
+      "type": "number",
+      "default": 0
+    },
+    "product_updated_count": {
+      "type": "number",
+      "default": 0
+    },
+    "variant_created_count": {
+      "type": "number",
+      "default": 0
+    },
+    "variant_updated_count": {
+      "type": "number",
+      "default": 0
+    },
+    "offer_created_count": {
+      "type": "number",
+      "default": 0
+    },
+    "offer_updated_count": {
+      "type": "number",
+      "default": 0
+    },
+    "duplicate_skipped_count": {
+      "type": "number",
+      "default": 0
+    },
+    "failed_count": {
+      "type": "number",
+      "default": 0
+    },
+    "stale_marked_count": {
+      "type": "number",
+      "default": 0
+    },
+    "parser_version": {
+      "type": "string"
+    },
+    "error_summary": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "source_key",
+    "run_type",
+    "status"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

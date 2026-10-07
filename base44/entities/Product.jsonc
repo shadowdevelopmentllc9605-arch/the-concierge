@@ -460,6 +460,46 @@
           }
         }
       }
+    },
+    "style_number": {
+      "type": "string"
+    },
+    "mpn": {
+      "type": "string"
+    },
+    "gtin": {
+      "type": "string"
+    },
+    "product_master_id": {
+      "type": "string",
+      "description": "Canonical ProductMaster ID once migrated/linked."
+    },
+    "canonical_variant_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Canonical ProductVariant IDs represented by this legacy product record."
+    },
+    "retailer_offer_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "RetailerOffer IDs represented by this legacy product record."
+    },
+    "catalog_migration_status": {
+      "type": "string",
+      "enum": [
+        "unlinked",
+        "linked",
+        "needs_review"
+      ],
+      "default": "unlinked"
+    },
+    "catalog_migrated_at": {
+      "type": "string",
+      "format": "date-time"
     }
   },
   "required": [],

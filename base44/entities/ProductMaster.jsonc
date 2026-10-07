@@ -1,0 +1,226 @@
+{
+  "name": "ProductMaster",
+  "type": "object",
+  "description": "Canonical brand-level product/style record. One row per distinct style, independent of retailer, price, stock, size, or color offer.",
+  "properties": {
+    "canonical_key": {
+      "type": "string",
+      "description": "Stable normalized key for deduplication, usually brand_key + normalized style identifier/name."
+    },
+    "brand_name": {
+      "type": "string"
+    },
+    "brand_key": {
+      "type": "string"
+    },
+    "product_name": {
+      "type": "string"
+    },
+    "style_number": {
+      "type": "string"
+    },
+    "mpn": {
+      "type": "string",
+      "description": "Manufacturer part number when style-level."
+    },
+    "primary_gtin": {
+      "type": "string",
+      "description": "Style-level GTIN only when legitimately shared across the style; variant GTINs belong on ProductVariant."
+    },
+    "department": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string"
+    },
+    "subcategory": {
+      "type": "string"
+    },
+    "product_type": {
+      "type": "string"
+    },
+    "audiences": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "age_groups": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "official_description": {
+      "type": "string",
+      "description": "Concise factual product description sourced or normalized from an authorized source."
+    },
+    "materials": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "fit_cut": {
+      "type": "string",
+      "enum": [
+        "compression",
+        "skinny",
+        "slim",
+        "tailored",
+        "regular",
+        "relaxed",
+        "oversized",
+        "unknown"
+      ],
+      "default": "unknown"
+    },
+    "silhouette": {
+      "type": "string"
+    },
+    "rise": {
+      "type": "string"
+    },
+    "length_profile": {
+      "type": "string"
+    },
+    "neckline": {
+      "type": "string"
+    },
+    "sleeve_style": {
+      "type": "string"
+    },
+    "closure_type": {
+      "type": "string"
+    },
+    "footwear_type": {
+      "type": "string",
+      "enum": [
+        "all",
+        "athletic_running",
+        "athletic_training",
+        "walking",
+        "casual_sneaker",
+        "dress_oxford_derby",
+        "loafer_slipon",
+        "boot_work",
+        "boot_hiking",
+        "boot_fashion",
+        "sandal",
+        "heel_pump",
+        "other"
+      ],
+      "default": "all"
+    },
+    "season_tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "occasion_tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "activity_tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "primary_image_url": {
+      "type": "string"
+    },
+    "image_urls": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "brand_product_url": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "discontinued",
+        "archived",
+        "unknown"
+      ],
+      "default": "active"
+    },
+    "first_seen_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "last_seen_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "canonical_confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "default": 1
+    },
+    "dedup_status": {
+      "type": "string",
+      "enum": [
+        "canonical",
+        "review",
+        "duplicate"
+      ],
+      "default": "canonical"
+    },
+    "duplicate_of_product_master_id": {
+      "type": "string"
+    },
+    "identifier_fingerprint": {
+      "type": "string",
+      "description": "Normalized identifier hash/input used to prevent duplicate canonical products."
+    },
+    "legacy_product_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "source_record_count": {
+      "type": "number",
+      "default": 0
+    },
+    "active": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "canonical_key",
+    "brand_name",
+    "brand_key",
+    "product_name",
+    "status",
+    "active"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": true,
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

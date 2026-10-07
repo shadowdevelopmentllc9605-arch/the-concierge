@@ -1,0 +1,127 @@
+{
+  "name": "ProductVariant",
+  "type": "object",
+  "description": "Sellable/observable size-color-width variant beneath a canonical ProductMaster.",
+  "properties": {
+    "product_master_id": {
+      "type": "string"
+    },
+    "variant_key": {
+      "type": "string",
+      "description": "Stable normalized key for the size/color/width combination."
+    },
+    "sku": {
+      "type": "string"
+    },
+    "gtin": {
+      "type": "string"
+    },
+    "upc": {
+      "type": "string"
+    },
+    "ean": {
+      "type": "string"
+    },
+    "mpn": {
+      "type": "string"
+    },
+    "size_label": {
+      "type": "string"
+    },
+    "size_system": {
+      "type": "string"
+    },
+    "size_region": {
+      "type": "string",
+      "default": "US"
+    },
+    "color_name": {
+      "type": "string"
+    },
+    "color_family": {
+      "type": "string"
+    },
+    "width_code": {
+      "type": "string"
+    },
+    "width_label": {
+      "type": "string"
+    },
+    "length_code": {
+      "type": "string"
+    },
+    "inseam_label": {
+      "type": "string"
+    },
+    "band_size": {
+      "type": "string"
+    },
+    "cup_size": {
+      "type": "string"
+    },
+    "material_variant": {
+      "type": "string"
+    },
+    "image_urls": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "unavailable",
+        "discontinued",
+        "unknown"
+      ],
+      "default": "active"
+    },
+    "first_seen_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "last_seen_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "identifier_fingerprint": {
+      "type": "string",
+      "description": "Normalized GTIN/MPN/SKU/attribute fingerprint for deduplication."
+    },
+    "legacy_variant_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "active": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "product_master_id",
+    "variant_key",
+    "active"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": true,
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
