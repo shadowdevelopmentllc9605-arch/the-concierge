@@ -1,0 +1,65 @@
+{
+  "version": "2026-10-07-standalone-brand-layer-batch-003",
+  "audited_at": "2026-10-07T15:30:00Z",
+  "scope": "Deeper standalone-brand expansion: regional/specialty labels, emerging DTC, niche performance, children's independents, footwear specialists, independent streetwear, and independent designers.",
+  "methodology": {
+    "candidates_checked": 206,
+    "already_present": 87,
+    "initially_missing": 119,
+    "added": 111,
+    "intentionally_not_added": 8,
+    "duplicate_brand_keys_created": 0,
+    "brand_presence_independent_of_sizing": true,
+    "verified_sizing_priority": true,
+    "generic_fallback": "Low-confidence measurement-driven S/M/L/XL for compatible apparel until verified brand/product sizing is available."
+  },
+  "exclusions": [
+    {
+      "name": "Evereve",
+      "reason": "primarily multi-brand retailer; requires separate house-label/storefront treatment"
+    },
+    {
+      "name": "Dry Goods",
+      "reason": "primarily multi-brand retailer; not promoted as a product brand in this pass"
+    },
+    {
+      "name": "Tillys",
+      "reason": "primarily multi-brand retailer; not promoted as a product brand in this pass"
+    },
+    {
+      "name": "Ragstock",
+      "reason": "primarily retailer/storefront; not promoted as a product brand in this pass"
+    },
+    {
+      "name": "Boot Barn",
+      "reason": "primarily multi-brand retailer; not promoted as a product brand in this pass"
+    },
+    {
+      "name": "Journeys",
+      "reason": "primarily footwear retailer; not promoted as a product brand in this pass"
+    },
+    {
+      "name": "Earthbound Trading Co.",
+      "reason": "primarily retailer/storefront; not promoted as a product brand in this pass"
+    },
+    {
+      "name": "Mara Hoffman",
+      "reason": "brand's own site says Spring 2024 was its last offering for the time being"
+    }
+  ],
+  "added_counts_by_group": {
+    "regional_specialty_labels": 6,
+    "emerging_dtc": 11,
+    "niche_performance": 20,
+    "childrens_independent": 17,
+    "footwear_specialists": 24,
+    "streetwear_independent": 24,
+    "independent_designers": 9
+  },
+  "current_source_notes": [
+    "2026 DTC activewear sources surface Satisfy Running, LSKD, MAAP, Tracksmith, Finisterre and other niche performance labels.",
+    "2026 DTC footwear sources track specialist brands including Paul Evans, Dear Frances, Sarah Flint, Lane Eight, Atoms, Brunt and others.",
+    "2026 independent streetwear sources identify labels such as Corteiz, Dime, Polar Skate Co., Nude Project, Cole Buxton and Story mfg.",
+    "Current children's fashion coverage includes independent labels such as Bobo Choses, Konges Slojd, Frugi, Organic Zoo and Polarn O. Pyret."
+  ]
+}
