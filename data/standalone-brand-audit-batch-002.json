@@ -1,0 +1,111 @@
+{
+  "version": "2026-10-07-standalone-brand-layer-batch-002",
+  "audited_at": "2026-10-07T15:00:00Z",
+  "scope": "Second standalone/specialty brand expansion across mall/specialty, DTC, activewear, intimates, menswear, children's, footwear, streetwear, and independent/luxury.",
+  "methodology": {
+    "candidate_groups": [
+      "mall_specialty",
+      "dtc",
+      "activewear",
+      "intimates",
+      "mens_specialists",
+      "childrens",
+      "footwear",
+      "streetwear",
+      "luxury_independent"
+    ],
+    "candidates_checked": 203,
+    "already_present": 146,
+    "newly_added": 57,
+    "duplicate_brand_keys_created": 0,
+    "brand_presence_independent_of_sizing": true,
+    "generic_fallback": "Low-confidence measurement-driven S/M/L/XL for compatible apparel until verified brand sizing exists."
+  },
+  "added_by_group": {
+    "mall_specialty": [
+      "Buckle",
+      "Windsor",
+      "francesca's",
+      "Garage",
+      "Dynamite",
+      "Primark",
+      "Hot Topic",
+      "BoxLunch",
+      "Zumiez",
+      "Soft Surroundings"
+    ],
+    "dtc": [
+      "AYR",
+      "American Giant",
+      "Ministry of Supply",
+      "Proper Cloth",
+      "Taylor Stitch",
+      "Thursday Boot Company",
+      "Cariuma"
+    ],
+    "activewear": [
+      "Brooks Running",
+      "On",
+      "Girlfriend Collective",
+      "Tracksmith"
+    ],
+    "intimates": [
+      "Shinesty"
+    ],
+    "mens_specialists": [
+      "Suitsupply",
+      "Indochino",
+      "Jos. A. Bank",
+      "Men's Wearhouse",
+      "Fred Perry",
+      "Rag & Bone"
+    ],
+    "childrens": [
+      "OshKosh B'gosh",
+      "The Children's Place",
+      "Hanna Andersson",
+      "Janie and Jack",
+      "Monica + Andy",
+      "Little Sleepies",
+      "Mayoral",
+      "Posh Peanut"
+    ],
+    "footwear": [
+      "Koio"
+    ],
+    "streetwear": [
+      "Supreme",
+      "Stüssy",
+      "Kith",
+      "ESSENTIALS",
+      "Palace",
+      "BAPE",
+      "Anti Social Social Club",
+      "Awake NY",
+      "Aimé Leon Dore",
+      "Gallery Dept.",
+      "Denim Tears",
+      "HUF",
+      "The Hundreds",
+      "Undefeated"
+    ],
+    "luxury_independent": [
+      "Louis Vuitton",
+      "Kenzo",
+      "Emilio Pucci",
+      "Berluti",
+      "Hermès",
+      "Comme des Garçons"
+    ]
+  },
+  "cumulative_standalone_work": {
+    "batches_completed": 2,
+    "candidates_checked": 303,
+    "newly_added": 115
+  },
+  "notes": [
+    "Existing BrandCatalog entries were reused rather than duplicated.",
+    "Brand discovery is separate from sizing verification.",
+    "Future passes can continue from this file by checking new candidates against BrandCatalog.brand_key first."
+  ]
+}
