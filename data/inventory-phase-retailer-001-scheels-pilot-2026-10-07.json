@@ -1,0 +1,106 @@
+{
+  "phase": "inventory",
+  "retailer_sequence": 1,
+  "retailer": "SCHEELS",
+  "retailer_key": "scheels",
+  "source_key": "scheels-web",
+  "source_type": "html",
+  "observed_at": "2026-10-07T16:35:00Z",
+  "stale_after": "2026-10-08T16:35:00Z",
+  "policy": {
+    "canonical_model": "ProductMaster -> ProductVariant -> RetailerOffer -> ProductSourceRecord",
+    "deduplication": "brand + normalized style/MPN/GTIN; retailer color/size pages never become separate ProductMaster rows",
+    "scope": "online SCHEELS availability only; store-specific availability is added only when a store is explicitly selected",
+    "freshness_hours": 24
+  },
+  "summary": {
+    "product_masters": 3,
+    "variants": 8,
+    "retailer_offers": 8
+  },
+  "products": [
+    {
+      "brand": "Carhartt",
+      "style_number": "35481-K288",
+      "product_name": "Men's Carhartt Iconic K288 Logo Hoodie",
+      "variants": [
+        {
+          "color": "Port",
+          "size": "Medium",
+          "price": 59.99,
+          "availability": "in_stock",
+          "url": "https://www.scheels.com/p/03548165786"
+        },
+        {
+          "color": "Dusty Olive",
+          "size": "Small",
+          "price": 59.99,
+          "availability": "in_stock",
+          "url": "https://www.scheels.com/p/19721932113"
+        },
+        {
+          "color": "Amber Terrain",
+          "size": "Medium",
+          "regular_price": 59.99,
+          "price": 44.99,
+          "sale": true,
+          "gtin": "199133003726",
+          "availability": "in_stock",
+          "url": "https://www.scheels.com/p/19913300374"
+        },
+        {
+          "color": "Brite Lime",
+          "size": "Large",
+          "regular_price": 59.99,
+          "price": 41.99,
+          "sale": true,
+          "availability": "limited",
+          "url": "https://www.scheels.com/p/19583604866/"
+        }
+      ]
+    },
+    {
+      "brand": "Carhartt",
+      "style_number": "35481-100617",
+      "product_name": "Men's Carhartt Paxton 1/4 Zip Hoodie",
+      "variants": [
+        {
+          "color": "Dark Tranquil Blue Heather",
+          "size": "Large",
+          "price": 69.99,
+          "gtin": "197219960673",
+          "availability": "in_stock",
+          "url": "https://www.scheels.com/p/19721996070"
+        },
+        {
+          "color": "Black",
+          "size": "XLarge",
+          "price": 69.99,
+          "availability": "in_stock",
+          "url": "https://www.scheels.com/p/88685929655"
+        },
+        {
+          "color": "Dark Clove",
+          "size": "3XLarge",
+          "price": 74.99,
+          "availability": "limited",
+          "url": "https://www.scheels.com/p/19913321320"
+        }
+      ]
+    },
+    {
+      "brand": "Carhartt",
+      "style_number": "35481-107010",
+      "product_name": "Men's Carhartt Hamilton Relaxed Long Sleeve Flannel",
+      "variants": [
+        {
+          "color": "Red Duck",
+          "size": "XLarge",
+          "price": 54.99,
+          "availability": "in_stock",
+          "url": "https://www.scheels.com/p/rugged-flex-relaxed-fit-midweight-flannel-long-sleeve-plaid/35481-107010"
+        }
+      ]
+    }
+  ]
+}
