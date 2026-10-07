@@ -1,0 +1,187 @@
+{
+  "version": "2026-10-06-html-source-pass",
+  "results": [
+    {
+      "brand_name": "Cole Haan",
+      "brand_key": "colehaan",
+      "old_status": "partial",
+      "query": "\"Cole Haan\" size chart size guide",
+      "checked": [
+        {
+          "title": "colehaan.com https://www. colehaan .com",
+          "url": "https://www.colehaan.com/",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "kohls.com https://www.kohls.com",
+          "url": "https://www.kohls.com/?msockid=08acb16cf58163783d09a687f4e6621f",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "merriam-webster.com https://www.merriam-webster.com \u203a dictionary \u203a cole",
+          "url": "https://www.merriam-webster.com/dictionary/cole",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "colehaan.com https://www. cole haan.com \u203a collections \u203a shoes",
+          "url": "https://www.colehaan.com/collections/shoes",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Future Collective",
+      "brand_key": "futurecollective",
+      "old_status": "partial",
+      "query": "\"Future Collective\" size chart size guide",
+      "checked": [
+        {
+          "title": "merriam-webster.com https://www.merriam-webster.com \u203a dictionary \u203a future",
+          "url": "https://www.merriam-webster.com/dictionary/future",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "futureelectronics.com https://www. future electronics.com",
+          "url": "https://www.futureelectronics.com/",
+          "error": "TimeoutError('The read operation timed out')"
+        },
+        {
+          "title": "genius.com https://genius.com \u203a artists \u203a Future",
+          "url": "https://genius.com/artists/Future",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "ticketmaster.com https://www. ticketmaster .com \u203a future-tickets \u203a artist",
+          "url": "https://www.ticketmaster.com/future-tickets/artist/1707739?msockid=0bece9f91bf46fe81653fe121a266e19",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Kona Sol",
+      "brand_key": "konasol",
+      "old_status": "partial",
+      "query": "\"Kona Sol\" size chart size guide",
+      "checked": [
+        {
+          "title": "konaworld.com https://www. kona world.com",
+          "url": "https://www.konaworld.com/",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "gohawaii.com https://www.gohawaii.com \u203a islands \u203a hawaii-big-island \u203a regions \u203a kona",
+          "url": "https://www.gohawaii.com/islands/hawaii-big-island/regions/kona",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "tripadvisor.com https://www.tripadvisor.com",
+          "url": "https://www.tripadvisor.com/Tourism-g60872-Kailua_Kona_Island_of_Hawaii_Hawaii-Vacations.html",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Stride Rite",
+      "brand_key": "striderite",
+      "old_status": "partial",
+      "query": "\"Stride Rite\" size chart size guide",
+      "checked": [
+        {
+          "title": "stackoverflow.com https://stackoverflow.com \u203a questions \u203a facebook-common-url-format-for-acce\u2026",
+          "url": "https://stackoverflow.com/questions/5205923/facebook-common-url-format-for-accessing-objects-and-their-comments-from-a-brow",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "stackoverflow.com https://stackoverflow.com \u203a questions",
+          "url": "https://stackoverflow.com/questions/22077743/facebook-showing-page-not-found-when-sharing-link",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "stackoverflow.com https://stackoverflow.com \u203a questions",
+          "url": "https://stackoverflow.com/questions/17426018/generate-never-expire-access-token-for-facebook-page",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "stackoverflow.com https://stackoverflow.com \u203a questions",
+          "url": "https://stackoverflow.com/questions/55429860/facebook-api-reduce-the-amount-of-data-youre-asking-for-then-retry-your-requ",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "stackoverflow.com https://stackoverflow.com \u203a questions \u203a android-facebook-integration-with-inva\u2026",
+          "url": "https://stackoverflow.com/questions/23674131/android-facebook-integration-with-invalid-key-hash",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "stackoverflow.com https://stackoverflow.com \u203a questions \u203a how-to-add-facebook-share-button-on \u2026",
+          "url": "https://stackoverflow.com/questions/16463030/how-to-add-facebook-share-button-on-my-website",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "stackoverflow.com https://stackoverflow.com \u203a questions",
+          "url": "https://stackoverflow.com/questions/5352759/how-to-embed-a-facebook-page-in-an-iframe",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "stackoverflow.com https://stackoverflow.com \u203a questions",
+          "url": "https://stackoverflow.com/questions/30314151/why-wont-facebook-accept-the-url-of-my-website-in-the-about-section-of-our-face",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "stackoverflow.com https://stackoverflow.com \u203a questions",
+          "url": "https://stackoverflow.com/questions/29429296/responsive-width-facebook-page-plugin",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "stackoverflow.com https://stackoverflow.com \u203a questions",
+          "url": "https://stackoverflow.com/questions/19348278/automatically-embed-newest-facebook-posts-on-my-website",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Vanity Fair",
+      "brand_key": "vanityfair",
+      "old_status": "partial",
+      "query": "\"Vanity Fair\" size chart size guide",
+      "checked": [
+        {
+          "title": "homedepot.com https://www.homedepot.com \u203a Bath- Bathroom-Vanities",
+          "url": "https://www.homedepot.com/b/Bath-Bathroom-Vanities/N-5yc1vZcfv3",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "wayfair.com https://www.wayfair.com \u203a home-improvement \u203a bathroom-vanities-c...",
+          "url": "https://www.wayfair.com/home-improvement/sb0/bathroom-vanities-c527058.html?msockid=3c4d6f66762b60581dad788d77be6109",
+          "domain": "wayfair.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "wayfair.com https://www.wayfair.com \u203a shop-product-type \u203a cat",
+          "url": "https://www.wayfair.com/shop-product-type/cat/vanities-c523535.html?msockid=3c4d6f66762b60581dad788d77be6109",
+          "domain": "wayfair.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "merriam-webster.com https://www.merriam-webster.com \u203a dictionary \u203a vanity",
+          "url": "https://www.merriam-webster.com/dictionary/vanity",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "macys.com https://www.macys.com \u203a shop \u203a home \u203a furniture-mattress \u203a bedroom \u203a ...",
+          "url": "https://www.macys.com/shop/home/furniture-mattress/bedroom/vanities?id=223850&msockid=3c4d6f66762b60581dad788d77be6109",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    }
+  ],
+  "promotions": []
+}
