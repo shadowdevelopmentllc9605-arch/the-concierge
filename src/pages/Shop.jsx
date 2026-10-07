@@ -8,7 +8,7 @@ import { Search, SlidersHorizontal, X, Heart, ShoppingBag, Store, Sparkles, Mic,
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import PullToRefresh from '@/components/PullToRefresh';
-import { getCategoryGroup, getEffectiveSizeChart, getFitRecommendationPresentation, recommendFromSizeChart } from '@/lib/fitRecommendation';
+import { deriveGenericFallbackSize, getCategoryGroup, getEffectiveSizeChart, getFitRecommendationPresentation, recommendFromSizeChart } from '@/lib/fitRecommendation';
 
 export default function Shop() {
   const navigate = useNavigate();
@@ -251,6 +251,21 @@ export default function Shop() {
         fitConfidence: 'low',
         confidenceScore: chartMatch.confidenceScore,
         missingMeasurements: chartMatch.missingMeasurements || []
+      };
+    }
+
+    const genericFallback = deriveGenericFallbackSize(product, profile);
+    if (genericFallback?.size) {
+      const presentation = getFitRecommendationPresentation('generic_brand_fallback');
+      return {
+        size: genericFallback.size,
+        width: '',
+        label: presentation.label,
+        detail: presentation.detail,
+        verified: false,
+        source: 'generic_brand_fallback',
+        fitConfidence: 'low',
+        confidenceScore: null,
       };
     }
 
