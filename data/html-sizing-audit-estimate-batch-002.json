@@ -2816,6 +2816,906 @@
         }
       ],
       "promotions": []
+    },
+    {
+      "brand_name": "Ambrielle",
+      "brand_key": "ambrielle",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Ambrielle\" official size guide",
+        "\"Ambrielle\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "ambrielleco.com https:// ambrielle co.com",
+          "url": "https://ambrielleco.com/",
+          "domain": "ambrielleco.com",
+          "score": 10,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        },
+        {
+          "title": "ambrielleshop.com https:// ambrielle shop.com",
+          "url": "https://ambrielleshop.com/",
+          "domain": "ambrielleshop.com",
+          "score": 8,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "jcpenney.com https://www.jcpenney.com \u203a women \u203a lingerie",
+          "url": "https://www.jcpenney.com/g/women/lingerie?brand=ambrielle&id=cat100240035&msockid=117b53de4747678600954435463d6633",
+          "error": "TimeoutError('The read operation timed out')"
+        },
+        {
+          "title": "ambrielleco.com https:// ambrielle co.com \u203a ambrielle -shapewear",
+          "url": "https://ambrielleco.com/ambrielle-shapewear/",
+          "domain": "ambrielleco.com",
+          "score": 10,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        },
+        {
+          "title": "myambrielle.com https://my ambrielle .com",
+          "url": "https://myambrielle.com/",
+          "domain": "myambrielle.com",
+          "score": 10,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        },
+        {
+          "title": "theambrielle.com https://the ambrielle .com",
+          "url": "https://theambrielle.com/",
+          "domain": "theambrielle.com",
+          "score": 8,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        },
+        {
+          "title": "ambriellebras.com https:// ambrielle bras.com",
+          "url": "https://ambriellebras.com/",
+          "domain": "ambriellebras.com",
+          "score": 8,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        },
+        {
+          "title": "jcpenney.com https://www. jcpenney .com \u203a women \u203a bras",
+          "url": "https://www.jcpenney.com/g/women/bras?brand=ambrielle&id=cat100240038&msockid=117b53de4747678600954435463d6633",
+          "error": "TimeoutError('The read operation timed out')"
+        },
+        {
+          "title": "jcpenney.com https://www.jcpenney.com \u203a women \u203a lingerie",
+          "url": "https://www.jcpenney.com/g/women/lingerie?brand=ambrielle&id=cat100240035&msockid=3fbcd2e86e9560410faec5036ffa614f",
+          "error": "TimeoutError('The read operation timed out')"
+        },
+        {
+          "title": "jcpenney.com https://www. jcpenney .com \u203a women \u203a bras",
+          "url": "https://www.jcpenney.com/g/women/bras?brand=ambrielle&id=cat100240038&msockid=3fbcd2e86e9560410faec5036ffa614f",
+          "error": "TimeoutError('The read operation timed out')"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "American Hat Makers",
+      "brand_key": "americanhatmakers",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"American Hat Makers\" official size guide",
+        "\"American Hat Makers\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "aa.com https://www.aa.com",
+          "url": "https://www.aa.com/homePage.do?locale=en_US",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "american-usa.com https:// american -usa.com",
+          "url": "https://american-usa.com/",
+          "domain": "american-usa.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "aa.com https://www.aa.com \u203a en-us \u203a flights-from-birmingham - al",
+          "url": "https://www.aa.com/en-us/flights-from-birmingham-al",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "americanosment.com https:// american osment.com",
+          "url": "https://americanosment.com/",
+          "domain": "americanosment.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "americanhealthimaging.com https:// american healthimaging.com \u203a location \u203a ahi- birmingham - al",
+          "url": "https://americanhealthimaging.com/location/ahi-birmingham-al/",
+          "domain": "americanhealthimaging.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        },
+        {
+          "title": "american-usa.com https:// american -usa.com \u203a about",
+          "url": "https://american-usa.com/about",
+          "domain": "american-usa.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "americanranchhouse.net https:// american ranchhouse.net",
+          "url": "https://americanranchhouse.net/",
+          "domain": "americanranchhouse.net",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html"
+        },
+        {
+          "title": "applicantpool.com https:// american usa.applicantpool.com \u203a jobs",
+          "url": "https://americanusa.applicantpool.com/jobs/",
+          "domain": "americanusa.applicantpool.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "American Needle",
+      "brand_key": "americanneedle",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"American Needle\" official size guide",
+        "\"American Needle\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "aa.com https://www.aa.com",
+          "url": "https://www.aa.com/homePage.do?locale=en_US",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "american-usa.com https:// american -usa.com",
+          "url": "https://american-usa.com/",
+          "domain": "american-usa.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "aa.com https://www.aa.com \u203a en-us \u203a flights-from-birmingham - al",
+          "url": "https://www.aa.com/en-us/flights-from-birmingham-al",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "americanosment.com https:// american osment.com",
+          "url": "https://americanosment.com/",
+          "domain": "americanosment.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "americanhealthimaging.com https:// american healthimaging.com \u203a location \u203a ahi- birmingham - al",
+          "url": "https://americanhealthimaging.com/location/ahi-birmingham-al/",
+          "domain": "americanhealthimaging.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        },
+        {
+          "title": "american-usa.com https:// american -usa.com \u203a about",
+          "url": "https://american-usa.com/about",
+          "domain": "american-usa.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "americanranchhouse.net https:// american ranchhouse.net",
+          "url": "https://americanranchhouse.net/",
+          "domain": "americanranchhouse.net",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html"
+        },
+        {
+          "title": "applicantpool.com https:// american usa.applicantpool.com \u203a jobs",
+          "url": "https://americanusa.applicantpool.com/jobs/",
+          "domain": "americanusa.applicantpool.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        },
+        {
+          "title": "aa.com https://www.aa.com \u203a booking \u203a find-flights",
+          "url": "https://www.aa.com/booking/find-flights",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "americanexpress.com https://www. american express.com",
+          "url": "https://www.americanexpress.com/",
+          "domain": "americanexpress.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "aa.com https://login.aa.com \u203a miniMenu",
+          "url": "https://login.aa.com/miniMenu?locale=en_US",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "americanexpress.com https://www. american express.com \u203a account \u203a login",
+          "url": "https://www.americanexpress.com/account/login?request_type=LogonHandler&Face=en_US",
+          "domain": "americanexpress.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "kayak.com https://www.kayak.com \u203a American-Airlines .AA.airline.html",
+          "url": "https://www.kayak.com/American-Airlines.AA.airline.html?msockid=2be3dbc12057687d1e65cc2a21326957",
+          "error": "<HTTPError 429: 'Unknown Error'>"
+        },
+        {
+          "title": "aa.com https://www.aa.com \u203a en-us",
+          "url": "https://www.aa.com/en-us/flights",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "aa.com https://www.aa.com \u203a reservation \u203a view \u203a find-your-trip",
+          "url": "https://www.aa.com/reservation/view/find-your-trip?fromHomePage=true",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "aa.com https://www.aa.com \u203a en-us \u203a flights-from-lake-charles",
+          "url": "https://www.aa.com/en-us/flights-from-lake-charles",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "American Vintage",
+      "brand_key": "americanvintage",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"American Vintage\" official size guide",
+        "\"American Vintage\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "american-usa.com https:// american -usa.com",
+          "url": "https://american-usa.com/",
+          "domain": "american-usa.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "aa.com https://www.aa.com \u203a en-us \u203a flights-from-birmingham - al",
+          "url": "https://www.aa.com/en-us/flights-from-birmingham-al",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "americanosment.com https:// american osment.com",
+          "url": "https://americanosment.com/",
+          "domain": "americanosment.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "americanhealthimaging.com https:// american healthimaging.com \u203a location \u203a ahi- birmingham - al",
+          "url": "https://americanhealthimaging.com/location/ahi-birmingham-al/",
+          "domain": "americanhealthimaging.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        },
+        {
+          "title": "american-usa.com https:// american -usa.com \u203a about",
+          "url": "https://american-usa.com/about",
+          "domain": "american-usa.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "americanranchhouse.net https:// american ranchhouse.net",
+          "url": "https://americanranchhouse.net/",
+          "domain": "americanranchhouse.net",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html"
+        },
+        {
+          "title": "applicantpool.com https:// american usa.applicantpool.com \u203a jobs",
+          "url": "https://americanusa.applicantpool.com/jobs/",
+          "domain": "americanusa.applicantpool.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "AMI Paris",
+      "brand_key": "amiparis",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"AMI Paris\" official size guide",
+        "\"AMI Paris\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "ami.com https://www. ami .com",
+          "url": "https://www.ami.com/",
+          "domain": "ami.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        },
+        {
+          "title": "amiparis.com https://www. ami paris.com \u203a en-us",
+          "url": "https://www.amiparis.com/en-us/",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "ami.com https://www. ami .com \u203a products",
+          "url": "https://www.ami.com/products/",
+          "domain": "ami.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        },
+        {
+          "title": "amiparis.com https://www. ami paris.com \u203a en-us \u203a collections \u203a men-new-ready...",
+          "url": "https://www.amiparis.com/en-us/collections/men-new-ready-to-wear",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Amiri",
+      "brand_key": "amiri",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Amiri\" official size guide",
+        "\"Amiri\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "amiri.com https:// amiri .com",
+          "url": "https://amiri.com/",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "amiri.com https:// amiri .com \u203a collections",
+          "url": "https://amiri.com/collections/",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "saksfifthavenue.com https:// www.saksfifthavenue.com \u203a brand \u203a amiri",
+          "url": "https://www.saksfifthavenue.com/brand/amiri?msockid=1e927bebefd36ec332f56c00ee576fe7",
+          "error": "<HTTPError 403: 'HTTP Forbidden'>"
+        },
+        {
+          "title": "farfetch.com https://www.farfetch.com \u203a shopping \u203a men \u203a amiri \u203a items.aspx",
+          "url": "https://www.farfetch.com/shopping/men/amiri/items.aspx?msockid=1e927bebefd36ec332f56c00ee576fe7",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "saksfifthavenue.com https:// www.saksfifthavenue.com \u203a amiri",
+          "url": "https://www.saksfifthavenue.com/c/sale-2/amiri?msockid=1e927bebefd36ec332f56c00ee576fe7",
+          "error": "<HTTPError 403: 'HTTP Forbidden'>"
+        },
+        {
+          "title": "farfetch.com https://www.farfetch.com \u203a shopping \u203a men \u203a amiri \u203a items.aspx",
+          "url": "https://www.farfetch.com/shopping/men/amiri/clothing-2/items.aspx?msockid=1e927bebefd36ec332f56c00ee576fe7",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "saksfifthavenue.com https:// www.saksfifthavenue.com \u203a brand \u203a amiri",
+          "url": "https://www.saksfifthavenue.com/brand/amiri?msockid=1be855dffd72620d2fff4234fcd86303",
+          "error": "<HTTPError 403: 'HTTP Forbidden'>"
+        },
+        {
+          "title": "farfetch.com https://www.farfetch.com \u203a shopping \u203a men \u203a amiri \u203a items.aspx",
+          "url": "https://www.farfetch.com/shopping/men/amiri/items.aspx?msockid=1be855dffd72620d2fff4234fcd86303",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "amiriofficials.com https:// amiri officials.com",
+          "url": "https://amiriofficials.com/",
+          "domain": "amiriofficials.com",
+          "score": 10,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        },
+        {
+          "title": "farfetch.com https://www.farfetch.com \u203a shopping \u203a men \u203a amiri \u203a items.aspx",
+          "url": "https://www.farfetch.com/shopping/men/amiri/clothing-2/items.aspx?msockid=1be855dffd72620d2fff4234fcd86303",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Amoena",
+      "brand_key": "amoena",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Amoena\" official size guide",
+        "\"Amoena\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "amoena.us https:// amoena .us",
+          "url": "https://amoena.us/",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "amoena.us https:// amoena .us \u203a collections \u203a all-mastectomy-lingerie",
+          "url": "https://amoena.us/collections/all-mastectomy-lingerie",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "amoena.com https://www. amoena .com \u203a global",
+          "url": "https://www.amoena.com/global/",
+          "error": "URLError(TimeoutError('timed out'))"
+        },
+        {
+          "title": "amoena.com https://www. amoena .com \u203a us-en \u203a amoena -signature-collection-usa",
+          "url": "https://www.amoena.com/us-en/amoena-signature-collection-usa/",
+          "error": "URLError(TimeoutError('timed out'))"
+        },
+        {
+          "title": "amoena.com https://academyusa. amoena .com",
+          "url": "https://academyusa.amoena.com/",
+          "domain": "academyusa.amoena.com",
+          "score": 8,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "amoenacare.shop https:// amoena care.shop",
+          "url": "https://amoenacare.shop/",
+          "domain": "amoenacare.shop",
+          "score": 10,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "Sizing Help",
+          "url": "https://amoenacare.shop/categories/sizing-help",
+          "domain": "amoenacare.shop",
+          "score": 13,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Amsale",
+      "brand_key": "amsale",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Amsale\" official size guide",
+        "\"Amsale\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "amsale.com https:// amsale .com",
+          "url": "https://amsale.com/",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "amsale.com https:// amsale .com \u203a collections \u203a all-ready-to-wear",
+          "url": "https://amsale.com/collections/all-ready-to-wear",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "saksfifthavenue.com https://www.saksfifthavenue.com \u203a brand \u203a amsale",
+          "url": "https://www.saksfifthavenue.com/brand/amsale?msockid=31af054447c16d9a125512af46b76c55",
+          "error": "<HTTPError 403: 'HTTP Forbidden'>"
+        },
+        {
+          "title": "bloomingdales.com https://www.bloomingdales.com \u203a buy \u203a amsale",
+          "url": "https://www.bloomingdales.com/buy/amsale?msockid=31af054447c16d9a125512af46b76c55",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "therealreal.com https://www.therealreal.com \u203a designers \u203a amsale",
+          "url": "https://www.therealreal.com/designers/amsale?msockid=31af054447c16d9a125512af46b76c55",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "saksfifthavenue.com https://www.saksfifthavenue.com \u203a amsale \u203a sale",
+          "url": "https://www.saksfifthavenue.com/c/sale-2/amsale/sale?msockid=31af054447c16d9a125512af46b76c55",
+          "error": "<HTTPError 403: 'HTTP Forbidden'>"
+        },
+        {
+          "title": "amsale.us http://www. amsale .us",
+          "url": "http://www.amsale.us/",
+          "domain": "amsale.us",
+          "score": 8,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        },
+        {
+          "title": "saksfifthavenue.com https://www.saksfifthavenue.com \u203a brand \u203a amsale",
+          "url": "https://www.saksfifthavenue.com/brand/amsale?msockid=03ccf6728d276cb7194be1998c986dc5",
+          "error": "<HTTPError 403: 'HTTP Forbidden'>"
+        },
+        {
+          "title": "bloomingdales.com https://www.bloomingdales.com \u203a buy \u203a amsale",
+          "url": "https://www.bloomingdales.com/buy/amsale?msockid=03ccf6728d276cb7194be1998c986dc5",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "therealreal.com https://www.therealreal.com \u203a designers \u203a amsale",
+          "url": "https://www.therealreal.com/designers/amsale?msockid=03ccf6728d276cb7194be1998c986dc5",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "saksfifthavenue.com https://www.saksfifthavenue.com \u203a amsale \u203a sale",
+          "url": "https://www.saksfifthavenue.com/c/sale-2/amsale/sale?msockid=03ccf6728d276cb7194be1998c986dc5",
+          "error": "<HTTPError 403: 'HTTP Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Amur",
+      "brand_key": "amur",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Amur\" official size guide",
+        "\"Amur\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "goamur.com https://www.go amur .com",
+          "url": "https://www.goamur.com/",
+          "domain": "goamur.com",
+          "score": 8,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        },
+        {
+          "title": "amur.com https:// amur .com",
+          "url": "https://amur.com/",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "amur.com https:// amur .com \u203a collections \u203a dresses",
+          "url": "https://amur.com/collections/dresses",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "goamur.com https://www.go amur .com \u203a sign-in",
+          "url": "https://www.goamur.com/sign-in",
+          "domain": "goamur.com",
+          "score": 8,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        },
+        {
+          "title": "britannica.com https:// www.britannica.com \u203a place \u203a Amur-River",
+          "url": "https://www.britannica.com/place/Amur-River",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "saksfifthavenue.com https:// www.saksfifthavenue.com \u203a brand \u203a amur",
+          "url": "https://www.saksfifthavenue.com/brand/amur?msockid=2daabccb8d5c605822f7ab208c7261c5",
+          "error": "<HTTPError 403: 'HTTP Forbidden'>"
+        },
+        {
+          "title": "britannica.com https:// www.britannica.com \u203a place \u203a Amur",
+          "url": "https://www.britannica.com/place/Amur",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "wikiwand.com https://www.wikiwand.com \u203a en \u203a Amur",
+          "url": "https://www.wikiwand.com/en/Amur",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "saksfifthavenue.com https:// www.saksfifthavenue.com \u203a brand \u203a amur",
+          "url": "https://www.saksfifthavenue.com/brand/amur?msockid=2ba4f5110e8a61b43899e2fa0f79607d",
+          "error": "<HTTPError 403: 'HTTP Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "AND1",
+      "brand_key": "and1",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"AND1\" official size guide",
+        "\"AND1\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "and1.com https:// and1 .com",
+          "url": "https://and1.com/",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "and1.com https:// and1 .com \u203a collections \u203a all-sneakers-us",
+          "url": "https://and1.com/collections/all-sneakers-us",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "ANDE",
+      "brand_key": "ande",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"ANDE\" official size guide",
+        "\"ANDE\" size chart measurements"
+      ],
+      "checked": [],
+      "promotions": []
+    },
+    {
+      "brand_name": "Andie",
+      "brand_key": "andie",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Andie\" official size guide",
+        "\"Andie\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "andieswim.com https:// andie swim.com",
+          "url": "https://andieswim.com/",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "andieswim.com https:// andie swim.com \u203a collections \u203a our-suits",
+          "url": "https://andieswim.com/collections/our-suits",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "bloomingdales.com https:// www.bloomingdales.com \u203a buy \u203a andie",
+          "url": "https://www.bloomingdales.com/buy/andie?msockid=1fd37416825664bf1de163fd832b6593",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "bloomingdales.com https:// www.bloomingdales.com \u203a buy \u203a andie",
+          "url": "https://www.bloomingdales.com/buy/andie?msockid=23828cefaa9d619024e39b04ab716020",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Andrew Marc",
+      "brand_key": "andrewmarc",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Andrew Marc\" official size guide",
+        "\"Andrew Marc\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "andrew.com https://www. andrew .com",
+          "url": "https://www.andrew.com/",
+          "domain": "andrew.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "people.com https://people.com",
+          "url": "https://people.com/former-prince-andrew-takes-legal-action-over-his-arrest-12159179",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "telegraph.co.uk https://www.telegraph.co.uk \u203a royal-family \u203a andrew -takes-police-court-epstein...",
+          "url": "https://www.telegraph.co.uk/royal-family/2026/10/04/andrew-takes-police-court-epstein-files-arrest/?msockid=378c5f484e256c600e1848a34fc26d01",
+          "error": "<HTTPError 402: 'Payment Required'>"
+        },
+        {
+          "title": "thehill.com https://thehill.com \u203a policy \u203a international",
+          "url": "https://thehill.com/policy/international/6128756-andrew-mountbatten-windsor-sues-tvp/",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "telegraph.co.uk https://www.telegraph.co.uk \u203a royal-family \u203a andrew -takes-police-court-epstein...",
+          "url": "https://www.telegraph.co.uk/royal-family/2026/10/04/andrew-takes-police-court-epstein-files-arrest/?msockid=07f83d95be756da90eae2a7ebf996cc0",
+          "error": "<HTTPError 402: 'Payment Required'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Andy & Evan",
+      "brand_key": "andyevan",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Andy & Evan\" official size guide",
+        "\"Andy & Evan\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "softonic.com https:// andy .en.softonic.com",
+          "url": "https://andy.en.softonic.com/",
+          "error": "<HTTPError 412: 'Precondition failed'>"
+        },
+        {
+          "title": "eatandys.com https://www.eat andy s.com",
+          "url": "https://www.eatandys.com/",
+          "domain": "eatandys.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html;charset=utf-8"
+        },
+        {
+          "title": "eatandys.com https://www.eat andy s.com",
+          "url": "https://www.eatandys.com/40th-anniversary-tour",
+          "domain": "eatandys.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html;charset=utf-8"
+        },
+        {
+          "title": "cbeebies.com https://www.cbeebies.com \u203a shows \u203a andy s-adventures",
+          "url": "https://www.cbeebies.com/shows/andys-adventures/",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Angel & Rocket",
+      "brand_key": "angelrocket",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Angel & Rocket\" official size guide",
+        "\"Angel & Rocket\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "angel.com https://www. angel .com \u203a watch",
+          "url": "https://www.angel.com/watch?msockid=2eb8f3fa8a3460bc325ee4118bab61ee",
+          "domain": "angel.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "angel.com https://www. angel .com \u203a login",
+          "url": "https://www.angel.com/login?msockid=2eb8f3fa8a3460bc325ee4118bab61ee",
+          "domain": "angel.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "angel.com https://link. angel .com",
+          "url": "https://angel.app.link/Ugl7o9erAQb?_p=c11135dc9a0162eee11b90fceeb4",
+          "domain": "angel.app.link",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "angel.com https://link. angel .com \u203a auth \u203a login",
+          "url": "https://www.angel.com/watch#download",
+          "domain": "angel.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "merriam-webster.com https://www.merriam-webster.com \u203a dictionary \u203a angel",
+          "url": "https://www.merriam-webster.com/dictionary/angel",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "angel.com https://support. angel .com",
+          "url": "https://support.angel.com/hc/en-us",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "britannica.com https://www.britannica.com \u203a topic \u203a angel -religion",
+          "url": "https://www.britannica.com/topic/angel-religion",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "angel.com https://www. angel .com \u203a watch",
+          "url": "https://www.angel.com/watch?msockid=01731d06e9d4694927820aede84668fa",
+          "domain": "angel.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "angel.com https://www. angel .com \u203a login",
+          "url": "https://www.angel.com/login?msockid=01731d06e9d4694927820aede84668fa",
+          "domain": "angel.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Angel Dear",
+      "brand_key": "angeldear",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Angel Dear\" official size guide",
+        "\"Angel Dear\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "angel.com https://www. angel .com \u203a watch",
+          "url": "https://www.angel.com/watch?msockid=12507cc1732464e035056b2a72c36501",
+          "domain": "angel.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "angel.com https://www. angel .com \u203a login",
+          "url": "https://www.angel.com/login?msockid=12507cc1732464e035056b2a72c36501",
+          "domain": "angel.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "angel.com https://link. angel .com",
+          "url": "https://angel.app.link/Ugl7o9erAQb?_p=c11135dc9a0162eee11b90fceeb4",
+          "domain": "angel.app.link",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "angel.com https://link. angel .com \u203a auth \u203a login",
+          "url": "https://www.angel.com/watch#download",
+          "domain": "angel.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "merriam-webster.com https://www.merriam-webster.com \u203a dictionary \u203a angel",
+          "url": "https://www.merriam-webster.com/dictionary/angel",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "angel.com https://support. angel .com",
+          "url": "https://support.angel.com/hc/en-us",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "britannica.com https://www.britannica.com \u203a topic \u203a angel -religion",
+          "url": "https://www.britannica.com/topic/angel-religion",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
     }
   ],
   "promotions": []

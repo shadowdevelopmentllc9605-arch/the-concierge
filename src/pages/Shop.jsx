@@ -332,12 +332,20 @@ export default function Shop() {
           <div className="flex gap-2 overflow-x-auto no-scrollbar pb-2">
             <Sheet>
               <SheetTrigger asChild>
-                <Button variant="outline" className="h-9 rounded-full px-4 border-[var(--color-border)] bg-[var(--color-surface)] shrink-0 select-none">
+                <Button variant="outline" className="h-9 rounded-full px-4 border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)] shrink-0 select-none">
                   <SlidersHorizontal className="w-4 h-4 mr-2" />
                   Filters
                 </Button>
               </SheetTrigger>
-              <SheetContent side="bottom" className="h-[70vh] rounded-t-3xl bg-[var(--color-surface)]">
+              <SheetContent
+                side="bottom"
+                className="h-[70vh] rounded-t-3xl bg-[var(--color-surface)] text-[var(--color-text-primary)] border-[var(--color-border)]"
+                style={{
+                  backgroundColor: 'var(--color-surface)',
+                  color: 'var(--color-text-primary)',
+                  borderColor: 'var(--color-border)',
+                }}
+              >
                 <SheetHeader>
                   <SheetTitle className="text-[var(--color-text-primary)]">Filters</SheetTitle>
                 </SheetHeader>
@@ -386,13 +394,13 @@ export default function Shop() {
                   <div>
                     <div className="flex items-center justify-between mb-3">
                       <p className="text-sm font-medium text-[var(--color-text-primary)]">Brand</p>
-                      <p className="text-xs text-[var(--color-text-muted)]">{brandCatalog.length} brands</p>
+                      <p className="text-xs text-[var(--color-text-secondary)]">{brandCatalog.length} brands</p>
                     </div>
                     <Input
                       value={brandSearch}
                       onChange={(e) => setBrandSearch(e.target.value)}
                       placeholder="Search all department-store brands"
-                      className="h-10 mb-3 rounded-xl bg-[var(--color-background-secondary)] border-0 text-[var(--color-text-primary)]"
+                      className="h-10 mb-3 rounded-xl bg-[var(--color-background-secondary)] border border-[var(--color-border)] text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)]"
                     />
                     <div className="flex flex-wrap gap-2 max-h-52 overflow-y-auto pr-1">
                       {brandCatalog
