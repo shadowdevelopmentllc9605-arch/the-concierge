@@ -1,0 +1,12 @@
+{
+  "version": "2026-10-07-retailer-audit-022-the-fort",
+  "retailer": "The Fort",
+  "retailer_key": "thefort",
+  "audited_at": "2026-10-07T15:45:00Z",
+  "local_context": "The Fort - South Lincoln / Fort Brands.",
+  "method": "Official Fort Brands directory reviewed as a current-product directory. Zero-product historical entries and non-fashion tack/decor/gift suppliers were excluded. Fashion-relevant apparel, western/workwear, footwear and headwear labels with current product presence were retained.",
+  "public_directory_entries_observed": 484,
+  "confirmed_current_fashion_brand_keys": 104,
+  "sizing_policy": "Verified product/brand sizing first; otherwise low-confidence generic S/M/L/XL for compatible apparel.",
+  "completeness_note": "Current dated inventory snapshot. Product counts and active brands can change."
+}
