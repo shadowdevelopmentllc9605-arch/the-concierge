@@ -1,0 +1,105 @@
+{
+  "snapshot_version": "1.0",
+  "audit_number": "008",
+  "retailer": "Neiman Marcus",
+  "retailer_key": "neimanmarcus",
+  "exported_at": "2026-10-07T20:00:00Z",
+  "methodology": "SCHEELS/Macy's controlled retailer audit; ProductMaster -> ProductVariant -> RetailerOffer -> ProductSourceRecord; retailer identifiers remain offer/source scoped; no inferred size-color stock or local stock.",
+  "audit_status": "partial_source_limited_server_403",
+  "source_access_note": "Public Neiman Marcus indexed/browser product surfaces support controlled item-level validation. Direct requests from both Base44 application environments to robots.txt, sitemap.xml and PDP URLs returned HTTP 403. No permitted exhaustive bulk product feed/API or enumerable sitemap path was available, so exhaustive catalog completion is not claimed and no high-volume crawl was used as a substitute.",
+  "image_policy": "Retailer-hosted image URLs were not promoted into public ProductMaster image fields solely because they are publicly visible or attributable.",
+  "base44": {
+    "app_name": "The Concierge",
+    "app_id": "698951bc103c5b61b68d35b7",
+    "checkpoint_status": "created after manifests are saved"
+  },
+  "counts": {
+    "catalog_sources": 2,
+    "product_masters": 3,
+    "product_variants": 0,
+    "retailer_offers": 3,
+    "product_source_records": 6,
+    "catalog_ingestion_runs": 2,
+    "canonical_duplicates_found": 0
+  },
+  "architecture_guards": {
+    "retailer_ids_in_product_master": false,
+    "color_only_active_variants": false,
+    "offer_scope": "style",
+    "dedup_status": "review_pending_global_identifier_or_cross-retailer-confirmation"
+  },
+  "products": [
+    {
+      "brand": "Callas Milano",
+      "canonical_key": "callas-milano:genny-cheetah-print-midi-shirtdress",
+      "product_name": "Genny Cheetah-Print Midi Shirtdress",
+      "department": "women",
+      "seller_product_id": "NMS21_T8VX9",
+      "retailer_sku": "5454067",
+      "regular_price": 790,
+      "current_price": 474,
+      "sale_active": true,
+      "url": "https://www.neimanmarcus.com/p/callas-milano-genny-cheetah-print-midi-shirtdress-prod285400166",
+      "product_master_id": "6ac6a17c91d3349f11314562",
+      "retailer_offer_id": "6ac6a1abf5e790e89fa667e4"
+    },
+    {
+      "brand": "Moncler",
+      "canonical_key": "moncler:mens-hooded-down-vest",
+      "product_name": "Men's Hooded Down Vest",
+      "department": "men",
+      "seller_product_id": "NMS21_NEX0H",
+      "retailer_sku": "5506517",
+      "regular_price": 1525,
+      "current_price": 1525,
+      "sale_active": false,
+      "url": "https://www.neimanmarcus.com/p/moncler-mens-hooded-down-vest-prod286670424",
+      "product_master_id": "6ac6a17c91d3349f11314563",
+      "retailer_offer_id": "6ac6a1abf5e790e89fa667e5"
+    },
+    {
+      "brand": "Golden Goose",
+      "canonical_key": "golden-goose:kids-journey-printed-cotton-t-shirt",
+      "product_name": "Kid's Journey Printed Cotton T-Shirt",
+      "department": "kids",
+      "seller_product_id": "NMS21_K2RQ5",
+      "retailer_sku": "5527466",
+      "regular_price": 150,
+      "current_price": 150,
+      "sale_active": false,
+      "url": "https://www.neimanmarcus.com/p/golden-goose-kids-journey-printed-cotton-t-shirt-size-6-12-prod286830351",
+      "product_master_id": "6ac6a17c91d3349f11314564",
+      "retailer_offer_id": "6ac6a1abf5e790e89fa667e6"
+    }
+  ],
+  "entity_ids": {
+    "CatalogSource": [
+      "6ac6a17adbdde7f7406f0006",
+      "6ac6a17adbdde7f7406f0007"
+    ],
+    "ProductMaster": [
+      "6ac6a17c91d3349f11314562",
+      "6ac6a17c91d3349f11314563",
+      "6ac6a17c91d3349f11314564"
+    ],
+    "ProductVariant": [],
+    "RetailerOffer": [
+      "6ac6a1abf5e790e89fa667e4",
+      "6ac6a1abf5e790e89fa667e5",
+      "6ac6a1abf5e790e89fa667e6"
+    ],
+    "ProductSourceRecord": [
+      "6ac6a1d149e42724bb8f416f",
+      "6ac6a1d149e42724bb8f4170",
+      "6ac6a1d149e42724bb8f4171",
+      "6ac6a1d149e42724bb8f4172",
+      "6ac6a1d149e42724bb8f4173",
+      "6ac6a1d149e42724bb8f4174"
+    ],
+    "CatalogIngestionRun": [
+      "6ac6a1d6d9afa13cfdb1586b",
+      "6ac6a1d6d9afa13cfdb1586c"
+    ]
+  },
+  "audited_at": "2026-10-07T19:41:00Z"
+}
