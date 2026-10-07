@@ -2554,6 +2554,47 @@
         }
       ],
       "promotions": []
+    },
+    {
+      "brand_name": "Alpha Industries",
+      "brand_key": "alphaindustries",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Alpha Industries\" official size guide",
+        "\"Alpha Industries\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "alpha.org https://www. alpha .org",
+          "url": "https://www.alpha.org/",
+          "domain": "alpha.org",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html;charset=utf-8"
+        },
+        {
+          "title": "merriam-webster.com https:// www.merriam-webster.com \u203a dictionary \u203a alpha",
+          "url": "https://www.merriam-webster.com/dictionary/alpha",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "alphausa.org https:// alpha usa.org",
+          "url": "https://alphausa.org/",
+          "domain": "alphausa.org",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        },
+        {
+          "title": "alphausa.org https:// alpha usa.org \u203a what-is- alpha",
+          "url": "https://alphausa.org/what-is-alpha/",
+          "domain": "alphausa.org",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=UTF-8"
+        }
+      ],
+      "promotions": []
     }
   ],
   "promotions": []
