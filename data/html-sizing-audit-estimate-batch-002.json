@@ -2438,6 +2438,68 @@
         }
       ],
       "promotions": []
+    },
+    {
+      "brand_name": "ALLSAINTS",
+      "brand_key": "allsaints",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"ALLSAINTS\" official size guide",
+        "\"ALLSAINTS\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "allsaints.com https://www. allsaints .com \u203a us",
+          "url": "https://www.allsaints.com/us",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "allsaints.com https://www. allsaints .com",
+          "url": "https://www.allsaints.com/",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "bloomingdales.com https://www.bloomingdales.com \u203a shop \u203a allsaints",
+          "url": "https://www.bloomingdales.com/shop/allsaints?id=1212970&msockid=045ebdb94a5363173a26aa524b1f62e2",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "urbanoutfitters.com https://www.urbanoutfitters.com \u203a brands \u203a allsaints",
+          "url": "https://www.urbanoutfitters.com/brands/allsaints?msockid=045ebdb94a5363173a26aa524b1f62e2",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "revolve.com https://www.revolve.com \u203a allsaints \u203a br",
+          "url": "https://www.revolve.com/allsaints/br/217f0c/?msockid=045ebdb94a5363173a26aa524b1f62e2",
+          "error": "TimeoutError('The read operation timed out')"
+        },
+        {
+          "title": "saksfifthavenue.com https://www.saksfifthavenue.com \u203a brand \u203a allsaints",
+          "url": "https://www.saksfifthavenue.com/brand/allsaints?msockid=045ebdb94a5363173a26aa524b1f62e2",
+          "error": "<HTTPError 403: 'HTTP Forbidden'>"
+        },
+        {
+          "title": "bloomingdales.com https://www.bloomingdales.com \u203a shop \u203a allsaints",
+          "url": "https://www.bloomingdales.com/shop/allsaints?id=1212970&msockid=17df06ec299368d2351d1107281b699c",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "urbanoutfitters.com https://www.urbanoutfitters.com \u203a brands \u203a allsaints",
+          "url": "https://www.urbanoutfitters.com/brands/allsaints?msockid=17df06ec299368d2351d1107281b699c",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "revolve.com https://www.revolve.com \u203a allsaints \u203a br",
+          "url": "https://www.revolve.com/allsaints/br/217f0c/?msockid=17df06ec299368d2351d1107281b699c",
+          "error": "TimeoutError('The read operation timed out')"
+        },
+        {
+          "title": "saksfifthavenue.com https://www.saksfifthavenue.com \u203a brand \u203a allsaints",
+          "url": "https://www.saksfifthavenue.com/brand/allsaints?msockid=17df06ec299368d2351d1107281b699c",
+          "error": "<HTTPError 403: 'HTTP Forbidden'>"
+        }
+      ],
+      "promotions": []
     }
   ],
   "promotions": []
