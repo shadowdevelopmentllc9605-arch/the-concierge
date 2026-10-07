@@ -1,0 +1,21 @@
+{
+  "version": "2026-10-07-retailer-audit-023-fleet-feet-lincoln",
+  "retailer": "Fleet Feet Lincoln",
+  "retailer_key": "fleetfeetlincoln",
+  "audit_number": 23,
+  "audited_at": "2026-10-07T15:30:00Z",
+  "audit_status": "official_directory_audited",
+  "source_urls": [
+    "https://www.fleetfeet.com/s/lincoln/about/brands-we-carry-2"
+  ],
+  "confirmed_brand_keys": 18,
+  "new_brand_count": 4,
+  "new_brands": [
+    "Mizuno",
+    "Balega",
+    "CEP",
+    "Injinji"
+  ],
+  "notes": "Retailer audit #23. Current Lincoln 'Brands We Carry' page audited for fashion-relevant footwear, socks/compression and apparel. 18 canonical brand keys attached; 4 brands were new to the catalog: Mizuno, Balega, CEP and Injinji. Nutrition/electronics-only vendors were excluded.",
+  "sizing_policy": "Brand inclusion is independent of verified sizing; compatible apparel may use low-confidence generic S/M/L/XL until verified sizing is available."
+}
