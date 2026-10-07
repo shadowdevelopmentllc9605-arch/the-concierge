@@ -1,0 +1,25 @@
+{
+  "version": "2026-10-07-retailer-audit-028-boot-barn-lincoln",
+  "retailer": "Boot Barn Lincoln",
+  "retailer_key": "bootbarnlincoln",
+  "audit_number": 28,
+  "audited_at": "2026-10-07T15:30:00Z",
+  "audit_status": "current_category_audited",
+  "source_urls": [
+    "https://www.bootbarn.com/op/western-shirt-brands",
+    "https://www.bootbarn.com/op/best-western-clothing-brands",
+    "https://www.bootbarn.com/op/western-fashion",
+    "https://www.bootbarn.com/op/western-jean-brands"
+  ],
+  "confirmed_brand_keys": 15,
+  "new_brand_count": 5,
+  "new_brands": [
+    "Gibson",
+    "RANK 45",
+    "Brothers & Sons",
+    "Cowboygirl by Jenna Paulette",
+    "Blue Ranchwear"
+  ],
+  "notes": "Retailer audit #28. Current Boot Barn western clothing/fashion pages were used for a focused Lincoln-store-relevant brand set. 15 canonical keys attached; Gibson, RANK 45, Brothers & Sons, Cowboygirl by Jenna Paulette and Blue Ranchwear were newly added.",
+  "sizing_policy": "Brand inclusion is independent of verified sizing; compatible apparel may use low-confidence generic S/M/L/XL until verified sizing is available."
+}
