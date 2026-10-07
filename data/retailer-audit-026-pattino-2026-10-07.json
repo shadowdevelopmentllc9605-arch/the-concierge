@@ -1,0 +1,34 @@
+{
+  "version": "2026-10-07-retailer-audit-026-pattino",
+  "retailer": "Pattino",
+  "retailer_key": "pattino",
+  "audit_number": 26,
+  "audited_at": "2026-10-07T15:30:00Z",
+  "audit_status": "current_partner_assortment_audited",
+  "source_urls": [
+    "https://www.shoppattino.com/pages/about-us",
+    "https://app.garmentory.com/sale/boutiques/lincoln/pattino"
+  ],
+  "confirmed_brand_keys": 33,
+  "new_brand_count": 16,
+  "new_brands": [
+    "Oncept",
+    "Paper Label",
+    "Ann Mashburn",
+    "INTENTIONALLY BLANK",
+    "AMO Denim",
+    "Ciao Lucia",
+    "Officine Creative",
+    "Rita Row",
+    "Thinking MU",
+    "Lingua Franca",
+    "Emerson Fry",
+    "Silent D",
+    "Either/OR",
+    "Charlotte Stone",
+    "Cordani",
+    "Alohas"
+  ],
+  "notes": "Retailer audit #26. Official Pattino brand examples were expanded using Pattino's current Garmentory assortment/brand filter. Fashion-relevant apparel and footwear labels were canonicalized; jewelry-only labels were excluded. 33 keys attached; 16 were newly added.",
+  "sizing_policy": "Brand inclusion is independent of verified sizing; compatible apparel may use low-confidence generic S/M/L/XL until verified sizing is available."
+}
