@@ -1542,6 +1542,520 @@
         }
       ],
       "promotions": []
+    },
+    {
+      "brand_name": "AGB",
+      "brand_key": "agb",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"AGB\" official size guide",
+        "\"AGB\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "instagram.com https://applink.instagram.com \u203a accounts \u203a password \u203a reset",
+          "url": "https://applink.instagram.com/accounts/password/reset/",
+          "error": "<HTTPError 403: 'Client challenge'>"
+        },
+        {
+          "title": "espn.com https://secure.web.plus. espn .com \u203a identity \u203a login",
+          "url": "https://secure.web.plus.espn.com/identity/login",
+          "error": "<HTTPError 406: 'Not Acceptable'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "AGOLDE",
+      "brand_key": "agolde",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"AGOLDE\" official size guide",
+        "\"AGOLDE\" size chart measurements"
+      ],
+      "checked": [],
+      "promotions": []
+    },
+    {
+      "brand_name": "Agua Bendita",
+      "brand_key": "aguabendita",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Agua Bendita\" official size guide",
+        "\"Agua Bendita\" size chart measurements"
+      ],
+      "checked": [],
+      "promotions": []
+    },
+    {
+      "brand_name": "Aidan Mattox",
+      "brand_key": "aidanmattox",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Aidan Mattox\" official size guide",
+        "\"Aidan Mattox\" size chart measurements"
+      ],
+      "checked": [],
+      "promotions": []
+    },
+    {
+      "brand_name": "Aidan Mattox by Adrianna Papell",
+      "brand_key": "aidanmattoxbyadriannapapell",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Aidan Mattox by Adrianna Papell\" official size guide",
+        "\"Aidan Mattox by Adrianna Papell\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "microsoft.com https://www.answers.microsoft.com \u203a ja-jp \u203a windows \u203a forum",
+          "url": "https://www.answers.microsoft.com/ja-jp/windows/forum/windows_7-windows_install/windows7%E3%81%AEdsp%E7%89%88%E3%82%92fdd%E3%81%A8/63d82597-a57c-4ced-a95d-16464a599639\u3053\u3046\u3044\u3046\u8cea\u7591\u4f8b\u304cMicrosoft\u306e\u30b5\u30a4\u30c8\u306b\u3042\u3063\u3066\u3001\u53b3\u5bc6\u306b\u306f\u30a2\u30a6\u30c8\u3068\u3044\u3046\u3053\u3068\u306b\u306a\u308a\u307e\u3059\u3002DSP\u7248\u306f\u3001\u3082\u3068\u3082\u3068\u30d1\u30bd\u30b3\u30f3\u3092\u4f5c\u308b\u305f\u3081\u306e\u4ed8\u5c5e\u54c1\u3067\u306f\u306a\u304f\u305d\u306e\u30d1\u30fc\u30c4\u3092\u7a3c\u50cd\u3055\u305b\u308b\u305f\u3081\u306e\u4ed8\u5c5e\u54c1\u3068\u3044\u3046\u4f4d\u7f6e\u3065\u3051\u3067\u7279\u5225\u306b\u4f4e\u4fa1\u683c\u3067\u63d0\u4f9b\u3055\u308c\u305f\u3082\u306e\u3067\u3059\u3002\u305d\u306e\u30d1\u30fc\u30c4\u306a\u304f\u3057\u3066\u3001\u305d\u306e\u4ed8\u5c5e\u54c1\u3060\u3051\u304c\u4f7f\u3044\u7d9a\u3051\u3089\u308c\u308b\u306e\u306f\u4e0d\u81ea\u7136\u304d\u308f\u307e\u308a\u3042\u308a\u307e\u305b\u3093\u3002\u305d\u308c\u3092\u3001Windows\u306b\u4f9d\u5b58\u3057\u306a\u304c\u3089Windows\u3092\u901a\u5e38\u4fa1\u683c\u306b\u898b\u5408\u3046\u4fa1\u5024\u304c\u7121\u3044\u3068\u8003\u3048\u308b\u4eba\u304c\u2026\u5236\u9650\u4ed8\u304d\u3067\u5b89\u304f\u8cb7\u3063\u305f\u3082\u306e\u3092\u3001\u30d1\u30fc\u30c4\u304c\u3060\u3081\u306b\u306a\u3063\u3066\u3082\u4f7f\u3044\u7d9a\u3051\u308b\u305f\u3081\u306b\u30d1\u30fc\u30c4\u304c\u7a3c\u50cd\u3067\u304d\u306a\u304f\u3066\u3082\u3001\u8cbc\u308a\u4ed8\u3051\u3066\u304a\u3051\u3070\u3044\u3044\u3068\u3044\u3046\u4e3b\u5f35\u3092\u5e83\u3081\u3066\u304d\u305f\u3088\u3046\u3067\u3059\u3002\u3082\u3068\u3082\u3068\u3001DSP\u7248\u306b\u306f\u8ca9\u58f2\u3059\u308b\u696d\u8005\u304c\u904b\u7528\u306b\u3064\u3044\u3066\u306e\u6761\u4ef6\u3092\u6c7a\u3081\u3089\u308c\u308b\u5074\u9762\u304c\u3042\u308a\u300c\u30c6\u30fc\u30d7\u3067\u8cbc\u3063\u3066\u304a\u3044\u3066\u3082\u30c0\u30e1\u3067\u3059\u300d\u3068\u3044\u3063\u305f\u8b66\u544a\u304c\u51fa\u3055\u308c\u308b\u3053\u3068\u306f\u7121\u304b\u3063\u305f\u3088\u3046\u3067\u3059\u3002\u3068\u3053\u308d\u304c\u30012011\u5e74\u306eWindows",
+          "error": "UnicodeEncodeError('ascii', 'GET /ja-jp/windows/forum/windows_7-windows_install/windows7%E3%81%AEdsp%E7%89%88%E3%82%92fdd%E3%81%A8/63d82597-a57c-4ced-a95d-16464a599639\u3053\u3046\u3044\u3046\u8cea\u7591\u4f8b\u304cMicrosoft\u306e\u30b5\u30a4\u30c8\u306b\u3042\u3063\u3066\u3001\u53b3\u5bc6\u306b\u306f\u30a2\u30a6\u30c8\u3068\u3044\u3046\u3053\u3068\u306b\u306a\u308a\u307e\u3059\u3002DSP\u7248\u306f\u3001\u3082\u3068\u3082\u3068\u30d1\u30bd\u30b3\u30f3\u3092\u4f5c\u308b\u305f\u3081\u306e\u4ed8\u5c5e\u54c1\u3067\u306f\u306a\u304f\u305d\u306e\u30d1\u30fc\u30c4\u3092\u7a3c\u50cd\u3055\u305b\u308b\u305f\u3081\u306e\u4ed8\u5c5e\u54c1\u3068\u3044\u3046\u4f4d\u7f6e\u3065\u3051\u3067\u7279\u5225\u306b\u4f4e\u4fa1\u683c\u3067\u63d0\u4f9b\u3055\u308c\u305f\u3082\u306e\u3067\u3059\u3002\u305d\u306e\u30d1\u30fc\u30c4\u306a\u304f\u3057\u3066\u3001\u305d\u306e\u4ed8\u5c5e\u54c1\u3060\u3051\u304c\u4f7f\u3044\u7d9a\u3051\u3089\u308c\u308b\u306e\u306f\u4e0d\u81ea\u7136\u304d\u308f\u307e\u308a\u3042\u308a\u307e\u305b\u3093\u3002\u305d\u308c\u3092\u3001Windows\u306b\u4f9d\u5b58\u3057\u306a\u304c\u3089Windows\u3092\u901a\u5e38\u4fa1\u683c\u306b\u898b\u5408\u3046\u4fa1\u5024\u304c\u7121\u3044\u3068\u8003\u3048\u308b\u4eba\u304c\u2026\u5236\u9650\u4ed8\u304d\u3067\u5b89\u304f\u8cb7\u3063\u305f\u3082\u306e\u3092\u3001\u30d1\u30fc\u30c4\u304c\u3060\u3081\u306b\u306a\u3063\u3066\u3082\u4f7f\u3044\u7d9a\u3051\u308b\u305f\u3081\u306b\u30d1\u30fc\u30c4\u304c\u7a3c\u50cd\u3067\u304d\u306a\u304f\u3066\u3082\u3001\u8cbc\u308a\u4ed8\u3051\u3066\u304a\u3051\u3070\u3044\u3044\u3068\u3044\u3046\u4e3b\u5f35\u3092\u5e83\u3081\u3066\u304d\u305f\u3088\u3046\u3067\u3059\u3002\u3082\u3068\u3082\u3068\u3001DSP\u7248\u306b\u306f\u8ca9\u58f2\u3059\u308b\u696d\u8005\u304c\u904b\u7528\u306b\u3064\u3044\u3066\u306e\u6761\u4ef6\u3092\u6c7a\u3081\u3089\u308c\u308b\u5074\u9762\u304c\u3042\u308a\u300c\u30c6\u30fc\u30d7\u3067\u8cbc\u3063\u3066\u304a\u3044\u3066\u3082\u30c0\u30e1\u3067\u3059\u300d\u3068\u3044\u3063\u305f\u8b66\u544a\u304c\u51fa\u3055\u308c\u308b\u3053\u3068\u306f\u7121\u304b\u3063\u305f\u3088\u3046\u3067\u3059\u3002\u3068\u3053\u308d\u304c\u30012011\u5e74\u306eWindows HTTP/1.1', 138, 146, 'ordinal not in range(128)')"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Airwalk",
+      "brand_key": "airwalk",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Airwalk\" official size guide",
+        "\"Airwalk\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "airwalk.com https:// airwalk .com",
+          "url": "https://airwalk.com/",
+          "domain": "airwalk.com",
+          "score": 8,
+          "chart_count": 0,
+          "content_type": "text/html;charset=utf-8"
+        },
+        {
+          "title": "jcpenney.com https://www.jcpenney.com \u203a brand",
+          "url": "https://www.jcpenney.com/g/brand?brand=airwalk&msockid=19cf417ed5736fcb24b75695d4056e93",
+          "error": "TimeoutError('The read operation timed out')"
+        },
+        {
+          "title": "jcpenney.com https://www.jcpenney.com \u203a brand",
+          "url": "https://www.jcpenney.com/g/brand?brand=airwalk&msockid=3841f89f62b168420a4eef7463d06931",
+          "error": "TimeoutError('The read operation timed out')"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Akademiks",
+      "brand_key": "akademiks",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Akademiks\" official size guide",
+        "\"Akademiks\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "macys.com https://www.macys.com \u203a shop \u203a brands \u203a akademiks",
+          "url": "https://www.macys.com/shop/brands/akademiks?id=405206&msockid=02239a979bd260f83df08d7c9ae1619c",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "ebay.com https://www.ebay.com \u203a Akademiks -Clothing-for-Men",
+          "url": "https://www.ebay.com/b/Akademiks-Clothing-for-Men/1059/bn_705494?msockid=02239a979bd260f83df08d7c9ae1619c",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "macys.com https://www.macys.com \u203a shop \u203a brands \u203a akademiks",
+          "url": "https://www.macys.com/shop/brands/akademiks?id=405206&msockid=2f3a21b4ab806d143627365faa7c6c34",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "ebay.com https://www.ebay.com \u203a Akademiks -Clothing-for-Men",
+          "url": "https://www.ebay.com/b/Akademiks-Clothing-for-Men/1059/bn_705494?msockid=2f3a21b4ab806d143627365faa7c6c34",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Akris",
+      "brand_key": "akris",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Akris\" official size guide",
+        "\"Akris\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "akris.com https://us. akris .com",
+          "url": "https://us.akris.com/",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "akris.com https://us. akris .com \u203a collections \u203a akris -new-arrivals",
+          "url": "https://us.akris.com/collections/akris-new-arrivals",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "saksfifthavenue.com https://www.saksfifthavenue.com \u203a brand \u203a akris",
+          "url": "https://www.saksfifthavenue.com/brand/akris?msockid=07e0e791a2726d9a2021f07aa34b6c05",
+          "error": "<HTTPError 403: 'HTTP Forbidden'>"
+        },
+        {
+          "title": "akris.com https://eu. akris .com \u203a collections \u203a akris -all",
+          "url": "https://eu.akris.com/collections/akris-all-products",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "akris.com https://us. akris .com \u203a collections \u203a akris -jackets",
+          "url": "https://us.akris.com/collections/akris-jackets",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "akris.com https://us. akris .com \u203a collections \u203a akris -dresses",
+          "url": "https://us.akris.com/collections/akris-dresses",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "akris.com https://us. akris .com \u203a collections \u203a new-arrivals",
+          "url": "https://us.akris.com/collections/new-arrivals",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "saksfifthavenue.com https://www.saksfifthavenue.com \u203a brand \u203a akris",
+          "url": "https://www.saksfifthavenue.com/brand/akris?msockid=31445b95d8526f821f754c7ed9436e76",
+          "error": "<HTTPError 403: 'HTTP Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Akris punto",
+      "brand_key": "akrispunto",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Akris punto\" official size guide",
+        "\"Akris punto\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "akris.com https://us. akris .com",
+          "url": "https://us.akris.com/",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "akris.com https://us. akris .com \u203a collections \u203a akris -new-arrivals",
+          "url": "https://us.akris.com/collections/akris-new-arrivals",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "saksfifthavenue.com https://www.saksfifthavenue.com \u203a brand \u203a akris",
+          "url": "https://www.saksfifthavenue.com/brand/akris?msockid=2c1109d2ed20667f0e6d1e39ec95671e",
+          "error": "<HTTPError 403: 'HTTP Forbidden'>"
+        },
+        {
+          "title": "akris.com https://eu. akris .com \u203a collections \u203a akris -all",
+          "url": "https://eu.akris.com/collections/akris-all-products",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "akris.com https://us. akris .com \u203a collections \u203a akris -jackets",
+          "url": "https://us.akris.com/collections/akris-jackets",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "akris.com https://us. akris .com \u203a collections \u203a akris -dresses",
+          "url": "https://us.akris.com/collections/akris-dresses",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "akris.com https://us. akris .com \u203a collections \u203a new-arrivals",
+          "url": "https://us.akris.com/collections/new-arrivals",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "stackoverflow.com https://stackoverflow.com \u203a questions",
+          "url": "https://stackoverflow.com/questions/55771226/fb-filegets-vs-fb-fileread-in-twincat",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "stackoverflow.com https://stackoverflow.com \u203a questions",
+          "url": "https://stackoverflow.com/questions/10836135/when-do-i-need-a-fbapp-id-or-fbadmins",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "stackoverflow.com https://stackoverflow.com \u203a questions",
+          "url": "https://stackoverflow.com/questions/4810803/open-facebook-page-from-android-app",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "stackoverflow.com https://stackoverflow.com \u203a questions",
+          "url": "https://stackoverflow.com/questions/18512792/zebra-programming-language-zpl-ii-using-fb-or-tb-truncates-text-at-specific",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "stackoverflow.com https://stackoverflow.com \u203a questions",
+          "url": "https://stackoverflow.com/questions/66852092/twincat-3-using-fb-mbreadregs-modbus",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "stackoverflow.com https://stackoverflow.com \u203a questions",
+          "url": "https://stackoverflow.com/questions/11442442/get-user-profile-picture-by-id",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "stackoverflow.com https://stackoverflow.com \u203a questions",
+          "url": "https://stackoverflow.com/questions/35066102/facebook-debugger-why-complaining-about-app-id-missing",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "stackoverflow.com https://stackoverflow.com \u203a questions",
+          "url": "https://stackoverflow.com/questions/21928368/login-to-facebook-using-python-requests",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "stackoverflow.com https://stackoverflow.com \u203a questions",
+          "url": "https://stackoverflow.com/questions/8605703/how-to-verify-facebook-access-token",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "ALDO",
+      "brand_key": "aldo",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"ALDO\" official size guide",
+        "\"ALDO\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "aldoshoes.com https://www. aldo shoes.com",
+          "url": "https://www.aldoshoes.com/",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "aldoshoes.com https://www. aldo shoes.com \u203a collections \u203a womens",
+          "url": "https://www.aldoshoes.com/collections/womens",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "macys.com https://www.macys.com \u203a shop \u203a sale \u203a clearance-closeout \u203a Brand \u203a ALDO",
+          "url": "https://www.macys.com/shop/sale/clearance-closeout/Brand/ALDO?id=54698&msockid=3c97f9bae4be696637d0ee51e54d6826",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "macys.com https://www.macys.com \u203a shop \u203a brands \u203a aldo",
+          "url": "https://www.macys.com/shop/brands/aldo?id=397091&msockid=3c97f9bae4be696637d0ee51e54d6826",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "aldogroup.com https://www. aldo group.com",
+          "url": "https://www.aldogroup.com/en",
+          "domain": "aldogroup.com",
+          "score": 8,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        },
+        {
+          "title": "macys.com https://www.macys.com \u203a shop \u203a sale \u203a clearance-closeout \u203a Brand \u203a ALDO",
+          "url": "https://www.macys.com/shop/sale/clearance-closeout/Brand/ALDO?id=54698&msockid=2aac29086db769e03fca3ee36c8168c9",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "macys.com https://www.macys.com \u203a shop \u203a brands \u203a aldo",
+          "url": "https://www.macys.com/shop/brands/aldo?id=397091&msockid=2aac29086db769e03fca3ee36c8168c9",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Alegria",
+      "brand_key": "alegria",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Alegria\" official size guide",
+        "\"Alegria\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "alegriashoes.com https:// alegria shoes.com",
+          "url": "https://alegriashoes.com/",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "alegriashoeshop.com https://www. alegriashoes hop.com \u203a collections \u203a sale",
+          "url": "https://www.alegriashoeshop.com/collections/sale",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        },
+        {
+          "title": "alegriashoes.com https:// alegriashoes .com \u203a collections \u203a shoes",
+          "url": "https://alegriashoes.com/collections/shoes",
+          "error": "<HTTPError 429: 'Too Many Requests'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Al\u00e9mais",
+      "brand_key": "almais",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Al\u00e9mais\" official size guide",
+        "\"Al\u00e9mais\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "openreview.net https://openreview.net \u203a attachment",
+          "url": "https://openreview.net/attachment?id=pqNFDA2TFm&name=pdf",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "openreview.net https://openreview.net \u203a pdf",
+          "url": "https://openreview.net/pdf?id=X6dEqXIsEW",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Alex & Jordan",
+      "brand_key": "alexjordan",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Alex & Jordan\" official size guide",
+        "\"Alex & Jordan\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "kpmg.com https:// alex .kpmg.com",
+          "url": "https://alex.kpmg.com/",
+          "domain": "alex.kpmg.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html"
+        },
+        {
+          "title": "alex.com https://www. alex .com",
+          "url": "https://www.alex.com/",
+          "domain": "alex.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Alex Evenings",
+      "brand_key": "alexevenings",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Alex Evenings\" official size guide",
+        "\"Alex Evenings\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "kpmg.com https:// alex .kpmg.com",
+          "url": "https://alex.kpmg.com/",
+          "domain": "alex.kpmg.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html"
+        },
+        {
+          "title": "alex.com https://www. alex .com",
+          "url": "https://www.alex.com/",
+          "domain": "alex.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Alex Marie",
+      "brand_key": "alexmarie",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Alex Marie\" official size guide",
+        "\"Alex Marie\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "kpmg.com https:// alex .kpmg.com",
+          "url": "https://alex.kpmg.com/",
+          "domain": "alex.kpmg.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html"
+        },
+        {
+          "title": "alex.com https://www. alex .com",
+          "url": "https://www.alex.com/",
+          "domain": "alex.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Alex Mill",
+      "brand_key": "alexmill",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Alex Mill\" official size guide",
+        "\"Alex Mill\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "alex.com https://www. alex .com",
+          "url": "https://www.alex.com/",
+          "domain": "alex.com",
+          "score": 4,
+          "chart_count": 0,
+          "content_type": "text/html; charset=utf-8"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "Alexander McQueen",
+      "brand_key": "alexandermcqueen",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"Alexander McQueen\" official size guide",
+        "\"Alexander McQueen\" size chart measurements"
+      ],
+      "checked": [
+        {
+          "title": "britannica.com https://www.britannica.com \u203a biography \u203a Alexander-the-Great",
+          "url": "https://www.britannica.com/biography/Alexander-the-Great",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        },
+        {
+          "title": "britannica.com https://www.britannica.com \u203a place \u203a ancient-Greece \u203a Alexander -the-Great",
+          "url": "https://www.britannica.com/place/ancient-Greece/Alexander-the-Great",
+          "error": "<HTTPError 403: 'Forbidden'>"
+        }
+      ],
+      "promotions": []
+    },
+    {
+      "brand_name": "alexanderwang",
+      "brand_key": "alexanderwang",
+      "old_status": "estimate_only",
+      "queries": [
+        "\"alexanderwang\" official size guide",
+        "\"alexanderwang\" size chart measurements"
+      ],
+      "checked": [],
+      "promotions": []
     }
   ],
   "promotions": []
