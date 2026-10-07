@@ -1,0 +1,170 @@
+{
+  "version": "2026-10-07-inventory-post-audit-safety-stress-009-01",
+  "phase": "inventory",
+  "retailer_sequence": 9,
+  "retailer": "Saks Fifth Avenue",
+  "audit_date": "2026-10-07",
+  "gate_status": "passed_with_known_preexisting_external_configuration_gap",
+  "progression_allowed": true,
+  "apps": [
+    {
+      "name": "The Concierge",
+      "id": "698951bc103c5b61b68d35b7",
+      "typecheck": "pass",
+      "lint": "pass",
+      "production_build": "pass",
+      "dependency_audit": {
+        "status": "pass",
+        "vulnerabilities": {
+          "info": 0,
+          "low": 0,
+          "moderate": 0,
+          "high": 0,
+          "critical": 0,
+          "total": 0
+        }
+      },
+      "hardcoded_secret_literal_scan": {
+        "status": "pass",
+        "hits": 0
+      },
+      "runtime_stress": {
+        "status": "pass",
+        "requests": 200,
+        "http_200": 200,
+        "failures": 0
+      },
+      "unauthorized_bridge_stress": {
+        "status": "pass",
+        "endpoint": "vendorBridge",
+        "probes": 50,
+        "http_401": 50,
+        "unexpected": 0
+      },
+      "custom_entity_rls": {
+        "status": "pass",
+        "entities_reviewed": 32,
+        "issues": 0
+      },
+      "catalog_integrity": {
+        "status": "pass",
+        "duplicate_canonical_keys": 0,
+        "retailer_scoped_active_masters": 0,
+        "active_unconfirmed_pseudo_variants": 0,
+        "orphan_active_offers": 0,
+        "broken_active_source_links": 0,
+        "variants_with_missing_master": 0,
+        "offers_with_missing_variant_ref": 0
+      },
+      "saks_audit_snapshot": {
+        "product_masters": 3,
+        "active_product_variants": 0,
+        "retailer_offers": 3,
+        "product_source_records": 6
+      }
+    },
+    {
+      "name": "Concierge Pro",
+      "id": "69a25fa908ebd18cd4723d7c",
+      "typecheck": "pass",
+      "lint": "pass",
+      "production_build": "pass",
+      "dependency_audit": {
+        "status": "pass",
+        "vulnerabilities": {
+          "info": 0,
+          "low": 0,
+          "moderate": 0,
+          "high": 0,
+          "critical": 0,
+          "total": 0
+        }
+      },
+      "hardcoded_secret_literal_scan": {
+        "status": "pass",
+        "hits": 0
+      },
+      "runtime_stress": {
+        "status": "pass",
+        "requests": 200,
+        "http_200": 200,
+        "failures": 0
+      },
+      "unauthorized_bridge_stress": {
+        "status": "pass",
+        "endpoint": "receiveCustomerEvent",
+        "probes": 50,
+        "http_401": 50,
+        "unexpected": 0
+      },
+      "custom_entity_rls": {
+        "status": "pass",
+        "entities_reviewed": 24,
+        "issues": 0
+      },
+      "builtin_user_field_rls": {
+        "status": "pass",
+        "trusted_write_false_fields": [
+          "business_id",
+          "vendor_role",
+          "vendor_permissions"
+        ]
+      },
+      "catalog_integrity": {
+        "status": "pass",
+        "duplicate_canonical_keys": 0,
+        "retailer_scoped_active_masters": 0,
+        "active_unconfirmed_pseudo_variants": 0,
+        "orphan_active_offers": 0,
+        "broken_active_source_links": 0,
+        "variants_with_missing_master": 0,
+        "offers_with_missing_variant_ref": 0
+      },
+      "saks_audit_snapshot": {
+        "product_masters": 3,
+        "active_product_variants": 0,
+        "retailer_offers": 3,
+        "product_source_records": 6
+      }
+    }
+  ],
+  "cross_app_sync": {
+    "status": "pass",
+    "enabled_in_both_apps": true,
+    "unauthorized_boundary_rejection": "pass",
+    "saks_product_master_count_each": 3,
+    "saks_active_variant_count_each": 0,
+    "saks_offer_count_each": 3
+  },
+  "repaired_preexisting_data_quality_defects": [
+    {
+      "origin": "Inventory Audit #004 - Kohl's",
+      "issue": "An active Levi's jeans color-only pseudo-variant remained even though its source provenance explicitly recorded size_unselected.",
+      "repair": "Retired the pseudo-variant in both apps, converted the Kohl's RetailerOffer back to style scope, and marked the variant provenance invalid while preserving audit history.",
+      "retested": "Catalog integrity passed with zero active unconfirmed pseudo-variants in both apps."
+    }
+  ],
+  "known_preexisting_external_configuration_gaps": [
+    {
+      "system": "Stripe",
+      "app": "The Concierge",
+      "status": "preexisting_not_inventory_regression",
+      "probe": "HTTP 503 - Stripe webhook is not configured.",
+      "gate_effect": "Reported separately; does not block inventory progression because it predates and is unrelated to Inventory Audit #009."
+    },
+    {
+      "system": "Stripe",
+      "app": "Concierge Pro",
+      "status": "preexisting_not_inventory_regression",
+      "probe": "HTTP 503 - Stripe billing webhook is not configured.",
+      "gate_effect": "Reported separately; does not block inventory progression because it predates and is unrelated to Inventory Audit #009."
+    }
+  ],
+  "notes": [
+    "All safety/stress actions were non-destructive; no fake purchase, payout, customer mutation or business-data mutation was performed.",
+    "Inventory Audit #009 introduced no ProductVariants because a verified sellable size-color identity/stock matrix was not available from the permitted Saks source surface.",
+    "Direct Base44 server access to Saks robots.txt, sitemap.xml, category and PDP surfaces returned HTTP 403; this is recorded as an audit source limitation, not an application regression.",
+    "The first npm test invocation started from / and could not locate package.json. The complete test suite was rerun from /app and passed; the initial result was a test-harness working-directory issue, not an application failure."
+  ],
+  "observed_at": "2026-10-07T20:25:00Z"
+}
