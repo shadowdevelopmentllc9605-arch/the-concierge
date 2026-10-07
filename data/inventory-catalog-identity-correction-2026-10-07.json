@@ -1,0 +1,29 @@
+{
+  "version": "2026-10-07-catalog-identity-integrity-correction-01",
+  "phase": "inventory",
+  "corrected_at": "2026-10-07T19:20:00Z",
+  "root_cause": "Manual retailer pilot records bypassed the canonical ingestion rule and used retailer product/Web IDs as ProductMaster identity. Some color-only or size-unselected observations were also promoted to active ProductVariant rows.",
+  "affected_retailers": [
+    "JCPenney",
+    "Dillard's",
+    "Bloomingdale's"
+  ],
+  "unaffected_active_variant_sweep": [
+    "SCHEELS",
+    "Macy's",
+    "Nordstrom",
+    "Kohl's"
+  ],
+  "corrections": [
+    "Retailer-specific IDs were removed from affected ProductMaster canonical_key and identifier_fingerprint fields.",
+    "Affected masters without manufacturer style/MPN/GTIN now use brand + normalized product name with dedup_status=review and canonical_confidence=0.85.",
+    "Color-only or size-unselected pseudo-variants were marked inactive and their provenance marked invalid.",
+    "Affected retailer offers were detached from pseudo-variants and converted to style scope.",
+    "Retailer IDs/SKUs remain preserved on RetailerOffer and ProductSourceRecord.",
+    "Correction CatalogIngestionRun records were created in both Base44 apps.",
+    "The shopper catalogBatchIngest function was hardened so retailer-owned sources cannot provide their own ProductMaster canonical key.",
+    "Architecture and queue rules now explicitly prohibit retailer-scoped ProductMaster identity."
+  ],
+  "jcp_status_correction": "Inventory Audit #005 had completed controlled validation but was still marked queued in the master queue; it is now correctly marked partial_source_access_required.",
+  "deletion_policy": "Invalid rows were retained inactive rather than erased so the audit trail remains reconstructable."
+}
