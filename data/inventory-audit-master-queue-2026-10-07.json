@@ -64,7 +64,8 @@
           "sequence": 8,
           "name": "Neiman Marcus",
           "key": "neimanmarcus",
-          "status": "queued"
+          "status": "partial_source_access_required",
+          "blocker": "Controlled Neiman Marcus product/PDP evidence is publicly indexable, but direct requests from both Base44 application environments to robots.txt, sitemap.xml and PDP URLs returned HTTP 403. Three current products were validated across women, men and kids with retailer IDs kept offer/source scoped and no inferred variants. Exhaustive completion requires an authorized bulk product source accessible to the ingestion environment."
         },
         {
           "sequence": 9,
@@ -175,7 +176,7 @@
     "Retailer SKU, Web ID, PDP/product ID or other retailer-specific identifier must never be used as ProductMaster canonical_key or identifier_fingerprint; retailer identifiers belong on RetailerOffer and ProductSourceRecord. If no manufacturer/global identifier is available, use brand + normalized product name as a review candidate.",
     "Do not create an active apparel ProductVariant from color-only or size-unselected evidence; keep the retailer offer at style scope until a sellable size/color combination is explicitly confirmed."
   ],
-  "updated_at": "2026-10-07T19:30:00Z",
+  "updated_at": "2026-10-07T20:00:00Z",
   "post_audit_safety_stress_gate": {
     "required": true,
     "applies_after_every_inventory_audit": true,
@@ -198,11 +199,11 @@
     "pass_rule": "Do not start the next retailer audit until both apps pass the post-audit safety/stress gate, or a specific blocking defect is documented and repaired/retested."
   },
   "latest_post_audit_safety_stress_result": {
-    "retailer_sequence": 6,
-    "retailer": "Dillard's",
-    "result_file": "data/inventory-post-audit-safety-stress-006-dillards-2026-10-07.json",
+    "retailer_sequence": 8,
+    "retailer": "Neiman Marcus",
+    "result_file": "data/inventory-post-audit-safety-stress-008-neiman-marcus-2026-10-07.json",
     "gate_status": "passed_with_known_preexisting_external_configuration_gap",
     "progression_allowed": true,
-    "tested_at": "2026-10-07T19:30:00Z"
+    "tested_at": "2026-10-07T20:00:00Z"
   }
 }
