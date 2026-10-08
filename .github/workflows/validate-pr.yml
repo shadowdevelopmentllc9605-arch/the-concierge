@@ -11,6 +11,7 @@ on:
   workflow_dispatch:
 
 permissions:
+  # Release gate validates the migrated Supabase runtime.
   contents: read
 
 jobs:
