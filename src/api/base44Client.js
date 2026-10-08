@@ -24,7 +24,8 @@ const directTables = {
   ShoppingExperience: 'shopping_experiences',
   Friend: 'friends',
   PayrollRecord: 'payroll_records',
-  ProductReview: 'product_reviews'
+  ProductReview: 'product_reviews',
+  BrandSizeChart: 'brand_size_charts'
 };
 
 const fieldMaps = {
@@ -230,7 +231,6 @@ const entityApi = (entity) => ({
   async filter(filters = {}, sort, limit) {
     if (entity === 'UserProfile') return loadProfiles(filters);
     if (entity === 'Product') return loadProducts(filters, sort, limit || 100);
-    if (entity === 'BrandSizeChart') return [];
     const table = directTables[entity];
     if (!table) return [];
     let query = applyFilters(supabase.from(table).select('*'), entity, filters);
@@ -271,7 +271,7 @@ const entityApi = (entity) => ({
   },
   async create(payload) {
     if (entity === 'UserProfile') return saveProfile(null, payload, true);
-    if (entity === 'BrandSizeChart' || entity === 'BrandCatalog') throw new Error(entity + ' write migration is not complete yet.');
+    if (entity === 'BrandCatalog') throw new Error(entity + ' is derived and read-only.');
     const table = directTables[entity];
     if (!table) throw new Error('Unsupported entity: ' + entity);
     const { data, error } = await supabase.from(table).insert(toDb(entity, payload)).select().single();
