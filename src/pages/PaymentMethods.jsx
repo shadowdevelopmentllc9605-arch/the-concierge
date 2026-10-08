@@ -1,3 +1,4 @@
+import { authClient } from '@/api/authClient';
 import React, { useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { ArrowLeft, CreditCard, MapPin, Trash2, Loader2, Star } from 'lucide-react';
@@ -14,7 +15,7 @@ export default function PaymentMethods() {
 
   const load = async () => {
     try {
-      const user = await base44.auth.me();
+      const user = await authClient.me();
       const [paymentRows, addressRows] = await Promise.all([
         base44.entities.PaymentMethod.filter({ user_id: user.id }),
         base44.entities.ShippingAddress.filter({ user_id: user.id }),
