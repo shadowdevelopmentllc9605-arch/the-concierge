@@ -312,20 +312,11 @@ const invokeFunction = async (name, payload = {}) => {
   if (name === 'retryIntegrationSyncs') {
     return { data: { success: true, skipped: true, message: 'Legacy Base44 integration syncs are retired.' } };
   }
-  const { data: sessionData } = await supabase.auth.getSession();
-  const response = await fetch('/api/functions/' + encodeURIComponent(name), {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      ...(sessionData?.session?.access_token ? { Authorization: 'Bearer ' + sessionData.session.access_token } : {})
-    },
-    body: JSON.stringify(payload)
+  const { data, error } = await supabase.functions.invoke('concierge-actions', {
+    body: { name, payload }
   });
-  if (!response.ok) {
-    const text = await response.text();
-    throw new Error(text || ('Function ' + name + ' is not available yet.'));
-  }
-  const data = await response.json();
+  if (error) throw error;
+  if (data?.success === false) throw new Error(data.error || ('Function ' + name + ' failed.'));
   return { data };
 };
 
