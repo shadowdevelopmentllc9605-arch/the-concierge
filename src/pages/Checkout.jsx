@@ -1,3 +1,4 @@
+import { authClient } from '@/api/authClient';
 import React, { useEffect, useMemo, useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { sharedBackendBridge } from '@/lib/sharedBackendBridge';
@@ -37,7 +38,7 @@ export default function Checkout() {
 
     const load = async () => {
       try {
-        const user = await base44.auth.me();
+        const user = await authClient.me();
         if (sessionId) {
           const found = await loadOrder(user.id);
           if (!cancelled && found?.payment_status === 'pending') {
