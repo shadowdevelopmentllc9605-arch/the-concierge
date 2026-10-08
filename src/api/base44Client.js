@@ -20,9 +20,11 @@ const directTables = {
   StoreVisit: 'store_visits',
   FittingRoom: 'fitting_rooms',
   CustomerNotification: 'notification_campaigns',
-  ProductReview: 'ai_feedback',
   AIFeedback: 'ai_feedback',
-  ShoppingExperience: 'shopping_experiences'
+  ShoppingExperience: 'shopping_experiences',
+  Friend: 'friends',
+  PayrollRecord: 'payroll_records',
+  ProductReview: 'product_reviews'
 };
 
 const fieldMaps = {
@@ -30,7 +32,7 @@ const fieldMaps = {
   CartItem: { product_id: 'product_master_id', product_image: 'product_image_url', price: 'unit_price' },
   Purchase: { user_id: 'shopper_user_id' },
   StoreCheckin: { user_id: 'shopper_user_id', vendor_id: 'legacy_vendor_id' },
-  ProductReview: { product_id: 'product_master_id', user_id: 'user_id', review_text: 'feedback_text' },
+  ProductReview: { product_id: 'product_master_id', vendor_id: 'business_id' },
   Vendor: { business_name: 'name' }
 };
 
@@ -62,7 +64,6 @@ const fromDb = (entity, row) => {
   }
   if (entity === 'ProductReview') {
     out.product_id = row.product_master_id;
-    out.review_text = row.feedback_text;
   }
   return out;
 };
@@ -229,7 +230,7 @@ const entityApi = (entity) => ({
   async filter(filters = {}, sort, limit) {
     if (entity === 'UserProfile') return loadProfiles(filters);
     if (entity === 'Product') return loadProducts(filters, sort, limit || 100);
-    if (entity === 'BrandSizeChart' || entity === 'Friend' || entity === 'PayrollRecord') return [];
+    if (entity === 'BrandSizeChart') return [];
     const table = directTables[entity];
     if (!table) return [];
     let query = applyFilters(supabase.from(table).select('*'), entity, filters);
@@ -270,7 +271,7 @@ const entityApi = (entity) => ({
   },
   async create(payload) {
     if (entity === 'UserProfile') return saveProfile(null, payload, true);
-    if (entity === 'BrandSizeChart' || entity === 'BrandCatalog' || entity === 'Friend' || entity === 'PayrollRecord') throw new Error(entity + ' write migration is not complete yet.');
+    if (entity === 'BrandSizeChart' || entity === 'BrandCatalog') throw new Error(entity + ' write migration is not complete yet.');
     const table = directTables[entity];
     if (!table) throw new Error('Unsupported entity: ' + entity);
     const { data, error } = await supabase.from(table).insert(toDb(entity, payload)).select().single();
