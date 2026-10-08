@@ -1,3 +1,4 @@
+import { authClient } from '@/api/authClient';
 import React, { useState, useEffect, useCallback } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useNavigate } from 'react-router-dom';
@@ -20,7 +21,7 @@ export default function Home() {
 
   const checkOnboarding = async () => {
     try {
-      const currentUser = await base44.auth.me();
+      const currentUser = await authClient.me();
       setUser(currentUser);
       
       const profiles = await base44.entities.UserProfile.filter({ user_id: currentUser.id });
