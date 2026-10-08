@@ -1,3 +1,4 @@
+import { authClient } from '@/api/authClient';
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useNavigate } from 'react-router-dom';
@@ -17,7 +18,7 @@ export default function Cart() {
 
   const loadCart = async () => {
     try {
-      const currentUser = await base44.auth.me();
+      const currentUser = await authClient.me();
       const cartItems = await base44.entities.CartItem.filter({ user_id: currentUser.id });
       setItems(cartItems);
     } catch (error) {
