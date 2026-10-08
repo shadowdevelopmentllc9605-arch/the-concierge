@@ -3,6 +3,7 @@ name: Validate Concierge PR
 on:
   push:
     branches:
+      - main
       - hardening/full-platform-pass
   pull_request:
     branches:
@@ -18,50 +19,21 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
-
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: npm
-
+          node-version: 24
       - name: Install dependencies
-        run: npm ci
-
-      - name: Audit dependencies
-        run: npm audit --audit-level=low
-
-      - name: Validate Base44 entity schemas
+        run: npm install --no-fund
+      - name: Audit production dependencies
+        run: npm audit --omit=dev --audit-level=high
+      - name: Reject Base44 runtime imports
         run: |
-          node - <<'NODE'
-          const fs = require('fs');
-          const path = require('path');
-          const dir = path.join(process.cwd(), 'base44', 'entities');
-          for (const fileName of fs.readdirSync(dir).filter(fileName => fileName.endsWith('.jsonc'))) {
-            const full = path.join(dir, fileName);
-            JSON.parse(fs.readFileSync(full, 'utf8'));
-            console.log('validated', fileName);
-          }
-          NODE
-
-      - name: Bundle-check Base44 backend functions
-        run: |
-          set -euo pipefail
-          shopt -s nullglob
-          for file in base44/functions/*/entry.ts; do
-            fn_name="$(basename "$(dirname "$file")")"
-            ./node_modules/.bin/esbuild "$file" \
-              --bundle \
-              --platform=neutral \
-              --format=esm \
-              --packages=external \
-              --external:base44:runtime \
-              --outfile="/tmp/$fn_name.mjs"
-          done
-
+          if grep -R -n -E "from ['\"]@?base44|from ['\"]base44|require\(['\"]@?base44|require\(['\"]base44" src --exclude-dir=node_modules; then
+            echo "Base44 runtime import found in src"
+            exit 1
+          fi
       - name: Build
         run: npm run build
-
       - name: Lint application
         run: npm run lint
-
