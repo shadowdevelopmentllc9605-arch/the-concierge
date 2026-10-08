@@ -1,3 +1,4 @@
+import { authClient } from '@/api/authClient';
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useNavigate } from 'react-router-dom';
@@ -167,7 +168,7 @@ export default function Closet() {
 
   const loadData = async () => {
     try {
-      const user = await base44.auth.me();
+      const user = await authClient.me();
       const [userPurchases, closetItems] = await Promise.all([
         base44.entities.Purchase.filter({ user_id: user.id }, '-created_date'),
         base44.entities.ClosetItem.filter({ user_id: user.id }, '-created_date')
@@ -187,7 +188,7 @@ export default function Closet() {
 
     setUploading(true);
     try {
-      const user = await base44.auth.me();
+      const user = await authClient.me();
       for (const file of files) {
         const { file_url } = await base44.integrations.Core.UploadFile({ file });
 
