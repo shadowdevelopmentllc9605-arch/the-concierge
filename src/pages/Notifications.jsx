@@ -1,3 +1,4 @@
+import { authClient } from '@/api/authClient';
 import React, { useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { ArrowLeft, Bell, Check } from 'lucide-react';
@@ -8,7 +9,7 @@ export default function Notifications() {
   const [items, setItems] = useState([]);
 
   const load = async () => {
-    const user = await base44.auth.me();
+    const user = await authClient.me();
     const rows = await base44.entities.AppNotification.filter({ user_id: user.id });
     setItems([...rows].sort((a,b) => new Date(b.created_date || 0).getTime() - new Date(a.created_date || 0).getTime()));
   };
