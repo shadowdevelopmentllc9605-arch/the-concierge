@@ -1,0 +1,16 @@
+{
+  "migration_group": "002_digital_closet_wishlist",
+  "date": "2026-10-07",
+  "source_counts": {
+    "wishlist_items": 0,
+    "closet_items": 0
+  },
+  "supabase": {
+    "tables_created": ["public.wishlist_items", "public.closet_items"],
+    "ownership_rls_policies": 8,
+    "canonical_product_links_supported": true
+  },
+  "production_cutover": "not_live_yet",
+  "status": "database_complete",
+  "next_controlled_group": "businesses_and_store_locations"
+}

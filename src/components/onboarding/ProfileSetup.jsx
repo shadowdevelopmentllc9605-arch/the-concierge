@@ -1,3 +1,4 @@
+import { authClient } from '@/api/authClient';
 import React, { useState, useRef } from 'react';
 import { base44 } from '@/api/base44Client';
 import { motion } from 'framer-motion';
@@ -37,7 +38,7 @@ export default function ProfileSetup({ user, profile, concierge, onComplete }) {
     try {
       // Update user's full_name
       if (name !== user?.full_name) {
-        await base44.auth.updateMe({ full_name: name });
+        await authClient.updateMe({ full_name: name });
       }
       
       await onComplete({ 

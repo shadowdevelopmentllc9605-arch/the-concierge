@@ -1,3 +1,4 @@
+import { authClient } from '@/api/authClient';
 import React, { useState, useRef } from 'react';
 import { base44 } from '@/api/base44Client';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -65,7 +66,7 @@ export default function ClosetUpload({ profile, concierge, onComplete }) {
     setAnalyzing(true);
     try {
       // Save each item to ClosetItem entity
-      const user = await base44.auth.me();
+      const user = await authClient.me();
       for (const item of items) {
         await base44.entities.ClosetItem.create({
           user_id: user.id,

@@ -1,3 +1,4 @@
+import { authClient } from '@/api/authClient';
 import React, { useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { ArrowLeft, UserPlus, Check, Trash2, Gift, Loader2, EyeOff } from 'lucide-react';
@@ -16,7 +17,7 @@ export default function Friends() {
   const [wishlists, setWishlists] = useState({});
 
   const load = async () => {
-    const current = await base44.auth.me();
+    const current = await authClient.me();
     setUser(current);
     const [outgoing, incoming] = await Promise.all([
       base44.entities.Friend.filter({ user_id: current.id }),

@@ -1,3 +1,4 @@
+import { authClient } from '@/api/authClient';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useNavigate } from 'react-router-dom';
@@ -129,7 +130,7 @@ export default function PrecisionScan() {
   useEffect(() => {
     (async () => {
       try {
-        const user = await base44.auth.me();
+        const user = await authClient.me();
         const profiles = await base44.entities.UserProfile.filter({ user_id: user.id });
         setProfile(profiles[0] || null);
       } catch (loadError) {

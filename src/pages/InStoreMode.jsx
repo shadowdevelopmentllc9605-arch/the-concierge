@@ -1,3 +1,4 @@
+import { authClient } from '@/api/authClient';
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { sharedBackendBridge } from '@/lib/sharedBackendBridge';
@@ -44,7 +45,7 @@ export default function InStoreMode() {
 
   const loadInitialData = async () => {
     try {
-      const currentUser = await base44.auth.me();
+      const currentUser = await authClient.me();
       setUser(currentUser);
 
       const profiles = await base44.entities.UserProfile.filter({ user_id: currentUser.id });

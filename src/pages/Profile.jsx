@@ -1,3 +1,4 @@
+import { authClient } from '@/api/authClient';
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useNavigate } from 'react-router-dom';
@@ -24,7 +25,7 @@ export default function Profile() {
 
   const loadProfile = async () => {
     try {
-      const currentUser = await base44.auth.me();
+      const currentUser = await authClient.me();
       setUser(currentUser);
       
       const profiles = await base44.entities.UserProfile.filter({ user_id: currentUser.id });
@@ -39,7 +40,7 @@ export default function Profile() {
   };
 
   const handleLogout = () => {
-    base44.auth.logout();
+    authClient.logout();
   };
 
   const handleDeleteAccount = async () => {
@@ -47,7 +48,7 @@ export default function Profile() {
       const response = await base44.functions.invoke('deleteMyData', { confirm: 'DELETE' });
       const result = response?.data || response;
       if (!result?.success) throw new Error(result?.error || 'Account data could not be deleted.');
-      base44.auth.logout();
+      authClient.logout();
     } catch (error) {
       console.error(error);
       alert(error?.response?.data?.error || error?.message || 'Account data could not be deleted.');

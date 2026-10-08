@@ -45,7 +45,7 @@ export default function OAuthConsent() {
           return;
         }
         const data = await res.json();
-        // Gate on the server's auth result, NOT base44.auth.isAuthenticated():
+        // Gate on the server's auth result, not a client-side auth-state shortcut:
         // the SDK check runs the bearer path, so a cookie-only session (platform
         // login/SSO, or a private app with a stale localStorage token) would read
         // as signed-out and redirect — even though /consent-info just

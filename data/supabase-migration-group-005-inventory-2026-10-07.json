@@ -1,0 +1,20 @@
+{
+  "migration_group": "005_inventory_management",
+  "date": "2026-10-07",
+  "source_counts": {"inventory_items": 0},
+  "supabase": {
+    "tables_created": [
+      "public.inventory_items",
+      "public.inventory_variants",
+      "public.inventory_stock_events"
+    ],
+    "staging_table": "private.base44_inventory_item_staging",
+    "access_policies": 10,
+    "normalized_variants": true,
+    "idempotent_stock_event_ledger": true
+  },
+  "production_cutover": "not_live_yet",
+  "final_delta_sync_required_before_cutover": true,
+  "status": "database_complete",
+  "next_controlled_group": "customer_checkins_store_visits_fitting_rooms"
+}

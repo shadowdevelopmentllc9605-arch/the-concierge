@@ -1,0 +1,19 @@
+{
+  "migration_group": "004_employees_permissions",
+  "date": "2026-10-07",
+  "source_counts": {"employees": 1},
+  "supabase": {
+    "tables_created": ["public.business_memberships", "public.employees"],
+    "staging_table": "private.base44_employee_staging",
+    "staged_employees": 1,
+    "authorization": "database_membership_and_permissions",
+    "signup_trigger_order": [
+      "base44_10_claim_identity",
+      "base44_20_claim_business",
+      "base44_30_claim_employee"
+    ]
+  },
+  "production_cutover": "not_live_yet",
+  "status": "database_complete_staged",
+  "next_controlled_group": "inventory_management"
+}

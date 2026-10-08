@@ -1,0 +1,43 @@
+{
+  "migration_group": "001_identity_profile_fit",
+  "date": "2026-10-07",
+  "architecture": {
+    "database": "one shared Supabase/Postgres platform",
+    "shopper_interface": "The Concierge",
+    "retailer_interface": "Concierge Pro",
+    "production_fallback": "Base44 remains active during controlled migration"
+  },
+  "supabase": {
+    "project_ref": "jtnyqzxlipekwtoyvcmb",
+    "staged_identity_records": 5,
+    "staged_shopper_profiles": 3,
+    "staged_measurement_validation_records": 0,
+    "production_tables_created": [
+      "public.profiles",
+      "public.fit_profiles",
+      "public.measurement_validation_records"
+    ],
+    "private_staging_tables": [
+      "private.base44_user_staging",
+      "private.base44_profile_staging",
+      "private.base44_measurement_validation_staging"
+    ],
+    "auth_claim_trigger": "on_auth_user_claim_base44_identity",
+    "rls_ownership_policies": 12,
+    "auth_cutover": "not_live_yet",
+    "legacy_password_copy": false
+  },
+  "github": {
+    "branch": "migration/supabase-foundation",
+    "shopper_pr": 6,
+    "retailer_pr": 5,
+    "catalog_client_fix": "publishable key is sent as apikey only, not as Bearer JWT"
+  },
+  "vercel": {
+    "shopper_project": "the-concierge",
+    "retailer_project": "concierge-pro",
+    "environment_variable_wiring": "blocked_by_current_shadow-development-llc_scope_authorization"
+  },
+  "status": "group_1_database_complete_frontend_cutover_pending_vercel_scope",
+  "next_controlled_group": "digital_closet_and_wishlist"
+}

@@ -1,3 +1,4 @@
+import { authClient } from '@/api/authClient';
 import React, { useState, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { base44 } from '@/api/base44Client';
@@ -56,7 +57,7 @@ export default function Shop() {
   const loadData = async () => {
     setLoading(true);
     try {
-      const currentUser = await base44.auth.me();
+      const currentUser = await authClient.me();
       setUser(currentUser);
 
       // Load products

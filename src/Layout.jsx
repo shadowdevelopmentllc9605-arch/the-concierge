@@ -1,3 +1,4 @@
+import { authClient } from '@/api/authClient';
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
@@ -73,7 +74,7 @@ export default function Layout({ children, currentPageName }) {
 
   const loadUserData = async () => {
     try {
-      const currentUser = await base44.auth.me();
+      const currentUser = await authClient.me();
       setUser(currentUser);
       
       const cartItems = await base44.entities.CartItem.filter({ user_id: currentUser.id });

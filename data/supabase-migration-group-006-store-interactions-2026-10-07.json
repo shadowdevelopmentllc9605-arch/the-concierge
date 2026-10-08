@@ -1,0 +1,26 @@
+{
+  "migration_group": "006_store_customer_interactions",
+  "date": "2026-10-07",
+  "source_counts": {
+    "store_customers": 0,
+    "store_checkins": 0,
+    "store_visits": 0,
+    "fitting_rooms": 0
+  },
+  "supabase": {
+    "tables_created": [
+      "public.store_customers",
+      "public.store_checkins",
+      "public.store_visits",
+      "public.fitting_rooms",
+      "public.fitting_room_items"
+    ],
+    "staging_table": "private.base44_store_interaction_staging",
+    "access_policies": 17,
+    "shopper_and_retailer_access_separated": true
+  },
+  "production_cutover": "not_live_yet",
+  "final_delta_sync_required_before_cutover": true,
+  "status": "database_complete",
+  "next_controlled_group": "orders_checkout_stripe"
+}
