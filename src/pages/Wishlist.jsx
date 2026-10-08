@@ -1,3 +1,4 @@
+import { authClient } from '@/api/authClient';
 import React, { useState, useEffect, useCallback } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useNavigate } from 'react-router-dom';
@@ -24,7 +25,7 @@ export default function Wishlist() {
 
   const loadWishlist = async () => {
     try {
-      const currentUser = await base44.auth.me();
+      const currentUser = await authClient.me();
       const [wishlistItems, profiles] = await Promise.all([
         base44.entities.WishlistItem.filter({ user_id: currentUser.id }),
         base44.entities.UserProfile.filter({ user_id: currentUser.id })
