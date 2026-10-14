@@ -206,7 +206,8 @@ const loadProducts = async (filters = {}, sort = '-created_date', limit = 100) =
       sizes: [...new Set(pv.map(v => v.size_label).filter(Boolean))],
       colors: [...new Set(pv.map(v => v.color_name).filter(Boolean))],
       width_options: [...new Set(pv.map(v => v.width_code).filter(Boolean))],
-      in_stock: po.length ? po.some(o => !['out_of_stock','unavailable'].includes(String(o.availability || '').toLowerCase())) : true,
+      // Only confirmed availability is treated as in stock; unknown is not a promise.
+      in_stock: po.some(o => ['in_stock', 'limited'].includes(String(o.availability || '').toLowerCase())),
       style_type: p.product_type || p.subcategory || '',
       created_date: p.created_at,
       updated_date: p.updated_at
