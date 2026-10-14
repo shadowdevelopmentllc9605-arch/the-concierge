@@ -30,7 +30,7 @@ const directTables = {
 
 const fieldMaps = {
   WishlistItem: { product_id: 'product_master_id', product_image: 'product_image_url', vendor_id: 'legacy_vendor_id' },
-  CartItem: { product_id: 'product_master_id', product_image: 'product_image_url', price: 'unit_price' },
+  CartItem: { product_id: 'product_master_id', product_image: 'product_image_url', price: 'unit_price', product_price: 'unit_price' },
   Purchase: { user_id: 'shopper_user_id' },
   StoreCheckin: { user_id: 'shopper_user_id', vendor_id: 'legacy_vendor_id' },
   ProductReview: { product_id: 'product_master_id', vendor_id: 'business_id' },
@@ -57,6 +57,7 @@ const fromDb = (entity, row) => {
     out.product_id = row.product_master_id;
     out.product_image = row.product_image_url;
     out.price = row.unit_price;
+    out.product_price = Number(row.unit_price ?? 0);
   }
   if (entity === 'Purchase') out.user_id = row.shopper_user_id;
   if (entity === 'StoreCheckin') {
@@ -342,13 +343,40 @@ export const base44 = {
   functions: { invoke: invokeFunction },
   integrations: {
     Core: {
+      // Non-sensitive photos (profile and wardrobe). This bucket is intentionally public.
       async UploadFile({ file }) {
-        const safeName = String(file?.name || 'upload').replace(/[^a-zA-Z0-9._-]/g, '_');
-        const path = (await supabase.auth.getUser()).data.user?.id + '/' + Date.now() + '-' + safeName;
+        const { data: auth, error: authError } = await supabase.auth.getUser();
+        if (authError || !auth?.user?.id) throw new Error('Sign in before uploading an image.');
+        if (!file) throw new Error('Choose an image to upload.');
+        const safeName = String(file.name || 'upload').replace(/[^a-zA-Z0-9._-]/g, '_');
+        const path = auth.user.id + '/' + crypto.randomUUID() + '-' + safeName;
         const upload = await supabase.storage.from('concierge-uploads').upload(path, file, { upsert: false });
         if (upload.error) throw upload.error;
         const { data } = supabase.storage.from('concierge-uploads').getPublicUrl(path);
         return { file_url: data.publicUrl };
+      },
+      // Sensitive body and measurement scans must never be served from the public bucket.
+      async UploadPrivateFile({ file }) {
+        const { data: auth, error: authError } = await supabase.auth.getUser();
+        if (authError || !auth?.user?.id) throw new Error('Sign in before uploading an image.');
+        if (!file) throw new Error('Choose an image to upload.');
+        const safeName = String(file.name || 'upload').replace(/[^a-zA-Z0-9._-]/g, '_');
+        const path = auth.user.id + '/' + crypto.randomUUID() + '-' + safeName;
+        const upload = await supabase.storage.from('concierge-sensitive').upload(path, file, { upsert: false });
+        if (upload.error) throw upload.error;
+        return { file_uri: 'concierge-sensitive/' + path };
+      },
+      async CreateFileSignedUrl({ file_uri }) {
+        const { data: auth, error: authError } = await supabase.auth.getUser();
+        if (authError || !auth?.user?.id) throw new Error('Sign in to view this image.');
+        const prefix = 'concierge-sensitive/' + auth.user.id + '/';
+        if (typeof file_uri !== 'string' || !file_uri.startsWith(prefix)) {
+          throw new Error('This image is not accessible to your account.');
+        }
+        const path = file_uri.slice('concierge-sensitive/'.length);
+        const { data, error } = await supabase.storage.from('concierge-sensitive').createSignedUrl(path, 3600);
+        if (error) throw error;
+        return { signed_url: data.signedUrl };
       }
     }
   }
