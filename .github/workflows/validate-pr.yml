@@ -34,6 +34,8 @@ jobs:
             echo "Base44 runtime import found in src"
             exit 1
           fi
+      - name: Run cart pricing tests
+        run: npm test
       - name: Build
         run: npm run build
       - name: Lint application
