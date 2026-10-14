@@ -30,10 +30,20 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     checkAppState();
-    const { data: listener } = supabase.auth.onAuthStateChange(() => {
-      checkAppState();
+    // Supabase API calls inside the auth callback can deadlock; defer revalidation.
+    const pending = new Set();
+    const { data: listener } = supabase.auth.onAuthStateChange((event) => {
+      if (!['SIGNED_IN', 'SIGNED_OUT', 'USER_UPDATED'].includes(event)) return;
+      const timer = setTimeout(() => {
+        pending.delete(timer);
+        checkAppState();
+      }, 0);
+      pending.add(timer);
     });
-    return () => listener?.subscription?.unsubscribe();
+    return () => {
+      listener?.subscription?.unsubscribe();
+      pending.forEach(clearTimeout);
+    };
   }, []);
 
   const logout = async () => {
