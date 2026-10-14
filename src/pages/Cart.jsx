@@ -5,6 +5,7 @@ import { createPageUrl } from '@/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, Minus, Plus, Trash2, ShoppingBag } from 'lucide-react';
 import { Button } from "@/components/ui/button";
+import { getCartSubtotal, getCartUnitPrice } from '@/lib/cartPricing';
 
 export default function Cart() {
   const navigate = useNavigate();
@@ -53,9 +54,7 @@ export default function Cart() {
     }
   };
 
-  const subtotal = items.reduce((sum, item) => 
-    sum + (item.product_price || 0) * (item.quantity || 1), 0
-  );
+  const subtotal = getCartSubtotal(items);
   const shipping = subtotal > 100 ? 0 : 9.99;
   const total = subtotal + shipping;
 
@@ -131,7 +130,7 @@ export default function Cart() {
                   <p className="text-sm text-[#64748b] mt-1">
                     Size: {item.size}{item.width_code ? ' • Width ' + item.width_code : ''} {item.color && `• ${item.color}`}
                   </p>
-                  <p className="font-semibold text-[#1a1a1a] mt-2">${item.product_price?.toFixed(2)}</p>
+                  <p className="font-semibold text-[#1a1a1a] mt-2">${getCartUnitPrice(item).toFixed(2)}</p>
                   
                   <div className="flex items-center justify-between mt-3">
                     <div className="flex items-center gap-3">
