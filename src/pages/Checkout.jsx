@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { ArrowLeft, CreditCard, ShieldCheck, ShoppingBag, Loader2, CheckCircle2, AlertTriangle, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { getCartSubtotal } from '@/lib/cartPricing';
 
 export default function Checkout() {
   const navigate = useNavigate();
@@ -72,10 +73,7 @@ export default function Checkout() {
     };
   }, [sessionId]);
 
-  const subtotal = useMemo(() =>
-    cart.reduce((sum, item) => sum + Number(item.product_price || 0) * Number(item.quantity || 1), 0),
-    [cart]
-  );
+  const subtotal = useMemo(() => getCartSubtotal(cart), [cart]);
   const estimatedShipping = subtotal > 100 ? 0 : 9.99;
 
   const startCheckout = async () => {
