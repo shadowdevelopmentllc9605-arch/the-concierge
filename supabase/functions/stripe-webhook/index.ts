@@ -37,7 +37,7 @@ Deno.serve(async(req)=>{
    const groups=new Map<string,any[]>();for(const i of items.data||[]){if(!i.business_id)continue;groups.set(i.business_id,[...(groups.get(i.business_id)||[]),i])}
    for(const [businessId,rows] of groups){
      const ext=`online:${orderId}:${businessId}`;let p=await admin.from("purchases").select("id").eq("external_purchase_id",ext).maybeSingle();if(p.error)throw p.error;
-     if(!p.data){const subtotal=rows.reduce((s:number,i:any)=>s+Number(i.unit_price||0)*Number(i.quantity||1),0);const ins=await admin.from("purchases").insert({shopper_user_id:o.data.user_id,business_id:businessId,order_id:orderId,purchase_type:"online",subtotal,tax_amount:0,discount_amount:0,shipping_amount:groups.size===1?Number(o.data.shipping_amount||0):0,total:subtotal+(groups.size===1?Number(o.data.shipping_amount||0):0),payment_method:"stripe",status:"completed",external_purchase_id:ext,synced_to_customer:true,payment_provider:"stripe",concierge_attributed:true,attribution_source:"concierge_online",platform_fee_percent:o.data.platform_fee_percent,platform_fee_amount:o.data.platform_fee_amount,platform_fee_status:"collected"}).select().single();if(ins.error)throw ins.error;p={data:{id:ins.data.id},error:null} as any;
+     if(!p.data){const subtotal=rows.reduce((s:number,i:any)=>s+Number(i.unit_price||0)*Number(i.quantity||1),0);const tax=groups.size===1?Number(full.total_details?.amount_tax||0)/100:0;const shipping=groups.size===1?Number(full.total_details?.amount_shipping||0)/100:0;const ins=await admin.from("purchases").insert({shopper_user_id:o.data.user_id,business_id:businessId,order_id:orderId,purchase_type:"online",subtotal,tax_amount:tax,discount_amount:0,shipping_amount:shipping,total:subtotal+tax+shipping,payment_method:"stripe",status:"completed",external_purchase_id:ext,synced_to_customer:true,payment_provider:"stripe",concierge_attributed:true,attribution_source:"concierge_online",platform_fee_percent:o.data.platform_fee_percent,platform_fee_amount:o.data.platform_fee_amount,platform_fee_status:"collected"}).select().single();if(ins.error)throw ins.error;p={data:{id:ins.data.id},error:null} as any;
      } // Purchase header exists; a retry can repair missing purchase line items.
      const pis=rows.map((i:any)=>({purchase_id:p.data.id,inventory_item_id:i.inventory_item_id,product_master_id:i.product_master_id,product_variant_id:i.product_variant_id,product_name:i.product_name,quantity:i.quantity,unit_price:i.unit_price,size_label:i.size_label,color_name:i.color_name,width_code:i.width_code,external_line_key:`${orderId}:${i.id}`}));
      const pir=await admin.from("purchase_items").upsert(pis,{onConflict:"purchase_id,external_line_key",ignoreDuplicates:true});if(pir.error)throw pir.error;
@@ -45,15 +45,38 @@ Deno.serve(async(req)=>{
    const pm:any=typeof pi==="object"?pi.payment_method:null;
    if(o.data.save_card&&pm&&typeof pm==="object"&&pm.card){const existing=await admin.from("payment_methods").select("id").eq("user_id",o.data.user_id).eq("card_last_four",pm.card.last4).eq("expiry_month",pm.card.exp_month).eq("expiry_year",pm.card.exp_year).limit(1);if(existing.error)throw existing.error;if(!existing.data?.length){const m=await admin.from("payment_methods").insert({user_id:o.data.user_id,card_last_four:pm.card.last4,card_type:pm.card.brand,expiry_month:pm.card.exp_month,expiry_year:pm.card.exp_year,is_default:false,processor:"stripe"}).select().single();if(m.error)throw m.error;await admin.rpc("save_payment_method_processor_ref",{p_payment_method_id:m.data.id,p_processor_id:pm.id})}}
    const clear=await admin.from("cart_items").delete().eq("user_id",o.data.user_id);if(clear.error)throw clear.error;
-   const up=await admin.from("orders").update({payment_status:"paid",fulfillment_status:"processing",platform_fee_status:"collected",shipping_address:address,subtotal:Number(full.amount_subtotal||0)/100,total:Number(full.amount_total||0)/100}).eq("id",orderId);if(up.error)throw up.error;
+   const up=await admin.from("orders").update({payment_status:"paid",fulfillment_status:"processing",platform_fee_status:"collected",shipping_address:address,subtotal:Number(full.amount_subtotal||0)/100,shipping_amount:Number(full.total_details?.amount_shipping||0)/100,tax_amount:Number(full.total_details?.amount_tax||0)/100,total:Number(full.amount_total||0)/100}).eq("id",orderId).neq("payment_status","refunded");if(up.error)throw up.error;
  };
  try{
    if(event.type==="checkout.session.completed"){const s:any=event.data.object;if(s.mode==="subscription"&&s.subscription){const sub=await stripe.subscriptions.retrieve(typeof s.subscription==="string"?s.subscription:s.subscription.id);await applySubscription(sub)}else if(s.payment_status==="paid")await finalizeOrder(s)}
    else if(["customer.subscription.created","customer.subscription.updated","customer.subscription.deleted"].includes(event.type))await applySubscription(event.data.object);
    else if(event.type==="invoice.paid"){const inv:any=event.data.object;const sid=typeof inv.subscription==="string"?inv.subscription:inv.subscription?.id;if(sid){const sub=await stripe.subscriptions.retrieve(sid);await applySubscription(sub)}}
    else if(event.type==="account.updated"){const a:any=event.data.object;const b=await admin.from("businesses").select("id").eq("stripe_connected_account_id",a.id).maybeSingle();if(!b.error&&b.data){const u=await admin.from("businesses").update({stripe_onboarding_complete:!!a.details_submitted,stripe_charges_enabled:!!a.charges_enabled,stripe_payouts_enabled:!!a.payouts_enabled,stripe_transfers_enabled:a.capabilities?.transfers==="active"||!!a.payouts_enabled}).eq("id",b.data.id);if(u.error)throw u.error}}
+   else if(event.type==="charge.refunded"){
+     // Refund events are signed. Resolve the Stripe payment to one of our orders
+     // rather than trusting a charge description or an arbitrary client-provided ID.
+     const charge:any=event.data.object;
+     const piId=typeof charge.payment_intent==="string"?charge.payment_intent:charge.payment_intent?.id;
+     if(piId&&charge.amount_refunded>0){
+       const sessions=await stripe.checkout.sessions.list({payment_intent:piId,limit:10});
+       const matched=sessions.data.find((s:any)=>s.mode==="payment"&&s.metadata?.concierge_order_id);
+       if(matched){
+         const orderId=matched.metadata?.concierge_order_id;
+         const order=await admin.from("orders").select("id,payment_status,checkout_session_id").eq("id",orderId).maybeSingle();
+         if(order.error)throw order.error;
+         if(order.data&&order.data.checkout_session_id===matched.id&&Number(charge.amount_refunded)>=Number(charge.amount)){
+           const update=await admin.from("orders").update({payment_status:"refunded"}).eq("id",orderId);
+           if(update.error)throw update.error;
+           const purchase=await admin.from("purchases").update({status:"refunded"}).eq("order_id",orderId);
+           if(purchase.error)throw purchase.error;
+         }
+         // Partial refunds are retained in the private signed event ledger.
+         // Do not label Stripe application fees as refunded: that is a separate operation.
+       }
+     }
+   }
    else if(event.type==="checkout.session.async_payment_succeeded")await finalizeOrder(event.data.object);
-   else if(event.type==="checkout.session.async_payment_failed"||event.type==="checkout.session.expired"){const s:any=event.data.object,oid=s.metadata?.concierge_order_id||s.metadata?.order_id;if(oid)await admin.from("orders").update({payment_status:event.type.endsWith("expired")?"expired":"failed"}).eq("id",oid)}
+   else if(event.type==="checkout.session.async_payment_failed"||event.type==="checkout.session.expired"){const s:any=event.data.object,oid=s.metadata?.concierge_order_id||s.metadata?.order_id;if(oid){const failed=await admin.from("orders").update({payment_status:"failed",fulfillment_status:"cancelled"}).eq("id",oid).eq("payment_status","pending");if(failed.error)throw failed.error}}
    else {await finish("ignored");return json({received:true,ignored:true})}
    await finish("processed");return json({received:true});
  }catch(e){await finish("failed",e instanceof Error?e.message:"Webhook processing failed");return json({error:"Webhook processing failed"},500)}

@@ -17,8 +17,6 @@ export default function Checkout() {
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
   const [processing, setProcessing] = useState(false);
-  const [saveCard, setSaveCard] = useState(false);
-  const [saveAddress, setSaveAddress] = useState(false);
   const [error, setError] = useState('');
 
   const loadOrder = async (userId) => {
@@ -81,8 +79,8 @@ export default function Checkout() {
     setError('');
     try {
       const result = await sharedBackendBridge.startOnlineCheckout({
-        saveCard,
-        saveShippingAddress: saveAddress,
+        saveCard: false,
+        saveShippingAddress: false,
       });
       if (!result?.success || !result?.url) {
         throw new Error(result?.error || 'Secure checkout could not be started.');
@@ -118,11 +116,11 @@ export default function Checkout() {
             </div>
 
             <h1 className="text-2xl font-semibold mb-3">
-              {paid ? 'Payment confirmed' : failed ? 'Order not completed' : 'Confirming your payment'}
+              {paid ? 'Payment confirmed' : order?.payment_status === 'refunded' ? 'Order refunded' : failed ? 'Payment not completed' : 'Confirming your payment'}
             </h1>
             <p className="text-[var(--color-text-secondary)] leading-relaxed">
               {paid
-                ? 'Stripe confirmed the payment. Your purchase history and closet have been updated and the order is processing.'
+                ? 'Stripe confirmed the payment. Your order is processing, and the purchase is recorded in your history.'
                 : failed
                   ? order?.payment_status === 'refunded'
                     ? 'This order has been refunded.'
@@ -139,8 +137,8 @@ export default function Checkout() {
             )}
 
             <div className="mt-7 space-y-3">
-              <Button className="w-full h-14" onClick={() => navigate(createPageUrl(paid ? 'Closet' : 'Home'))}>
-                {paid ? 'View My Closet' : 'Back to Home'}
+              <Button className="w-full h-14" onClick={() => navigate(createPageUrl(paid ? 'Shop' : 'Home'))}>
+                {paid ? 'Continue shopping' : 'Back to Home'}
               </Button>
               {!paid && !failed && (
                 <Button variant="outline" className="w-full h-14" onClick={() => window.location.reload()}>
@@ -191,22 +189,10 @@ export default function Checkout() {
                 </div>
               </div>
 
-              <div className="mt-6 space-y-3">
-                <label className="flex gap-3 items-start cursor-pointer">
-                  <input type="checkbox" checked={saveCard} onChange={e => setSaveCard(e.target.checked)} className="mt-1" />
-                  <div>
-                    <p className="text-sm font-medium">Save this card for future checkout</p>
-                    <p className="text-xs text-[var(--color-text-secondary)]">Stripe stores the reusable payment credential; The Concierge keeps only display metadata such as brand and last four digits.</p>
-                  </div>
-                </label>
-                <label className="flex gap-3 items-start cursor-pointer">
-                  <input type="checkbox" checked={saveAddress} onChange={e => setSaveAddress(e.target.checked)} className="mt-1" />
-                  <div>
-                    <p className="text-sm font-medium">Save shipping address</p>
-                    <p className="text-xs text-[var(--color-text-secondary)]">The address collected by Stripe will be saved to your Concierge profile after payment succeeds.</p>
-                  </div>
-                </label>
-              </div>
+              <p className="mt-5 text-xs text-[var(--color-text-secondary)]">
+                Payment details are handled by Stripe. Saving payment methods or a shipping address
+                for future orders is not available in this pilot checkout yet.
+              </p>
 
               {(savedCards.length > 0 || savedAddresses.length > 0) && (
                 <button
