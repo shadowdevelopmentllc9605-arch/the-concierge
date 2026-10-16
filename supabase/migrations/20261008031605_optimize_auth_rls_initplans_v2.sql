@@ -1,0 +1,14 @@
+drop policy if exists friends_read_own on public.friends;
+create policy friends_read_own on public.friends for select to authenticated using ((user_id=(select auth.uid())) or (friend_user_id=(select auth.uid())));
+drop policy if exists friends_insert_own on public.friends;
+create policy friends_insert_own on public.friends for insert to authenticated with check (user_id=(select auth.uid()));
+drop policy if exists friends_update_own on public.friends;
+create policy friends_update_own on public.friends for update to authenticated using ((user_id=(select auth.uid())) or (friend_user_id=(select auth.uid())));
+drop policy if exists friends_delete_own on public.friends;
+create policy friends_delete_own on public.friends for delete to authenticated using ((user_id=(select auth.uid())) or (friend_user_id=(select auth.uid())));
+drop policy if exists product_reviews_insert_own on public.product_reviews;
+create policy product_reviews_insert_own on public.product_reviews for insert to authenticated with check (user_id=(select auth.uid()));
+drop policy if exists product_reviews_update_own on public.product_reviews;
+create policy product_reviews_update_own on public.product_reviews for update to authenticated using (user_id=(select auth.uid()));
+drop policy if exists product_reviews_delete_own on public.product_reviews;
+create policy product_reviews_delete_own on public.product_reviews for delete to authenticated using (user_id=(select auth.uid()));
