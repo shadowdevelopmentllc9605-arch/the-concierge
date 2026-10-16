@@ -47,6 +47,29 @@ Deno.serve(async(req)=>{
    const clear=await admin.from("cart_items").delete().eq("user_id",o.data.user_id);if(clear.error)throw clear.error;
    const up=await admin.from("orders").update({payment_status:"paid",fulfillment_status:"processing",platform_fee_status:"collected",shipping_address:address,subtotal:Number(full.amount_subtotal||0)/100,shipping_amount:Number(full.total_details?.amount_shipping||0)/100,tax_amount:Number(full.total_details?.amount_tax||0)/100,total:Number(full.amount_total||0)/100}).eq("id",orderId).neq("payment_status","refunded");if(up.error)throw up.error;
  };
+ // Do not mark an application fee refunded merely because the customer charge was refunded.
+ // Confirm the full fee reversal with Stripe and bind the source charge to our checkout session.
+ const reconcileApplicationFeeRefund=async(platformChargeId:string)=>{
+   const charge:any=await stripe.charges.retrieve(platformChargeId);
+   if(Number(charge.amount_refunded)<Number(charge.amount)||Number(charge.amount)<=0)return;
+   const feeId=typeof charge.application_fee==="string"?charge.application_fee:charge.application_fee?.id;
+   if(!feeId)return;
+   const fee:any=await stripe.applicationFees.retrieve(feeId);
+   if(!fee.refunded||Number(fee.amount)<=0||Number(fee.amount_refunded)<Number(fee.amount))return;
+   const paymentIntentId=typeof charge.payment_intent==="string"?charge.payment_intent:charge.payment_intent?.id;
+   if(!paymentIntentId)return;
+   const sessions=await stripe.checkout.sessions.list({payment_intent:paymentIntentId,limit:10});
+   const matched=sessions.data.find((s:any)=>s.mode==="payment"&&s.metadata?.concierge_order_id);
+   if(!matched)return;
+   const orderId=matched.metadata?.concierge_order_id;
+   const order=await admin.from("orders").select("id,checkout_session_id,payment_status").eq("id",orderId).maybeSingle();
+   if(order.error)throw order.error;
+   if(!order.data||order.data.checkout_session_id!==matched.id||order.data.payment_status!=="refunded")return;
+   const o=await admin.from("orders").update({platform_fee_status:"refunded"}).eq("id",orderId).eq("payment_status","refunded");
+   if(o.error)throw o.error;
+   const p=await admin.from("purchases").update({platform_fee_status:"refunded"}).eq("order_id",orderId).eq("status","refunded");
+   if(p.error)throw p.error;
+ };
  try{
    if(event.type==="checkout.session.completed"){const s:any=event.data.object;if(s.mode==="subscription"&&s.subscription){const sub=await stripe.subscriptions.retrieve(typeof s.subscription==="string"?s.subscription:s.subscription.id);await applySubscription(sub)}else if(s.payment_status==="paid")await finalizeOrder(s)}
    else if(["customer.subscription.created","customer.subscription.updated","customer.subscription.deleted"].includes(event.type))await applySubscription(event.data.object);
@@ -70,10 +93,18 @@ Deno.serve(async(req)=>{
            const purchase=await admin.from("purchases").update({status:"refunded"}).eq("order_id",orderId);
            if(purchase.error)throw purchase.error;
          }
-         // Partial refunds are retained in the private signed event ledger.
-         // Do not label Stripe application fees as refunded: that is a separate operation.
+         // Partial refunds are retained in the signed event ledger and never
+         // imply that the separate Stripe application fee has been returned.
+         if(Number(charge.amount_refunded)>=Number(charge.amount))
+           await reconcileApplicationFeeRefund(charge.id);
        }
      }
+   }
+   else if(event.type==="application_fee.refunded"){
+     // Some fee refunds settle after charge.refunded. Reconcile either event order.
+     const fee:any=event.data.object;
+     const platformChargeId=typeof fee.originating_transaction==="string"?fee.originating_transaction:fee.originating_transaction?.id;
+     if(platformChargeId)await reconcileApplicationFeeRefund(platformChargeId);
    }
    else if(event.type==="checkout.session.async_payment_succeeded")await finalizeOrder(event.data.object);
    else if(event.type==="checkout.session.async_payment_failed"||event.type==="checkout.session.expired"){const s:any=event.data.object,oid=s.metadata?.concierge_order_id||s.metadata?.order_id;if(oid){const failed=await admin.from("orders").update({payment_status:"failed",fulfillment_status:"cancelled"}).eq("id",oid).eq("payment_status","pending");if(failed.error)throw failed.error}}
