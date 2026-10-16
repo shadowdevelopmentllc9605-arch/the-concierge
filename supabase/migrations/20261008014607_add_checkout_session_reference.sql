@@ -1,0 +1,1 @@
+alter table public.orders add column if not exists checkout_session_id text; create index if not exists orders_checkout_session_idx on public.orders(checkout_session_id);
