@@ -1,13 +1,13 @@
 import { base44 } from '@/api/base44Client';
+import { isPrivateImageUri } from '@/lib/privateImageUri';
 
 /**
- * Resolves a stored file reference to a fetchable/renderable URL.
- * Private file URIs get a short-lived signed URL; legacy public
- * http(s) URLs are returned unchanged.
+ * Resolve a sensitive body/precision scan through the signed, owner-scoped
+ * private bucket only. Legacy HTTP references are intentionally not displayed:
+ * they must be migrated to private storage rather than re-exposed.
  */
 export async function resolveFileUrl(uri) {
-  if (!uri) return '';
-  if (/^https?:\/\//i.test(uri)) return uri;
+  if (!isPrivateImageUri(uri)) return '';
   const res = await base44.integrations.Core.CreateFileSignedUrl({ file_uri: uri });
   return res.signed_url || '';
 }
