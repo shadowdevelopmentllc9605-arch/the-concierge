@@ -30,7 +30,7 @@ const directTables = {
 
 const fieldMaps = {
   WishlistItem: { product_id: 'product_master_id', product_image: 'product_image_url', vendor_id: 'legacy_vendor_id' },
-  CartItem: { product_id: 'product_master_id', product_image: 'product_image_url', price: 'unit_price', product_price: 'unit_price' },
+  CartItem: { product_id: 'product_master_id', product_image: 'product_image_url', price: 'unit_price', product_price: 'unit_price', size: 'size_label', color: 'color_name' },
   Purchase: { user_id: 'shopper_user_id' },
   StoreCheckin: { user_id: 'shopper_user_id', vendor_id: 'legacy_vendor_id' },
   ProductReview: { product_id: 'product_master_id', vendor_id: 'business_id' },
@@ -58,6 +58,8 @@ const fromDb = (entity, row) => {
     out.product_image = row.product_image_url;
     out.price = row.unit_price;
     out.product_price = Number(row.unit_price ?? 0);
+    out.size = row.size_label || '';
+    out.color = row.color_name || '';
   }
   if (entity === 'Purchase') out.user_id = row.shopper_user_id;
   if (entity === 'StoreCheckin') {
@@ -195,6 +197,13 @@ const loadProducts = async (filters = {}, sort = '-created_date', limit = 100) =
       .filter(o => o.effective_price !== null && o.effective_price !== undefined)
       .sort((a,b) => Number(a.effective_price) - Number(b.effective_price));
     const offer = priced[0] || po[0];
+    const retailVariants = pv.map(v => ({
+      ...v,
+      size: v.size_label || '',
+      color: v.color_name || '',
+      stock_quantity: po.filter(o => o.product_variant_id === v.id && o.active)
+        .reduce((highest, o) => Math.max(highest, Number(o.stock_quantity) || 0), 0)
+    }));
     return {
       ...p,
       name: p.product_name,
@@ -203,6 +212,8 @@ const loadProducts = async (filters = {}, sort = '-created_date', limit = 100) =
       image_url: p.primary_image_url,
       price: offer?.effective_price ?? 0,
       vendor_id: offer?.business_id || offer?.retailer_key || null,
+      variants: retailVariants,
+      offers: po,
       sizes: [...new Set(pv.map(v => v.size_label).filter(Boolean))],
       colors: [...new Set(pv.map(v => v.color_name).filter(Boolean))],
       width_options: [...new Set(pv.map(v => v.width_code).filter(Boolean))],

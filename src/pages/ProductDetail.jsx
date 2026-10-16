@@ -5,6 +5,7 @@ import { createPageUrl } from '@/utils';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Heart, ShoppingBag, Sparkles, Check, Loader2 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
+import { buildVerifiedCartLine } from '@/lib/cartVariantSelection';
 import { deriveGenericFallbackSize, getCategoryGroup, getEffectiveSizeChart, getFitRecommendationPresentation, normalizeBrandKey, recommendFromSizeChart } from '@/lib/fitRecommendation';
 
 export default function ProductDetail() {
@@ -20,6 +21,7 @@ export default function ProductDetail() {
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [addingToCart, setAddingToCart] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
+  const [cartError, setCartError] = useState('');
   const [user, setUser] = useState(null);
   const [suggestedSize, setSuggestedSize] = useState('');
   const [suggestedWidth, setSuggestedWidth] = useState('');
@@ -195,38 +197,42 @@ export default function ProductDetail() {
     if (requiresWidth && !selectedWidth) return;
 
     setAddingToCart(true);
+    setCartError('');
     try {
+      const line = buildVerifiedCartLine(product, {
+        size: selectedSize,
+        width: selectedWidth,
+        color: selectedColor
+      });
       const existingItems = await base44.entities.CartItem.filter({
         user_id: user.id,
         product_id: product.id
       });
       const matchingItem = existingItems.find(item =>
-        (item.size || '') === (selectedSize || '') &&
-        (item.width_code || '') === (selectedWidth || '') &&
-        (item.color || '') === (selectedColor || '')
+        (item.product_variant_id || null) === line.product_variant_id &&
+        (item.size_label || '') === (line.size_label || '') &&
+        (item.width_code || '') === (line.width_code || '') &&
+        (item.color_name || '') === (line.color_name || '')
       );
 
       if (matchingItem) {
+        // Never retain a stale price after the verified offer changes.
         await base44.entities.CartItem.update(matchingItem.id, {
-          quantity: (matchingItem.quantity || 1) + 1
+          quantity: (matchingItem.quantity || 1) + 1,
+          unit_price: line.unit_price,
+          product_variant_id: line.product_variant_id
         });
       } else {
         await base44.entities.CartItem.create({
           user_id: user.id,
-          product_id: product.id,
-          product_name: product.name,
-          product_image: product.images?.[0],
-          product_price: product.price,
-          size: selectedSize || '',
-          width_code: selectedWidth || '',
-          color: selectedColor || '',
-          quantity: 1
+          ...line
         });
       }
 
       setAddedToCart(true);
       setTimeout(() => setAddedToCart(false), 2000);
     } catch (error) {
+      setCartError(error?.message || 'Unable to add this item to the cart.');
       console.error(error);
     } finally {
       setAddingToCart(false);
@@ -509,6 +515,7 @@ export default function ProductDetail() {
 
       {/* Bottom Action */}
       <div className="fixed bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-[var(--color-background)] via-[var(--color-background)] to-transparent safe-area-bottom">
+        {cartError && <p role="alert" className="text-sm text-red-600 mb-3 bg-white/95 rounded-lg p-2">{cartError}</p>}
         <Button
           onClick={addToCart}
           disabled={
