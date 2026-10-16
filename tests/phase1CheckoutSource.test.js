@@ -63,18 +63,18 @@ test('refunded platform fee is recorded only after Stripe confirms full fee reve
   const end=webhook.indexOf('try{\n   if(event.type==="checkout.session.completed")',start);
   assert.ok(start>0&&end>start);
   const section=webhook.slice(start,end);
-  assert.match(section, /stripe\\.applicationFees\\.retrieve/);
-  assert.match(section, /fee\\.refunded/);
-  assert.match(section, /Number\\(fee\\.amount_refunded\\)<Number\\(fee\\.amount\\)/);
-  assert.match(section, /Number\\(charge\\.amount_refunded\\)<Number\\(charge\\.amount\\)/);
-  assert.match(section, /checkout_session_id!==matched\\.id/);
+  assert.match(section, /stripe\.applicationFees\.retrieve/);
+  assert.match(section, /fee\.refunded/);
+  assert.match(section, /Number\(fee\.amount_refunded\)<Number\(fee\.amount\)/);
+  assert.match(section, /Number\(charge\.amount_refunded\)<Number\(charge\.amount\)/);
+  assert.match(section, /checkout_session_id!==matched\.id/);
   assert.match(section, /platform_fee_status:"refunded"/);
-  assert.match(section, /eq\\("status","refunded"\\)/);
+  assert.match(section, /eq\("status","refunded"\)/);
 });
 
 test('fee-refund event also reconciles late application-fee reversals', () => {
-  assert.match(webhook, /event\\.type==="application_fee\\.refunded"/);
-  assert.match(webhook, /fee\\.originating_transaction/);
-  assert.match(webhook, /await reconcileApplicationFeeRefund\\(platformChargeId\\)/);
-  assert.match(webhook, /await reconcileApplicationFeeRefund\\(charge\\.id\\)/);
+  assert.match(webhook, /event\.type==="application_fee\.refunded"/);
+  assert.match(webhook, /fee\.originating_transaction/);
+  assert.match(webhook, /await reconcileApplicationFeeRefund\(platformChargeId\)/);
+  assert.match(webhook, /await reconcileApplicationFeeRefund\(charge\.id\)/);
 });
