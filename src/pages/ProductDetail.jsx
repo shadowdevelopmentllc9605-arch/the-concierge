@@ -360,7 +360,7 @@ export default function ProductDetail() {
             <p className="text-sm text-[var(--color-text-secondary)] mb-1">{product.brand}</p>
             <h1 className="text-2xl font-medium text-[var(--color-text-primary)]">{product.name}</h1>
           </div>
-          <p className="text-2xl font-semibold text-[var(--color-text-primary)]">{Number.isFinite(product.price) ? `${product.price.toFixed(2)}` : 'Price unavailable'}</p>
+          <p className="text-2xl font-semibold text-[var(--color-text-primary)]">{Number.isFinite(product.price) ? (<><span>$</span>{product.price.toFixed(2)}</>) : 'Price unavailable'}</p>
         </div>
 
         {product.description && (
