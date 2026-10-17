@@ -69,3 +69,31 @@ Read-only comparison of the restored destination with production after restore:
 - **Security caveat:** The restored project contains two `vault.secrets` rows, same count as production. No secret values were read or disclosed. Treat restored Vault metadata/credentials as sensitive and **delete the temporary recovery project promptly after the user's authorization**; do not publish its project keys or URLs. Security advisors for the new project also reported warnings for default Auth leaked-password protection and MFA settings, which would need configuration if this copy were ever used, but are not a reason to keep the disposable recovery project.
 - **Not tested**: separately restored Storage binary images, live Auth sign-in within recovery with correct recovery Auth settings, active Edge Functions, outbound notifications, payment processing, measured RPO/RTO, or a destructive simulated total-service outage. The objective of this exercise was a real dated physical database restore and read-only validation, **which passed**.
 - **COST:** The new recovery project is separate from the previously authorized Supabase test branch. Additional displayed monthly estimate was $9.68; billing ceases only after confirmed deletion of this temporary project. Do not delete the working test branch or production. No deletion has been authorized or attempted as part of this validation.
+
+
+## Update — Temporary recovery cleanup and live Stripe readiness (2026-10-17)
+
+### Recovery project deletion confirmed
+
+User deleted the authorized temporary recovery project after the successful physical database restore. Supabase `list_projects` now lists **only** the original production project `jtnyqzxlipekwtoyvcmb`. A direct lookup for removed project `wfhwdtdwpnyxwusaklpl` was rejected; the project is absent from the currently accessible inventory. Separately, `list_branches` confirms the Phase One E2E test branch `cbqxcbvjezehxkgkgzpjrpjbl` is still active and healthy. Production is also `ACTIVE_HEALTHY`. The standalone recovery project's additional monthly compute should cease after deletion, subject to Supabase's actual billing adjustments.
+
+**Do not confuse the deleted recovery project with the still-running and billable Supabase Phase One test branch.** Do not delete the working test branch until release evidence has been preserved and explicit approval has been obtained.
+
+### Live-account prelaunch audit (read-only)
+
+- Live Stripe Tax reports `active`, with **0 live registrations**; default tax behavior is `inferred_by_currency` and tax code is `txcd_10202000`. Consult qualified tax advice for the real pilot merchant(s), registration jurisdictions, nexus/marketplace-facilitator rules, and correct merchandise vs. shipping tax treatment; do not infer registration from Stripe Tax being active.
+- Live Stripe Connect lists **0 actual retailer connected accounts**; live Billing lists **0 retailer subscriptions**.
+- Production `public.businesses` has 1 record with setup complete and 4% fee configured, but **no live Connect account, no live charge capability, and no eligible subscription**. Production has 0 orders.
+- Production `concierge-actions` edge function version 12 contains a guard for live checkout: it requires both `CONCIERGE_LIVE_CHECKOUT_ENABLED=true` and `CONCIERGE_TAX_CONFIGURED=true` when using a non-test Stripe key. **Environment values were not read**, so this is a code-path check, not conclusive proof both gates are currently disabled. Do not set either flag until tax, first real retailer and release readiness are approved.
+- Supabase production security advisor returned INFO-only RLS policy note; no ERROR or WARN-level security advisories were reported in that query.
+- GitHub checkout & stock-handling PR `the-concierge#19` and retailer dashboard PR `concierge-pro#11` are still open. Both heads passed their latest GitHub tests. Production code and live payment workflows have not been promoted from the testing branches.
+
+### Still open before Phase One production pilot
+
+1. A **separate Storage object-blob backup and recovery test** (physical DB backups do not include stored file bytes).
+2. **Direct Storage API negative tests** with two authenticated sessions proving that the retailer cannot download the shopper's private image and cannot delete it; PostgreSQL RLS impersonation already passed.
+3. First **genuine authorized pilot retailer**, real Stripe Connect onboarding/capabilities, merchant billing plan and company policy agreements; do not use synthetic/test trialing state for production.
+4. Document applicable Stripe Tax registrations and test real merchandise/shipping tax logic; obtain professional guidance on collection obligations.
+5. Stage migrations/Edge Functions in correct order, run production-like smoke + security tests, explicitly approve release; keep customer checkout gated until launch readiness.
+
+This entry records read-only evidence and audit status only. No live systems were modified.
