@@ -21,3 +21,13 @@ test('successful Add to Cart offers a persistent path to checkout', () => {
 test('product price is visibly denominated in dollars', () => {
   assert.match(detail, /<span>\$<\/span>\{product\.price\.toFixed\(2\)\}/);
 });
+
+
+test('wishlist never renders a bare dollar sign for unverified prices', () => {
+  const wishlist = readFileSync(new URL('../src/pages/Wishlist.jsx', import.meta.url), 'utf8');
+  assert.match(wishlist, /item\.product_price != null/);
+  assert.match(wishlist, /Number\.isFinite\(Number\(item\.product_price\)\)/);
+  assert.match(wishlist, /Number\(item\.product_price\) > 0/);
+  assert.match(wishlist, /Price unavailable/);
+  assert.doesNotMatch(wishlist, /\$\{item\.product_price\?\.toFixed\(2\)\}/);
+});

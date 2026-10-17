@@ -189,7 +189,14 @@ export default function Wishlist() {
                   
                   <div className="p-3">
                     <h3 className="font-medium text-[var(--color-text-primary)] text-sm truncate">{item.product_name}</h3>
-                    <p className="font-semibold text-[var(--color-text-primary)] mt-1">${item.product_price?.toFixed(2)}</p>
+                    <p className="font-semibold text-[var(--color-text-primary)] mt-1">
+                      {item.product_price != null &&
+                       item.product_price !== '' &&
+                       Number.isFinite(Number(item.product_price)) &&
+                       Number(item.product_price) > 0
+                        ? `${Number(item.product_price).toFixed(2)}`
+                        : 'Price unavailable'}
+                    </p>
                     
                     <div className="flex items-center justify-between mt-3">
                       <Switch
