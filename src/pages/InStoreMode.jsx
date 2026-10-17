@@ -276,7 +276,8 @@ export default function InStoreMode() {
             <Button
               onClick={() => setShowStoreSelector(true)}
               variant="outline"
-              className="w-full h-16 border-white/20 text-white hover:bg-white/10 rounded-2xl font-medium text-base"
+              className="w-full h-16 rounded-2xl font-medium text-base"
+              style={{ backgroundColor: '#272727', color: '#ffffff', borderColor: '#6b7280' }}
             >
               <MapPin className="w-5 h-5 mr-2" />
               Select Store Manually
