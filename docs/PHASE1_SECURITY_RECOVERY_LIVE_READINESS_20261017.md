@@ -38,3 +38,20 @@ Project: test branch `cbqxcbvjezehxowarkoq`; Auth accounts: synthetic shopper an
 - **OPEN**: Actual dated backup + isolated restore + Storage bytes + post-restore Auth/app/payment tests.
 - **OPEN**: Live tax registration determination, genuine retailer Connect onboarding, live subscription status, production checkout approvals.
 - **PRODUCTION NOT CHANGED**. This document is audit evidence, not an authorization to merge the preview branches or activate live checkout.
+
+
+## Update — completed two-account browser image upload tests (2026-10-17)
+
+**PASSED — private shopper image bytes:** The synthetic shopper uploaded a real 3.2 MB JPEG to `concierge-sensitive/<shopper-uid>/...` through Precision Photo Scan. Initial signed-URL retrieval produced no onscreen image; the app was repaired to use authenticated Storage `download()` and a local revocable blob URL. The shopper reopened the preview with **Load Last Private Photo** and saw the TEST image. Supabase storage logs independently show a successful 200 download of the private object.
+
+**PASSED — public retailer image bytes:** The synthetic retailer uploaded a real JPEG through the post-onboarding **Upload test store image** control. The user confirmed the image preview and **Store image uploaded and saved** message. Supabase contains one JPEG in `concierge-uploads/<retailer-uid>/...`, and `public.businesses.logo_url` points to that exact object in the test project's public bucket. The correct business-owner identity was verified.
+
+**PASSED — RLS on those exact persisted objects:** Impersonation at the PostgreSQL RLS layer (`SET LOCAL ROLE authenticated` and `request.jwt.claim.sub`) verified:
+- Shopper: own sensitive object **1**, other sensitive **0**, public objects **1**.
+- Retailer: own sensitive **0** (none uploaded), shopper sensitive **0**, public objects **1**.
+- Anonymous role: private **0**, public **1**.
+- Earlier rolled-back insert/update tests blocked cross-user paths. No production data mutated.
+
+**Coverage boundary:** Private cross-account refusal above is an RLS-level test on actual object rows, not a second signed-in browser's attempt to download another user's private URL. Storage API cross-account read/delete tests and deletion/cleanup via the Storage API remain unverified. Do not upload genuine body scans into test branches until the security/recovery gates are fully cleared.
+
+**Recovery remains OPEN:** Transaction-only logical round-trip passed earlier but is not a dated managed backup restore. Need isolated recovery target, actual dated backup verification, a separate Storage-blob recovery, and post-restore app/auth smoke tests. Do not restore over production or the current checkout-evidence branch.
