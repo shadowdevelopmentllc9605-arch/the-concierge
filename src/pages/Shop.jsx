@@ -16,6 +16,7 @@ export default function Shop() {
   
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [catalogLoadError, setCatalogLoadError] = useState('');
   const [search, setSearch] = useState('');
   const [filters, setFilters] = useState({
     style: urlParams.get('style') || '',
@@ -55,6 +56,8 @@ export default function Shop() {
 
   const loadData = async () => {
     setLoading(true);
+    setCatalogLoadError('');
+    let catalogLoaded = false;
     try {
       const currentUser = await base44.auth.me();
       setUser(currentUser);
@@ -71,6 +74,7 @@ export default function Shop() {
         ? await base44.entities.Product.filter(query)
         : await base44.entities.Product.list('-created_date', 50);
       setProducts(allProducts);
+      catalogLoaded = true;
 
       const profiles = await base44.entities.UserProfile.filter({ user_id: currentUser.id });
       setProfile(profiles[0] || null);
@@ -126,6 +130,9 @@ export default function Shop() {
       setCartCount(cartItems.length);
     } catch (error) {
       console.error(error);
+      if (!catalogLoaded) {
+        setCatalogLoadError('Products could not be loaded right now. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
@@ -539,6 +546,13 @@ export default function Shop() {
               <div key={i} className="aspect-[3/4] rounded-2xl bg-[var(--color-placeholder)] animate-pulse" />
             ))}
           </div>
+        ) : catalogLoadError ? (
+          <div role="alert" className="text-center py-20">
+            <p className="font-medium text-[var(--color-text-primary)] mb-2">{catalogLoadError}</p>
+            <Button type="button" onClick={() => loadData()} variant="outline" className="mx-auto">
+              Try again
+            </Button>
+          </div>
         ) : filteredProducts.length === 0 ? (
           <div className="text-center py-20">
             <Sparkles className="w-12 h-12 text-[var(--color-text-muted)] mx-auto mb-4" />
@@ -549,13 +563,21 @@ export default function Shop() {
           <div className="grid grid-cols-2 gap-4">
             <AnimatePresence>
               {filteredProducts.map((product, idx) => (
-                <motion.button
+                <motion.div
                   key={product.id}
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: idx * 0.05 }}
+                  role="link"
+                  tabIndex={0}
+                  aria-label={`View product: ${product.name}`}
                   onClick={() => navigate(createPageUrl(`ProductDetail?id=${product.id}`))}
-                  className="text-left group select-none"
+                  onKeyDown={(e) => {
+                    if (e.target !== e.currentTarget || !['Enter', ' '].includes(e.key)) return;
+                    e.preventDefault();
+                    navigate(createPageUrl(`ProductDetail?id=${product.id}`));
+                  }}
+                  className="text-left group select-none cursor-pointer"
                 >
                   <div className="relative aspect-[3/4] rounded-2xl overflow-hidden bg-[var(--color-placeholder)] mb-3">
                     {product.images?.[0] ? (
@@ -570,6 +592,8 @@ export default function Shop() {
                       </div>
                     )}
                     <button
+                      type="button"
+                      aria-label={wishlist.includes(product.id) ? `Remove ${product.name} from wishlist` : `Save ${product.name} to wishlist`}
                       onClick={(e) => toggleWishlist(product, e)}
                       className={`absolute top-3 right-3 w-9 h-9 rounded-full flex items-center justify-center transition-colors select-none ${
                         wishlist.includes(product.id)
@@ -613,7 +637,7 @@ export default function Shop() {
                       <Store className="w-3 h-3" /> Verified online offer
                     </p>
                   )}
-                </motion.button>
+                </motion.div>
               ))}
             </AnimatePresence>
           </div>
