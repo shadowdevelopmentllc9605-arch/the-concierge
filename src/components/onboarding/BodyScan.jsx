@@ -16,6 +16,9 @@ import { resolveFileUrl } from '@/lib/privateFiles';
 import { deriveGenericSuggestedSizes } from '@/lib/fitRecommendation';
 import { MEASUREMENT_PROTOCOL_VERSION } from '@/lib/measurementDefinitions';
 
+// Match the uploader's fail-closed production feature gate.
+const privateScansEnabled = import.meta.env.VITE_PRIVATE_UPLOADS_ENABLED === 'true';
+
 const REVIEW_FIELDS = [
   { key: 'chest', label: 'Chest', verify: true },
   { key: 'bust', label: 'Bust', verify: true },
@@ -313,6 +316,34 @@ export default function BodyScan({ profile, concierge, onComplete }) {
 
   const allScansComplete = scans.front && scans.side && scans.back;
   const guideMessage = "I'll build the fullest fit profile I can from three calibrated photos. A tape measure can improve confidence, but it is not required.";
+
+  // Never force a shopper to capture private body photos while secure
+  // off-site image-file backup and recovery have not been verified.
+  if (!privateScansEnabled) {
+    return (
+      <div className="max-w-md mx-auto">
+        <div className="bg-white border border-[#e5e7eb] rounded-2xl p-6 space-y-5">
+          <div className="flex items-center gap-3">
+            <ShieldCheck className="w-7 h-7 text-[#9d7b32]" aria-hidden="true" />
+            <h1 className="text-2xl font-medium text-[#2d2d2d]">Body scans are paused</h1>
+          </div>
+          <p className="text-[#4b5563]">
+            For the Phase One pilot, private body photos are disabled until independent
+            image backup and restoration have been tested. You can continue shopping
+            without a body scan and add measurements later.
+          </p>
+          <Button
+            type="button"
+            onClick={() => onComplete({})}
+            className="w-full min-h-12 bg-[#c9a962] hover:bg-[#b8944d] text-white"
+          >
+            Continue without body scan
+            <ArrowRight className="ml-2 w-4 h-4" aria-hidden="true" />
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   if (scanResult) {
     return (
