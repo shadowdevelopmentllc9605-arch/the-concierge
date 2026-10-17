@@ -230,7 +230,6 @@ export default function ProductDetail() {
       }
 
       setAddedToCart(true);
-      setTimeout(() => setAddedToCart(false), 2000);
     } catch (error) {
       setCartError(error?.message || 'Unable to add this item to the cart.');
       console.error(error);
@@ -310,7 +309,7 @@ export default function ProductDetail() {
     : { label: '', detail: '', verified: false };
 
   return (
-    <div className="min-h-screen bg-[var(--color-background)] pb-32">
+    <div className="min-h-screen bg-[var(--color-background)] pb-48">
       {/* Header */}
       <div className="fixed top-0 left-0 right-0 z-50 px-4 py-4 flex items-center justify-between safe-area-top">
         <button
@@ -514,7 +513,7 @@ export default function ProductDetail() {
       </motion.div>
 
       {/* Bottom Action */}
-      <div className="fixed bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-[var(--color-background)] via-[var(--color-background)] to-transparent safe-area-bottom">
+      <div className="fixed bottom-0 left-0 right-0 z-40 p-4 bg-[var(--color-background)] border-t border-[var(--color-border-light)] safe-area-bottom" style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 16px)' }}>
         {cartError && <p role="alert" className="text-sm text-red-600 mb-3 bg-white/95 rounded-lg p-2">{cartError}</p>}
         <Button
           onClick={addToCart}
@@ -546,6 +545,12 @@ export default function ProductDetail() {
             </>
           )}
         </Button>
+        {addedToCart && (
+          <Button type="button" variant="outline" onClick={() => navigate(createPageUrl('Cart'))}
+            className="w-full h-12 mt-2 rounded-xl border-2 border-[var(--color-text-primary)] text-[var(--color-text-primary)] bg-[var(--color-background)]">
+            View Cart & Checkout
+          </Button>
+        )}
       </div>
     </div>
   );
