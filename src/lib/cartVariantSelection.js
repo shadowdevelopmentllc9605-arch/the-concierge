@@ -64,3 +64,19 @@ export function buildVerifiedCartLine(product, selection = {}, now = Date.now())
     quantity: 1
   };
 }
+
+// When exactly one verified, sellable size/color/width combination exists,
+// preselect only that variant. Never silently guess among multiple options.
+export function getSingleVerifiedVariantSelection(product, now = Date.now()) {
+  const variants = Array.isArray(product?.variants) ? product.variants : [];
+  const selections = variants.filter(v => v.active !== false).map(v => {
+    const selection = {
+      size: normalized(v.size_label ?? v.size),
+      color: normalized(v.color_name ?? v.color),
+      width: normalized(v.width_code),
+    };
+    const matched = getAvailableCartOffers(product, selection, now);
+    return matched.length === 1 && matched[0].variantId === v.id ? selection : null;
+  }).filter(Boolean);
+  return selections.length === 1 ? selections[0] : null;
+}
