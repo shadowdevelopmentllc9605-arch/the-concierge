@@ -372,6 +372,11 @@ export const base44 = {
       },
       // Sensitive body and measurement scans must never be served from the public bucket.
       async UploadPrivateFile({ file }) {
+        // Do not collect sensitive body scans in production until encrypted,
+        // independently recoverable object backups are operational.
+        if (import.meta.env.VITE_PRIVATE_UPLOADS_ENABLED !== 'true') {
+          throw new Error('Private photo uploads are temporarily unavailable until secure image backups are configured.');
+        }
         const { data: auth, error: authError } = await supabase.auth.getUser();
         if (authError || !auth?.user?.id) throw new Error('Sign in before uploading an image.');
         if (!file) throw new Error('Choose an image to upload.');
