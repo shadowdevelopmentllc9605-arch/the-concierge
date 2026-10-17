@@ -97,3 +97,18 @@ User deleted the authorized temporary recovery project after the successful phys
 5. Stage migrations/Edge Functions in correct order, run production-like smoke + security tests, explicitly approve release; keep customer checkout gated until launch readiness.
 
 This entry records read-only evidence and audit status only. No live systems were modified.
+
+
+## Update — Direct retailer Storage HTTP negative checks PASSED (2026-10-17)
+
+The user ran a **temporary test-only diagnostic** on the live signed-in synthetic retailer session in the Concierge Pro Vercel preview against the existing synthetic shopper's real private `concierge-sensitive` JPEG. Onscreen results explicitly showed:
+- **Private download: BLOCKED** (the Storage API did not return private bytes).
+- **Private folder listing: BLOCKED (empty listing)**.
+- **Unauthorized image upload: BLOCKED** (the Storage API rejected an attempt to write a new disposable PNG under the shopper's private UUID prefix).
+- **PASS — signed-in retailer denied**.
+
+This adds authenticated SDK/API evidence to the previously verified database RLS identity impersonation. The diagnostic did not render or copy private image contents. It was removed from the production-bound Concierge Pro code, and its test file was deleted from that branch.
+
+**Limitations:** Cross-account delete was deliberately not attempted against an irreplaceable private photo; negative DELETE requires a disposable file with a verified independent backup. API denial for a retailer reading the shopper is proven, but the reverse (shopper downloading an actually private retailer image) cannot be exercised until that account has its own private image. Shopper's own download and public retailer logo retrieval both passed earlier.
+
+The independent encrypted blob-backup and recovered-image-byte round-trip remains an **OPEN operational gate**. A detailed plan is committed in `docs/STORAGE_IMAGE_RECOVERY_RUNBOOK.md`. No backup archive or off-site destination has been provisioned. Do not claim real customer-image disaster recovery is complete, or accept sensitive scans at public launch until that work is implemented.
