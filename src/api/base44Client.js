@@ -1,4 +1,5 @@
 import { supabase } from '@/api/supabaseClient';
+import { isSellableOffer } from '@/lib/cartVariantSelection';
 
 const directTables = {
   CartItem: 'cart_items',
@@ -192,16 +193,18 @@ const loadProducts = async (filters = {}, sort = '-created_date', limit = 100) =
   return (products || []).map(p => {
     const pv = variants.filter(v => v.product_master_id === p.id);
     const po = offers.filter(o => o.product_master_id === p.id);
-    const priced = po
-      .map(o => ({ ...o, effective_price: o.current_price ?? o.sale_price ?? o.regular_price }))
-      .filter(o => o.effective_price !== null && o.effective_price !== undefined)
-      .sort((a,b) => Number(a.effective_price) - Number(b.effective_price));
-    const offer = priced[0] || po[0];
+    const sellable = po.filter(o => isSellableOffer(o));
+    const priced = sellable
+      .map(o => ({ ...o, effective_price: o.sale_active && Number(o.sale_price) > 0
+        ? Number(o.sale_price)
+        : (Number(o.current_price) > 0 ? Number(o.current_price) : Number(o.regular_price)) }))
+      .sort((a,b) => a.effective_price - b.effective_price);
+    const offer = priced[0] || null;
     const retailVariants = pv.map(v => ({
       ...v,
       size: v.size_label || '',
       color: v.color_name || '',
-      stock_quantity: po.filter(o => o.product_variant_id === v.id && o.active)
+      stock_quantity: sellable.filter(o => o.product_variant_id === v.id || !o.product_variant_id)
         .reduce((highest, o) => Math.max(highest, Number(o.stock_quantity) || 0), 0)
     }));
     return {
@@ -210,7 +213,7 @@ const loadProducts = async (filters = {}, sort = '-created_date', limit = 100) =
       brand: p.brand_name,
       images: p.image_urls?.length ? p.image_urls : (p.primary_image_url ? [p.primary_image_url] : []),
       image_url: p.primary_image_url,
-      price: offer?.effective_price ?? 0,
+      price: offer?.effective_price ?? null,
       vendor_id: offer?.business_id || offer?.retailer_key || null,
       variants: retailVariants,
       offers: po,
@@ -218,7 +221,7 @@ const loadProducts = async (filters = {}, sort = '-created_date', limit = 100) =
       colors: [...new Set(pv.map(v => v.color_name).filter(Boolean))],
       width_options: [...new Set(pv.map(v => v.width_code).filter(Boolean))],
       // Only confirmed availability is treated as in stock; unknown is not a promise.
-      in_stock: po.some(o => ['in_stock', 'limited'].includes(String(o.availability || '').toLowerCase())),
+      in_stock: sellable.length > 0,
       style_type: p.product_type || p.subcategory || '',
       created_date: p.created_at,
       updated_date: p.updated_at

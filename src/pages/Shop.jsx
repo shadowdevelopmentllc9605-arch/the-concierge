@@ -588,7 +588,7 @@ export default function Shop() {
                   <p className="text-sm font-medium text-[var(--color-text-primary)] truncate">{product.name}</p>
                   <p className="text-xs text-[var(--color-text-secondary)] mb-1">{product.brand}</p>
                   <div className="flex items-center gap-2 mb-1">
-                    <p className="text-sm font-semibold text-[var(--color-text-primary)]">${product.price?.toFixed(2)}</p>
+                    <p className="text-sm font-semibold text-[var(--color-text-primary)]">{Number.isFinite(product.price) ? `${product.price.toFixed(2)}` : 'Price unavailable'}</p>
                   </div>
                   {(() => {
                     const recommendation = getProductRecommendation(product);
@@ -605,9 +605,12 @@ export default function Shop() {
                       <p className="text-xs text-[var(--color-text-muted)]">Choose size on product page</p>
                     );
                   })()}
-                  {product.vendor_id && (
+                  {!product.in_stock && (
+                    <p className="text-xs text-[var(--color-text-muted)] mt-1">Availability not verified</p>
+                  )}
+                  {product.in_stock && product.vendor_id && (
                     <p className="text-xs text-[var(--color-text-muted)] flex items-center gap-1 mt-1">
-                      <Store className="w-3 h-3" /> Available in-store
+                      <Store className="w-3 h-3" /> Verified online offer
                     </p>
                   )}
                 </motion.button>

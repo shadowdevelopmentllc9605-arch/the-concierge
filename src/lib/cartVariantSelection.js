@@ -3,6 +3,20 @@
 const normalized = (value) => String(value ?? '').trim();
 const toCents = (value) => Math.round(Number(value) * 100);
 
+export function isSellableOffer(o, now = Date.now()) {
+  if (o?.active !== true || !o.business_id || o.available_online !== true) return false;
+  if (!['in_stock', 'limited'].includes(o.availability)) return false;
+  if (!['shipping', 'shipping_and_pickup'].includes(o.fulfillment)) return false;
+  if (!o.stale_after || new Date(o.stale_after).getTime() <= now) return false;
+  if (o.offer_scope === 'variant' && !o.product_variant_id) return false;
+  if (o.currency && normalized(o.currency).toLowerCase() !== 'usd') return false;
+  if (o.stock_quantity != null && Number(o.stock_quantity) < 1) return false;
+  const raw = o.sale_active && Number(o.sale_price) > 0 ? o.sale_price
+    : (Number(o.current_price) > 0 ? o.current_price : o.regular_price);
+  const cents = toCents(raw);
+  return Number.isSafeInteger(cents) && cents > 0 && cents <= 100000000;
+}
+
 export function getAvailableCartOffers(product, selection = {}, now = Date.now()) {
   const variants = Array.isArray(product?.variants) ? product.variants : [];
   const offers = Array.isArray(product?.offers) ? product.offers : [];
@@ -17,21 +31,12 @@ export function getAvailableCartOffers(product, selection = {}, now = Date.now()
   );
   // Never silently lose a size/colour selection, or guess between variants.
   if (variants.length && matches.length !== 1) return [];
+  if (!variants.length && (size || color || width)) return [];
   const variantId = matches[0]?.id ?? null;
-  return offers.filter(o => {
-    if (o.active !== true || !o.business_id || o.available_online !== true) return false;
-    if (!['in_stock', 'limited'].includes(o.availability)) return false;
-    if (!['shipping', 'shipping_and_pickup'].includes(o.fulfillment)) return false;
-    if (!o.stale_after || new Date(o.stale_after).getTime() <= now) return false;
-    if (o.offer_scope === 'variant' && !o.product_variant_id) return false;
-    if (o.product_variant_id && o.product_variant_id !== variantId) return false;
-    if (o.currency && normalized(o.currency).toLowerCase() !== 'usd') return false;
-    if (o.stock_quantity != null && Number(o.stock_quantity) < 1) return false;
-    const raw = o.sale_active && Number(o.sale_price) > 0 ? o.sale_price
-      : (Number(o.current_price) > 0 ? o.current_price : o.regular_price);
-    const cents = toCents(raw);
-    return Number.isSafeInteger(cents) && cents > 0 && cents <= 100000000;
-  }).map(o => ({
+  return offers.filter(o =>
+    isSellableOffer(o, now) &&
+    (!o.product_variant_id || o.product_variant_id === variantId)
+  ).map(o => ({
     offer: o,
     variantId,
     priceCents: toCents(o.sale_active && Number(o.sale_price) > 0 ? o.sale_price

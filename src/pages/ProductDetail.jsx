@@ -361,7 +361,7 @@ export default function ProductDetail() {
             <p className="text-sm text-[var(--color-text-secondary)] mb-1">{product.brand}</p>
             <h1 className="text-2xl font-medium text-[var(--color-text-primary)]">{product.name}</h1>
           </div>
-          <p className="text-2xl font-semibold text-[var(--color-text-primary)]">${product.price?.toFixed(2)}</p>
+          <p className="text-2xl font-semibold text-[var(--color-text-primary)]">{Number.isFinite(product.price) ? `${product.price.toFixed(2)}` : 'Price unavailable'}</p>
         </div>
 
         {product.description && (
@@ -522,6 +522,7 @@ export default function ProductDetail() {
             ((product.sizes?.length || 0) > 0 && !selectedSize) ||
             (widthOptions.length > 0 && !selectedWidth) ||
             ((product.colors?.length || 0) > 0 && !selectedColor) ||
+            !product.in_stock ||
             !selectionInStock ||
             addingToCart
           }

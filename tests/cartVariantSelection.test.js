@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { buildVerifiedCartLine, getAvailableCartOffers } from '../src/lib/cartVariantSelection.js';
+import { buildVerifiedCartLine, getAvailableCartOffers, isSellableOffer } from '../src/lib/cartVariantSelection.js';
 
 const now = Date.parse('2026-10-16T12:00:00Z');
 const product = () => ({
@@ -63,4 +63,19 @@ test('uses a valid promotional price only when the sale is active', () => {
   assert.equal(buildVerifiedCartLine(p, selected, now).unit_price, 19.99);
   p.offers[0].sale_active = false;
   assert.equal(buildVerifiedCartLine(p, selected, now).unit_price, 25);
+});
+
+test('catalog availability expires and missing retailer link is never sellable', () => {
+  const p = product();
+  assert.equal(isSellableOffer(p.offers[0], now), true);
+  assert.equal(isSellableOffer(p.offers[0], Date.parse('2026-10-19T12:00:00Z')), false);
+  p.offers[0].business_id = null;
+  assert.equal(isSellableOffer(p.offers[0], now), false);
+});
+test('never loses a selected size when the product has no variant record', () => {
+  const p = product();
+  p.variants = [];
+  p.offers[0].offer_scope = 'style';
+  p.offers[0].product_variant_id = null;
+  assert.throws(() => buildVerifiedCartLine(p, selected, now), /verified/);
 });
