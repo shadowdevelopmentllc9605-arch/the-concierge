@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { buildVerifiedCartLine, getAvailableCartOffers, isSellableOffer } from '../src/lib/cartVariantSelection.js';
+import { buildVerifiedCartLine, getAvailableCartOffers, isSellableOffer, getSingleVerifiedVariantSelection } from '../src/lib/cartVariantSelection.js';
 
 const now = Date.parse('2026-10-16T12:00:00Z');
 const product = () => ({
@@ -78,4 +78,31 @@ test('never loses a selected size when the product has no variant record', () =>
   p.offers[0].offer_scope = 'style';
   p.offers[0].product_variant_id = null;
   assert.throws(() => buildVerifiedCartLine(p, selected, now), /verified/);
+});
+
+test('auto-selects a sole verified M Blue variant without guessing', () => {
+  const p = product();
+  p.variants = p.variants.slice(0, 1);
+  assert.deepEqual(getSingleVerifiedVariantSelection(p, now), {
+    size: 'M', color: 'Blue', width: ''
+  });
+});
+test('never preselects among multiple sellable variants', () => {
+  const p = product();
+  p.offers.push({
+    ...p.offers[0], id: 'offer-L', product_variant_id: 'variant-L-blue'
+  });
+  assert.equal(getSingleVerifiedVariantSelection(p, now), null);
+});
+test('never auto-selects an expired, missing-business, or duplicate retailer offer', () => {
+  const p = product();
+  p.variants = p.variants.slice(0, 1);
+  p.offers[0].stale_after = '2026-10-14T12:00:00Z';
+  assert.equal(getSingleVerifiedVariantSelection(p, now), null);
+  p.offers[0].stale_after = '2026-10-18T12:00:00Z';
+  p.offers[0].business_id = null;
+  assert.equal(getSingleVerifiedVariantSelection(p, now), null);
+  p.offers[0].business_id = 'merchant-123';
+  p.offers.push({ ...p.offers[0], id: 'offer-duplicate' });
+  assert.equal(getSingleVerifiedVariantSelection(p, now), null);
 });
