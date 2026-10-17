@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
-import { resolveFileUrl } from '@/lib/privateFiles';
+import { downloadPrivateImagePreview, findLatestOwnPrivatePhoto } from '@/lib/privateFiles';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Camera, CheckCircle2, Loader2, RotateCcw, ShieldCheck } from 'lucide-react';
 
@@ -63,7 +63,7 @@ function calibrationConfidence(points, image) {
   return Math.round(Math.max(70, Math.min(92, score)));
 }
 
-function AnnotationImage({ src, points, onPoint, labels, imageRef }) {
+function AnnotationImage({ src, points, onPoint, labels, imageRef, onLoaded, onFailure }) {
   return (
     <div className="space-y-3">
       <div
@@ -78,8 +78,10 @@ function AnnotationImage({ src, points, onPoint, labels, imageRef }) {
         <img
           ref={imageRef}
           src={src}
-          alt="Precision measurement"
+          alt="Private precision measurement preview"
           className="w-full max-h-[62vh] object-contain"
+          onLoad={onLoaded}
+          onError={onFailure}
         />
         {points.map((point, index) => (
           <div
@@ -121,10 +123,33 @@ export default function PrecisionScan() {
   const [error, setError] = useState('');
   const [photoUri, setPhotoUri] = useState('');
   const [photoUrl, setPhotoUrl] = useState('');
+  const [photoLoaded, setPhotoLoaded] = useState(false);
+  const previewBlobUrlRef = useRef('');
   const [points, setPoints] = useState([]);
   const [results, setResults] = useState(/** @type {Record<string, any>} */ ({}));
   const fileRef = useRef(null);
   const imageRef = useRef(null);
+
+  const clearPhotoPreview = () => {
+    if (previewBlobUrlRef.current) URL.revokeObjectURL(previewBlobUrlRef.current);
+    previewBlobUrlRef.current = '';
+    setPhotoUrl('');
+    setPhotoLoaded(false);
+  };
+
+  const displayPrivatePhoto = async (uri) => {
+    const url = await downloadPrivateImagePreview(uri);
+    if (previewBlobUrlRef.current) URL.revokeObjectURL(previewBlobUrlRef.current);
+    previewBlobUrlRef.current = url;
+    setPhotoUri(uri);
+    setPhotoLoaded(false);
+    setPhotoUrl(url);
+    setPoints([]);
+  };
+
+  useEffect(() => () => {
+    if (previewBlobUrlRef.current) URL.revokeObjectURL(previewBlobUrlRef.current);
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -146,7 +171,7 @@ export default function PrecisionScan() {
     else if (mode === 'feet') setStage('left_foot');
     else setStage('head_front');
     setPhotoUri('');
-    setPhotoUrl('');
+    clearPhotoPreview();
     setPoints([]);
     setResults({});
   }, [mode]);
@@ -178,17 +203,31 @@ export default function PrecisionScan() {
     setUploading(true);
     setError('');
     try {
+      if (!file.size) throw new Error('Your camera did not supply an image. Choose a saved JPG or PNG instead.');
       const { file_uri } = await base44.integrations.Core.UploadPrivateFile({ file });
-      const signed = await resolveFileUrl(file_uri);
-      setPhotoUri(file_uri);
-      setPhotoUrl(signed);
-      setPoints([]);
+      setPhotoUri(file_uri); // Preserve the uploaded reference even if display fails.
+      await displayPrivatePhoto(file_uri); // Authenticated download verifies real image bytes.
     } catch (uploadError) {
-      console.error(uploadError);
-      setError('That precision photo could not be uploaded.');
+      console.error('Private image preview:', uploadError);
+      setError(uploadError?.message || 'Your private photo could not be displayed. You can restore the last upload below.');
     } finally {
       setUploading(false);
       if (fileRef.current) fileRef.current.value = '';
+    }
+  };
+
+  const restoreLastPrivatePhoto = async () => {
+    setUploading(true);
+    setError('');
+    try {
+      const latest = await findLatestOwnPrivatePhoto();
+      if (!latest) throw new Error('No previous private JPG or PNG upload was found.');
+      await displayPrivatePhoto(latest);
+    } catch (restoreError) {
+      console.error('Private image restore:', restoreError);
+      setError(restoreError?.message || 'Your last private image could not be loaded.');
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -228,7 +267,7 @@ export default function PrecisionScan() {
     }
 
     setPhotoUri('');
-    setPhotoUrl('');
+    clearPhotoPreview();
     setPoints([]);
     setError('');
   };
@@ -360,12 +399,18 @@ export default function PrecisionScan() {
               <p className="mt-1 text-xs text-[var(--color-text-secondary)] leading-relaxed">{instruction}</p>
             </div>
 
-            {error && <p className="mb-3 text-sm text-red-600">{error}</p>}
+            {error && <p role="alert" className="mb-3 rounded-xl bg-red-50 p-3 text-sm text-red-700">{error}</p>}
 
             {!photoUrl ? (
-              <Button onClick={() => fileRef.current?.click()} disabled={uploading} className="w-full h-14">
-                {uploading ? <Loader2 className="w-5 h-5 animate-spin" /> : <><Camera className="w-5 h-5 mr-2" />Take / Choose Photo</>}
-              </Button>
+              <div className="space-y-3">
+                <Button onClick={() => fileRef.current?.click()} disabled={uploading} className="w-full h-14">
+                  {uploading ? <><Loader2 className="w-5 h-5 mr-2 animate-spin" />Loading private photo…</> : <><Camera className="w-5 h-5 mr-2" />Take / Choose Photo</>}
+                </Button>
+                <Button variant="outline" disabled={uploading} onClick={restoreLastPrivatePhoto} className="w-full h-12">
+                  Load Last Private Photo
+                </Button>
+                <p className="text-xs text-[var(--color-text-secondary)]">Use this to restore a photo that uploaded but did not appear. Only your own private scans can be retrieved.</p>
+              </div>
             ) : (
               <>
                 <AnnotationImage
@@ -376,12 +421,18 @@ export default function PrecisionScan() {
                   }}
                   labels={currentLabels}
                   imageRef={imageRef}
+                  onLoaded={() => { setPhotoLoaded(true); setError(''); }}
+                  onFailure={() => {
+                    setPhotoLoaded(false);
+                    setError('The image was retrieved securely but could not be displayed by this browser. Try a JPG or PNG from your gallery.');
+                  }}
                 />
+                {!photoLoaded && <p role="status" className="mt-2 text-sm text-[var(--color-text-secondary)]">Loading saved private image…</p>}
                 <div className="grid grid-cols-2 gap-3 mt-4">
                   <Button variant="outline" onClick={() => setPoints([])}>
                     <RotateCcw className="w-4 h-4 mr-2" />Reset Points
                   </Button>
-                  <Button onClick={acceptStage} disabled={points.length !== currentLabels.length}>
+                  <Button onClick={acceptStage} disabled={!photoLoaded || points.length !== currentLabels.length}>
                     Save This Photo
                   </Button>
                 </div>

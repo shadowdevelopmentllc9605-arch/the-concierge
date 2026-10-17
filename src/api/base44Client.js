@@ -1,4 +1,5 @@
 import { supabase } from '@/api/supabaseClient';
+import { isSellableOffer } from '@/lib/cartVariantSelection';
 
 const directTables = {
   CartItem: 'cart_items',
@@ -30,7 +31,7 @@ const directTables = {
 
 const fieldMaps = {
   WishlistItem: { product_id: 'product_master_id', product_image: 'product_image_url', vendor_id: 'legacy_vendor_id' },
-  CartItem: { product_id: 'product_master_id', product_image: 'product_image_url', price: 'unit_price', product_price: 'unit_price' },
+  CartItem: { product_id: 'product_master_id', product_image: 'product_image_url', price: 'unit_price', product_price: 'unit_price', size: 'size_label', color: 'color_name' },
   Purchase: { user_id: 'shopper_user_id' },
   StoreCheckin: { user_id: 'shopper_user_id', vendor_id: 'legacy_vendor_id' },
   ProductReview: { product_id: 'product_master_id', vendor_id: 'business_id' },
@@ -58,6 +59,8 @@ const fromDb = (entity, row) => {
     out.product_image = row.product_image_url;
     out.price = row.unit_price;
     out.product_price = Number(row.unit_price ?? 0);
+    out.size = row.size_label || '';
+    out.color = row.color_name || '';
   }
   if (entity === 'Purchase') out.user_id = row.shopper_user_id;
   if (entity === 'StoreCheckin') {
@@ -190,24 +193,35 @@ const loadProducts = async (filters = {}, sort = '-created_date', limit = 100) =
   return (products || []).map(p => {
     const pv = variants.filter(v => v.product_master_id === p.id);
     const po = offers.filter(o => o.product_master_id === p.id);
-    const priced = po
-      .map(o => ({ ...o, effective_price: o.current_price ?? o.sale_price ?? o.regular_price }))
-      .filter(o => o.effective_price !== null && o.effective_price !== undefined)
-      .sort((a,b) => Number(a.effective_price) - Number(b.effective_price));
-    const offer = priced[0] || po[0];
+    const sellable = po.filter(o => isSellableOffer(o));
+    const priced = sellable
+      .map(o => ({ ...o, effective_price: o.sale_active && Number(o.sale_price) > 0
+        ? Number(o.sale_price)
+        : (Number(o.current_price) > 0 ? Number(o.current_price) : Number(o.regular_price)) }))
+      .sort((a,b) => a.effective_price - b.effective_price);
+    const offer = priced[0] || null;
+    const retailVariants = pv.map(v => ({
+      ...v,
+      size: v.size_label || '',
+      color: v.color_name || '',
+      stock_quantity: sellable.filter(o => o.product_variant_id === v.id || !o.product_variant_id)
+        .reduce((highest, o) => Math.max(highest, Number(o.stock_quantity) || 0), 0)
+    }));
     return {
       ...p,
       name: p.product_name,
       brand: p.brand_name,
       images: p.image_urls?.length ? p.image_urls : (p.primary_image_url ? [p.primary_image_url] : []),
       image_url: p.primary_image_url,
-      price: offer?.effective_price ?? 0,
+      price: offer?.effective_price ?? null,
       vendor_id: offer?.business_id || offer?.retailer_key || null,
+      variants: retailVariants,
+      offers: po,
       sizes: [...new Set(pv.map(v => v.size_label).filter(Boolean))],
       colors: [...new Set(pv.map(v => v.color_name).filter(Boolean))],
       width_options: [...new Set(pv.map(v => v.width_code).filter(Boolean))],
       // Only confirmed availability is treated as in stock; unknown is not a promise.
-      in_stock: po.some(o => ['in_stock', 'limited'].includes(String(o.availability || '').toLowerCase())),
+      in_stock: sellable.length > 0,
       style_type: p.product_type || p.subcategory || '',
       created_date: p.created_at,
       updated_date: p.updated_at
@@ -358,6 +372,11 @@ export const base44 = {
       },
       // Sensitive body and measurement scans must never be served from the public bucket.
       async UploadPrivateFile({ file }) {
+        // Do not collect sensitive body scans in production until encrypted,
+        // independently recoverable object backups are operational.
+        if (import.meta.env.VITE_PRIVATE_UPLOADS_ENABLED !== 'true') {
+          throw new Error('Private photo uploads are temporarily unavailable until secure image backups are configured.');
+        }
         const { data: auth, error: authError } = await supabase.auth.getUser();
         if (authError || !auth?.user?.id) throw new Error('Sign in before uploading an image.');
         if (!file) throw new Error('Choose an image to upload.');

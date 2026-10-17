@@ -62,6 +62,7 @@ import Wishlist from './pages/Wishlist';
 import Friends from './pages/Friends';
 import Notifications from './pages/Notifications';
 import PaymentMethods from './pages/PaymentMethods';
+import PrecisionScan from './pages/PrecisionScan';
 import FAQ from './pages/FAQ';
 import Support from './pages/Support';
 import __Layout from './Layout.jsx';
@@ -83,6 +84,7 @@ export const PAGES = {
     "Friends": Friends,
     "Notifications": Notifications,
     "PaymentMethods": PaymentMethods,
+    "PrecisionScan": PrecisionScan,
     "FAQ": FAQ,
     "Support": Support,
 }

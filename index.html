@@ -2,13 +2,75 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="https://base44.com/logo_v2.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="manifest" href="/manifest.json" />
-    <title>Base44 APP</title>
+    <meta name="theme-color" content="#ffffff" />
+    <title>The Concierge</title>
+    <style>
+      #concierge-startup {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        background: #ffffff;
+        color: #172033;
+        font-family: system-ui, -apple-system, sans-serif;
+        padding: 24px;
+        text-align: center;
+      }
+      #concierge-startup > div { max-width: 400px; }
+      #concierge-startup button {
+        margin-top: 14px; padding: 12px 20px; border: 0;
+        border-radius: 10px; background: #6d28d9; color: #fff;
+        font: inherit;
+      }
+      #concierge-startup-code {
+        font-size: 12px; color: #64748b; overflow-wrap: anywhere;
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>
+    <div id="concierge-startup" role="status" aria-live="polite">
+      <div>
+        <h2>The Concierge</h2>
+        <p id="concierge-startup-message">Opening The Concierge…</p>
+        <p id="concierge-startup-code"></p>
+        <button id="concierge-startup-retry" type="button" style="display:none">Try again</button>
+      </div>
+    </div>
+    <script>
+      (function() {
+        var ready = false;
+        var splash = document.getElementById('concierge-startup');
+        var message = document.getElementById('concierge-startup-message');
+        var detail = document.getElementById('concierge-startup-code');
+        var retry = document.getElementById('concierge-startup-retry');
+        retry.addEventListener('click', function() { window.location.reload(); });
+        function fail(code, description) {
+          if (ready) return;
+          message.textContent = 'The Concierge could not finish opening.';
+          detail.textContent = 'Reference: ' + code;
+          retry.style.display = 'inline-block';
+          splash.setAttribute('role', 'alert');
+        }
+        window.__conciergePreviewReady = function() {
+          ready = true;
+          splash.remove();
+        };
+        window.__conciergePreviewFailure = fail;
+        window.addEventListener('error', function(event) {
+          if (!ready) fail('SCRIPT_ERROR', event.message || 'A required file did not load');
+        }, true);
+        window.addEventListener('unhandledrejection', function(event) {
+          if (!ready) fail('STARTUP_PROMISE_ERROR', event.reason && event.reason.message || 'App initialization failed');
+        });
+        setTimeout(function() {
+          if (!ready) fail('STARTUP_TIMEOUT', 'Sign-in initialization took more than 15 seconds');
+        }, 15000);
+      })();
+    </script>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

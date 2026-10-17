@@ -46,6 +46,12 @@ Deno.serve(async(req)=>{
    if(o.data.save_card&&pm&&typeof pm==="object"&&pm.card){const existing=await admin.from("payment_methods").select("id").eq("user_id",o.data.user_id).eq("card_last_four",pm.card.last4).eq("expiry_month",pm.card.exp_month).eq("expiry_year",pm.card.exp_year).limit(1);if(existing.error)throw existing.error;if(!existing.data?.length){const m=await admin.from("payment_methods").insert({user_id:o.data.user_id,card_last_four:pm.card.last4,card_type:pm.card.brand,expiry_month:pm.card.exp_month,expiry_year:pm.card.exp_year,is_default:false,processor:"stripe"}).select().single();if(m.error)throw m.error;await admin.rpc("save_payment_method_processor_ref",{p_payment_method_id:m.data.id,p_processor_id:pm.id})}}
    const clear=await admin.from("cart_items").delete().eq("user_id",o.data.user_id);if(clear.error)throw clear.error;
    const up=await admin.from("orders").update({payment_status:"paid",fulfillment_status:"processing",platform_fee_status:"collected",shipping_address:address,subtotal:Number(full.amount_subtotal||0)/100,shipping_amount:Number(full.total_details?.amount_shipping||0)/100,tax_amount:Number(full.total_details?.amount_tax||0)/100,total:Number(full.amount_total||0)/100}).eq("id",orderId).neq("payment_status","refunded");if(up.error)throw up.error;
+   // Purchase lines and verified payment are now persisted. The database
+   // transaction posts tracked inventory exactly once and marks the retailer
+   // handoff completed. On missing/oversold offers it fails closed, preserving
+   // the pending sync state for investigation rather than claiming success.
+   const posted=await admin.rpc("finalize_paid_online_order_stock_and_sync",{p_order_id:orderId});
+   if(posted.error)throw posted.error;
  };
  // Do not mark an application fee refunded merely because the customer charge was refunded.
  // Confirm the full fee reversal with Stripe and bind the source charge to our checkout session.

@@ -5,6 +5,7 @@ import { createPageUrl } from '@/utils';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Heart, ShoppingBag, Sparkles, Check, Loader2 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
+import { buildVerifiedCartLine, getSingleVerifiedVariantSelection } from '@/lib/cartVariantSelection';
 import { deriveGenericFallbackSize, getCategoryGroup, getEffectiveSizeChart, getFitRecommendationPresentation, normalizeBrandKey, recommendFromSizeChart } from '@/lib/fitRecommendation';
 
 export default function ProductDetail() {
@@ -20,6 +21,7 @@ export default function ProductDetail() {
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [addingToCart, setAddingToCart] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
+  const [cartError, setCartError] = useState('');
   const [user, setUser] = useState(null);
   const [suggestedSize, setSuggestedSize] = useState('');
   const [suggestedWidth, setSuggestedWidth] = useState('');
@@ -45,10 +47,14 @@ export default function ProductDetail() {
 
       const products = await base44.entities.Product.filter({ id: productId });
       if (products.length > 0) {
-        setProduct(products[0]);
-        if (products[0].colors?.length > 0) {
-          setSelectedColor(products[0].colors[0]);
-        }
+        const loadedProduct = products[0];
+        setProduct(loadedProduct);
+        // A single verified SKU needs no extra tap. Multiple variants still
+        // require an intentional shopper selection.
+        const single = getSingleVerifiedVariantSelection(loadedProduct);
+        setSelectedSize(single?.size || '');
+        setSelectedColor(single?.color || '');
+        setSelectedWidth(single?.width || '');
       }
 
       // Get user profile and match measurements against this product's size chart when available.
@@ -195,38 +201,41 @@ export default function ProductDetail() {
     if (requiresWidth && !selectedWidth) return;
 
     setAddingToCart(true);
+    setCartError('');
     try {
+      const line = buildVerifiedCartLine(product, {
+        size: selectedSize,
+        width: selectedWidth,
+        color: selectedColor
+      });
       const existingItems = await base44.entities.CartItem.filter({
         user_id: user.id,
         product_id: product.id
       });
       const matchingItem = existingItems.find(item =>
-        (item.size || '') === (selectedSize || '') &&
-        (item.width_code || '') === (selectedWidth || '') &&
-        (item.color || '') === (selectedColor || '')
+        (item.product_variant_id || null) === line.product_variant_id &&
+        (item.size_label || '') === (line.size_label || '') &&
+        (item.width_code || '') === (line.width_code || '') &&
+        (item.color_name || '') === (line.color_name || '')
       );
 
       if (matchingItem) {
+        // Never retain a stale price after the verified offer changes.
         await base44.entities.CartItem.update(matchingItem.id, {
-          quantity: (matchingItem.quantity || 1) + 1
+          quantity: (matchingItem.quantity || 1) + 1,
+          unit_price: line.unit_price,
+          product_variant_id: line.product_variant_id
         });
       } else {
         await base44.entities.CartItem.create({
           user_id: user.id,
-          product_id: product.id,
-          product_name: product.name,
-          product_image: product.images?.[0],
-          product_price: product.price,
-          size: selectedSize || '',
-          width_code: selectedWidth || '',
-          color: selectedColor || '',
-          quantity: 1
+          ...line
         });
       }
 
       setAddedToCart(true);
-      setTimeout(() => setAddedToCart(false), 2000);
     } catch (error) {
+      setCartError(error?.message || 'Unable to add this item to the cart.');
       console.error(error);
     } finally {
       setAddingToCart(false);
@@ -303,8 +312,20 @@ export default function ProductDetail() {
     ? getFitRecommendationPresentation(recommendationSource)
     : { label: '', detail: '', verified: false };
 
+  const missingSize = (product.sizes?.length || 0) > 0 && !selectedSize;
+  const missingWidth = widthOptions.length > 0 && !selectedWidth;
+  const missingColor = (product.colors?.length || 0) > 0 && !selectedColor;
+  const canAddToCart = product.in_stock && selectionInStock &&
+    !missingSize && !missingWidth && !missingColor;
+  const cartActionLabel = !product.in_stock || !selectionInStock
+    ? 'Availability not verified'
+    : missingSize ? 'Select a size'
+    : missingColor ? 'Select a color'
+    : missingWidth ? 'Select a width'
+    : 'Add to Cart';
+
   return (
-    <div className="min-h-screen bg-[var(--color-background)] pb-32">
+    <div className="min-h-screen bg-[var(--color-background)] pb-48">
       {/* Header */}
       <div className="fixed top-0 left-0 right-0 z-50 px-4 py-4 flex items-center justify-between safe-area-top">
         <button
@@ -355,7 +376,7 @@ export default function ProductDetail() {
             <p className="text-sm text-[var(--color-text-secondary)] mb-1">{product.brand}</p>
             <h1 className="text-2xl font-medium text-[var(--color-text-primary)]">{product.name}</h1>
           </div>
-          <p className="text-2xl font-semibold text-[var(--color-text-primary)]">${product.price?.toFixed(2)}</p>
+          <p className="text-2xl font-semibold text-[var(--color-text-primary)]">{Number.isFinite(product.price) ? (<><span>$</span>{product.price.toFixed(2)}</>) : 'Price unavailable'}</p>
         </div>
 
         {product.description && (
@@ -508,20 +529,17 @@ export default function ProductDetail() {
       </motion.div>
 
       {/* Bottom Action */}
-      <div className="fixed bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-[var(--color-background)] via-[var(--color-background)] to-transparent safe-area-bottom">
+      <div className="fixed bottom-0 left-0 right-0 z-40 p-4 bg-[var(--color-background)] border-t border-[var(--color-border-light)] safe-area-bottom" style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 16px)' }}>
+        {cartError && <p role="alert" className="text-sm text-red-600 mb-3 bg-white/95 rounded-lg p-2">{cartError}</p>}
         <Button
           onClick={addToCart}
-          disabled={
-            ((product.sizes?.length || 0) > 0 && !selectedSize) ||
-            (widthOptions.length > 0 && !selectedWidth) ||
-            ((product.colors?.length || 0) > 0 && !selectedColor) ||
-            !selectionInStock ||
-            addingToCart
-          }
-          className={`w-full h-14 rounded-xl font-medium text-base transition-colors select-none ${
+          disabled={!canAddToCart || addingToCart}
+          className={`w-full h-14 rounded-xl font-semibold text-base transition-colors select-none disabled:opacity-100 ${
             addedToCart
-              ? 'bg-green-500 hover:bg-green-500'
-              : 'bg-[var(--color-text-primary)] hover:bg-[var(--color-text-primary)]/90'
+              ? 'bg-green-600 hover:bg-green-700 text-white'
+              : canAddToCart
+                ? 'bg-zinc-950 hover:bg-zinc-800 text-white'
+                : 'bg-zinc-200 text-zinc-800'
           }`}
         >
           {addingToCart ? (
@@ -534,10 +552,16 @@ export default function ProductDetail() {
           ) : (
             <>
               <ShoppingBag className="w-5 h-5 mr-2" />
-              Add to Cart
+              {cartActionLabel}
             </>
           )}
         </Button>
+        {addedToCart && (
+          <Button type="button" variant="outline" onClick={() => navigate(createPageUrl('Cart'))}
+            className="w-full h-12 mt-2 rounded-xl border-2 border-[var(--color-text-primary)] text-[var(--color-text-primary)] bg-[var(--color-background)]">
+            View Cart & Checkout
+          </Button>
+        )}
       </div>
     </div>
   );
