@@ -5,7 +5,7 @@ import { createPageUrl } from '@/utils';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Heart, ShoppingBag, Sparkles, Check, Loader2 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
-import { buildVerifiedCartLine } from '@/lib/cartVariantSelection';
+import { buildVerifiedCartLine, getSingleVerifiedVariantSelection } from '@/lib/cartVariantSelection';
 import { deriveGenericFallbackSize, getCategoryGroup, getEffectiveSizeChart, getFitRecommendationPresentation, normalizeBrandKey, recommendFromSizeChart } from '@/lib/fitRecommendation';
 
 export default function ProductDetail() {
@@ -47,10 +47,14 @@ export default function ProductDetail() {
 
       const products = await base44.entities.Product.filter({ id: productId });
       if (products.length > 0) {
-        setProduct(products[0]);
-        if (products[0].colors?.length > 0) {
-          setSelectedColor(products[0].colors[0]);
-        }
+        const loadedProduct = products[0];
+        setProduct(loadedProduct);
+        // A single verified SKU needs no extra tap. Multiple variants still
+        // require an intentional shopper selection.
+        const single = getSingleVerifiedVariantSelection(loadedProduct);
+        setSelectedSize(single?.size || '');
+        setSelectedColor(single?.color || '');
+        setSelectedWidth(single?.width || '');
       }
 
       // Get user profile and match measurements against this product's size chart when available.
@@ -308,6 +312,18 @@ export default function ProductDetail() {
     ? getFitRecommendationPresentation(recommendationSource)
     : { label: '', detail: '', verified: false };
 
+  const missingSize = (product.sizes?.length || 0) > 0 && !selectedSize;
+  const missingWidth = widthOptions.length > 0 && !selectedWidth;
+  const missingColor = (product.colors?.length || 0) > 0 && !selectedColor;
+  const canAddToCart = product.in_stock && selectionInStock &&
+    !missingSize && !missingWidth && !missingColor;
+  const cartActionLabel = !product.in_stock || !selectionInStock
+    ? 'Availability not verified'
+    : missingSize ? 'Select a size'
+    : missingColor ? 'Select a color'
+    : missingWidth ? 'Select a width'
+    : 'Add to Cart';
+
   return (
     <div className="min-h-screen bg-[var(--color-background)] pb-48">
       {/* Header */}
@@ -517,18 +533,13 @@ export default function ProductDetail() {
         {cartError && <p role="alert" className="text-sm text-red-600 mb-3 bg-white/95 rounded-lg p-2">{cartError}</p>}
         <Button
           onClick={addToCart}
-          disabled={
-            ((product.sizes?.length || 0) > 0 && !selectedSize) ||
-            (widthOptions.length > 0 && !selectedWidth) ||
-            ((product.colors?.length || 0) > 0 && !selectedColor) ||
-            !product.in_stock ||
-            !selectionInStock ||
-            addingToCart
-          }
-          className={`w-full h-14 rounded-xl font-medium text-base transition-colors select-none ${
+          disabled={!canAddToCart || addingToCart}
+          className={`w-full h-14 rounded-xl font-semibold text-base transition-colors select-none disabled:opacity-100 ${
             addedToCart
-              ? 'bg-green-500 hover:bg-green-500'
-              : 'bg-[var(--color-text-primary)] hover:bg-[var(--color-text-primary)]/90'
+              ? 'bg-green-600 hover:bg-green-700 text-white'
+              : canAddToCart
+                ? 'bg-zinc-950 hover:bg-zinc-800 text-white'
+                : 'bg-zinc-200 text-zinc-800'
           }`}
         >
           {addingToCart ? (
@@ -541,7 +552,7 @@ export default function ProductDetail() {
           ) : (
             <>
               <ShoppingBag className="w-5 h-5 mr-2" />
-              Add to Cart
+              {cartActionLabel}
             </>
           )}
         </Button>
