@@ -44,7 +44,9 @@ export default function Layout({ children, currentPageName }) {
   });
   const [activeTab, setActiveTab] = useState('Home');
 
-  const hideNav = ['Onboarding', 'InStoreMode', 'TryOn'].includes(currentPageName);
+  // Product detail, cart and secure checkout have their own bottom actions.
+  // Never draw the mobile tab bar on top of a purchase button.
+  const hideNav = ['Onboarding', 'InStoreMode', 'TryOn', 'ProductDetail', 'Cart', 'Checkout'].includes(currentPageName);
 
   useEffect(() => {
     loadUserData();
