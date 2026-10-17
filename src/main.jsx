@@ -3,9 +3,9 @@ import ReactDOM from 'react-dom/client'
 import App from '@/App.jsx'
 import '@/index.css'
 
-// Keep errors visible during the isolated Phase One shopper test instead of
-// leaving an unresponsive white screen. Does not change checkout permissions.
-class ShopperPreviewErrorBoundary extends React.Component {
+// Prevent a blank screen if the app fails to render. The error reference is
+// safe to show publicly; detailed diagnostics stay in console logs.
+class ShopperErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
     this.state = { error: null };
@@ -16,7 +16,7 @@ class ShopperPreviewErrorBoundary extends React.Component {
   }
 
   componentDidCatch(error) {
-    console.error('Concierge preview render failed', error);
+    console.error('Concierge render failed', error);
     window.__conciergePreviewFailure?.('RENDER_ERROR', error?.message || 'The page could not render');
   }
 
@@ -24,10 +24,10 @@ class ShopperPreviewErrorBoundary extends React.Component {
     if (this.state.error) {
       return (
         <main role="alert" style={{ padding: 32, color: '#172033', fontFamily: 'system-ui, sans-serif' }}>
-          <h1>Shopper preview couldn't open</h1>
-          <p>The page encountered a rendering error. This test preview shows the error name and message so we can fix it.</p>
+          <h1>The Concierge couldn't open</h1>
+          <p>A page error occurred. Please try reloading. If the issue continues, contact support.</p>
           <pre data-testid="shopper-preview-error" style={{ maxWidth: '100%', overflowWrap: 'anywhere', whiteSpace: 'pre-wrap', padding: 12, background: '#f3f4f6', borderRadius: 8 }}>
-            {String(this.state.error?.name || 'Error') + ': ' + String(this.state.error?.message || 'Unknown rendering failure').slice(0, 400)}
+            RENDER_ERROR
           </pre>
           <button type="button" style={{ marginTop: 12, padding: '10px 16px', background: '#6d28d9', color: '#fff', border: 0, borderRadius: 8 }} onClick={() => window.location.reload()}>Try again</button>
         </main>
