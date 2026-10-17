@@ -16,6 +16,7 @@ export default function Onboarding() {
   const [user, setUser] = useState(null);
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [saveError, setSaveError] = useState('');
   const [selectedConcierge, setSelectedConcierge] = useState(null);
 
   useEffect(() => {
@@ -51,6 +52,7 @@ export default function Onboarding() {
   };
 
   const handleStepComplete = async (stepData) => {
+    setSaveError('');
     try {
       const nextStep = step + 1;
       const isComplete = nextStep > 5;
@@ -79,6 +81,7 @@ export default function Onboarding() {
       }
     } catch (error) {
       console.error(error);
+      setSaveError('Your progress could not be saved. Please try again.');
     }
   };
 
@@ -137,6 +140,12 @@ export default function Onboarding() {
           Step {step} of 5 • {steps[step - 1].title}
         </p>
       </div>
+
+      {saveError && (
+        <div role="alert" className="max-w-md mx-auto pt-24 px-6 text-red-700 text-sm">
+          {saveError}
+        </div>
+      )}
 
       {/* Step Content */}
       <AnimatePresence mode="wait">
