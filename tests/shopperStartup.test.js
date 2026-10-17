@@ -14,3 +14,13 @@ test('production replacement does not expose the retired Base44 appLogs API', ()
   assert.match(legacyTracker, /base44\.appLogs\.logUserInApp/);
   assert.doesNotMatch(backend, /appLogs\s*:/);
 });
+
+test('shopper entrypoint mounts the error boundary it defines', () => {
+  const entry = readFileSync(new URL('../src/main.jsx', import.meta.url), 'utf8');
+  const declared = entry.match(/class\s+(\w+)\s+extends\s+React\.Component/);
+  assert.ok(declared, 'shopper entrypoint must define an error boundary');
+  const boundary = declared[1];
+  assert.ok(entry.includes(`<${boundary}>`), 'render must use the defined boundary component');
+  assert.ok(entry.includes(`</${boundary}>`), 'render must close the defined boundary component');
+  assert.doesNotMatch(entry, /ShopperPreviewErrorBoundary/);
+});
