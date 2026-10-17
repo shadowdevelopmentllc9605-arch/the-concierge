@@ -19,7 +19,7 @@ test('profile Precision Fit Scan navigation resolves to registered page', () => 
 test('precision scan relies on the private image uploader, not public media', () => {
   const scan = readFileSync(new URL('../src/pages/PrecisionScan.jsx', import.meta.url), 'utf8');
   assert.match(scan, /Core\.UploadPrivateFile\(/);
-  assert.match(scan, /resolveFileUrl\(/);
+  assert.match(scan, /downloadPrivateImagePreview\(/);
   assert.doesNotMatch(scan, /Core\.UploadFile\(/);
 });
 
