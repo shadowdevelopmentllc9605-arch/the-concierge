@@ -19,5 +19,5 @@ test('successful Add to Cart offers a persistent path to checkout', () => {
 });
 
 test('product price is visibly denominated in dollars', () => {
-  assert.match(detail, /\$\$\{product\.price\.toFixed\(2\)\}/);
+  assert.match(detail, /<span>\$<\/span>\{product\.price\.toFixed\(2\)\}/);
 });
