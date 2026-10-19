@@ -1,5 +1,6 @@
 import { supabase } from '@/api/supabaseClient';
 import { isSellableOffer } from '@/lib/cartVariantSelection';
+import { validateImageUpload, MAX_PUBLIC_IMAGE_BYTES, MAX_PRIVATE_IMAGE_BYTES } from '@/lib/imageUploadValidation';
 
 const directTables = {
   CartItem: 'cart_items',
@@ -363,6 +364,7 @@ export const base44 = {
         const { data: auth, error: authError } = await supabase.auth.getUser();
         if (authError || !auth?.user?.id) throw new Error('Sign in before uploading an image.');
         if (!file) throw new Error('Choose an image to upload.');
+        validateImageUpload(file, MAX_PUBLIC_IMAGE_BYTES);
         const safeName = String(file.name || 'upload').replace(/[^a-zA-Z0-9._-]/g, '_');
         const path = auth.user.id + '/' + crypto.randomUUID() + '-' + safeName;
         const upload = await supabase.storage.from('concierge-uploads').upload(path, file, { upsert: false });
@@ -380,6 +382,7 @@ export const base44 = {
         const { data: auth, error: authError } = await supabase.auth.getUser();
         if (authError || !auth?.user?.id) throw new Error('Sign in before uploading an image.');
         if (!file) throw new Error('Choose an image to upload.');
+        validateImageUpload(file, MAX_PRIVATE_IMAGE_BYTES);
         const safeName = String(file.name || 'upload').replace(/[^a-zA-Z0-9._-]/g, '_');
         const path = auth.user.id + '/' + crypto.randomUUID() + '-' + safeName;
         const upload = await supabase.storage.from('concierge-sensitive').upload(path, file, { upsert: false });
