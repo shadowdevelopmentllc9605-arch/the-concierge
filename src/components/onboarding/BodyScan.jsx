@@ -682,7 +682,7 @@ export default function BodyScan({ profile, concierge, onComplete }) {
             className="w-full min-h-12 border-[#c9a962] text-[#2d2d2d]"
           >
             {restoring ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Restore saved photo to ' + currentScan + ' view'}
-          </Button>}
+          </Button>
         </div>
       ) : !allScansComplete ? (
         <p className="text-center text-[#9ca3af] text-sm">Choose the next view above to continue</p>
