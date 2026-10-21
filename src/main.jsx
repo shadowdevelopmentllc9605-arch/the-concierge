@@ -38,7 +38,7 @@ class ShopperErrorBoundary extends React.Component {
 }
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <ShopperPreviewErrorBoundary>
+  <ShopperErrorBoundary>
     <App />
-  </ShopperPreviewErrorBoundary>
+  </ShopperErrorBoundary>
 )
