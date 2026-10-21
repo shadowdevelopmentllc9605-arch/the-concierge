@@ -35,7 +35,7 @@ test('both production uploader methods validate their files and private uploads 
 });
 
 test('migration enforces size and MIME restrictions on both Storage buckets', () => {
-  const sql = readFileSync(new URL('../supabase/migrations/20261019031500_limit_storage_image_mime_and_size.sql', import.meta.url), 'utf8');
+  const sql = readFileSync(new URL('../supabase/migrations/20261021010503_phase1_prod_storage_image_size_and_mime_limits.sql', import.meta.url), 'utf8');
   assert.match(sql, /concierge-uploads/);
   assert.match(sql, /concierge-sensitive/);
   assert.match(sql, /allowed_mime_types/);
@@ -46,7 +46,7 @@ test('migration enforces size and MIME restrictions on both Storage buckets', ()
 
 test('public bucket listing is owner-only while named image reads remain supported', () => {
   const sql = readFileSync(
-    new URL('../supabase/migrations/20261020202500_limit_public_bucket_listing_to_owner.sql', import.meta.url),
+    new URL('../supabase/migrations/20261021010516_phase1_prod_public_bucket_listing_owner_only.sql', import.meta.url),
     'utf8'
   );
   assert.match(sql, /DROP POLICY IF EXISTS concierge_uploads_read ON storage\.objects/);
