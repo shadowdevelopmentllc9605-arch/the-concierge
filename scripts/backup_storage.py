@@ -41,14 +41,16 @@ def validate_key(key: str) -> str:
 class StorageReader:
     def __init__(self, url: str, key: str):
         required = f"https://{EXPECTED_REF}.supabase.co"
-        if url.rstrip("/") != required or not key:
+        if url.rstrip("/") != required or not key.startswith("sb_secret_"):
             raise ValueError("Only the approved production Storage project is permitted")
         self.url = required
         self.key = key
 
     def _request(self, path: str, payload: dict | None = None) -> bytes:
         body = json.dumps(payload).encode("utf-8") if payload is not None else None
-        headers = {"apikey": self.key, "Authorization": "Bearer " + self.key}
+        # Modern sb_secret_ keys are opaque, not JWTs. Sending one as a Bearer
+        # token causes Supabase to reject it as an invalid JWT.
+        headers = {"apikey": self.key}
         if body is not None:
             headers["Content-Type"] = "application/json"
         request = urllib.request.Request(
@@ -192,7 +194,7 @@ def main():
     args = parser.parse_args()
     reader = StorageReader(
         os.environ.get("SUPABASE_URL", ""),
-        os.environ.get("SUPABASE_BACKUP_SERVICE_KEY", ""),
+        os.environ.get("SUPABASE_BACKUP_SECRET_KEY", ""),
     )
     recipient = os.environ.get("AGE_RECIPIENT", "")
     result = build_archive(reader, recipient, args.output)
