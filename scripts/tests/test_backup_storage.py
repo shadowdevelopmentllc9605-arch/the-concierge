@@ -11,6 +11,7 @@ import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import backup_storage as backup
+import verify_storage_archive as verifier
 
 
 class SyntheticStorage:
@@ -59,6 +60,9 @@ class BackupTests(unittest.TestCase):
             for item in manifest["files"]:
                 data = archive.extractfile(f"objects/{item['bucket']}/{item['key']}").read()
                 self.assertEqual(item["sha256"], __import__("hashlib").sha256(data).hexdigest())
+        count, total = verifier.verify(io.BytesIO(self.out.read_bytes()[len(b"age-encryption.org/v1\\n"):]))
+        self.assertEqual(count, 2)
+        self.assertEqual(total, stats["bytes"])
 
     def test_invalid_public_key_cannot_produce_an_archive(self):
         with self.assertRaisesRegex(ValueError, "public recipient"):
