@@ -92,7 +92,7 @@ class BackupTests(unittest.TestCase):
             [age, "--decrypt", "--identity", str(identity), str(self.out)],
             check=True, capture_output=True,
         ).stdout
-        self.assertTrue(recovered.startswith(b"\\x1f\\x8b"))
+        self.assertEqual(recovered[:2], bytes([31, 139]))
         count, total = verifier.verify(io.BytesIO(recovered))
         self.assertEqual(count, 2)
         self.assertEqual(total, result["bytes"])
