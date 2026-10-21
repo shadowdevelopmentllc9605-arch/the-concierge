@@ -77,8 +77,10 @@ export default function Onboarding() {
       } else {
         setStep(nextStep);
       }
+      return true;
     } catch (error) {
       console.error(error);
+      return false;
     }
   };
 
