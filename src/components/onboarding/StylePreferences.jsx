@@ -7,6 +7,7 @@ import ConciergeGuide from './ConciergeGuide';
 export default function StylePreferences({ profile, concierge, onComplete }) {
   const [selected, setSelected] = useState(profile?.style_preferences || []);
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState('');
 
   const styles = [
     {
@@ -70,8 +71,13 @@ export default function StylePreferences({ profile, concierge, onComplete }) {
   const handleSubmit = async () => {
     if (selected.length === 0) return;
     setSaving(true);
+    setError('');
     try {
-      await onComplete({ style_preferences: selected });
+      const saved = await onComplete({ style_preferences: selected });
+      if (saved === false) throw new Error('Could not save style preferences.');
+    } catch (saveError) {
+      console.error('Style preference setup failed', saveError);
+      setError('Could not save your style preferences. Please try again.');
     } finally {
       setSaving(false);
     }
@@ -143,6 +149,8 @@ export default function StylePreferences({ profile, concierge, onComplete }) {
           </motion.button>
         ))}
       </motion.div>
+
+      {error && <p role="alert" className="mb-3 text-sm text-red-700">{error}</p>}
 
       {/* Continue Button */}
       <motion.div
