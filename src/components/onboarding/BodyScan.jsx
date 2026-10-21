@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { base44 } from '@/api/base44Client';
+import { base44, supabase } from '@/api/base44Client';
 import { motion } from 'framer-motion';
 import { Button } from "@/components/ui/button";
 import { Camera, Check, ArrowRight, Loader2, RotateCcw, AlertCircle, Ruler, ShieldCheck } from 'lucide-react';
@@ -164,6 +164,16 @@ export default function BodyScan({ profile, concierge, onComplete }) {
           : (currentHeightCm / 2.54).toFixed(1)
       );
     }
+  };
+
+  const persistPrivateView = async (view, uri) => {
+    if (!['front', 'side', 'back'].includes(view)) throw new Error('Unknown body-scan view.');
+    const userId = profile?.user_id || profile?.id;
+    if (!userId) throw new Error('Save your profile before adding a private scan.');
+    const { data: auth, error: authError } = await supabase.auth.getUser();
+    if (authError || auth?.user?.id !== userId) throw new Error('Sign in with your own profile to save this scan.');
+    // Only one angle is updated. No sizing result is marked verified by uploading.
+    return base44.entities.UserProfile.update(userId, { ['body_scan_' + view]: uri });
   };
 
   const clearAnalysis = () => {
