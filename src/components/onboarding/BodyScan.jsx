@@ -522,6 +522,23 @@ export default function BodyScan({ profile, concierge, onComplete }) {
     }
   };
 
+  // Phase One shoppers may finish account setup without submitting body measurements.
+  // Keep existing scan uploads private, never fabricate sizes or promote test photos.
+  const handleSkipMeasurements = async () => {
+    if (saving || uploading || restoring || analyzing) return;
+    setSaving(true);
+    setError('');
+    try {
+      const saved = await onComplete({});
+      if (saved === false) throw new Error('Your onboarding progress could not be saved.');
+    } catch (skipError) {
+      console.error('Could not continue without body measurements', skipError);
+      setError('We could not save your progress. Please try again.');
+    } finally {
+      setSaving(false);
+    }
+  };
+
   const allScansComplete = scans.front && scans.side && scans.back;
   const guideMessage = "I'll build the fullest fit profile I can from three calibrated photos. A tape measure can improve confidence, but it is not required.";
 
@@ -824,6 +841,28 @@ export default function BodyScan({ profile, concierge, onComplete }) {
             </>
           )}
         </Button>
+      )}
+
+      {!scanResult && (
+        <div className="mt-6 rounded-xl border border-[#d1d5db] bg-white p-4 space-y-3">
+          <p className="text-sm text-[#2d2d2d] font-medium">Not ready for a body scan?</p>
+          <p className="text-xs text-[#6b7280] leading-relaxed">
+            Continue setting up your account without measuring your body. Any saved test
+            photos remain private, but no body measurements or verified clothing sizes
+            will be created. Accurate fit recommendations require a valid scan later.
+          </p>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={handleSkipMeasurements}
+            disabled={saving || uploading || restoring || analyzing}
+            className="w-full min-h-12 border-[#c9a962] text-[#2d2d2d]"
+          >
+            {saving ? <Loader2 className="w-5 h-5 animate-spin" /> : (
+              <>Continue without body measurements <ArrowRight className="ml-2 w-4 h-4" /></>
+            )}
+          </Button>
+        </div>
       )}
 
       <input
