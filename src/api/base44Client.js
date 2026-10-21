@@ -386,7 +386,7 @@ export const base44 = {
         return { file_url: data.publicUrl };
       },
       // Sensitive body and measurement scans must never be served from the public bucket.
-      async UploadPrivateFile({ file }) {
+      async UploadPrivateFile({ file, scanView }) {
         // Do not collect sensitive body scans in production until encrypted,
         // independently recoverable object backups are operational.
         if (import.meta.env.VITE_PRIVATE_UPLOADS_ENABLED !== 'true') {
@@ -396,7 +396,8 @@ export const base44 = {
         if (authError || !auth?.user?.id) throw new Error('Sign in before uploading an image.');
         if (!file) throw new Error('Choose an image to upload.');
         const safeName = String(file.name || 'upload').replace(/[^a-zA-Z0-9._-]/g, '_');
-        const path = auth.user.id + '/' + crypto.randomUUID() + '-' + safeName;
+        const viewPrefix = ['front', 'side', 'back'].includes(scanView) ? scanView + '-' : '';
+        const path = auth.user.id + '/' + viewPrefix + crypto.randomUUID() + '-' + safeName;
         const upload = await supabase.storage.from('concierge-sensitive').upload(path, file, { upsert: false });
         if (upload.error) throw upload.error;
         return { file_uri: 'concierge-sensitive/' + path };
