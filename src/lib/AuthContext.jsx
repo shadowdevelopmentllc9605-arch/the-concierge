@@ -12,8 +12,10 @@ export const AuthProvider = ({ children }) => {
   const [authError, setAuthError] = useState(null);
   const [appPublicSettings] = useState({ backend: 'supabase' });
 
-  const checkAppState = async () => {
-    setIsLoadingAuth(true);
+  const checkAppState = async ({ background = false } = {}) => {
+    // USER_UPDATED occurs during password changes and profile edits.
+    // Refresh user info without unmounting the current screen and losing its status.
+    if (!background) setIsLoadingAuth(true);
     setAuthError(null);
     try {
       const currentUser = await base44.auth.me();
@@ -24,7 +26,7 @@ export const AuthProvider = ({ children }) => {
       setIsAuthenticated(false);
       setAuthError({ type: 'auth_required', message: error?.message || 'Authentication required' });
     } finally {
-      setIsLoadingAuth(false);
+      if (!background) setIsLoadingAuth(false);
     }
   };
 
@@ -36,7 +38,7 @@ export const AuthProvider = ({ children }) => {
       if (!['SIGNED_IN', 'SIGNED_OUT', 'USER_UPDATED'].includes(event)) return;
       const timer = setTimeout(() => {
         pending.delete(timer);
-        checkAppState();
+        checkAppState({ background: event === 'USER_UPDATED' });
       }, 0);
       pending.add(timer);
     });
