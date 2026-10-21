@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Privacy policy for Shadow Development Backups and its limited Google Drive API access.">
+  <title>Privacy Policy | Shadow Development Backups</title>
+  <style>
+    :root{color-scheme:dark;--bg:#0b1220;--panel:#121e30;--line:#294052;--text:#eef5fa;--muted:#b7cad6;--accent:#7fe2c4}
+    *{box-sizing:border-box}
+    body{margin:0;background:radial-gradient(ellipse 80% 40% at 20% 0%,#18374a 0%,var(--bg) 80%);font:16px/1.72 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--text)}
+    .wrap{max-width:810px;margin:auto;padding:32px 22px 70px}
+    header{display:flex;align-items:center;justify-content:space-between;gap:18px;border-bottom:1px solid var(--line);padding-bottom:18px}
+    .brand{font-size:.9rem;letter-spacing:.06em;font-weight:750}
+    a{color:var(--accent);text-underline-offset:3px}
+    nav a{font-weight:600}
+    h1{line-height:1.16;font-size:clamp(2.2rem,6vw,3.5rem);letter-spacing:-.035em;margin:36px 0 12px}
+    h2{font-size:1.17rem;margin:29px 0 7px}
+    p,li{color:var(--muted)}
+    ul{padding-left:24px}
+    strong{color:var(--text)}
+    .date{font-size:.9rem;color:var(--accent)}
+    .lead{font-size:1.1rem;color:var(--text)}
+    .body{margin-top:28px}
+    footer{margin-top:52px;border-top:1px solid var(--line);padding-top:22px;color:var(--muted);font-size:.9rem}
+    @media(max-width:620px){header{align-items:flex-start;flex-direction:column}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">SHADOW DEVELOPMENT LLC</div>
+      <nav aria-label="Site navigation"><a href="./">Back to home</a></nav>
+    </header>
+    <main>
+      <h1>Privacy Policy</h1>
+      <p class="date">Effective October 20, 2026</p>
+      <p class="lead">This policy describes how Shadow Development LLC uses Google Drive through its internal utility, <strong>Shadow Development Backups</strong>.</p>
+      <div class="body">
+        <h2>1. Operator and purpose</h2>
+        <p>Shadow Development LLC operates Shadow Development Backups to transfer, verify, and, when necessary, retrieve encrypted application backup archives in a Google Drive account authorized by the account holder. This is a limited-access administrative utility, not a consumer sign-in service.</p>
+        <h2>2. Google data accessed</h2>
+        <p>The utility requests the Google Drive <code>drive.file</code> scope. It uses this permission to create or access files and folders made available to the utility, upload encrypted archive files, inspect file metadata required to locate or verify those transfers, and retrieve those archives for verification or recovery. The utility is not intended to read unrelated documents, email, contacts, or all files stored in the user's Drive.</p>
+        <h2>3. How data is used</h2>
+        <p>Google Drive file data and metadata accessed through the utility are used only for backup operations, integrity verification, restoration, and diagnosing transfer problems. The utility does not use Google user data for advertising, profiling, or sale.</p>
+        <h2>4. Storage and safeguards</h2>
+        <p>Application backup archives are encrypted before upload to Google Drive. Google OAuth credentials and access tokens are used only for authorized access and are kept in restricted administrative tooling or protected automation configuration, rather than published on this website. Decryption private keys are managed separately from stored archives. Like any service, no security measure can guarantee absolute protection.</p>
+        <h2>5. Sharing and service providers</h2>
+        <p>Shadow Development LLC does not sell Google user data and does not share it with advertisers. Google Drive hosts the encrypted archives under the authorized Google account. Automation hosting and necessary infrastructure providers may process the minimum credentials or transfer metadata required to perform authorized backup operations under their service terms. No Google user data is made public through this website.</p>
+        <h2>6. Retention and deletion</h2>
+        <p>Backup archives are retained until an administrator deletes them according to the organization's backup needs. Authorized Google account holders can manage or delete their Drive files and revoke the utility's Google access through their <a href="https://myaccount.google.com/permissions">Google Account permissions</a>. Revoking access prevents future API access through the revoked grant; it does not automatically delete existing backup files. For questions about deletion, contact the address below.</p>
+        <h2>7. Limited use of Google data</h2>
+        <p>Use of information received through Google APIs adheres to the <a href="https://developers.google.com/terms/api-services-user-data-policy">Google API Services User Data Policy</a>, including its Limited Use requirements, where applicable.</p>
+        <h2>8. Website privacy</h2>
+        <p>These informational pages do not have account registration, forms, advertising trackers, or analytics scripts. The website host may process standard network or request logs under its own privacy practices.</p>
+        <h2>9. Changes</h2>
+        <p>This policy may be updated as backup operations or legal requirements change. Updates will appear at this URL with a revised effective date.</p>
+        <h2>10. Contact</h2>
+        <p>Shadow Development LLC<br>Email: <a href="mailto:shadowdevelopmentllc9605@gmail.com">shadowdevelopmentllc9605@gmail.com</a></p>
+      </div>
+    </main>
+    <footer>&copy; 2026 Shadow Development LLC · <a href="./">Home</a></footer>
+  </div>
+</body>
+</html>
