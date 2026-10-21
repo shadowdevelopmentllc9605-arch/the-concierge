@@ -1,0 +1,44 @@
+name: Phase One recovery account isolation (manual)
+
+# Only run against the ephemeral, hourly-billed recovery branch.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: phase1-recovery-auth-isolation
+  cancel-in-progress: false
+
+jobs:
+  cross-account-storage:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    environment: phase1-storage-restore
+    env:
+      PHASE1_RECOVERY_BRANCH_SECRET: ${{ secrets.PHASE1_RECOVERY_BRANCH_SECRET }}
+    steps:
+      - name: Refuse to run without dedicated test-branch key
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "$PHASE1_RECOVERY_BRANCH_SECRET" != sb_secret_* ]]; then
+            echo '::error::Dedicated recovery branch key not configured.'
+            exit 1
+          fi
+      - name: Check out audited safety test
+        uses: actions/checkout@v4
+      - name: Set up Node 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Install pinned test dependencies without postinstall scripts
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Run signed-in two-account Storage RLS tests
+        run: node scripts/phase1_recovery_auth_security.mjs
+      - name: Drop runner credentials
+        if: always()
+        shell: bash
+        run: unset PHASE1_RECOVERY_BRANCH_SECRET
