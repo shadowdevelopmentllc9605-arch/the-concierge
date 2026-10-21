@@ -16,6 +16,32 @@ import { resolveFileUrl, downloadPrivateImagePreview, findLatestOwnPrivatePhoto 
 import { deriveGenericSuggestedSizes } from '@/lib/fitRecommendation';
 import { MEASUREMENT_PROTOCOL_VERSION } from '@/lib/measurementDefinitions';
 
+const CAMERA_INTENT_KEY = 'concierge-private-scan-pending-v1';
+const HEIGHT_DRAFT_KEY = 'concierge-body-height-draft-v1';
+const CAMERA_INTENT_MAX_AGE_MS = 10 * 60 * 1000;
+
+function readCameraIntent(userId) {
+  if (!userId) return null;
+  try {
+    const saved = JSON.parse(window.sessionStorage.getItem(CAMERA_INTENT_KEY) || 'null');
+    if (saved?.userId !== userId || !['front', 'side', 'back'].includes(saved.view) ||
+        !Number.isFinite(saved.startedAt) || Date.now() - saved.startedAt > CAMERA_INTENT_MAX_AGE_MS ||
+        saved.startedAt > Date.now() + 10000) return null;
+    return saved;
+  } catch {
+    return null;
+  }
+}
+
+function clearCameraIntent(userId, view) {
+  try {
+    const saved = JSON.parse(window.sessionStorage.getItem(CAMERA_INTENT_KEY) || 'null');
+    if (saved?.userId === userId && saved.view === view) {
+      window.sessionStorage.removeItem(CAMERA_INTENT_KEY);
+    }
+  } catch { /* Storage can be disabled in private browsing. */ }
+}
+
 const REVIEW_FIELDS = [
   { key: 'chest', label: 'Chest', verify: true },
   { key: 'bust', label: 'Bust', verify: true },
@@ -64,9 +90,15 @@ export default function BodyScan({ profile, concierge, onComplete }) {
   const [currentScan, setCurrentScan] = useState('front');
   const [unit, setUnit] = useState(preferredUnit);
   const [heightValue, setHeightValue] = useState(() => {
-    if (!existingHeightCm) return '';
-    if (preferredUnit === 'metric') return existingHeightCm.toFixed(1);
-    return (existingHeightCm / 2.54).toFixed(1);
+    if (existingHeightCm) {
+      return preferredUnit === 'metric' ? existingHeightCm.toFixed(1) : (existingHeightCm / 2.54).toFixed(1);
+    }
+    try {
+      const draft = JSON.parse(window.sessionStorage.getItem(HEIGHT_DRAFT_KEY) || 'null');
+      if (draft?.userId === (profile?.user_id || profile?.id) && draft.unit === preferredUnit &&
+          Number.isFinite(Number(draft.value)) && Number(draft.value) > 0) return String(draft.value);
+    } catch { /* No saved draft available. */ }
+    return '';
   });
   const [uploading, setUploading] = useState(false);
   const [analyzing, setAnalyzing] = useState(false);
@@ -80,6 +112,18 @@ export default function BodyScan({ profile, concierge, onComplete }) {
   const [photoStatus, setPhotoStatus] = useState('');
   const previewObjectUrls = useRef(new Set());
   const fileInputRef = useRef(null);
+  const recoveryInFlight = useRef(false);
+
+  // Store only a numeric height draft for this user; never cache body photos.
+  useEffect(() => {
+    const userId = profile?.user_id || profile?.id;
+    if (!userId) return;
+    try {
+      if (heightValue && Number.isFinite(Number(heightValue))) {
+        window.sessionStorage.setItem(HEIGHT_DRAFT_KEY, JSON.stringify({ userId, unit, value: heightValue }));
+      }
+    } catch { /* Session storage is optional. */ }
+  }, [heightValue, unit, profile?.user_id, profile?.id]);
 
   // Downloaded/private photo previews exist only in this browser session.
   // Revoke them on unmount; no private body photo is exposed publicly.
@@ -176,6 +220,77 @@ export default function BodyScan({ profile, concierge, onComplete }) {
     return base44.entities.UserProfile.update(userId, { ['body_scan_' + view]: uri });
   };
 
+  const startCapture = () => {
+    const userId = profile?.user_id || profile?.id;
+    if (uploading || restoring || !userId) return;
+    try {
+      // Remember the intended angle across Android's external camera activity.
+      // No photo bytes, URL, credentials or access token are stored.
+      window.sessionStorage.setItem(CAMERA_INTENT_KEY, JSON.stringify({
+        userId, view: currentScan, startedAt: Date.now()
+      }));
+    } catch { /* Manual private photo recovery remains available. */ }
+    fileInputRef.current?.click();
+  };
+
+  useEffect(() => {
+    const userId = profile?.user_id || profile?.id;
+    if (!userId) return undefined;
+    let active = true;
+    const recoverCameraReturn = async () => {
+      const intent = readCameraIntent(userId);
+      if (!intent || recoveryInFlight.current) return;
+      if (scans[intent.view]) {
+        clearCameraIntent(userId, intent.view);
+        return;
+      }
+      recoveryInFlight.current = true;
+      try {
+        const uri = await findLatestOwnPrivatePhoto({
+          scanView: intent.view,
+          uploadedAfter: intent.startedAt - 5000,
+          excludeUris: Object.values(scans).filter(Boolean)
+        });
+        if (!uri || !active) return;
+        // Persist the angle BEFORE updating transient browser state.
+        await persistPrivateView(intent.view, uri);
+        const preview = await downloadPrivateImagePreview(uri);
+        if (!active) {
+          URL.revokeObjectURL(preview);
+          return;
+        }
+        previewObjectUrls.current.add(preview);
+        setScans(prev => ({ ...prev, [intent.view]: uri }));
+        setScanPreviews(prev => ({ ...prev, [intent.view]: preview }));
+        setCurrentScan(intent.view);
+        setError('');
+        setPhotoStatus('Your ' + intent.view + ' photo was recovered automatically after the camera returned.');
+        clearCameraIntent(userId, intent.view);
+      } catch (error) {
+        console.error('Camera return recovery failed', error);
+        // Keep the pending intent so the owner may retry with Restore saved photo.
+      } finally {
+        recoveryInFlight.current = false;
+      }
+    };
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') void recoverCameraReturn();
+    };
+    void recoverCameraReturn();
+    window.addEventListener('focus', recoverCameraReturn);
+    window.addEventListener('pageshow', recoverCameraReturn);
+    document.addEventListener('visibilitychange', onVisible);
+    // The Storage upload may finish shortly after the Android camera closes.
+    const retry = window.setTimeout(() => { void recoverCameraReturn(); }, 1800);
+    return () => {
+      active = false;
+      window.clearTimeout(retry);
+      window.removeEventListener('focus', recoverCameraReturn);
+      window.removeEventListener('pageshow', recoverCameraReturn);
+      document.removeEventListener('visibilitychange', onVisible);
+    };
+  }, [profile?.user_id, profile?.id, scans.front, scans.side, scans.back]);
+
   const clearAnalysis = () => {
     setScanResult(null);
     setReviewValues({});
@@ -187,13 +302,14 @@ export default function BodyScan({ profile, concierge, onComplete }) {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    const selectedView = currentScan;
+    const userId = profile?.user_id || profile?.id;
+    const selectedView = readCameraIntent(userId)?.view || currentScan;
     let uploadedUri = '';
     setUploading(true);
     clearAnalysis();
     setPhotoStatus('');
     try {
-      const { file_uri } = await base44.integrations.Core.UploadPrivateFile({ file });
+      const { file_uri } = await base44.integrations.Core.UploadPrivateFile({ file, scanView: selectedView });
       uploadedUri = file_uri;
       // Render the selected photo on Android before asking the browser to fetch it again.
       const previewUrl = URL.createObjectURL(file);
@@ -202,6 +318,7 @@ export default function BodyScan({ profile, concierge, onComplete }) {
       setScanPreviews(prev => ({ ...prev, [selectedView]: previewUrl }));
       await persistPrivateView(selectedView, file_uri);
       setPhotoStatus(selectedView.charAt(0).toUpperCase() + selectedView.slice(1) + ' photo privately saved. You can switch views without losing it.');
+      clearCameraIntent(userId, selectedView);
     } catch (uploadError) {
       console.error('Private image upload or angle persistence failed', uploadError);
       setError(uploadedUri
@@ -663,7 +780,7 @@ export default function BodyScan({ profile, concierge, onComplete }) {
       {!scans[currentScan] ? (
         <div className="space-y-3">
           <Button
-            onClick={() => fileInputRef.current?.click()}
+            onClick={startCapture}
             disabled={uploading || restoring}
             className="w-full h-14 bg-white hover:bg-[#f5f5f5] text-[#2d2d2d] rounded-xl font-medium text-base border border-[#e5e7eb] shadow-sm"
           >
