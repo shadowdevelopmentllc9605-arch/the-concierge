@@ -214,26 +214,60 @@ export default function BodyScan({ profile, concierge, onComplete }) {
   };
 
   const restoreLatestPhoto = async () => {
-    if (scans.front || restoring || uploading) return;
+    const selectedView = currentScan;
+    if (scans[selectedView] || restoring || uploading) return;
     setRestoring(true);
     setError('');
     setPhotoStatus('');
     try {
-      // Only list and download the signed-in account's own private bucket folder.
+      // Only query the authenticated owner's private storage folder.
       const uri = await findLatestOwnPrivatePhoto();
       if (!uri) {
         setError('No previously saved private photo was found for this account.');
         return;
       }
+      if (Object.entries(scans).some(([view, savedUri]) => view !== selectedView && savedUri === uri)) {
+        setError('The most recent private photo is already assigned to another angle. Capture a different photo for this view.');
+        return;
+      }
       const previewUrl = await downloadPrivateImagePreview(uri);
       previewObjectUrls.current.add(previewUrl);
-      setCurrentScan('front');
-      setScans(prev => ({ ...prev, front: uri }));
-      setScanPreviews(prev => ({ ...prev, front: previewUrl }));
-      setPhotoStatus('Your last private photo was restored. Retake it before measurement analysis if it was only a test picture.');
+      setScans(prev => ({ ...prev, [selectedView]: uri }));
+      setScanPreviews(prev => ({ ...prev, [selectedView]: previewUrl }));
+      await persistPrivateView(selectedView, uri);
+      setPhotoStatus('Restored and saved to ' + selectedView + ' view. If this was only a test picture, retake it before analyzing measurements.');
     } catch (restoreError) {
       console.error('Private photo recovery failed', restoreError);
-      setError(restoreError?.message || 'Could not restore the saved private photo.');
+      setError(restoreError?.message || 'Could not restore the saved private photo to this angle.');
+    } finally {
+      setRestoring(false);
+    }
+  };
+
+  const retakeCurrentView = async () => {
+    const view = currentScan;
+    if (restoring || uploading) return;
+    setRestoring(true);
+    setError('');
+    try {
+      // Clear the angle in the private owner profile before clearing its preview.
+      await persistPrivateView(view, null);
+      setScans(prev => ({ ...prev, [view]: null }));
+      setScanPreviews(prev => {
+        const next = { ...prev };
+        const oldUrl = next[view];
+        if (oldUrl?.startsWith('blob:') && previewObjectUrls.current.has(oldUrl)) {
+          URL.revokeObjectURL(oldUrl);
+          previewObjectUrls.current.delete(oldUrl);
+        }
+        delete next[view];
+        return next;
+      });
+      setPhotoStatus('Angle cleared. The old photo remains private; take a new ' + view + ' view when ready.');
+      clearAnalysis();
+    } catch (error) {
+      console.error('Could not clear stored photo angle', error);
+      setError('Could not clear this view from your saved profile. Please try again.');
     } finally {
       setRestoring(false);
     }
