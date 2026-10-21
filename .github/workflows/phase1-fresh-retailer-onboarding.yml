@@ -1,0 +1,42 @@
+name: Phase One fresh invited retailer onboarding (manual)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: phase1-synthetic-fresh-retailer-onboarding
+  cancel-in-progress: false
+
+jobs:
+  invited-retailer-onboarding:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    environment: phase1-storage-restore
+    env:
+      PHASE1_SOURCE_BRANCH_SECRET: ${{ secrets.PHASE1_SOURCE_BRANCH_SECRET }}
+    steps:
+      - name: Refuse to run without isolated E2E branch key
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "$PHASE1_SOURCE_BRANCH_SECRET" != sb_secret_* ]]; then
+            echo '::error::The original Phase One E2E branch key is missing; never use production key.'
+            exit 1
+          fi
+      - name: Check out reviewed main branch
+        uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Install project test dependencies
+        run: npm install --ignore-scripts --no-audit --no-fund
+      - name: Test fresh synthetic Auth sign-in and business setup RLS
+        run: node scripts/phase1_test_fresh_retailer_onboarding.mjs
+      - name: Discard job-level credential
+        if: always()
+        run: unset PHASE1_SOURCE_BRANCH_SECRET
