@@ -11,6 +11,7 @@
  */
 import { createClient } from '@supabase/supabase-js';
 import { randomBytes, randomUUID, createHash } from 'node:crypto';
+import { removeAndVerifyTestObject } from './phase1_verified_cleanup.mjs';
 
 const RECOVERY = 'eszpxvgsmsjptagoyxzu';
 const URL = 'https://' + RECOVERY + '.supabase.co';
@@ -130,10 +131,12 @@ try {
 } finally {
   let cleanupFailed = false;
   for (const { bucket, path, client } of ownedFiles.reverse()) {
-    let { error } = await client.storage.from(bucket).remove([path]);
-    if (error) {
-      const fallback = await admin.storage.from(bucket).remove([path]);
-      if (fallback.error) cleanupFailed = true;
+    try {
+      // Ownership-based delete can return success without deleting the file.
+      // Independently list with the test-branch admin to verify absence.
+      await removeAndVerifyTestObject({ client, admin, bucket, path });
+    } catch {
+      cleanupFailed = true;
     }
   }
   for (const id of created.reverse()) {
