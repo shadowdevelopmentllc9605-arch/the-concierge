@@ -91,6 +91,15 @@ class BackupTests(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     backup.validate_key(path)
 
+    def test_rejects_legacy_and_browser_keys_for_backup_access(self):
+        production = f"https://{backup.EXPECTED_REF}.supabase.co"
+        for key in ("eyJhbGciOiJIUzI1NiJ9", "sb_publishable_public123", ""):
+            with self.subTest(key=key[:5]):
+                with self.assertRaisesRegex(ValueError, "approved production"):
+                    backup.StorageReader(production, key)
+        admin = backup.StorageReader(production, "sb_secret_test_only")
+        self.assertEqual(admin.key, "sb_secret_test_only")
+
     def test_storage_client_cannot_point_at_wrong_project(self):
         with self.assertRaisesRegex(ValueError, "approved production"):
             backup.StorageReader("https://wrong.supabase.co", "fake-secret")
