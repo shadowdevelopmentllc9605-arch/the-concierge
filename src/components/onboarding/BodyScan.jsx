@@ -642,7 +642,7 @@ export default function BodyScan({ profile, concierge, onComplete }) {
               type="button"
               aria-label={`Retake ${currentScan} photo`}
               onClick={retakeCurrentView}
-              disabled={restoring || uploading}}
+              disabled={restoring || uploading}
               className="absolute top-4 right-4 w-10 h-10 bg-black/50 rounded-full flex items-center justify-center"
             >
               <RotateCcw className="w-5 h-5 text-white" />
