@@ -20,7 +20,7 @@ jobs:
     environment: phase1-backups
     env:
       SUPABASE_URL: https://jtnyqzxlipekwtoyvcmb.supabase.co
-      SUPABASE_BACKUP_SERVICE_KEY: ${{ secrets.SUPABASE_BACKUP_SERVICE_KEY }}
+      SUPABASE_BACKUP_SECRET_KEY: ${{ secrets.SUPABASE_BACKUP_SECRET_KEY }}
       AGE_RECIPIENT: ${{ vars.AGE_RECIPIENT }}
       RCLONE_CONFIG_B64: ${{ secrets.RCLONE_CONFIG_B64 }}
     steps:
@@ -28,7 +28,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          if [ -z "$SUPABASE_BACKUP_SERVICE_KEY" ] || [ -z "$AGE_RECIPIENT" ] || [ -z "$RCLONE_CONFIG_B64" ]; then
+          if [ -z "$SUPABASE_BACKUP_SECRET_KEY" ] || [ -z "$AGE_RECIPIENT" ] || [ -z "$RCLONE_CONFIG_B64" ]; then
             echo "::error::Backup configuration incomplete. Set the protected environment secret(s) and the age public recipient first."
             exit 1
           fi
