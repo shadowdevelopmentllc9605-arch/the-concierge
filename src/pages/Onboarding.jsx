@@ -138,6 +138,10 @@ export default function Onboarding() {
         <p className="text-[#6b7280] text-xs mt-4 tracking-[0.2em] uppercase">
           Step {step} of 5 • {steps[step - 1].title}
         </p>
+        <button type="button" onClick={() => navigate('/AccountAccess')}
+          className="mt-2 text-xs text-slate-700 underline underline-offset-2">
+          Set up account password
+        </button>
       </div>
 
       {/* Step Content */}
