@@ -8,11 +8,12 @@ import { Camera, User, Calendar, ArrowRight, Loader2 } from 'lucide-react';
 import ConciergeGuide from './ConciergeGuide';
 
 export default function ProfileSetup({ user, profile, concierge, onComplete }) {
-  const [name, setName] = useState(user?.full_name || profile?.name || '');
+  const [name, setName] = useState(profile?.display_name || (user?.full_name && user.full_name !== user?.email ? user.full_name : ''));
   const [birthday, setBirthday] = useState(profile?.birthday || '');
   const [picture, setPicture] = useState(profile?.profile_picture || '');
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [formError, setFormError] = useState('');
   const fileInputRef = useRef(null);
 
   const handleFileChange = async (e) => {
@@ -31,19 +32,24 @@ export default function ProfileSetup({ user, profile, concierge, onComplete }) {
   };
 
   const handleSubmit = async () => {
-    if (!name) return;
+    const displayName = name.trim();
+    if (!displayName) return;
     setSaving(true);
-    
+    setFormError('');
+
     try {
-      // Update user's full_name
-      if (name !== user?.full_name) {
-        await base44.auth.updateMe({ full_name: name });
+      if (displayName !== user?.full_name) {
+        await base44.auth.updateMe({ full_name: displayName });
       }
-      
-      await onComplete({ 
-        birthday, 
-        profile_picture: picture 
+      const saved = await onComplete({
+        display_name: displayName,
+        birthday: birthday || null,
+        profile_picture: picture || null
       });
+      if (saved === false) throw new Error('Your profile could not be saved. Please try again.');
+    } catch (error) {
+      console.error('Profile setup failed', error);
+      setFormError(error?.message || 'Profile setup could not be completed.');
     } finally {
       setSaving(false);
     }
@@ -146,6 +152,8 @@ export default function ProfileSetup({ user, profile, concierge, onComplete }) {
         </div>
       </motion.div>
 
+      {formError && <p role="alert" className="mt-5 text-sm text-red-700">{formError}</p>}
+
       {/* Continue Button */}
       <motion.div
         initial={{ y: 20, opacity: 0 }}
@@ -155,7 +163,7 @@ export default function ProfileSetup({ user, profile, concierge, onComplete }) {
       >
         <Button
           onClick={handleSubmit}
-          disabled={!name || saving}
+          disabled={!name.trim() || saving}
           className="w-full h-14 bg-[#c9a962] hover:bg-[#b8944d] text-white rounded-xl font-medium text-base"
         >
           {saving ? (
