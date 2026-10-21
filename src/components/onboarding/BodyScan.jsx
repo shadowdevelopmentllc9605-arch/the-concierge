@@ -241,7 +241,8 @@ export default function BodyScan({ profile, concierge, onComplete }) {
       const intent = readCameraIntent(userId);
       if (!intent || recoveryInFlight.current) return;
       if (scans[intent.view]) {
-        clearCameraIntent(userId, intent.view);
+        // An upload may be visible locally while its profile write is still pending.
+        // Only the successful persistence path clears the recovery marker.
         return;
       }
       recoveryInFlight.current = true;
@@ -352,6 +353,7 @@ export default function BodyScan({ profile, concierge, onComplete }) {
       setScans(prev => ({ ...prev, [selectedView]: uri }));
       setScanPreviews(prev => ({ ...prev, [selectedView]: previewUrl }));
       await persistPrivateView(selectedView, uri);
+      clearCameraIntent(profile?.user_id || profile?.id, selectedView);
       setPhotoStatus('Restored and saved to ' + selectedView + ' view. If this was only a test picture, retake it before analyzing measurements.');
     } catch (restoreError) {
       console.error('Private photo recovery failed', restoreError);
@@ -369,6 +371,7 @@ export default function BodyScan({ profile, concierge, onComplete }) {
     try {
       // Clear the angle in the private owner profile before clearing its preview.
       await persistPrivateView(view, null);
+      clearCameraIntent(profile?.user_id || profile?.id, view);
       setScans(prev => ({ ...prev, [view]: null }));
       setScanPreviews(prev => {
         const next = { ...prev };
