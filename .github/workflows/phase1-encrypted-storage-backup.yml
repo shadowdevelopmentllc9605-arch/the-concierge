@@ -1,0 +1,81 @@
+name: Phase One encrypted Storage snapshot (manual commissioning)
+
+# Intentionally NO schedule yet. Turn on daily runs only after an authenticated
+# live test, offsite download, independent decryption, and key custody sign-off.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: phase1-prod-storage-archive
+  cancel-in-progress: false
+
+jobs:
+  backup:
+    name: Encrypt Supabase objects and upload to private Google Drive
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    environment: phase1-backups
+    env:
+      SUPABASE_URL: https://jtnyqzxlipekwtoyvcmb.supabase.co
+      SUPABASE_BACKUP_SECRET_KEY: ${{ secrets.SUPABASE_BACKUP_SECRET_KEY }}
+      AGE_RECIPIENT: ${{ vars.AGE_RECIPIENT }}
+      RCLONE_CONFIG_B64: ${{ secrets.RCLONE_CONFIG_B64 }}
+    steps:
+      - name: Refuse to run until secure setup is complete
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -z "$SUPABASE_BACKUP_SECRET_KEY" ] || [ -z "$AGE_RECIPIENT" ] || [ -z "$RCLONE_CONFIG_B64" ]; then
+            echo "::error::Backup configuration incomplete. Set the protected environment secret(s) and the age public recipient first."
+            exit 1
+          fi
+          if [[ ! "$AGE_RECIPIENT" =~ ^age1[a-z0-9]+$ ]]; then
+            echo "::error::AGE_RECIPIENT must be an age X25519 public recipient, not a secret."
+            exit 1
+          fi
+      - name: Check out audited backup program
+        uses: actions/checkout@v4
+      - name: Install encryption and Google Drive client
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq age rclone
+      - name: Prepare private Google Drive connector
+        shell: bash
+        run: |
+          set -euo pipefail
+          umask 077
+          printf '%s' "$RCLONE_CONFIG_B64" | base64 --decode > "$RUNNER_TEMP/rclone.conf"
+          unset RCLONE_CONFIG_B64
+          if ! grep -q '^\[conciergebackups\]$' "$RUNNER_TEMP/rclone.conf"; then
+            echo "::error::Rclone config needs a [conciergebackups] remote rooted at the dedicated private Drive folder."
+            exit 1
+          fi
+          rclone --config "$RUNNER_TEMP/rclone.conf" lsd conciergebackups: > /dev/null
+      - name: Create encrypted Storage snapshot
+        shell: bash
+        run: |
+          set -euo pipefail
+          umask 077
+          file="concierge-prod-$(date -u +%Y%m%dT%H%M%SZ)-run${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}.tar.gz.age"
+          echo "ARCHIVE_FILE=$file" >> "$GITHUB_ENV"
+          python3 scripts/backup_storage.py --output "$RUNNER_TEMP/$file"
+      - name: Copy ciphertext to Google Drive and independently check return bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          umask 077
+          path="$RUNNER_TEMP/$ARCHIVE_FILE"
+          rclone --config "$RUNNER_TEMP/rclone.conf" copyto "$path" "conciergebackups:$ARCHIVE_FILE" --immutable
+          rclone --config "$RUNNER_TEMP/rclone.conf" copyto "conciergebackups:$ARCHIVE_FILE" "$RUNNER_TEMP/drive-retrieved.age"
+          cmp -- "$path" "$RUNNER_TEMP/drive-retrieved.age"
+          echo "Encrypted backup copied to Google Drive and ciphertext round-trip matched."
+      - name: Remove temporary credentials and copies
+        if: always()
+        shell: bash
+        run: |
+          rm -f "$RUNNER_TEMP/rclone.conf" "$RUNNER_TEMP"/concierge-prod-*.tar.gz.age "$RUNNER_TEMP/drive-retrieved.age"
