@@ -1,6 +1,8 @@
 """Offline safety tests for the Phase One encrypted backup builder (no secrets or network)."""
 import io
 import json
+import shutil
+import subprocess
 import os
 from pathlib import Path
 import stat
@@ -63,6 +65,47 @@ class BackupTests(unittest.TestCase):
         count, total = verifier.verify(io.BytesIO(self.out.read_bytes()[len(b"age-encryption.org/v1\n"):]))
         self.assertEqual(count, 2)
         self.assertEqual(total, stats["bytes"])
+
+    def test_real_age_encryption_and_decryption_recovery(self):
+        # This test uses newly generated, disposable keys and synthetic bytes only.
+        # Unlike the fake encoder tests, it proves the REAL age ciphertext decrypts
+        # into a valid archive whose independent SHA-256 verifier passes.
+        age = shutil.which("age")
+        keygen = shutil.which("age-keygen")
+        self.assertIsNotNone(age, "Install age for real backup recovery CI")
+        self.assertIsNotNone(keygen, "Install age-keygen for real backup recovery CI")
+        identity = self.root / "disposable-test-identity.txt"
+        subprocess.run([keygen, "-o", str(identity)], check=True, capture_output=True)
+        recipient = subprocess.run(
+            [keygen, "-y", str(identity)],
+            check=True, capture_output=True, text=True,
+        ).stdout.strip()
+        result = backup.build_archive(
+            SyntheticStorage(), recipient, self.out, encoder=age,
+        )
+        ciphertext = self.out.read_bytes()
+        self.assertTrue(ciphertext.startswith(b"age-encryption.org/v1"))
+        self.assertNotIn(b"private-photo-bits", ciphertext)
+        self.assertNotIn(b"public-photo-bits", ciphertext)
+
+        recovered = subprocess.run(
+            [age, "--decrypt", "--identity", str(identity), str(self.out)],
+            check=True, capture_output=True,
+        ).stdout
+        self.assertTrue(recovered.startswith(b"\\x1f\\x8b"))
+        count, total = verifier.verify(io.BytesIO(recovered))
+        self.assertEqual(count, 2)
+        self.assertEqual(total, result["bytes"])
+
+        # Wrong independently generated identity must not decrypt the archive.
+        wrong_identity = self.root / "wrong-identity.txt"
+        subprocess.run([keygen, "-o", str(wrong_identity)], check=True, capture_output=True)
+        wrong = subprocess.run(
+            [age, "--decrypt", "--identity", str(wrong_identity), str(self.out)],
+            capture_output=True,
+        )
+        self.assertNotEqual(wrong.returncode, 0)
+        self.assertEqual(wrong.stdout, b"")
 
     def test_invalid_public_key_cannot_produce_an_archive(self):
         with self.assertRaisesRegex(ValueError, "public recipient"):
