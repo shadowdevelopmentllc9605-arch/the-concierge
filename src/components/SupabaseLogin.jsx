@@ -22,7 +22,7 @@ export default function SupabaseLogin() {
     setMessage('');
     const { error } = await supabase.auth.signInWithOtp({
       email,
-      options: { emailRedirectTo: window.location.origin }
+      options: { shouldCreateUser: false, emailRedirectTo: window.location.origin }
     });
     setWorking(false);
     setMessage(error ? error.message : 'Sign-in link sent. Check your email.');
@@ -58,6 +58,15 @@ export default function SupabaseLogin() {
         <button type="button" disabled={working || !email} onClick={sendLink} className="w-full text-sm underline disabled:opacity-50">
           Email me a sign-in link
         </button>
+        <div className="border-t border-slate-200 pt-4 text-sm text-slate-600">
+          <p>Phase One pilot access is by invitation. If you do not have a sign-in yet, request access from Shadow Development LLC.</p>
+          <a
+            href="mailto:shadowdevelopmentllc9605@gmail.com?subject=The%20Concierge%20pilot%20access%20request"
+            className="mt-2 inline-block font-medium text-slate-900 underline underline-offset-2"
+          >
+            Request pilot access
+          </a>
+        </div>
         {message && <p className="text-sm text-slate-600">{message}</p>}
       </form>
     </div>
