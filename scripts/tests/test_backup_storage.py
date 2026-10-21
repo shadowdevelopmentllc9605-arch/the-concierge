@@ -60,7 +60,7 @@ class BackupTests(unittest.TestCase):
             for item in manifest["files"]:
                 data = archive.extractfile(f"objects/{item['bucket']}/{item['key']}").read()
                 self.assertEqual(item["sha256"], __import__("hashlib").sha256(data).hexdigest())
-        count, total = verifier.verify(io.BytesIO(self.out.read_bytes()[len(b"age-encryption.org/v1\\n"):]))
+        count, total = verifier.verify(io.BytesIO(self.out.read_bytes()[len(b"age-encryption.org/v1\n"):]))
         self.assertEqual(count, 2)
         self.assertEqual(total, stats["bytes"])
 
