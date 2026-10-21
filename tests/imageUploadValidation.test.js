@@ -43,3 +43,18 @@ test('migration enforces size and MIME restrictions on both Storage buckets', ()
   for (const type of ['image/jpeg','image/png','image/webp']) assert.ok(sql.includes(type));
   assert.doesNotMatch(sql, /image\/svg\+xml/);
 });
+
+test('public bucket listing is owner-only while named image reads remain supported', () => {
+  const sql = readFileSync(
+    new URL('../supabase/migrations/20261020202500_limit_public_bucket_listing_to_owner.sql', import.meta.url),
+    'utf8'
+  );
+  assert.match(sql, /DROP POLICY IF EXISTS concierge_uploads_read ON storage\.objects/);
+  assert.match(sql, /CREATE POLICY concierge_uploads_list_own/);
+  assert.match(sql, /storage\.allow_only_operation\('object\.list'\)/);
+  assert.match(sql, /\(storage\.foldername\(name\)\)\[1\] = \(SELECT auth\.uid\(\)\)::text/);
+  assert.match(sql, /CREATE POLICY concierge_uploads_read_public_files/);
+  assert.match(sql, /storage\.allow_any_operation/);
+  assert.match(sql, /'object\.get_authenticated'/);
+  assert.doesNotMatch(sql, /USING\s*\(\s*bucket_id\s*=\s*'concierge-uploads'\s*\)/);
+});
