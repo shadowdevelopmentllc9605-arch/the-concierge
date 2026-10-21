@@ -348,6 +348,21 @@ export const base44 = {
         full_name: user.user_metadata?.full_name || user.user_metadata?.name || user.email
       };
     },
+    async updateMe({ full_name } = {}) {
+      const trimmed = typeof full_name === 'string' ? full_name.trim() : '';
+      if (!trimmed) throw new Error('Enter a name to finish your profile.');
+      // Account metadata is edited by the signed-in user, never by a service key.
+      const { data, error } = await supabase.auth.updateUser({
+        data: { full_name: trimmed }
+      });
+      if (error) throw error;
+      if (!data?.user?.id) throw new Error('Could not update your profile name.');
+      return {
+        id: data.user.id,
+        email: data.user.email,
+        full_name: data.user.user_metadata?.full_name || trimmed
+      };
+    },
     async logout() {
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
