@@ -1,0 +1,32 @@
+name: Phase One invited profile test preview validation
+
+on:
+  push:
+    branches:
+      - fix/phase1-invite-onboarding-profile-20261021
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout isolated profile test branch
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Node 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Install without lifecycle scripts
+        run: npm install --ignore-scripts --no-audit --no-fund
+      - name: Unit and regression tests
+        run: npm test
+      - name: Build
+        run: npm run build
+      - name: Lint
+        run: npm run lint
