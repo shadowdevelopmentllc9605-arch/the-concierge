@@ -47,7 +47,7 @@ test('owner deletion success is independently verified', async () => {
   await removeAndVerifyTestObject({ ...x, bucket: 'concierge-uploads', path });
   assert.equal(x.existing.size, 0);
   assert.equal(x.getAdminCalls(), 0);
-  assert.equal(x.getListCalls(), 2 - 1); // only post-owner absence check needed
+  assert.equal(x.getListCalls(), 2); // verify absence before and after fallback decision
 });
 
 test('silent successful delete with retained bytes triggers admin removal', async () => {
