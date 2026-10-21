@@ -36,6 +36,10 @@ jobs:
           fi
       - name: Run cart pricing tests
         run: npm test
+      - name: Install real age encrypt/decrypt tools for recovery CI
+        run: |
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq age
       - name: Validate encrypted backup program offline
         run: |
           python3 -m py_compile scripts/backup_storage.py scripts/verify_storage_archive.py
