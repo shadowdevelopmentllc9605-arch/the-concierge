@@ -37,7 +37,7 @@ export async function downloadPrivateImagePreview(uri) {
  * returns without displaying it. List can only return this signed-in owner's
  * folder by Storage RLS. No public URLs, account-wide listing or other users.
  */
-export async function findLatestOwnPrivatePhoto({ excludeUris = [] } = {}) {
+export async function findLatestOwnPrivatePhoto({ excludeUris = [], scanView = null, uploadedAfter = null } = {}) {
   const { data: auth, error: authError } = await supabase.auth.getUser();
   if (authError || !auth?.user?.id) throw new Error('Sign in to load a private image.');
   const prefix = 'concierge-sensitive/' + auth.user.id + '/';
@@ -47,6 +47,8 @@ export async function findLatestOwnPrivatePhoto({ excludeUris = [] } = {}) {
   if (error) throw new Error('Could not list your private scans: ' + error.message);
   const latest = (entries || []).find(entry => typeof entry.name === 'string'
     && /^[^/]+\.(?:png|jpe?g|webp)$/i.test(entry.name) && entry.id
-    && !assigned.has(prefix + entry.name));
+    && !assigned.has(prefix + entry.name)
+    && (!scanView || (['front','side','back'].includes(scanView) && entry.name.startsWith(scanView + '-')))
+    && (uploadedAfter == null || Date.parse(entry.created_at || '') >= uploadedAfter));
   return latest ? prefix + latest.name : null;
 }
