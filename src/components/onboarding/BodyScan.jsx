@@ -187,20 +187,26 @@ export default function BodyScan({ profile, concierge, onComplete }) {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    const selectedView = currentScan;
+    let uploadedUri = '';
     setUploading(true);
     clearAnalysis();
+    setPhotoStatus('');
     try {
       const { file_uri } = await base44.integrations.Core.UploadPrivateFile({ file });
-      // The browser can show its local file immediately after Storage confirms upload.
-      // A signed URL is not a reliable substitute for a rendered image on Android.
+      uploadedUri = file_uri;
+      // Render the selected photo on Android before asking the browser to fetch it again.
       const previewUrl = URL.createObjectURL(file);
       previewObjectUrls.current.add(previewUrl);
-      setScans(prev => ({ ...prev, [currentScan]: file_uri }));
-      setScanPreviews(prev => ({ ...prev, [currentScan]: previewUrl }));
-      setPhotoStatus('Photo saved privately. Review it here, then choose the next view when ready.');
+      setScans(prev => ({ ...prev, [selectedView]: file_uri }));
+      setScanPreviews(prev => ({ ...prev, [selectedView]: previewUrl }));
+      await persistPrivateView(selectedView, file_uri);
+      setPhotoStatus(selectedView.charAt(0).toUpperCase() + selectedView.slice(1) + ' photo privately saved. You can switch views without losing it.');
     } catch (uploadError) {
-      console.error(uploadError);
-      setError('That photo could not be uploaded. Please try again.');
+      console.error('Private image upload or angle persistence failed', uploadError);
+      setError(uploadedUri
+        ? 'Photo reached private storage, but its view could not be saved. Keep this screen open and try Restore last private photo.'
+        : 'That photo could not be uploaded. Please try again.');
     } finally {
       setUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = '';
