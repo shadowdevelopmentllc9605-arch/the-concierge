@@ -221,7 +221,7 @@ export default function BodyScan({ profile, concierge, onComplete }) {
     setPhotoStatus('');
     try {
       // Only query the authenticated owner's private storage folder.
-      const uri = await findLatestOwnPrivatePhoto();
+      const uri = await findLatestOwnPrivatePhoto({ excludeUris: Object.values(scans).filter(Boolean) });
       if (!uri) {
         setError('No previously saved private photo was found for this account.');
         return;
@@ -605,7 +605,8 @@ export default function BodyScan({ profile, concierge, onComplete }) {
           <button
             key={step.key}
             type="button"
-            onClick={() => setCurrentScan(step.key)}
+            onClick={() => { setCurrentScan(step.key); setPhotoStatus(''); }}
+            disabled={uploading || restoring}
             className={`flex flex-col items-center gap-2 transition-all ${currentScan === step.key ? 'scale-110' : 'opacity-60'}`}
           >
             <div className={`w-16 h-16 rounded-xl flex items-center justify-center ${
@@ -640,21 +641,8 @@ export default function BodyScan({ profile, concierge, onComplete }) {
             <button
               type="button"
               aria-label={`Retake ${currentScan} photo`}
-              onClick={() => {
-                clearAnalysis();
-                setScans(prev => ({ ...prev, [currentScan]: null }));
-                setPhotoStatus('');
-                setScanPreviews(prev => {
-                  const next = { ...prev };
-                  const oldUrl = next[currentScan];
-                  if (oldUrl?.startsWith('blob:') && previewObjectUrls.current.has(oldUrl)) {
-                    URL.revokeObjectURL(oldUrl);
-                    previewObjectUrls.current.delete(oldUrl);
-                  }
-                  delete next[currentScan];
-                  return next;
-                });
-              }}
+              onClick={retakeCurrentView}
+              disabled={restoring || uploading}}
               className="absolute top-4 right-4 w-10 h-10 bg-black/50 rounded-full flex items-center justify-center"
             >
               <RotateCcw className="w-5 h-5 text-white" />
@@ -686,17 +674,15 @@ export default function BodyScan({ profile, concierge, onComplete }) {
               </>
             )}
           </Button>
-          {currentScan === 'front' && (
-            <Button
-              type="button"
-              variant="outline"
-              onClick={restoreLatestPhoto}
-              disabled={uploading || restoring}
-              className="w-full min-h-12 border-[#c9a962] text-[#2d2d2d]"
-            >
-              {restoring ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Restore last private photo'}
-            </Button>
-          )}
+          <Button
+            type="button"
+            variant="outline"
+            onClick={restoreLatestPhoto}
+            disabled={uploading || restoring}
+            className="w-full min-h-12 border-[#c9a962] text-[#2d2d2d]"
+          >
+            {restoring ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Restore saved photo to ' + currentScan + ' view'}
+          </Button>}
         </div>
       ) : !allScansComplete ? (
         <p className="text-center text-[#9ca3af] text-sm">Choose the next view above to continue</p>
