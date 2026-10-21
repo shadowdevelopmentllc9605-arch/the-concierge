@@ -12,7 +12,7 @@ import {
   inchesToCm,
   parseHeightToCm,
 } from '@/lib/measurementUnits';
-import { resolveFileUrl } from '@/lib/privateFiles';
+import { resolveFileUrl, downloadPrivateImagePreview, findLatestOwnPrivatePhoto } from '@/lib/privateFiles';
 import { deriveGenericSuggestedSizes } from '@/lib/fitRecommendation';
 import { MEASUREMENT_PROTOCOL_VERSION } from '@/lib/measurementDefinitions';
 
@@ -76,7 +76,17 @@ export default function BodyScan({ profile, concierge, onComplete }) {
   const [reviewValues, setReviewValues] = useState({});
   const [verifiedFields, setVerifiedFields] = useState({});
   const [scanPreviews, setScanPreviews] = useState({});
+  const [restoring, setRestoring] = useState(false);
+  const [photoStatus, setPhotoStatus] = useState('');
+  const previewObjectUrls = useRef(new Set());
   const fileInputRef = useRef(null);
+
+  // Downloaded/private photo previews exist only in this browser session.
+  // Revoke them on unmount; no private body photo is exposed publicly.
+  useEffect(() => () => {
+    for (const url of previewObjectUrls.current) URL.revokeObjectURL(url);
+    previewObjectUrls.current.clear();
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -85,10 +95,16 @@ export default function BodyScan({ profile, concierge, onComplete }) {
         const uri = scans[key];
         if (!uri || scanPreviews[key]) continue;
         try {
-          const url = await resolveFileUrl(uri);
-          if (!cancelled) setScanPreviews(prev => ({ ...prev, [key]: url }));
+          const url = await downloadPrivateImagePreview(uri);
+          if (cancelled) {
+            URL.revokeObjectURL(url);
+          } else {
+            previewObjectUrls.current.add(url);
+            setScanPreviews(prev => ({ ...prev, [key]: url }));
+          }
         } catch (err) {
-          console.error(err);
+          console.error('Could not restore private scan preview', err);
+          if (!cancelled) setError('The saved photo could not be displayed. Use Restore last private photo or retake it.');
         }
       }
     })();
@@ -165,20 +181,45 @@ export default function BodyScan({ profile, concierge, onComplete }) {
     clearAnalysis();
     try {
       const { file_uri } = await base44.integrations.Core.UploadPrivateFile({ file });
-      const previewUrl = await resolveFileUrl(file_uri);
+      // The browser can show its local file immediately after Storage confirms upload.
+      // A signed URL is not a reliable substitute for a rendered image on Android.
+      const previewUrl = URL.createObjectURL(file);
+      previewObjectUrls.current.add(previewUrl);
       setScans(prev => ({ ...prev, [currentScan]: file_uri }));
       setScanPreviews(prev => ({ ...prev, [currentScan]: previewUrl }));
-
-      const currentIndex = scanSteps.findIndex(step => step.key === currentScan);
-      if (currentIndex < scanSteps.length - 1) {
-        setTimeout(() => setCurrentScan(scanSteps[currentIndex + 1].key), 350);
-      }
+      setPhotoStatus('Photo saved privately. Review it here, then choose the next view when ready.');
     } catch (uploadError) {
       console.error(uploadError);
       setError('That photo could not be uploaded. Please try again.');
     } finally {
       setUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = '';
+    }
+  };
+
+  const restoreLatestPhoto = async () => {
+    if (scans.front || restoring || uploading) return;
+    setRestoring(true);
+    setError('');
+    setPhotoStatus('');
+    try {
+      // Only list and download the signed-in account's own private bucket folder.
+      const uri = await findLatestOwnPrivatePhoto();
+      if (!uri) {
+        setError('No previously saved private photo was found for this account.');
+        return;
+      }
+      const previewUrl = await downloadPrivateImagePreview(uri);
+      previewObjectUrls.current.add(previewUrl);
+      setCurrentScan('front');
+      setScans(prev => ({ ...prev, front: uri }));
+      setScanPreviews(prev => ({ ...prev, front: previewUrl }));
+      setPhotoStatus('Your last private photo was restored. Retake it before measurement analysis if it was only a test picture.');
+    } catch (restoreError) {
+      console.error('Private photo recovery failed', restoreError);
+      setError(restoreError?.message || 'Could not restore the saved private photo.');
+    } finally {
+      setRestoring(false);
     }
   };
 
@@ -500,6 +541,8 @@ export default function BodyScan({ profile, concierge, onComplete }) {
         </p>
       </div>
 
+      {photoStatus && <p role="status" className="text-sm text-emerald-800 my-3">{photoStatus}</p>}
+
       {error && (
         <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-5 flex gap-3">
           <AlertCircle className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
@@ -537,6 +580,7 @@ export default function BodyScan({ profile, concierge, onComplete }) {
                 src={scanPreviews[currentScan]}
                 alt={`${currentScan} body scan`}
                 className="w-full h-full object-contain bg-[#faf8f5]"
+                onError={() => setError('The photo is saved, but this browser could not display it. Try restoring the private photo.')}
               />
             ) : (
               <div className="w-full h-full flex items-center justify-center bg-[#faf8f5]">
@@ -549,8 +593,14 @@ export default function BodyScan({ profile, concierge, onComplete }) {
               onClick={() => {
                 clearAnalysis();
                 setScans(prev => ({ ...prev, [currentScan]: null }));
+                setPhotoStatus('');
                 setScanPreviews(prev => {
                   const next = { ...prev };
+                  const oldUrl = next[currentScan];
+                  if (oldUrl?.startsWith('blob:') && previewObjectUrls.current.has(oldUrl)) {
+                    URL.revokeObjectURL(oldUrl);
+                    previewObjectUrls.current.delete(oldUrl);
+                  }
                   delete next[currentScan];
                   return next;
                 });
@@ -573,20 +623,31 @@ export default function BodyScan({ profile, concierge, onComplete }) {
       </div>
 
       {!scans[currentScan] ? (
-        <Button
-          onClick={() => fileInputRef.current?.click()}
-          disabled={uploading}
-          className="w-full h-14 bg-white hover:bg-[#f5f5f5] text-[#2d2d2d] rounded-xl font-medium text-base border border-[#e5e7eb] shadow-sm"
-        >
-          {uploading ? (
-            <Loader2 className="w-5 h-5 animate-spin" />
-          ) : (
-            <>
-              <Camera className="mr-2 w-5 h-5" />
-              Capture {scanSteps.find(step => step.key === currentScan)?.label}
-            </>
+        <div className="space-y-3">
+          <Button
+            onClick={() => fileInputRef.current?.click()}
+            disabled={uploading || restoring}
+            className="w-full h-14 bg-white hover:bg-[#f5f5f5] text-[#2d2d2d] rounded-xl font-medium text-base border border-[#e5e7eb] shadow-sm"
+          >
+            {uploading ? <Loader2 className="w-5 h-5 animate-spin" /> : (
+              <>
+                <Camera className="mr-2 w-5 h-5" />
+                Capture {scanSteps.find(step => step.key === currentScan)?.label}
+              </>
+            )}
+          </Button>
+          {currentScan === 'front' && (
+            <Button
+              type="button"
+              variant="outline"
+              onClick={restoreLatestPhoto}
+              disabled={uploading || restoring}
+              className="w-full min-h-12 border-[#c9a962] text-[#2d2d2d]"
+            >
+              {restoring ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Restore last private photo'}
+            </Button>
           )}
-        </Button>
+        </div>
       ) : !allScansComplete ? (
         <p className="text-center text-[#9ca3af] text-sm">Choose the next view above to continue</p>
       ) : (
