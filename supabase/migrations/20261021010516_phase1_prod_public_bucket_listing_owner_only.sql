@@ -1,6 +1,6 @@
--- Restrict Storage API object listing: it should not enumerate everyone's
--- public retailer imagery. Public URLs are still served by the public bucket.
--- This change must be validated in a PREVIEW project before merging to main.
+-- Phase One Production: prevent anonymous enumeration of retailer image files.
+-- Public /storage/v1/object/public URLs stay enabled on PUBLIC bucket.
+-- Only the uploader may enumerate their folder through object.list.
 DROP POLICY IF EXISTS concierge_uploads_read ON storage.objects;
 DROP POLICY IF EXISTS concierge_uploads_read_public_files ON storage.objects;
 DROP POLICY IF EXISTS concierge_uploads_list_own ON storage.objects;
