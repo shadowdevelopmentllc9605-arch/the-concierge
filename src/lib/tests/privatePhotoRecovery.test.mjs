@@ -43,3 +43,35 @@ test('retake clears the selected saved angle, not other angles', () => {
   assert.ok(body.includes('URL.revokeObjectURL'));
   assert.ok(body.includes('this browser could not display it'));
 });
+
+test('camera remembers angle across Android camera activity without persisting private photo data in the browser', () => {
+  assert.ok(body.includes('CAMERA_INTENT_KEY'));
+  assert.ok(body.includes("window.sessionStorage.setItem(CAMERA_INTENT_KEY"));
+  assert.ok(body.includes('startedAt: Date.now()'));
+  assert.ok(body.includes('readCameraIntent(userId)?.view || currentScan'));
+  assert.ok(body.includes('const selectedView = readCameraIntent(userId)?.view || currentScan'));
+  assert.ok(body.includes('UploadPrivateFile({ file, scanView: selectedView })'));
+  assert.ok(body.includes('onClick={startCapture}'));
+  assert.ok(body.includes('clearCameraIntent(userId, selectedView)'));
+  assert.ok(!body.includes('sessionStorage.setItem(CAMERA_INTENT_KEY, file'));
+});
+
+test('an orphan camera file is recovered only for its intended user, angle and short time window', () => {
+  assert.ok(body.includes('readCameraIntent(userId)'));
+  assert.ok(body.includes('scanView: intent.view'));
+  assert.ok(body.includes('uploadedAfter: intent.startedAt - 5000'));
+  assert.ok(body.includes('await persistPrivateView(intent.view, uri)'));
+  assert.ok(body.includes("window.addEventListener('pageshow', recoverCameraReturn)"));
+  assert.ok(body.includes("document.addEventListener('visibilitychange', onVisible)"));
+  assert.ok(helper.includes('uploadedAfter = null'));
+  assert.ok(helper.includes("entry.name.startsWith(scanView + '-')"));
+  assert.ok(helper.includes("Date.parse(entry.created_at || '') >= uploadedAfter"));
+  assert.ok(bridge.includes("['front', 'side', 'back'].includes(scanView)"));
+  assert.ok(bridge.includes("viewPrefix + crypto.randomUUID()"));
+});
+
+test('height draft is scoped to account and does not share private image bytes', () => {
+  assert.ok(body.includes('HEIGHT_DRAFT_KEY'));
+  assert.ok(body.includes("draft?.userId === (profile?.user_id || profile?.id)"));
+  assert.ok(body.includes('heightValue && Number.isFinite(Number(heightValue))'));
+});
