@@ -1,0 +1,47 @@
+name: Phase One isolated Storage JPEG recovery (manual)
+
+# No cron or automatic execution; separate test-only credentials and projects.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: phase1-crossbranch-storage-restore
+  cancel-in-progress: false
+
+jobs:
+  isolated-recovery:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    environment: phase1-storage-restore
+    env:
+      PHASE1_SOURCE_BRANCH_SECRET: ${{ secrets.PHASE1_SOURCE_BRANCH_SECRET }}
+      PHASE1_RECOVERY_BRANCH_SECRET: ${{ secrets.PHASE1_RECOVERY_BRANCH_SECRET }}
+    steps:
+      - name: Fail closed unless both isolated branch keys are present
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -z "$PHASE1_SOURCE_BRANCH_SECRET" ] || [ -z "$PHASE1_RECOVERY_BRANCH_SECRET" ]; then
+            echo '::error::Configure BOTH protected TEST-BRANCH secrets in environment phase1-storage-restore.'
+            exit 1
+          fi
+          if [[ "$PHASE1_SOURCE_BRANCH_SECRET" != sb_secret_* ]] || [[ "$PHASE1_RECOVERY_BRANCH_SECRET" != sb_secret_* ]]; then
+            echo '::error::Use dedicated test-branch sb_secret_ credentials, never live production or browser keys.'
+            exit 1
+          fi
+          if [ "$PHASE1_SOURCE_BRANCH_SECRET" = "$PHASE1_RECOVERY_BRANCH_SECRET" ]; then
+            echo '::error::Source and recovery credentials must differ.'
+            exit 1
+          fi
+      - name: Check out audited one-time recovery program
+        uses: actions/checkout@v4
+      - name: Run one-time isolated JPEG byte recovery
+        run: python3 scripts/restore_test_storage_branches.py
+      - name: Remove transient credential variables
+        if: always()
+        shell: bash
+        run: |
+          unset PHASE1_SOURCE_BRANCH_SECRET PHASE1_RECOVERY_BRANCH_SECRET
