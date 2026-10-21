@@ -12,7 +12,6 @@ import hashlib
 import io
 import json
 import os
-import re
 import subprocess
 import sys
 import tarfile
@@ -29,11 +28,10 @@ MAX_SINGLE_BYTES = 15 * 1024 * 1024
 MAX_TOTAL_BYTES = 512 * 1024 * 1024
 MAX_OBJECTS = 20000
 PAGE_SIZE = 1000
-SAFE_COMPONENT = re.compile(r"^[^/\\\\.][^/\\\\]*$")
 
 
 def validate_key(key: str) -> str:
-    if not key or key.startswith("/") or "\\\\" in key or "\\x00" in key:
+    if not key or key.startswith("/") or "\\" in key or "\x00" in key:
         raise ValueError("Object has an unsafe key")
     if any(component in ("", ".", "..") for component in key.split("/")):
         raise ValueError("Object has unsafe folder segments")
