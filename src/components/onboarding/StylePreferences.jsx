@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Check, Loader2 } from 'lucide-react';
 import ConciergeGuide from './ConciergeGuide';
+import { STYLE_IMAGE_URLS } from '@/lib/styleImages';
 
 export default function StylePreferences({ profile, concierge, onComplete }) {
   const [selected, setSelected] = useState(profile?.style_preferences || []);
@@ -14,49 +15,49 @@ export default function StylePreferences({ profile, concierge, onComplete }) {
       id: 'business',
       name: 'Business',
       description: 'Suits, dress shirts, blouses, dress skirts, pants',
-      image: 'https://media.base44.com/images/public/698951bc103c5b61b68d35b7/153803aec_generated_image.png'
+      image: STYLE_IMAGE_URLS.business
     },
     {
       id: 'casual',
       name: 'Casual',
       description: 'Polos, jeans, t-shirts, shorts, skirts, tops',
-      image: 'https://media.base44.com/images/public/698951bc103c5b61b68d35b7/c2e2840c5_generated_image.png'
+      image: STYLE_IMAGE_URLS.casual
     },
     {
       id: 'formal',
       name: 'Formal',
       description: 'Suits, tailored separates, dresses and special-event looks',
-      image: 'https://images.unsplash.com/photo-1592878897400-43fb1f1cc324?auto=format&fit=crop&w=720&q=82'
+      image: STYLE_IMAGE_URLS.formal
     },
     {
       id: 'evening',
       name: 'Evening',
       description: 'Dinner, events, evening dresses and elevated separates',
-      image: 'https://media.base44.com/images/public/698951bc103c5b61b68d35b7/ed12c091d_generated_image.png'
+      image: STYLE_IMAGE_URLS.evening
     },
     {
       id: 'outdoor',
       name: 'Outdoor',
       description: 'Coats, parkas, boots, hats and weather-ready layers',
-      image: 'https://media.base44.com/images/public/698951bc103c5b61b68d35b7/e30cdb9bf_generated_image.png'
+      image: STYLE_IMAGE_URLS.outdoor
     },
     {
       id: 'active',
       name: 'Active',
       description: 'Performance apparel, footwear and active accessories',
-      image: 'https://images.unsplash.com/photo-1769196716871-39a0712fb037?auto=format&fit=crop&w=720&q=82'
+      image: STYLE_IMAGE_URLS.active
     },
     {
       id: 'nightlife',
       name: 'Nightlife',
       description: 'Jackets, pattern shirts, evening dresses',
-      image: 'https://images.unsplash.com/photo-1774543465185-9bfaebc2e11b?auto=format&fit=crop&w=720&q=82'
+      image: STYLE_IMAGE_URLS.nightlife
     },
     {
       id: 'trendy',
       name: 'Trendy',
       description: 'Runway style, seasonal looks',
-      image: 'https://images.unsplash.com/photo-1589712186148-03ec318289c0?auto=format&fit=crop&w=720&q=82'
+      image: STYLE_IMAGE_URLS.trendy
     }
   ];
 
