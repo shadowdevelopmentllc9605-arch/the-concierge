@@ -137,3 +137,15 @@ This continuation is the status after additional work on the **same** controlled
 - **Automated release evidence:** Concierge Pro PR #18 latest SHA `72f8783b6d5b60d39541dfc664fce6cd397ec400` passed GitHub Actions `validate` (including build, lint and tests); exact SHA preview Vercel `READY` and HTML HTTP 200. This proves CI/deployment health, **not** newly corrected contrast appearance in a real Android session.
 - **Next validation:** use the fresh matching Vercel preview to check four notification tile labels and the red Settings data-removal request. Separately validate existing synthetic online offer stock in the paired isolated test context, without recreating accounts or purchases.
 - **Production:** both PRs remain open; no production promotion yet.
+
+
+## October 22 final Android visual acceptance — Concierge Pro contrast
+
+**Owner-provided real-device result (actual Android session): PASS for the two appearance corrections in Concierge Pro PR #18.** After opening the corrected exact-SHA preview, the owner separately confirmed:
+- **Notifications:** all four white-background cards now have legible black text: **New Arrivals**, **Promo / Sale**, **Birthday Cards**, **Send Coupon**.
+- **Settings:** **Request data removal by email** now appears as the requested red button with black text.
+- Owner then reiterated, "everything looks good on my end." No unresolved appearance defect was reported in this review.
+
+**Evidence categories:** implementation present in Pro PR #18 SHA `72f8783b6d5b60d39541dfc664fce6cd397ec400`; GitHub Actions `validate` SUCCESS and exact SHA Vercel READY/HTTP 200; both appearance fixes are now **owner Android visually verified**. This does NOT establish sending emails, actual removal requests, automatic erasure, notification delivery, production deployment, or retailer stock/revenue synchronization.
+
+**Remaining separate validation:** checkout's 3 existing paid orders, 3 linked purchases, and 7 units in one synthetic offer are established by isolated database readback, but a same-branch, signed-in, end-to-end shopper/retailer UI journey is still open. No fixtures, users, payments or production stock should be reset or recreated for this. Both app PRs must still pass exact-SHA CI before a controlled production merge and live-session smoke tests. Social-platform friend imports and missing real retailer product images are deferred pilot-content/future-scope work.
