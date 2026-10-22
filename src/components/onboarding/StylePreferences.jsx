@@ -26,7 +26,7 @@ export default function StylePreferences({ profile, concierge, onComplete }) {
       id: 'formal',
       name: 'Formal',
       description: 'Suits, tailored separates, dresses and special-event looks',
-      image: 'https://media.base44.com/images/public/698951bc103c5b61b68d35b7/153803aec_generated_image.png'
+      image: 'https://images.unsplash.com/photo-1592878897400-43fb1f1cc324?auto=format&fit=crop&w=720&q=82'
     },
     {
       id: 'evening',
@@ -44,19 +44,19 @@ export default function StylePreferences({ profile, concierge, onComplete }) {
       id: 'active',
       name: 'Active',
       description: 'Performance apparel, footwear and active accessories',
-      image: 'https://media.base44.com/images/public/698951bc103c5b61b68d35b7/c2e2840c5_generated_image.png'
+      image: 'https://images.unsplash.com/photo-1769196716871-39a0712fb037?auto=format&fit=crop&w=720&q=82'
     },
     {
       id: 'nightlife',
       name: 'Nightlife',
       description: 'Jackets, pattern shirts, evening dresses',
-      image: 'https://media.base44.com/images/public/698951bc103c5b61b68d35b7/ed12c091d_generated_image.png'
+      image: 'https://images.unsplash.com/photo-1774543465185-9bfaebc2e11b?auto=format&fit=crop&w=720&q=82'
     },
     {
       id: 'trendy',
       name: 'Trendy',
       description: 'Runway style, seasonal looks',
-      image: 'https://media.base44.com/images/public/698951bc103c5b61b68d35b7/e30cdb9bf_generated_image.png'
+      image: 'https://images.unsplash.com/photo-1589712186148-03ec318289c0?auto=format&fit=crop&w=720&q=82'
     }
   ];
 
