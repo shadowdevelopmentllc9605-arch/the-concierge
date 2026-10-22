@@ -1,75 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
+import { speakOnboardingMessage } from '@/lib/onboardingVoices';
 import { motion } from 'framer-motion';
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Volume2, VolumeX } from 'lucide-react';
-
-const TylerTTS = {
-  voices: [],
-  selectedVoice: null,
-
-  async init() {
-    this.voices = await this.loadVoices();
-    this.selectedVoice = this.pickBestVoice(this.voices);
-    console.log('Available voices:', this.voices.map(v => `${v.name} | ${v.lang}`).join(' || '));
-    console.log('Selected Tyler voice:', this.selectedVoice ? `${this.selectedVoice.name} | ${this.selectedVoice.lang}` : 'none');
-  },
-
-  loadVoices() {
-    return new Promise((resolve) => {
-      const synth = window.speechSynthesis;
-      const tryLoad = () => {
-        const voices = synth.getVoices();
-        if (voices && voices.length > 0) { resolve(voices); return true; }
-        return false;
-      };
-      if (tryLoad()) return;
-      synth.onvoiceschanged = () => resolve(synth.getVoices());
-      setTimeout(() => resolve(synth.getVoices() || []), 1200);
-    });
-  },
-
-  pickBestVoice(voices) {
-    if (!voices || !voices.length) return null;
-    const englishVoices = voices.filter(v => (v.lang || '').toLowerCase().startsWith('en'));
-    const preferredOrder = [
-      'Google UK English Male', 'Microsoft Guy Online (Natural)',
-      'Microsoft Ryan Online (Natural)', 'Microsoft Davis Online (Natural)',
-      'Samsung English (United States)', 'Alex', 'Daniel', 'Thomas', 'Aaron', 'Arthur', 'Fred'
-    ];
-    for (const preferred of preferredOrder) {
-      const match = englishVoices.find(v => v.name.toLowerCase().includes(preferred.toLowerCase()));
-      if (match) return match;
-    }
-    const masculineKeywords = ['male', 'guy', 'david', 'davis', 'ryan', 'alex', 'daniel', 'thomas', 'aaron', 'arthur', 'fred', 'samsung'];
-    const keywordMatch = englishVoices.find(v => masculineKeywords.some(k => v.name.toLowerCase().includes(k)));
-    return keywordMatch || englishVoices[0] || voices[0] || null;
-  },
-
-  speak(text, options = {}) {
-    const synth = window.speechSynthesis;
-    synth.cancel();
-    const utterance = new SpeechSynthesisUtterance(text);
-    if (this.selectedVoice) {
-      utterance.voice = this.selectedVoice;
-      utterance.lang = this.selectedVoice.lang || 'en-US';
-    } else {
-      utterance.lang = 'en-US';
-    }
-    utterance.rate = options.rate ?? 0.92;
-    utterance.pitch = options.pitch ?? 0.72;
-    utterance.volume = options.volume ?? 1.0;
-    utterance.onstart = () => console.log('Tyler speaking...');
-    utterance.onend = () => { console.log('Tyler done.'); if (options.onend) options.onend(); };
-    utterance.onerror = (e) => { console.error('Tyler TTS error:', e); if (options.onerror) options.onerror(e); };
-    synth.speak(utterance);
-  }
-};
 
 export default function ConciergeIntro({ user, onComplete, onSelectConcierge }) {
   const [selectedConcierge, setSelectedConcierge] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [showContinue, setShowContinue] = useState(false);
-  const [voices, setVoices] = useState([]);
+  const [voiceNotice, setVoiceNotice] = useState('');
+  const speechRequestRef = useRef(0);
 
   const concierges = [
     {
@@ -88,48 +28,50 @@ export default function ConciergeIntro({ user, onComplete, onSelectConcierge }) 
     }
   ];
 
-  useEffect(() => {
-    if ('speechSynthesis' in window) TylerTTS.init();
-  }, []);
-
   const handleSelect = async (concierge) => {
+    const requestId = ++speechRequestRef.current;
+    window.speechSynthesis?.cancel();
     setSelectedConcierge(concierge);
+    setVoiceNotice('');
+    setShowContinue(false);
     setIsPlaying(true);
 
-    if (!('speechSynthesis' in window)) {
-      setTimeout(() => { setIsPlaying(false); setShowContinue(true); }, 3000);
-      return;
-    }
+    const current = () => speechRequestRef.current === requestId;
+    const done = () => {
+      if (!current()) return;
+      setIsPlaying(false);
+      setShowContinue(true);
+    };
 
-    const done = () => { setIsPlaying(false); setShowContinue(true); };
-
-    if (concierge.gender === 'male') {
-      await TylerTTS.init();
-      TylerTTS.speak(concierge.greeting, { onend: done, onerror: done });
-    } else {
-      // Megan: simple feminine voice
-      const voices = await TylerTTS.loadVoices();
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(concierge.greeting);
-      const femaleKeywords = ['samantha', 'susan', 'karen', 'victoria', 'zira', 'moira', 'fiona', 'lisa', 'emily', 'ava', 'allison', 'kate', 'female'];
-      const engVoices = voices.filter(v => v.lang.toLowerCase().startsWith('en'));
-      const voice = engVoices.find(v => femaleKeywords.some(k => v.name.toLowerCase().includes(k))) || engVoices[engVoices.length - 1] || null;
-      if (voice) { utterance.voice = voice; utterance.lang = voice.lang || 'en-US'; } else { utterance.lang = 'en-US'; }
-      utterance.rate = 0.92; utterance.pitch = 1.2; utterance.volume = 1.0;
-      utterance.onend = done; utterance.onerror = done;
-      window.speechSynthesis.speak(utterance);
+    try {
+      const result = await speakOnboardingMessage({
+        concierge, message: concierge.greeting, isCurrent: current,
+        onend: done, onerror: done
+      });
+      if (!current()) return;
+      if (!result.spoken) {
+        if (result.reason === 'masculine_voice_unavailable') {
+          setVoiceNotice("Tyler's masculine voice is not available in this browser. Enable an English male text-to-speech voice on your device to hear him. You can still continue.");
+        }
+        done();
+      }
+    } catch (error) {
+      console.error('Onboarding voice failed', error);
+      if (current()) done();
     }
   };
 
   const toggleMute = () => {
-    if (isPlaying) {
-      window.speechSynthesis.cancel();
-      setIsPlaying(false);
-      setShowContinue(true);
-    }
+    if (!isPlaying) return;
+    ++speechRequestRef.current;
+    window.speechSynthesis?.cancel();
+    setIsPlaying(false);
+    setShowContinue(true);
   };
 
   const handleContinue = () => {
+    ++speechRequestRef.current;
+    window.speechSynthesis?.cancel();
     onSelectConcierge(selectedConcierge);
     onComplete();
   };
@@ -226,6 +168,7 @@ export default function ConciergeIntro({ user, onComplete, onSelectConcierge }) 
               )}
             </button>
           </div>
+          {voiceNotice && <p role="status" className="mt-3 text-left text-sm text-amber-900">{voiceNotice}</p>}
         </motion.div>
       )}
 
