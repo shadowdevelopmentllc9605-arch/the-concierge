@@ -36,15 +36,20 @@ test('style selection and saved preferences remain unchanged', () => {
   assert.match(source, /selected\.length === 0 \|\| saving/);
 });
 
-test('account deletion dialog has a white accessible modal outside page opacity context', () => {
+test('shopper deletion screen accurately requests verified human review', () => {
   const dialog = readFileSync('src/components/DeleteAccountDialog.jsx', 'utf8');
+  const profile = readFileSync('src/pages/Profile.jsx', 'utf8');
   assert.match(dialog, /createPortal\(/);
   assert.match(dialog, /document\.body/);
-  assert.match(dialog, /role="alertdialog"/);
+  assert.match(dialog, /role="dialog"/);
   assert.match(dialog, /aria-modal="true"/);
   assert.match(dialog, /bg-white p-6 text-black/);
   assert.match(dialog, /text-gray-900/);
-  assert.match(dialog, /!bg-white !text-black/);
-  assert.match(dialog, /confirmText !== 'DELETE'/);
-  assert.match(dialog, /await onConfirm\(\)/);
+  assert.match(dialog, /mailto:/);
+  assert.match(dialog, /encodeURIComponent\(subject\)/);
+  assert.match(dialog, /No request is sent until you send the email/);
+  assert.match(dialog, /Your account and data have not been deleted/);
+  assert.doesNotMatch(dialog, /deleteMyData|await onConfirm|confirmText|onConfirm\(/);
+  assert.doesNotMatch(profile, /deleteMyData|handleDeleteAccount|onConfirm=\{/);
+  assert.match(profile, /<DeleteAccountDialog/);
 });
