@@ -62,3 +62,41 @@ Once test evidence has been archived, close unused hourly-billed preview/testing
 ## Definition of done
 
 Phase One **technical readiness** requires the green applicable release gates and a tested, paired deployment with no major open blockers. **Commercial pilot launch** separately requires real retailer acceptance, tax/charge readiness if payments are enabled, and actual shopper participation. Do not conflate the two.
+
+## Verified delta — 2026-10-22 (read-only audit; updates historical baseline)
+
+This dated delta supersedes stale release-status claims above **where noted**, without removing historical evidence. Do not recreate synthetic entities or reopen verified controls simply because an older test matrix marked them pending.
+
+### Completed/configured and independently checked
+
+- **Production deployment availability:** both Vercel project main builds report READY. Shopper deployed production SHA `282156149f44ef572b8fd85a84a2284fbc78aaca`, retailer deployed production SHA `72877be1a904c43ecef965509597650923b3e508`. Both had **no grouped runtime errors reported over the previous 24 hours** as of this audit. This is not browser/session E2E proof.
+- **Production Supabase:** `jtnyqzxlipekwtoyvcmb` reports ACTIVE_HEALTHY; direct SQL found **zero public application tables with RLS disabled**. Security advisor returned no warning/error-level findings, but did return informational notices; not a claim that the system is vulnerability-free. [Supabase linter](https://supabase.com/docs/guides/database/database-linter).
+- **Existing email users:** direct production Auth query showed **3 users; all 3 email-confirmed and all 3 with prior sign-in**. The owner separately confirmed successful SMTP invitation and password-recovery messages and a working password reset on October 21. This finishes the tested email verification/recovery path. Production email-link action was deliberately hidden in both applications until broader SMTP delivery certification; do not interpret that gate as failed user email verification.
+- **Storage controls:** direct production SQL verified `concierge-sensitive` is private, `concierge-uploads` public, both allow only JPEG/PNG/WebP; limits **15 MiB private and 10 MiB public**. The production buckets currently contain **zero objects**, so their empty backup cannot establish populated production-image recovery.
+- **Backend release work:** migrations `phase1_retailer_setup_column_grants_20261017`, `phase1_paid_order_stock_sync_20261017`, `phase1_prod_storage_image_size_and_mime_limits`, and `phase1_prod_public_bucket_listing_owner_only` are recorded as applied. Do not redeploy these as hypothetical missing changes.
+- **Tests already built:** merged changes include real `age` encrypt/decrypt tests, synthetic-image byte/hash recovery in isolated directories, and safe manually triggered cross-branch Storage restore and cross-account API test harnesses. This does **not** prove that every protected manual workflow was executed or that recurring backups are commissioned.
+
+### Existing synthetic catalog and transaction fixtures — use, do not recreate
+
+Read-only counts on October 22:
+
+| Environment | Product masters | Variants | Offers | Businesses | Retailer inventory rows | Orders | Purchases |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Production `jtnyqzxlipekwtoyvcmb` | 27 | 51 | 32 | 1 | 0 | 0 | 0 |
+| Isolated branch `cbqxcbvjezehxowarkoq` (`phase1-e2e-20261016`) | 1 | 1 | 1 | 1 | 0 | 3 | 3 |
+
+Next end-to-end test should **reuse the existing isolated business, offer, transactions, and synthetic identities**, inspect retailer inventory write/read mapping rather than assume no inventory exists, then verify authenticated shopper checkout, webhook idempotency/stock debit, Pro order rendering, refunds and accurate closet records. Do not run live charges or contaminate production with synthetic orders.
+
+### Open release gates, narrowed by evidence
+
+1. **Visual release:** October 21 appearance fixes exist in tested but diverged preview branch. Safe extracted PR [#38](https://github.com/shadowdevelopmentllc9605-arch/the-concierge/pull/38) is based on current main; release only after checks pass and a real Android preview smoke test. Do **not** merge the old diverged branch.
+2. **Unification of E2E evidence:** reconcile existing synthetic checkout orders/offer and perform the paired shopper and retailer flows using real authenticated sessions; check product visibility, quantity decrement, refunds and order/closet history. Do not claim a single clean production signoff based only on backend fixture existence.
+3. **Recovery:** distinguish the prior real production database-backup restore and synthetic image recovery tests from a scheduled encrypted image backup pipeline; commission only the applicable backup requirements for enabled assets. Private body scans remain disabled and their production backup pipeline is **not** a lean pilot blocker unless uploads are enabled.
+4. **Deletion:** no supported complete automatic Auth + app-record + Storage-object erasure flow verified. PR #38 truthfully presents an email deletion-request workflow; implement end-to-end verified deletion/retention separately before claiming automatic erasure.
+5. **Live commercial:** tax/registration applicability and live Stripe merchant onboarding remain outside sandbox proof. One committed pilot retailer and real shopper feedback are commercial launch gates, not reasons to repeat synthetic technical setup.
+
+### Execution discipline
+
+- Progress claims must be labeled `implemented`, `CI-tested`, `isolated E2E verified`, `production-configured`, or `production journey verified`. A green Vercel build alone earns only `deployed READY`.
+- Record new facts in **this existing baseline**; do not create a parallel tracker. Each blocker must have exact missing evidence and the next safe action.
+- Prefer working directly through connected GitHub/Vercel/Supabase tools. Only request Android/Termux input for a genuinely unavailable browser-only visual check or a required protected secret/approval.
