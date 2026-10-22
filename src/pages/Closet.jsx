@@ -91,7 +91,7 @@ function PurchaseCard({ item, idx }) {
   const lines = Array.isArray(item.items) ? item.items : [];
   const firstLine = lines[0] || null;
   const title = firstLine?.product_name || firstLine?.name || item.product_name ||
-    `Purchase #${String(item.order_id || item.id).slice(-8)}`;
+    ('Purchase #' + String(item.order_id || item.id).slice(-8));
   const productImage = item.product_image || item.product_image_url || '';
   const total = Number(item.total ?? item.product_price ?? 0);
   const purchasedAt = item.created_date || item.created_at;
@@ -115,7 +115,7 @@ function PurchaseCard({ item, idx }) {
         </div>
         <div className="flex-1 min-w-0">
           <h3 className="font-medium text-[var(--color-text-primary)] break-words">
-            {title}{lines.length > 1 ? ` +${lines.length - 1} more` : ''}
+            {title}{lines.length > 1 ? ' +' + (lines.length - 1) + ' more' : ''}
           </h3>
           {lines.length ? (
             <ul className="mt-2 space-y-1 text-sm text-[var(--color-text-secondary)]">
@@ -125,276 +125,21 @@ function PurchaseCard({ item, idx }) {
                 const details = [
                   line.size_label || line.size,
                   line.color_name || line.color,
-                  line.width_code ? `Width ${line.width_code}` : ''
+                  line.width_code ? 'Width ' + line.width_code : ''
                 ].filter(Boolean).join(' / ');
                 return (
                   <li key={line.id || lineIndex}>
                     {quantity} × {line.product_name || line.name || 'Item'}
-                    {details ? ` · ${details}` : ''}
-                    {' · export default function Closet() {
-  const navigate = useNavigate();
-  const [purchases, setPurchases] = useState([]);
-  const [ownedItems, setOwnedItems] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [uploading, setUploading] = useState(false);
-  const [activeTab, setActiveTab] = useState('all');
-  const [editingItem, setEditingItem] = useState(null);
-  const [savingEdit, setSavingEdit] = useState(false);
-  const fileInputRef = useRef(null);
-  const cameraInputRef = useRef(null);
-
-  useEffect(() => {
-    loadData();
-  }, []);
-
-  const handleRefresh = useCallback(async () => {
-    await loadData();
-  }, []);
-
-  const loadData = async () => {
-    try {
-      const user = await base44.auth.me();
-      const [userPurchases, closetItems] = await Promise.all([
-        base44.entities.Purchase.filter({ user_id: user.id }, '-created_date'),
-        base44.entities.ClosetItem.filter({ user_id: user.id }, '-created_date')
-      ]);
-      setPurchases(userPurchases);
-      setOwnedItems(closetItems);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleUpload = async (e) => {
-    const files = Array.from(e.target.files);
-    if (files.length === 0) return;
-
-    setUploading(true);
-    try {
-      const user = await base44.auth.me();
-      for (const file of files) {
-        const { file_url } = await base44.integrations.Core.UploadFile({ file });
-
-        const analysisRes = await base44.functions.invoke('analyzeClothingItem', { file_url });
-        const analysis = analysisRes.data || {};
-
-        const newItem = await base44.entities.ClosetItem.create({
-          user_id: user.id,
-          image: file_url,
-          item_type: analysis.item_type || '',
-          color: analysis.color || '',
-          size: '',
-          style_category: analysis.style_category || 'other',
-          description: analysis.description || '',
-          source: 'uploaded'
-        });
-        
-        setOwnedItems(prev => [newItem, ...prev]);
-        setEditingItem(newItem);
-      }
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setUploading(false);
-    }
-  };
-
-  const removeItem = async (itemId) => {
-    try {
-      await base44.entities.ClosetItem.delete(itemId);
-      setOwnedItems(prev => prev.filter(i => i.id !== itemId));
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const updateItem = async (data) => {
-    if (!editingItem) return;
-    setSavingEdit(true);
-    try {
-      await base44.entities.ClosetItem.update(editingItem.id, data);
-      setOwnedItems(prev => prev.map(i => i.id === editingItem.id ? { ...i, ...data } : i));
-      setEditingItem(null);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setSavingEdit(false);
-    }
-  };
-
-  const totalItems = purchases.length + ownedItems.length;
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-[var(--color-background)] flex items-center justify-center">
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-          className="w-8 h-8 border-2 border-[var(--color-text-primary)] border-t-transparent rounded-full"
-        />
-      </div>
-    );
-  }
-
-  return (
-    <PullToRefresh onRefresh={handleRefresh} className="min-h-screen bg-[var(--color-background)] pb-24">
-      {/* Header */}
-      <div className="sticky top-0 z-40 bg-[var(--color-background)]/95 backdrop-blur-lg px-6 py-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <button
-              onClick={() => navigate(-1)}
-              className="w-10 h-10 rounded-full bg-[var(--color-surface)] shadow-sm flex items-center justify-center select-none"
-            >
-              <ArrowLeft className="w-5 h-5 text-[var(--color-text-primary)]" />
-            </button>
-            <div>
-              <h1 className="text-2xl font-light text-[var(--color-text-primary)]">My Closet</h1>
-              <p className="text-sm text-[var(--color-text-secondary)]">{totalItems} items</p>
-            </div>
-          </div>
-        </div>
-        <input
-          ref={cameraInputRef}
-          type="file"
-          accept="image/*"
-          capture="environment"
-          onChange={handleUpload}
-          className="hidden"
-        />
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept="image/*"
-          multiple
-          onChange={handleUpload}
-          className="hidden"
-        />
-      </div>
-
-      {/* Tabs */}
-      <div className="px-6 pt-4">
-        <Tabs defaultValue="all" className="w-full" onValueChange={setActiveTab}>
-          <TabsList className="w-full justify-start gap-2 bg-transparent h-auto mb-6 overflow-x-auto no-scrollbar">
-            <TabsTrigger 
-              value="all"
-              className="rounded-full px-4 py-2 data-[state=active]:bg-[var(--color-text-primary)] data-[state=active]:text-[var(--color-background)]"
-            >
-              All ({totalItems})
-            </TabsTrigger>
-            <TabsTrigger 
-              value="owned"
-              className="rounded-full px-4 py-2 data-[state=active]:bg-[var(--color-text-primary)] data-[state=active]:text-[var(--color-background)]"
-            >
-              My Items ({ownedItems.length})
-            </TabsTrigger>
-            <TabsTrigger 
-              value="purchased"
-              className="rounded-full px-4 py-2 data-[state=active]:bg-[var(--color-text-primary)] data-[state=active]:text-[var(--color-background)]"
-            >
-              Purchased ({purchases.length})
-            </TabsTrigger>
-            
-            {/* Add Items Button */}
-            <div className="ml-auto flex gap-2">
-              <button
-                onClick={() => cameraInputRef.current?.click()}
-                disabled={uploading}
-                className="flex items-center gap-2 px-4 py-2 bg-[var(--color-text-primary)] text-[var(--color-background)] rounded-full text-sm font-medium select-none"
-              >
-                {uploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Camera className="w-4 h-4" />}
-                Take Photo
-              </button>
-              <button
-                onClick={() => fileInputRef.current?.click()}
-                disabled={uploading}
-                className="flex items-center gap-2 px-4 py-2 bg-[var(--color-text-primary)] text-[var(--color-background)] rounded-full text-sm font-medium select-none"
-              >
-                {uploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <ImagePlus className="w-4 h-4" />}
-                Upload
-              </button>
-            </div>
-          </TabsList>
-
-          <TabsContent value="all">
-            {totalItems === 0 ? (
-              <EmptyState onTakePhoto={() => cameraInputRef.current?.click()} onUploadImage={() => fileInputRef.current?.click()} uploading={uploading} />
-            ) : (
-              <>
-                {ownedItems.length > 0 && (
-                  <div className="mb-6">
-                    <h3 className="text-sm font-medium text-[var(--color-text-secondary)] mb-3">My Items</h3>
-                    <div className="grid grid-cols-3 gap-3">
-                      {ownedItems.map((item, idx) => (
-                        <OwnedItemCard key={item.id} item={item} idx={idx} onRemove={removeItem} onEdit={setEditingItem} />
-                      ))}
-                    </div>
-                  </div>
-                )}
-                {purchases.length > 0 && (
-                  <div>
-                    <h3 className="text-sm font-medium text-[var(--color-text-secondary)] mb-3">Purchased</h3>
-                    <div className="space-y-4">
-                      {purchases.map((item, idx) => (
-                        <PurchaseCard key={item.id} item={item} idx={idx} />
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </>
-            )}
-          </TabsContent>
-
-          <TabsContent value="owned">
-            {ownedItems.length === 0 ? (
-              <EmptyState onTakePhoto={() => cameraInputRef.current?.click()} onUploadImage={() => fileInputRef.current?.click()} uploading={uploading} type="owned" />
-            ) : (
-              <div className="grid grid-cols-3 gap-3">
-                {ownedItems.map((item, idx) => (
-                  <OwnedItemCard key={item.id} item={item} idx={idx} onRemove={removeItem} onEdit={setEditingItem} />
-                ))}
-              </div>
-            )}
-          </TabsContent>
-
-          <TabsContent value="purchased">
-            {purchases.length === 0 ? (
-              <EmptyState type="purchased" />
-            ) : (
-              <div className="space-y-4">
-                {purchases.map((item, idx) => (
-                  <PurchaseCard key={item.id} item={item} idx={idx} />
-                ))}
-              </div>
-            )}
-          </TabsContent>
-        </Tabs>
-      </div>
-
-      {/* Edit Modal */}
-      <AnimatePresence>
-        {editingItem && (
-          <ClosetItemEditor
-            item={editingItem}
-            onSave={updateItem}
-            onCancel={() => setEditingItem(null)}
-            saving={savingEdit}
-          />
-        )}
-      </AnimatePresence>
-    </PullToRefresh>
-  );
-}}{Number.isFinite(lineCost) ? lineCost.toFixed(2) : '—'}
+                    {details ? ' · ' + details : ''}
+                    {' · $'}{Number.isFinite(lineCost) ? lineCost.toFixed(2) : '—'}
                   </li>
                 );
               })}
             </ul>
           ) : (
             <p className="mt-1 text-sm text-[var(--color-text-secondary)]">
-              {item.size ? `Size: ${item.size}` : 'Purchase line details unavailable'}
-              {item.color ? ` · ${item.color}` : ''}
+              {item.size ? 'Size: ' + item.size : 'Purchase line details unavailable'}
+              {item.color ? ' · ' + item.color : ''}
             </p>
           )}
           <div className="flex flex-wrap items-center gap-3 mt-2 text-xs text-[var(--color-text-secondary)]">
@@ -410,9 +155,9 @@ function PurchaseCard({ item, idx }) {
         </div>
         <div className="shrink-0 text-right">
           <p className="font-semibold text-[var(--color-text-primary)]">
-            ${Number.isFinite(total) ? total.toFixed(2) : '—'}
+            {'$'}{Number.isFinite(total) ? total.toFixed(2) : '—'}
           </p>
-          <span className={`inline-block mt-2 px-2 py-1 rounded-full text-xs capitalize ${statusColors[item.status] || statusColors.completed}`}>
+          <span className={'inline-block mt-2 px-2 py-1 rounded-full text-xs capitalize ' + (statusColors[item.status] || statusColors.completed)}>
             {item.status || 'completed'}
           </span>
         </div>
