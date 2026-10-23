@@ -88,6 +88,13 @@ function PurchaseCard({ item, idx }) {
     delivered: 'bg-green-100 text-green-800',
     completed: 'bg-[var(--color-background-secondary)] text-[var(--color-text-secondary)]'
   };
+  const lines = Array.isArray(item.items) ? item.items : [];
+  const firstLine = lines[0] || null;
+  const title = firstLine?.product_name || firstLine?.name || item.product_name ||
+    ('Purchase #' + String(item.order_id || item.id).slice(-8));
+  const productImage = item.product_image || item.product_image_url || '';
+  const total = Number(item.total ?? item.product_price ?? 0);
+  const purchasedAt = item.created_date || item.created_at;
 
   return (
     <motion.div
@@ -96,30 +103,49 @@ function PurchaseCard({ item, idx }) {
       transition={{ delay: idx * 0.05 }}
       className="bg-[var(--color-surface)] rounded-2xl p-4 shadow-sm"
     >
-      <div className="flex gap-4">
-        <div className="w-20 h-20 rounded-xl bg-[var(--color-placeholder)] overflow-hidden shrink-0">
-          {item.product_image ? (
-            <img 
-              src={item.product_image}
-              alt={item.product_name}
-              className="w-full h-full object-cover"
-            />
+      <div className="flex gap-3 sm:gap-4">
+        <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl bg-[var(--color-placeholder)] overflow-hidden shrink-0">
+          {productImage ? (
+            <img src={productImage} alt={title} className="w-full h-full object-cover" />
           ) : (
             <div className="w-full h-full flex items-center justify-center">
-              <Package className="w-6 h-6 text-[var(--color-text-secondary)]" />
+              <Package className="w-6 h-6 text-[var(--color-text-secondary)]" aria-hidden="true" />
             </div>
           )}
         </div>
         <div className="flex-1 min-w-0">
-          <h3 className="font-medium text-[var(--color-text-primary)] truncate">{item.product_name}</h3>
-          <p className="text-sm text-[var(--color-text-secondary)] mt-1">
-            Size: {item.size}{item.width_code ? ' • Width ' + item.width_code : ''} {item.color && `• ${item.color}`}
-          </p>
-          
-          <div className="flex items-center gap-4 mt-2 text-xs text-[var(--color-text-secondary)]">
+          <h3 className="font-medium text-[var(--color-text-primary)] break-words">
+            {title}{lines.length > 1 ? ' +' + (lines.length - 1) + ' more' : ''}
+          </h3>
+          {lines.length ? (
+            <ul className="mt-2 space-y-1 text-sm text-[var(--color-text-secondary)]">
+              {lines.map((line, lineIndex) => {
+                const quantity = Math.max(1, Number(line.quantity) || 1);
+                const lineCost = quantity * Number(line.unit_price ?? line.price ?? 0);
+                const details = [
+                  line.size_label || line.size,
+                  line.color_name || line.color,
+                  line.width_code ? 'Width ' + line.width_code : ''
+                ].filter(Boolean).join(' / ');
+                return (
+                  <li key={line.id || lineIndex}>
+                    {quantity} × {line.product_name || line.name || 'Item'}
+                    {details ? ' · ' + details : ''}
+                    {' · $'}{Number.isFinite(lineCost) ? lineCost.toFixed(2) : '—'}
+                  </li>
+                );
+              })}
+            </ul>
+          ) : (
+            <p className="mt-1 text-sm text-[var(--color-text-secondary)]">
+              {item.size ? 'Size: ' + item.size : 'Purchase line details unavailable'}
+              {item.color ? ' · ' + item.color : ''}
+            </p>
+          )}
+          <div className="flex flex-wrap items-center gap-3 mt-2 text-xs text-[var(--color-text-secondary)]">
             <span className="flex items-center gap-1">
-              <Calendar className="w-3 h-3" />
-              {item.created_date ? format(new Date(item.created_date), 'MMM d, yyyy') : 'N/A'}
+              <Calendar className="w-3 h-3" aria-hidden="true" />
+              {purchasedAt ? format(new Date(purchasedAt), 'MMM d, yyyy') : 'N/A'}
             </span>
             <span className="flex items-center gap-1">
               {item.purchase_type === 'in_store' ? <Store className="w-3 h-3" /> : <Package className="w-3 h-3" />}
@@ -127,14 +153,15 @@ function PurchaseCard({ item, idx }) {
             </span>
           </div>
         </div>
-        <div className="text-right">
-          <p className="font-semibold text-[var(--color-text-primary)]">${item.product_price?.toFixed(2)}</p>
-          <span className={`inline-block mt-2 px-2 py-1 rounded-full text-xs capitalize ${statusColors[item.status] || statusColors.completed}`}>
+        <div className="shrink-0 text-right">
+          <p className="font-semibold text-[var(--color-text-primary)]">
+            {'$'}{Number.isFinite(total) ? total.toFixed(2) : '—'}
+          </p>
+          <span className={'inline-block mt-2 px-2 py-1 rounded-full text-xs capitalize ' + (statusColors[item.status] || statusColors.completed)}>
             {item.status || 'completed'}
           </span>
         </div>
       </div>
-      
       {item.vendor_name && (
         <div className="mt-3 pt-3 border-t border-[var(--color-border-light)] flex items-center gap-2 text-sm text-[var(--color-text-secondary)]">
           <MapPin className="w-4 h-4" />

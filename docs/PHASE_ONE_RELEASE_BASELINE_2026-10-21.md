@@ -62,3 +62,113 @@ Once test evidence has been archived, close unused hourly-billed preview/testing
 ## Definition of done
 
 Phase One **technical readiness** requires the green applicable release gates and a tested, paired deployment with no major open blockers. **Commercial pilot launch** separately requires real retailer acceptance, tax/charge readiness if payments are enabled, and actual shopper participation. Do not conflate the two.
+
+## Verified delta — 2026-10-22 (read-only audit; updates historical baseline)
+
+This dated delta supersedes stale release-status claims above **where noted**, without removing historical evidence. Do not recreate synthetic entities or reopen verified controls simply because an older test matrix marked them pending.
+
+### Completed/configured and independently checked
+
+- **Production deployment availability:** both Vercel project main builds report READY. Shopper deployed production SHA `282156149f44ef572b8fd85a84a2284fbc78aaca`, retailer deployed production SHA `72877be1a904c43ecef965509597650923b3e508`. Both had **no grouped runtime errors reported over the previous 24 hours** as of this audit. This is not browser/session E2E proof.
+- **Production Supabase:** `jtnyqzxlipekwtoyvcmb` reports ACTIVE_HEALTHY; direct SQL found **zero public application tables with RLS disabled**. Security advisor returned no warning/error-level findings, but did return informational notices; not a claim that the system is vulnerability-free. [Supabase linter](https://supabase.com/docs/guides/database/database-linter).
+- **Existing email users:** direct production Auth query showed **3 users; all 3 email-confirmed and all 3 with prior sign-in**. The owner separately confirmed successful SMTP invitation and password-recovery messages and a working password reset on October 21. This finishes the tested email verification/recovery path. Production email-link action was deliberately hidden in both applications until broader SMTP delivery certification; do not interpret that gate as failed user email verification.
+- **Storage controls:** direct production SQL verified `concierge-sensitive` is private, `concierge-uploads` public, both allow only JPEG/PNG/WebP; limits **15 MiB private and 10 MiB public**. The production buckets currently contain **zero objects**, so their empty backup cannot establish populated production-image recovery.
+- **Backend release work:** migrations `phase1_retailer_setup_column_grants_20261017`, `phase1_paid_order_stock_sync_20261017`, `phase1_prod_storage_image_size_and_mime_limits`, and `phase1_prod_public_bucket_listing_owner_only` are recorded as applied. Do not redeploy these as hypothetical missing changes.
+- **Tests already built:** merged changes include real `age` encrypt/decrypt tests, synthetic-image byte/hash recovery in isolated directories, and safe manually triggered cross-branch Storage restore and cross-account API test harnesses. This does **not** prove that every protected manual workflow was executed or that recurring backups are commissioned.
+
+### Existing synthetic catalog and transaction fixtures — use, do not recreate
+
+Read-only counts on October 22:
+
+| Environment | Product masters | Variants | Offers | Businesses | Retailer inventory rows | Orders | Purchases |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Production `jtnyqzxlipekwtoyvcmb` | 27 | 51 | 32 | 1 | 0 | 0 | 0 |
+| Isolated branch `cbqxcbvjezehxowarkoq` (`phase1-e2e-20261016`) | 1 | 1 | 1 | 1 | 0 | 3 | 3 |
+
+Next end-to-end test should **reuse the existing isolated business, offer, transactions, and synthetic identities**, inspect retailer inventory write/read mapping rather than assume no inventory exists, then verify authenticated shopper checkout, webhook idempotency/stock debit, Pro order rendering, refunds and accurate closet records. Do not run live charges or contaminate production with synthetic orders.
+
+### Open release gates, narrowed by evidence
+
+1. **Visual release:** October 21 appearance fixes exist in tested but diverged preview branch. Safe extracted PR [#38](https://github.com/shadowdevelopmentllc9605-arch/the-concierge/pull/38) is based on current main; release only after checks pass and a real Android preview smoke test. Do **not** merge the old diverged branch.
+2. **Unification of E2E evidence:** reconcile existing synthetic checkout orders/offer and perform the paired shopper and retailer flows using real authenticated sessions; check product visibility, quantity decrement, refunds and order/closet history. Do not claim a single clean production signoff based only on backend fixture existence.
+3. **Recovery:** distinguish the prior real production database-backup restore and synthetic image recovery tests from a scheduled encrypted image backup pipeline; commission only the applicable backup requirements for enabled assets. Private body scans remain disabled and their production backup pipeline is **not** a lean pilot blocker unless uploads are enabled.
+4. **Deletion:** no supported complete automatic Auth + app-record + Storage-object erasure flow verified. PR #38 truthfully presents an email deletion-request workflow; implement end-to-end verified deletion/retention separately before claiming automatic erasure.
+5. **Live commercial:** tax/registration applicability and live Stripe merchant onboarding remain outside sandbox proof. One committed pilot retailer and real shopper feedback are commercial launch gates, not reasons to repeat synthetic technical setup.
+
+### Execution discipline
+
+- Progress claims must be labeled `implemented`, `CI-tested`, `isolated E2E verified`, `production-configured`, or `production journey verified`. A green Vercel build alone earns only `deployed READY`.
+- Record new facts in **this existing baseline**; do not create a parallel tracker. Each blocker must have exact missing evidence and the next safe action.
+- Prefer working directly through connected GitHub/Vercel/Supabase tools. Only request Android/Termux input for a genuinely unavailable browser-only visual check or a required protected secret/approval.
+
+### October 22 additional transaction-linkage audit (isolated branch, read-only SQL)
+
+For existing synthetic branch `cbqxcbvjezehxowarkoq`: **3 orders / 3 purchases / 3 order items / 3 purchase items**. All three orders have `payment_status=paid` and `pro_sync_status=completed`; all three purchases have `status=completed` and `purchase_type=online`. All orders have a linked purchase and all purchases have a linked order (both unmatched counts zero). The single offer's stock is **7** after the three purchases, consistent with the previously reported stock-10 fixture. These facts confirm persisted linked, paid synthetic records and stock state; they do not establish Stripe webhook replay/idempotency, refunds, a new signed-in shopper journey, or retailer dashboard visibility. **Do not re-create the synthetic merchant, offers or purchase records to repeat these already established database facts.** Focus remaining validation on authenticated interface access, rendered order lines/closet and deliberately isolated failure/retry cases.
+
+
+## October 22 continuation — release gating and shopper purchase display
+
+This continuation is the status after additional work on the **same** controlled PR #38; older status notes above remain historical.
+
+- **Automated checks:** PR #38 commit `5bff58e` passed GitHub Actions validation (dependency installation, production audit, tests, real age encryption tests, build, lint). Later commits extending the preview with shopper purchase-line rendering require their own new green run. Vercel `READY` and an HTTP 200 document response do not prove React boot or an Android authenticated session.
+- **Verified synthetic database reconciliation (read-only, branch `cbqxcbvjezehxowarkoq`):** 3 paid orders, 3 completed purchases, 3 `order_items`, 3 `purchase_items`, 3 Pro-synced orders, 0 unlinked orders, and 0 purchases missing line details. Reusing existing transactions; no new payment or synthetic account created.
+- **Shopper display issue identified and patched in PR #38:** the shopper `Purchase` adapter previously selected only `purchases.*`; `Closet` expected legacy product fields that are absent from the current `purchases` table. The adapter now fetches `purchase_items(*)`, normalizes sizes, colors, prices and quantities, and `Closet` renders the existing lines with a legacy fallback. New pure mapping tests added. This is **implemented in preview branch**, not independently confirmed as a signed-in shopper experience or yet released to production.
+- **Retailer distinction verified (read-only):** `retailer_offer` has 1 offer with stock 7 and `purchases` has 3 online rows, while `inventory_items` contains 0 rows in the isolated test branch. Concierge Pro Home's Recent Online Orders reads business-scoped Purchase records including purchase lines; Concierge Pro Inventory reads the separate `inventory_items` table. Thus successful stock decrements are verified in the offer layer, but **retailer inventory-screen visibility/synchronization remains an explicit E2E gap**, not evidence that orders failed. Resolve mapping/UX deliberately, without manufacturing or duplicating inventory records.
+- **Android smoke and release:** the updated release preview still requires authenticated Android checks for all eight style images, Home/onboarding consistency, white deletion dialog, startup errors and Closet purchases. Do not merge PR #38 or activate live Stripe from the preview build alone. Record and close any responsive/UI failures first.
+
+
+## October 22 Android visual acceptance and retailer-offer follow-up
+
+**Owner's real Android preview walkthrough (reported, not an automated E2E test):**
+
+- **Visually checked:** Home layout, Shop layout, In-store location-detection and manual-store choices, empty wishlist, Profile, empty digital closet with photo/upload controls, Payment/Shipping empty states, Notifications empty state, Reviews/Feedback empty state, Precision Photo Scan foot/hat options, Friends email invitation choice, seven FAQs, Support actions, and the white high-contrast Request Account Deletion popup with its truthful non-automatic email-request wording and Cancel / Compose request controls. Owner reported no appearance or navigation problems during this walkthrough.
+- **Not claimed tested:** Actually detecting location, selecting a retailer, uploading images, adding a friend, storing a card/address, receiving notifications, taking a photo scan, submitting a review, sending a deletion email, erasing customer data, or viewing an existing paid test purchase in a genuine signed-in shopper session. Visible controls and appropriate empty states are **UI smoke acceptance**, not completed workflows.
+- **Shop listing imagery:** Existing shopper product pictures were missing from the preview. Owner recognizes pilot inventory images still need to be supplied; do **not** invent product images or call actual retailer catalog/photo readiness complete.
+- **Later scope:** Facebook, Instagram, TikTok, Snapchat and other social-media contact connections are **requested future enhancements**, not part of the small Phase One pilot. Preserve email-based friends UI; do not claim third-party contact imports already work.
+- **Retailer gap root cause (read-only inspection):** Isolated test branch's original canonical T-shirt offer has stock 7 in `retailer_offer`, while `inventory_items` is still empty. The offer's business ID joins the actual synthetic business. These are separate retail catalog and local inventory models. Do not create a duplicate stock row as a workaround.
+- **Pro implementation in progress:** [Concierge Pro PR #18](https://github.com/shadowdevelopmentllc9605-arch/concierge-pro/pull/18) adds a **read-only online storefront offers panel** in Inventory using the signed-in retailer's business ID, current offer price/stock and product/variant labels. It intentionally leaves legacy local inventory controls, payment state and backend stock records intact. PR must pass automated validation plus an authenticated test-retailer UI check, and paired shopper/retailer testing remains open. This is a display reconciliation, not a verified bidirectional inventory-sync implementation.
+- **Release status:** Shopper PR #38 passed CI and Vercel preview checks for its last audited SHA and received the owner's reported Android visual acceptance. Neither shopper PR #38 nor retailer PR #18 should be called live production without checking current merge and deployed SHAs first.
+
+
+## October 22 Concierge Pro retailer Android smoke and button contrast
+
+- **Retailer preview walkthrough (owner-reported):** The Concierge Pro online storefront offer section appears in the authenticated Android UI. The selected store's displayed empty/zero counts are consistent with a store lacking seeded local inventory; they neither disprove the previous synthetic branch checkout records nor verify seven-unit stock in a paired signed-in synthetic retailer session. Do not mark paired E2E verified.
+- **Two accessibility/contrast defects addressed in Pro PR #18:** Four notification campaign shortcut tiles now have white backgrounds with black labels; the business Settings data-removal email-request button now has a red background with bold black text, plus visible focus state. Existing email/data-retention behavior deliberately unchanged. Regression tests cover all four labels and the non-automatic deletion disclosure.
+- **Automated release evidence:** Concierge Pro PR #18 latest SHA `72f8783b6d5b60d39541dfc664fce6cd397ec400` passed GitHub Actions `validate` (including build, lint and tests); exact SHA preview Vercel `READY` and HTML HTTP 200. This proves CI/deployment health, **not** newly corrected contrast appearance in a real Android session.
+- **Next validation:** use the fresh matching Vercel preview to check four notification tile labels and the red Settings data-removal request. Separately validate existing synthetic online offer stock in the paired isolated test context, without recreating accounts or purchases.
+- **Production:** both PRs remain open; no production promotion yet.
+
+
+## October 22 final Android visual acceptance — Concierge Pro contrast
+
+**Owner-provided real-device result (actual Android session): PASS for the two appearance corrections in Concierge Pro PR #18.** After opening the corrected exact-SHA preview, the owner separately confirmed:
+- **Notifications:** all four white-background cards now have legible black text: **New Arrivals**, **Promo / Sale**, **Birthday Cards**, **Send Coupon**.
+- **Settings:** **Request data removal by email** now appears as the requested red button with black text.
+- Owner then reiterated, "everything looks good on my end." No unresolved appearance defect was reported in this review.
+
+**Evidence categories:** implementation present in Pro PR #18 SHA `72f8783b6d5b60d39541dfc664fce6cd397ec400`; GitHub Actions `validate` SUCCESS and exact SHA Vercel READY/HTTP 200; both appearance fixes are now **owner Android visually verified**. This does NOT establish sending emails, actual removal requests, automatic erasure, notification delivery, production deployment, or retailer stock/revenue synchronization.
+
+**Remaining separate validation:** checkout's 3 existing paid orders, 3 linked purchases, and 7 units in one synthetic offer are established by isolated database readback, but a same-branch, signed-in, end-to-end shopper/retailer UI journey is still open. No fixtures, users, payments or production stock should be reset or recreated for this. Both app PRs must still pass exact-SHA CI before a controlled production merge and live-session smoke tests. Social-platform friend imports and missing real retailer product images are deferred pilot-content/future-scope work.
+
+
+## October 22 QA preview environment blocker resolved
+
+- **Cause:** The shopper and retailer's latest reviewed preview branches were built against their normal Vercel preview configuration, not the isolated Supabase branch containing the existing 3 completed orders/purchases and 7-unit test offer. A direct attempt to recreate the sandbox variables on fresh QA branches was blocked by connector safety controls; no credentials were exposed or written to GitHub.
+- **Preview-only fix executed:** Reassigned the two **existing** branch-scoped Vercel variables (`VITE_SUPABASE_URL` and the stored **sensitive** `VITE_SUPABASE_PUBLISHABLE_KEY`) in each Vercel app to **`test/phase1-paired-ui-20261022`**. Crucially the protected value was **not read, copied, reentered or disclosed** during reassignment. Production targets were not modified. These settings were **moved**, not duplicated, so do not redeploy legacy test branches under their old names expecting the same sandbox scope; backups of old code exist.
+- **Code preservation:** The QA branches started from shopper PR #38 commit `a8c77feaedf50c9cf264a96ab92cb0f7c2e6bd54` and retailer PR #18 commit `72f8783b6d5b60d39541dfc664fce6cd397ec400`. Both code commits have green automated `validate` checks. Neither PR merged.
+- **Deployed and verified by Vercel:** Shopper QA `https://the-concierge-38qtmyjyr-shadow-development-llc.vercel.app/` and Pro QA `https://concierge-20x7tucx6-shadow-development-llc.vercel.app/`, both `READY`. Each returned HTTP 200 with React root. The fetched compiled JavaScript bundle in **both** contained `cbqxcbvjezehxowarkoq.supabase.co` (the isolated QA database endpoint), and neither bundle contained the production project's Supabase endpoint. Existing publishable keys remained stored as sensitive Vercel environment variables.
+- **Still open:** Authenticated same-branch on-phone QA using the existing synthetic shopper and retailer test identities: shopper Closet > Purchased should show the three recorded purchases, Pro Home > Recent Online Orders should show the same three rows, and Pro Inventory > Online storefront offers should show the synthetic T-shirt with seven available units. This is a *UI* acceptance test; previous isolated database readback established the underlying persisted counts but does not prove authenticated React rendering. No test checkout, webhook replay, financial changes or inventory updates performed during this environment repair.
+- **Release safety:** Both QA links are temporary and not production. Since the Vercel setting relocation changes the scope for **future builds**, avoid redeploying archived older test branches without intentionally restoring their own QA configuration. Keep live Stripe, tax and production promotion gated separately.
+
+
+## October 22 Tyler onboarding voice correction
+
+**Owner finding:** On The Concierge shopper onboarding introduction and the next page gathering basic personal information ("Let's get to know you"), selecting **Tyler** still produced a feminine-sounding browser TTS voice. Owner requests a masculine voice for Tyler consistently on both pages.
+
+**Root cause independently verified in source:** `ConciergeIntro.jsx` previously picked preferred male names but fell back to `englishVoices[0]` and treated generic Samsung English as an explicitly masculine choice; `ConciergeGuide.jsx` did not select a voice at all, it only set `pitch` to `0.9`. The browser's default voice can be feminine regardless of pitch.
+
+**Preview-only correction:** Shared `src/lib/onboardingVoices.js` selects **named masculine** English voices for Tyler and is called from both introduction and next-page `ConciergeGuide`; subsequent onboarding guides also reuse it. It waits for voice inventory and cancels stale prompt requests. If the user's browser exposes no identifiable masculine voice, **do not play an unspecified/feminine voice**: display the full written prompt and an explanatory notice, allowing onboarding to continue. This fallback is a limitation, not verified masculine audio on all Android devices. Megan's separate feminine voice handling remains independent.
+
+**Verification:** GitHub PR #38 code commit `dcaa22998cdb835a3c9d839dceace3057ebc3eb4` passed automated `validate` (tests, build, lint, dependency audit). The updated synthetic QA branch `test/phase1-paired-ui-20261022` fast-forwarded to that commit. Vercel QA preview `https://the-concierge-lcuwp5wmm-shadow-development-llc.vercel.app/` is **READY** and returned HTTP 200; its compiled bundle contains the masculine selector, the missing-voice notice and the *isolated* test Supabase hostname, not the production Supabase hostname.
+
+**Acceptance still open:** An actual device must hear Tyler's first greeting and profile-information guide prompt as masculine **or** report the explicit unavailable-voice fallback. Visual/sound acceptance and the ongoing paired purchase/order/stock walkthrough remain independent tasks. No live deployment, merchant data changes, new synthetic checkout or live charge.
