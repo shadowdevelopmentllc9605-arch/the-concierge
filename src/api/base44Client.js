@@ -35,6 +35,7 @@ const fieldMaps = {
   WishlistItem: { product_id: 'product_master_id', product_image: 'product_image_url', vendor_id: 'legacy_vendor_id' },
   CartItem: { product_id: 'product_master_id', product_image: 'product_image_url', price: 'unit_price', product_price: 'unit_price', size: 'size_label', color: 'color_name' },
   Purchase: { user_id: 'shopper_user_id' },
+  ClosetItem: { image: 'image_url', size: 'size_label', color: 'color_name' },
   StoreCheckin: { user_id: 'shopper_user_id', vendor_id: 'legacy_vendor_id' },
   ProductReview: { product_id: 'product_master_id', vendor_id: 'business_id' },
   Vendor: { business_name: 'name' }
@@ -65,6 +66,11 @@ const fromDb = (entity, row) => {
     out.color = row.color_name || '';
   }
   if (entity === 'Purchase') return normalizeShopperPurchase(out);
+  if (entity === 'ClosetItem') {
+    out.image = row.image_url;
+    out.size = row.size_label;
+    out.color = row.color_name;
+  }
   if (entity === 'StoreCheckin') {
     out.user_id = row.shopper_user_id;
     out.vendor_id = row.legacy_vendor_id;
