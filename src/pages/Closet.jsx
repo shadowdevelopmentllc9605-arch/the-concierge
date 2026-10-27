@@ -257,6 +257,7 @@ export default function Closet() {
       }
     } catch (error) {
       console.error(error);
+      window.alert(error?.message || 'Unable to upload this photo. Please try again.');
     } finally {
       setUploading(false);
     }
