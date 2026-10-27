@@ -285,6 +285,8 @@ export default function Closet() {
     }
   };
 
+  const displayOwnedItem = (item) => ({ ...item, image: item.image?.startsWith('concierge-sensitive/') ? (privateImageUrls[item.id] || '') : item.image });
+
   const totalItems = purchases.length + ownedItems.length;
 
   if (loading) {
@@ -389,7 +391,7 @@ export default function Closet() {
                     <h3 className="text-sm font-medium text-[var(--color-text-secondary)] mb-3">My Items</h3>
                     <div className="grid grid-cols-3 gap-3">
                       {ownedItems.map((item, idx) => (
-                        <OwnedItemCard key={item.id} item={{ ...item, image: item.image?.startsWith('concierge-sensitive/') ? privateImageUrls[item.id] || '' : item.image }} idx={idx} onRemove={removeItem} onEdit={setEditingItem} />
+                        <OwnedItemCard key={item.id} item={displayOwnedItem(item)} idx={idx} onRemove={removeItem} onEdit={setEditingItem} />
                       ))}
                     </div>
                   </div>
@@ -414,7 +416,7 @@ export default function Closet() {
             ) : (
               <div className="grid grid-cols-3 gap-3">
                 {ownedItems.map((item, idx) => (
-                  <OwnedItemCard key={item.id} item={item} idx={idx} onRemove={removeItem} onEdit={setEditingItem} />
+                  <OwnedItemCard key={item.id} item={displayOwnedItem(item)} idx={idx} onRemove={removeItem} onEdit={setEditingItem} />
                 ))}
               </div>
             )}
@@ -438,7 +440,7 @@ export default function Closet() {
       <AnimatePresence>
         {editingItem && (
           <ClosetItemEditor
-            item={editingItem}
+            item={displayOwnedItem(editingItem)}
             onSave={updateItem}
             onCancel={() => setEditingItem(null)}
             saving={savingEdit}
