@@ -1,4 +1,5 @@
 import { supabase } from '@/api/supabaseClient';
+import { normalizeShopperPurchase } from '@/lib/shopperPurchases';
 import { isSellableOffer } from '@/lib/cartVariantSelection';
 import { validateImageUpload, MAX_PUBLIC_IMAGE_BYTES, MAX_PRIVATE_IMAGE_BYTES } from '@/lib/imageUploadValidation';
 
@@ -34,6 +35,7 @@ const fieldMaps = {
   WishlistItem: { product_id: 'product_master_id', product_image: 'product_image_url', vendor_id: 'legacy_vendor_id' },
   CartItem: { product_id: 'product_master_id', product_image: 'product_image_url', price: 'unit_price', product_price: 'unit_price', size: 'size_label', color: 'color_name' },
   Purchase: { user_id: 'shopper_user_id' },
+  ClosetItem: { image: 'image_url', size: 'size_label', color: 'color_name' },
   StoreCheckin: { user_id: 'shopper_user_id', vendor_id: 'legacy_vendor_id' },
   ProductReview: { product_id: 'product_master_id', vendor_id: 'business_id' },
   Vendor: { business_name: 'name' }
@@ -63,7 +65,12 @@ const fromDb = (entity, row) => {
     out.size = row.size_label || '';
     out.color = row.color_name || '';
   }
-  if (entity === 'Purchase') out.user_id = row.shopper_user_id;
+  if (entity === 'Purchase') return normalizeShopperPurchase(out);
+  if (entity === 'ClosetItem') {
+    out.image = row.image_url;
+    out.size = row.size_label;
+    out.color = row.color_name;
+  }
   if (entity === 'StoreCheckin') {
     out.user_id = row.shopper_user_id;
     out.vendor_id = row.legacy_vendor_id;
@@ -250,7 +257,7 @@ const entityApi = (entity) => ({
     if (entity === 'Product') return loadProducts(filters, sort, limit || 100);
     const table = directTables[entity];
     if (!table) return [];
-    let query = applyFilters(supabase.from(table).select('*'), entity, filters);
+    let query = applyFilters(supabase.from(table).select(entity === 'Purchase' ? '*,purchase_items(*)' : '*'), entity, filters);
     if (sort) {
       const desc = sort.startsWith('-');
       const key = sort.replace(/^-/, '');
@@ -273,7 +280,7 @@ const entityApi = (entity) => ({
     }
     const table = directTables[entity];
     if (!table) return sortOrOptions && typeof sortOrOptions === 'object' ? { items: [], next_cursor: null } : [];
-    let query = supabase.from(table).select('*');
+    let query = supabase.from(table).select(entity === 'Purchase' ? '*,purchase_items(*)' : '*');
     if (typeof sortOrOptions === 'string') {
       const desc = sortOrOptions.startsWith('-');
       const key = sortOrOptions.replace(/^-/, '');
