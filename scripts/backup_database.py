@@ -10,7 +10,7 @@ import sys
 from pathlib import Path
 from urllib.parse import urlparse
 
-EXPECTED_HOST = "db.jtnyqzxlipekwtoyvcmb.supabase.co"
+EXPECTED_HOSTS = {"db.jtnyqzxlipekwtoyvcmb.supabase.co", "aws-1-us-west-2.pooler.supabase.com"}
 
 def main():
     if len(sys.argv) != 2:
@@ -21,8 +21,15 @@ def main():
     url = os.environ.get("DATABASE_BACKUP_URL", "")
     recipient = os.environ.get("AGE_RECIPIENT", "")
     parsed = urlparse(url)
-    if parsed.scheme not in ("postgres", "postgresql") or parsed.hostname != EXPECTED_HOST:
-        raise SystemExit("DATABASE_BACKUP_URL must point to the approved production database host")
+    if (parsed.scheme not in ("postgres", "postgresql") or parsed.hostname not in EXPECTED_HOSTS
+            or parsed.port not in (None, 5432) or parsed.path != "/postgres"
+            or not parsed.username or not parsed.password or parsed.fragment):
+        raise SystemExit("DATABASE_BACKUP_URL must use the approved production database endpoint")
+    if parsed.hostname.endswith(".pooler.supabase.com"):
+        if not parsed.username.endswith(".jtnyqzxlipekwtoyvcmb"):
+            raise SystemExit("Pooler username must target the approved production project")
+    elif parsed.username.endswith(".jtnyqzxlipekwtoyvcmb"):
+        raise SystemExit("Pooler username is invalid for the direct database endpoint")
     if not recipient.startswith("age1") or any(c.isspace() for c in recipient):
         raise SystemExit("AGE_RECIPIENT must be a public age recipient")
     target.parent.mkdir(parents=True, exist_ok=True)
