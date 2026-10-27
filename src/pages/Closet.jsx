@@ -181,12 +181,31 @@ export default function Closet() {
   const [activeTab, setActiveTab] = useState('all');
   const [editingItem, setEditingItem] = useState(null);
   const [savingEdit, setSavingEdit] = useState(false);
+  const [privateImageUrls, setPrivateImageUrls] = useState({});
   const fileInputRef = useRef(null);
   const cameraInputRef = useRef(null);
 
   useEffect(() => {
     loadData();
   }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    const loadPrivateImages = async () => {
+      const entries = await Promise.all(ownedItems.filter(item => item.image?.startsWith('concierge-sensitive/')).map(async item => {
+        try {
+          const result = await base44.integrations.Core.CreateFileSignedUrl({ file_uri: item.image });
+          return [item.id, result.signed_url];
+        } catch (error) {
+          console.error('Unable to load private closet image', error);
+          return [item.id, ''];
+        }
+      }));
+      if (!cancelled) setPrivateImageUrls(Object.fromEntries(entries));
+    };
+    loadPrivateImages();
+    return () => { cancelled = true; };
+  }, [ownedItems]);
 
   const handleRefresh = useCallback(async () => {
     await loadData();
@@ -216,14 +235,15 @@ export default function Closet() {
     try {
       const user = await base44.auth.me();
       for (const file of files) {
-        const { file_url } = await base44.integrations.Core.UploadFile({ file });
+        const { file_uri } = await base44.integrations.Core.UploadPrivateFile({ file });
+        const { signed_url: file_url } = await base44.integrations.Core.CreateFileSignedUrl({ file_uri });
 
         const analysisRes = await base44.functions.invoke('analyzeClothingItem', { file_url });
         const analysis = analysisRes.data || {};
 
         const newItem = await base44.entities.ClosetItem.create({
           user_id: user.id,
-          image: file_url,
+          image: file_uri,
           item_type: analysis.item_type || '',
           color: analysis.color || '',
           size: '',
@@ -369,7 +389,7 @@ export default function Closet() {
                     <h3 className="text-sm font-medium text-[var(--color-text-secondary)] mb-3">My Items</h3>
                     <div className="grid grid-cols-3 gap-3">
                       {ownedItems.map((item, idx) => (
-                        <OwnedItemCard key={item.id} item={item} idx={idx} onRemove={removeItem} onEdit={setEditingItem} />
+                        <OwnedItemCard key={item.id} item={{ ...item, image: item.image?.startsWith('concierge-sensitive/') ? privateImageUrls[item.id] || '' : item.image }} idx={idx} onRemove={removeItem} onEdit={setEditingItem} />
                       ))}
                     </div>
                   </div>
