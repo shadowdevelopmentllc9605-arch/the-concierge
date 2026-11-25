@@ -121,7 +121,7 @@ export default function Layout({ children, currentPageName }) {
       {children}
       
       {!hideNav && (
-        <nav className="fixed bottom-0 left-0 right-0 bg-[var(--color-surface)] border-t border-[var(--color-border-light)] px-4 pt-2 z-50" style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 16px)' }}>
+        <nav aria-label="Main navigation" className="fixed bottom-0 left-0 right-0 isolate border-t px-2 pt-2 z-50" style={{ backgroundColor: 'var(--color-surface, hsl(var(--background)))', borderColor: 'var(--color-border-light, hsl(var(--border)))', paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 16px)' }}>
           <div className="flex justify-around items-center max-w-md mx-auto">
             {navItems.map((item) => {
               const currentTab = getTabForPage(currentPageName);
@@ -130,8 +130,8 @@ export default function Layout({ children, currentPageName }) {
                 <button
                   key={item.path}
                   onClick={() => handleTabPress(item.path)}
-                  className={`flex flex-col items-center gap-1 py-2 px-3 rounded-xl transition-colors select-none ${
-                    isActive ? 'text-[var(--color-text-primary)]' : 'text-[var(--color-text-muted)]'
+                  className={`flex flex-1 min-w-0 flex-col items-center gap-1 py-2 px-1 rounded-xl transition-colors select-none ${
+                    isActive ? 'text-[var(--color-text-primary,hsl(var(--foreground)))]' : 'text-[var(--color-text-muted,hsl(var(--muted-foreground)))]'
                   }`}
                 >
                   <div className="relative">

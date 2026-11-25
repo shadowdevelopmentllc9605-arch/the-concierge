@@ -309,7 +309,7 @@ export default function Closet() {
   }
 
   return (
-    <PullToRefresh onRefresh={handleRefresh} className="min-h-screen bg-[var(--color-background)] pb-24">
+    <PullToRefresh onRefresh={handleRefresh} className="min-h-screen bg-[var(--color-background)] pb-[calc(7rem+env(safe-area-inset-bottom,0px))]">
       {/* Header */}
       <div className="sticky top-0 z-40 bg-[var(--color-background)]/95 backdrop-blur-lg px-6 py-4">
         <div className="flex items-center justify-between">
