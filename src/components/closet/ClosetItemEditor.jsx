@@ -182,10 +182,12 @@ export default function ClosetItemEditor({ item, onSave, onCancel, onAnalyze, sa
               {STYLE_CATEGORIES.map((cat) => (
                 <button
                   key={cat.id}
-                  onClick={() => setFormData({ ...formData, style_category: cat.id })}
+                  type="button"
+                  aria-pressed={formData.style_category === cat.id}
+                  onClick={() => setFormData(prev => ({ ...prev, style_category: cat.id }))}
                   className={`px-4 py-3 rounded-xl text-sm font-medium transition-colors select-none ${
                     formData.style_category === cat.id
-                      ? 'bg-[var(--color-accent)] text-white dark:text-slate-900'
+                      ? 'bg-black text-white'
                       : 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white hover:bg-[var(--color-border)]'
                   }`}
                 >
