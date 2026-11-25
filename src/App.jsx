@@ -55,7 +55,7 @@ const AuthenticatedApp = () => {
           <MainPage />
         </LayoutWrapper>
       } />
-      {Object.entries(Pages).map(([path, Page]) => (
+      {Object.entries(Pages).filter(([path]) => path !== 'TylerVoicePreview').map(([path, Page]) => (
         <Route
           key={path}
           path={`/${path}`}

@@ -17,6 +17,10 @@ test('onboarding lets shoppers bypass paused body scans without uploading', () =
  const onboarding = readFileSync(new URL('../src/pages/Onboarding.jsx', import.meta.url), 'utf8');
  assert.match(bodyScan,/VITE_PRIVATE_UPLOADS_ENABLED === 'true'/);
  assert.match(bodyScan,/if \(!privateScansEnabled\)/);
+ assert.match(bodyScan,/VITE_BODY_SCANS_ENABLED === 'true'/);
+ assert.match(bodyScan,/!privateScansEnabled \|\| uploading/);
+ assert.match(bodyScan,/Choose saved photo/);
+ assert.match(bodyScan,/role="alert"/);
  assert.match(bodyScan,/Continue without body scan/);
  assert.match(bodyScan,/onClick=\{\(\) => onComplete\(\{\}\)\}/);
  assert.match(onboarding,/onboarding_step: nextStep/);

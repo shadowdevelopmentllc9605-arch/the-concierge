@@ -1,0 +1,48 @@
+name: Phase One encrypted database backup (manual commissioning)
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: phase1-prod-db-archive
+  cancel-in-progress: false
+jobs:
+  backup:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    environment: phase1-backups
+    env:
+      DATABASE_BACKUP_URL: ${{ secrets.DATABASE_BACKUP_URL }}
+      AGE_RECIPIENT: ${{ vars.AGE_RECIPIENT }}
+      RCLONE_CONFIG_B64: ${{ secrets.RCLONE_CONFIG_B64 }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate protected configuration
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "$DATABASE_BACKUP_URL" && test -n "$AGE_RECIPIENT" && test -n "$RCLONE_CONFIG_B64" || { echo "::error::Missing protected database backup configuration"; exit 1; }
+      - name: Install clients
+        run: |
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq postgresql-client age rclone
+      - name: Configure private remote
+        shell: bash
+        run: |
+          set -euo pipefail
+          umask 077
+          printf '%s' "$RCLONE_CONFIG_B64" | base64 --decode > "$RUNNER_TEMP/rclone.conf"
+          grep -q '^\[conciergebackups\]$' "$RUNNER_TEMP/rclone.conf"
+      - name: Encrypt database backup and verify ciphertext round trip
+        shell: bash
+        run: |
+          set -euo pipefail
+          umask 077
+          file="concierge-db-$(date -u +%Y%m%dT%H%M%SZ)-run${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}.dump.age"
+          python3 scripts/backup_database.py "$RUNNER_TEMP/$file"
+          rclone --config "$RUNNER_TEMP/rclone.conf" copyto "$RUNNER_TEMP/$file" "conciergebackups:$file" --immutable
+          rclone --config "$RUNNER_TEMP/rclone.conf" copyto "conciergebackups:$file" "$RUNNER_TEMP/retrieved.age"
+          cmp "$RUNNER_TEMP/$file" "$RUNNER_TEMP/retrieved.age"
+      - name: Clean temporary files
+        if: always()
+        run: rm -f "$RUNNER_TEMP/rclone.conf" "$RUNNER_TEMP"/concierge-db-*.dump.age "$RUNNER_TEMP/retrieved.age"

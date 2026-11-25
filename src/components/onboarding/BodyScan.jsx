@@ -17,7 +17,8 @@ import { deriveGenericSuggestedSizes } from '@/lib/fitRecommendation';
 import { MEASUREMENT_PROTOCOL_VERSION } from '@/lib/measurementDefinitions';
 
 // Match the uploader's fail-closed production feature gate.
-const privateScansEnabled = import.meta.env.VITE_PRIVATE_UPLOADS_ENABLED === 'true';
+const privateScansEnabled = import.meta.env.VITE_PRIVATE_UPLOADS_ENABLED === 'true' &&
+  import.meta.env.VITE_BODY_SCANS_ENABLED === 'true';
 
 const REVIEW_FIELDS = [
   { key: 'chest', label: 'Chest', verify: true },
@@ -80,6 +81,7 @@ export default function BodyScan({ profile, concierge, onComplete }) {
   const [verifiedFields, setVerifiedFields] = useState({});
   const [scanPreviews, setScanPreviews] = useState({});
   const fileInputRef = useRef(null);
+  const galleryInputRef = useRef(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -162,26 +164,29 @@ export default function BodyScan({ profile, concierge, onComplete }) {
 
   const handleFileChange = async (e) => {
     const file = e.target.files?.[0];
-    if (!file) return;
+    if (!file || !privateScansEnabled || uploading) return;
+    const captureView = currentScan;
 
     setUploading(true);
     clearAnalysis();
     try {
       const { file_uri } = await base44.integrations.Core.UploadPrivateFile({ file });
       const previewUrl = await resolveFileUrl(file_uri);
-      setScans(prev => ({ ...prev, [currentScan]: file_uri }));
-      setScanPreviews(prev => ({ ...prev, [currentScan]: previewUrl }));
+      if (!previewUrl) throw new Error('The private photo could not be opened.');
+      setScans(prev => ({ ...prev, [captureView]: file_uri }));
+      setScanPreviews(prev => ({ ...prev, [captureView]: previewUrl }));
 
-      const currentIndex = scanSteps.findIndex(step => step.key === currentScan);
+      const currentIndex = scanSteps.findIndex(step => step.key === captureView);
       if (currentIndex < scanSteps.length - 1) {
-        setTimeout(() => setCurrentScan(scanSteps[currentIndex + 1].key), 350);
+        setCurrentScan(scanSteps[currentIndex + 1].key);
       }
     } catch (uploadError) {
       console.error(uploadError);
-      setError('That photo could not be uploaded. Please try again.');
+      setError((uploadError?.message || 'That photo could not be uploaded.') + ' Choose a saved JPEG, PNG or WebP, or continue without a scan.');
     } finally {
       setUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = '';
+      if (galleryInputRef.current) galleryInputRef.current.value = '';
     }
   };
 
@@ -328,9 +333,8 @@ export default function BodyScan({ profile, concierge, onComplete }) {
             <h1 className="text-2xl font-medium text-[#2d2d2d]">Body scans are paused</h1>
           </div>
           <p className="text-[#4b5563]">
-            For the Phase One pilot, private body photos are disabled until independent
-            image backup and restoration have been tested. You can continue shopping
-            without a body scan and add measurements later.
+            Body photos are paused for this release until secure recovery and scan acceptance are verified.
+            You can continue shopping without a body scan and add measurements later.
           </p>
           <Button
             type="button"
@@ -481,6 +485,10 @@ export default function BodyScan({ profile, concierge, onComplete }) {
         Three body views are calibrated with your real height. The app rejects weak scans instead of treating them as trustworthy measurements.
       </motion.p>
 
+      <Button type="button" variant="outline" disabled={uploading || analyzing || saving} onClick={() => onComplete({})} className="w-full mb-5 min-h-12 whitespace-normal">
+        Continue without body scan
+      </Button>
+
       <div className="bg-white border border-[#e5e7eb] rounded-2xl p-4 mb-5">
         <div className="flex items-center gap-2 mb-3">
           <Ruler className="w-5 h-5 text-[#c9a962]" />
@@ -543,6 +551,7 @@ export default function BodyScan({ profile, concierge, onComplete }) {
           <button
             key={step.key}
             type="button"
+            disabled={uploading || analyzing}
             onClick={() => setCurrentScan(step.key)}
             className={`flex flex-col items-center gap-2 transition-all ${currentScan === step.key ? 'scale-110' : 'opacity-60'}`}
           >
@@ -640,6 +649,9 @@ export default function BodyScan({ profile, concierge, onComplete }) {
         </Button>
       )}
 
+      {!scans[currentScan] && <Button type="button" variant="outline" disabled={uploading} onClick={() => galleryInputRef.current?.click()} className="w-full mt-3 min-h-12">Choose saved photo</Button>}
+      {error && <p role="alert" className="mt-3 text-sm text-red-700">{error}</p>}
+      <input ref={galleryInputRef} type="file" accept="image/jpeg,image/png,image/webp" onChange={handleFileChange} className="hidden" />
       <input
         ref={fileInputRef}
         type="file"
