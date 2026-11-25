@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { motion } from 'framer-motion';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -56,12 +57,13 @@ export default function ClosetItemEditor({ item, onSave, onCancel, onAnalyze, sa
     onSave(formData);
   };
 
-  return (
+  return createPortal(
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 bg-black/50 z-50 flex items-end sm:items-center justify-center"
+      role="dialog" aria-modal="true" aria-label="Item details"
+      className="fixed inset-0 bg-black/50 z-[100] flex items-end sm:items-center justify-center"
       onClick={onCancel}
     >
       <motion.div
@@ -69,20 +71,20 @@ export default function ClosetItemEditor({ item, onSave, onCancel, onAnalyze, sa
         animate={{ y: 0, opacity: 1 }}
         exit={{ y: 100, opacity: 0 }}
         onClick={(e) => e.stopPropagation()}
-        className="bg-[var(--color-surface)] rounded-t-3xl sm:rounded-2xl w-full sm:max-w-md max-h-[90vh] overflow-y-auto"
+        className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white rounded-t-3xl sm:rounded-2xl w-full sm:max-w-md max-h-[90dvh] overflow-y-auto"
       >
         {/* Header */}
-        <div className="sticky top-0 bg-[var(--color-surface)] px-6 py-4 border-b border-[var(--color-border-light)] flex items-center justify-between">
-          <h2 className="text-lg font-medium text-[var(--color-text-primary)]">Item Details</h2>
-          <button onClick={onCancel} className="w-8 h-8 rounded-full bg-[var(--color-background-secondary)] flex items-center justify-center select-none">
-            <X className="w-4 h-4 text-[var(--color-text-secondary)]" />
+        <div className="sticky top-0 bg-white dark:bg-slate-900 px-6 py-4 border-b border-[var(--color-border-light)] flex items-center justify-between">
+          <h2 className="text-lg font-medium text-slate-900 dark:text-white">Item Details</h2>
+          <button onClick={onCancel} className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center select-none">
+            <X className="w-4 h-4 text-slate-600 dark:text-slate-300" />
           </button>
         </div>
 
         <div className="p-6 space-y-6">
           {/* Image Preview */}
           {item?.image && (
-            <div className="w-full aspect-square rounded-xl overflow-hidden bg-[var(--color-background-secondary)]">
+            <div className="w-full aspect-square rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800">
               <img src={item.image} alt="Item" className="w-full h-full object-cover" />
             </div>
           )}
@@ -99,20 +101,20 @@ export default function ClosetItemEditor({ item, onSave, onCancel, onAnalyze, sa
 
           {/* Item Type */}
           <div>
-            <Label className="text-[var(--color-text-secondary)] text-xs tracking-wide uppercase mb-2 block">
+            <Label className="text-slate-600 dark:text-slate-300 text-xs tracking-wide uppercase mb-2 block">
               Item Name
             </Label>
             <Input
               value={formData.item_type}
               onChange={(e) => setFormData({ ...formData, item_type: e.target.value })}
               placeholder="e.g., Blue Blazer, Summer Dress"
-              className="h-12 rounded-xl border-[var(--color-border)] bg-[var(--color-background)] text-[var(--color-text-primary)] focus:ring-[var(--color-accent)] focus:border-[var(--color-accent)]"
+              className="h-12 rounded-xl border-[var(--color-border)] bg-[var(--color-background)] text-slate-900 dark:text-white focus:ring-[var(--color-accent)] focus:border-[var(--color-accent)]"
             />
           </div>
 
           {/* Size Selection */}
           <div>
-            <Label className="text-[var(--color-text-secondary)] text-xs tracking-wide uppercase mb-2 block">
+            <Label className="text-slate-600 dark:text-slate-300 text-xs tracking-wide uppercase mb-2 block">
               Size
             </Label>
             <div className="flex flex-wrap gap-2">
@@ -122,8 +124,8 @@ export default function ClosetItemEditor({ item, onSave, onCancel, onAnalyze, sa
                   onClick={() => setFormData({ ...formData, size })}
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors select-none ${
                     formData.size === size
-                      ? 'bg-[var(--color-text-primary)] text-[var(--color-background)]'
-                      : 'bg-[var(--color-background-secondary)] text-[var(--color-text-primary)] hover:bg-[var(--color-border)]'
+                      ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900'
+                      : 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white hover:bg-[var(--color-border)]'
                   }`}
                 >
                   {size}
@@ -133,20 +135,20 @@ export default function ClosetItemEditor({ item, onSave, onCancel, onAnalyze, sa
           </div>
 
           <div>
-            <Label className="text-[var(--color-text-secondary)] text-xs tracking-wide uppercase mb-2 block">
+            <Label className="text-slate-600 dark:text-slate-300 text-xs tracking-wide uppercase mb-2 block">
               Footwear Width
             </Label>
             <Input
               value={formData.width_code}
               onChange={(e) => setFormData({ ...formData, width_code: e.target.value })}
               placeholder="Optional: D, 2E, Wide, Narrow"
-              className="h-12 rounded-xl border-[var(--color-border)] bg-[var(--color-background)] text-[var(--color-text-primary)] focus:ring-[var(--color-accent)] focus:border-[var(--color-accent)]"
+              className="h-12 rounded-xl border-[var(--color-border)] bg-[var(--color-background)] text-slate-900 dark:text-white focus:ring-[var(--color-accent)] focus:border-[var(--color-accent)]"
             />
           </div>
 
           {/* Color Selection */}
           <div>
-            <Label className="text-[var(--color-text-secondary)] text-xs tracking-wide uppercase mb-2 block">
+            <Label className="text-slate-600 dark:text-slate-300 text-xs tracking-wide uppercase mb-2 block">
               Color
             </Label>
             <div className="flex flex-wrap gap-2">
@@ -156,8 +158,8 @@ export default function ClosetItemEditor({ item, onSave, onCancel, onAnalyze, sa
                   onClick={() => setFormData({ ...formData, color })}
                   className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors select-none ${
                     formData.color === color
-                      ? 'bg-[var(--color-text-primary)] text-[var(--color-background)]'
-                      : 'bg-[var(--color-background-secondary)] text-[var(--color-text-primary)] hover:bg-[var(--color-border)]'
+                      ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900'
+                      : 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white hover:bg-[var(--color-border)]'
                   }`}
                 >
                   {color}
@@ -173,7 +175,7 @@ export default function ClosetItemEditor({ item, onSave, onCancel, onAnalyze, sa
 
           {/* Style Category */}
           <div>
-            <Label className="text-[var(--color-text-secondary)] text-xs tracking-wide uppercase mb-2 block">
+            <Label className="text-slate-600 dark:text-slate-300 text-xs tracking-wide uppercase mb-2 block">
               Style Category
             </Label>
             <div className="grid grid-cols-2 gap-2">
@@ -183,8 +185,8 @@ export default function ClosetItemEditor({ item, onSave, onCancel, onAnalyze, sa
                   onClick={() => setFormData({ ...formData, style_category: cat.id })}
                   className={`px-4 py-3 rounded-xl text-sm font-medium transition-colors select-none ${
                     formData.style_category === cat.id
-                      ? 'bg-[var(--color-accent)] text-[var(--color-background)]'
-                      : 'bg-[var(--color-background-secondary)] text-[var(--color-text-primary)] hover:bg-[var(--color-border)]'
+                      ? 'bg-[var(--color-accent)] text-white dark:text-slate-900'
+                      : 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white hover:bg-[var(--color-border)]'
                   }`}
                 >
                   {cat.label}
@@ -195,11 +197,11 @@ export default function ClosetItemEditor({ item, onSave, onCancel, onAnalyze, sa
         </div>
 
         {/* Footer */}
-        <div className="sticky bottom-0 bg-[var(--color-surface)] px-6 py-4 border-t border-[var(--color-border-light)]">
+        <div className="sticky bottom-0 bg-white dark:bg-slate-900 px-6 py-4 border-t border-[var(--color-border-light)]">
           <Button
             onClick={handleSave}
             disabled={saving || analyzing}
-            className="w-full h-12 bg-[var(--color-text-primary)] hover:bg-[var(--color-text-primary)]/90 text-[var(--color-background)] rounded-xl select-none"
+            className="w-full h-12 bg-slate-900 dark:bg-white hover:bg-slate-900 dark:bg-white/90 text-white dark:text-slate-900 rounded-xl select-none"
           >
             {saving ? (
               <Loader2 className="w-5 h-5 animate-spin" />
@@ -212,6 +214,7 @@ export default function ClosetItemEditor({ item, onSave, onCancel, onAnalyze, sa
           </Button>
         </div>
       </motion.div>
-    </motion.div>
+    </motion.div>,
+    document.body
   );
 }

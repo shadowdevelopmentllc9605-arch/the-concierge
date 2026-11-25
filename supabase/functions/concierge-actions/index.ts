@@ -135,8 +135,16 @@ Deno.serve(async(req)=>{
     const blob=obj.data;if(!["image/jpeg","image/png","image/webp"].includes(blob.type)||blob.size>8*1024*1024)return reply({success:false,error:"Unsupported image or file too large"},400);
     const bytes=new Uint8Array(await blob.arrayBuffer());let binary="";for(let i=0;i<bytes.length;i+=8192)binary+=String.fromCharCode(...bytes.subarray(i,i+8192));const encoded=btoa(binary);
     const response=await fetch("https://api.openai.com/v1/chat/completions",{method:"POST",headers:{"Authorization":"Bearer "+apiKey,"Content-Type":"application/json"},body:JSON.stringify({model:Deno.env.get("CONCIERGE_VISION_MODEL")||"gpt-4.1-mini",temperature:0,max_tokens:300,response_format:{type:"json_object"},messages:[{role:"system",content:"Identify only visible clothing details. Respond as JSON with string fields item_type,color,style_category,description. Do not identify people."},{role:"user",content:[{type:"text",text:"Describe this clothing item."},{type:"image_url",image_url:{url:"data:"+blob.type+";base64,"+encoded}}]}]})});
-    if(!response.ok)return reply({success:false,error:"Image analysis temporarily unavailable",code:"vision_request_failed"},502);
-    const result=await response.json();let parsed:any={};try{parsed=JSON.parse(result.choices?.[0]?.message?.content||"{}")}catch{return reply({success:false,error:"Invalid image analysis response"},502)}
+    if(!response.ok){
+      // Record only a numeric status and allowlisted provider error code; never log images, headers or provider error text.
+      const providerError=await response.json().catch(()=>null);
+      const reportedCode=providerError?.error?.code;
+      const allowedCodes=["insufficient_quota","invalid_api_key","model_not_found","rate_limit_exceeded","invalid_image","invalid_image_format","image_too_large","unsupported_value","invalid_request_error","permission_denied","billing_hard_limit_reached"];
+      const safeCode=typeof reportedCode==="string"&&allowedCodes.includes(reportedCode)?reportedCode:"unclassified";
+      console.warn("concierge_vision_provider_failure",JSON.stringify({status:response.status,code:safeCode}));
+      return reply({success:false,error:"Image analysis temporarily unavailable",code:"vision_request_failed"},502);
+    }
+    const result=await response.json();let parsed:any={};try{parsed=JSON.parse(result.choices?.[0]?.message?.content||"{}")}catch{console.warn("concierge_vision_invalid_json");return reply({success:false,error:"Invalid image analysis response"},502)}
     return reply({success:true,item_type:String(parsed.item_type||""),color:String(parsed.color||""),style_category:String(parsed.style_category||""),description:String(parsed.description||"")});
   }
   if(name==="deleteMyData"||name==="deleteVendorBusiness")return reply({success:false,error:"Account and business deletion require a verified data-erasure workflow; nothing was deleted.",code:"deletion_workflow_pending"},409);
