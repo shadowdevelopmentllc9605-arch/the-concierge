@@ -8,6 +8,8 @@ import { format } from 'date-fns';
 import ClosetItemEditor from '@/components/closet/ClosetItemEditor';
 import PullToRefresh from '@/components/PullToRefresh';
 
+const wardrobeUploadsEnabled = import.meta.env.VITE_PRIVATE_UPLOADS_ENABLED === 'true';
+
 function EmptyState({ onTakePhoto = null, onUploadImage = null, uploading = false, type = 'all' }) {
   return (
     <div className="flex flex-col items-center justify-center py-20 px-6">
@@ -20,7 +22,7 @@ function EmptyState({ onTakePhoto = null, onUploadImage = null, uploading = fals
       <p className="text-[var(--color-text-secondary)] text-center mb-6">
         {type === 'purchased' ? 'Items you buy will appear here' : 'Add your clothes to get AI-powered outfit suggestions and perfect-fit recommendations'}
       </p>
-      {type !== 'purchased' && onTakePhoto && onUploadImage && (
+      {type !== 'purchased' && wardrobeUploadsEnabled && onTakePhoto && onUploadImage && (
         <div className="flex gap-3">
           <button
             onClick={onTakePhoto}
@@ -229,6 +231,7 @@ export default function Closet() {
   };
 
   const handleUpload = async (e) => {
+    if (!wardrobeUploadsEnabled) return;
     const files = Array.from(e.target.files);
     if (files.length === 0) return;
 
@@ -369,7 +372,7 @@ export default function Closet() {
             </TabsTrigger>
             
             {/* Add Items Button */}
-            <div className="ml-auto flex gap-2">
+            {wardrobeUploadsEnabled && <div className="ml-auto flex gap-2">
               <button
                 onClick={() => cameraInputRef.current?.click()}
                 disabled={uploading}
@@ -386,8 +389,9 @@ export default function Closet() {
                 {uploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <ImagePlus className="w-4 h-4" />}
                 Upload
               </button>
-            </div>
+            </div>}
           </TabsList>
+          {!wardrobeUploadsEnabled && <p className="mb-4 text-sm text-slate-600 dark:text-slate-300">Wardrobe photo uploads are temporarily paused while secure image recovery is prepared. Your purchased items remain available.</p>}
 
           <TabsContent value="all">
             {totalItems === 0 ? (
@@ -451,7 +455,7 @@ export default function Closet() {
             item={displayOwnedItem(editingItem)}
             key={editingItem.id}
             onSave={updateItem}
-            onAnalyze={editingItem.image?.startsWith('concierge-sensitive/') ? async () => {
+            onAnalyze={wardrobeUploadsEnabled && editingItem.image?.startsWith('concierge-sensitive/') ? async () => {
               const result = await base44.functions.invoke('analyzeClothingItem', { file_uri: editingItem.image });
               const analysis = result.data;
               if (!analysis?.success || !analysis.item_type?.trim() || !analysis.color?.trim()) throw new Error('No reliable clothing details returned.');

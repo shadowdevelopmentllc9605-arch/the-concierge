@@ -51,7 +51,7 @@ export default function Profile() {
         { icon: CreditCard, label: 'Payment & Shipping', description: 'Saved card display info and shipping addresses', path: 'PaymentMethods' },
         { icon: Bell, label: 'Notifications', description: 'Offers, store updates, and purchase activity', path: 'Notifications' },
         { icon: Star, label: 'Reviews & Feedback', description: 'Rate your purchases', path: 'Feedback' },
-        { icon: ScanLine, label: 'Precision Fit Scan', description: 'Improve foot or hat measurements with close-up photos', path: 'PrecisionScan' },
+        ...(import.meta.env.VITE_PRIVATE_UPLOADS_ENABLED === 'true' && import.meta.env.VITE_BODY_SCANS_ENABLED === 'true' ? [{ icon: ScanLine, label: 'Precision Fit Scan', description: 'Improve foot or hat measurements with close-up photos', path: 'PrecisionScan' }] : []),
       ]
     },
     {

@@ -108,6 +108,24 @@ function AnnotationImage({ src, points, onPoint, labels, imageRef, onLoaded, onF
 }
 
 export default function PrecisionScan() {
+  if (import.meta.env.VITE_PRIVATE_UPLOADS_ENABLED !== 'true' || import.meta.env.VITE_BODY_SCANS_ENABLED !== 'true') {
+    return <PausedPrecisionScan />;
+  }
+  return <EnabledPrecisionScan />;
+}
+
+function PausedPrecisionScan() {
+  const navigate = useNavigate();
+  return <div className="min-h-screen bg-white text-slate-900 p-6 pb-24">
+    <div className="max-w-md mx-auto space-y-4">
+      <h1 className="text-2xl font-medium">Precision Photo Scan</h1>
+      <p>Photo-based measurements are temporarily unavailable while secure recovery and accuracy checks are completed. You can still enter measurements manually in your profile.</p>
+      <Button onClick={() => navigate(createPageUrl('Profile'))}>Back to profile</Button>
+    </div>
+  </div>;
+}
+
+function EnabledPrecisionScan() {
   const navigate = useNavigate();
   const params = new URLSearchParams(window.location.search);
   const requestedMode = params.get('mode');
