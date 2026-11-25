@@ -125,7 +125,7 @@ export default function Onboarding() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#faf8f5] to-[#f5f0ea]">
       {/* Progress Bar */}
-      <div className="fixed top-0 left-0 right-0 z-50 px-6 pt-6 bg-gradient-to-b from-[#faf8f5] to-transparent pb-4">
+      <div className="fixed top-0 left-0 right-0 z-50 px-6 pt-6 bg-[#faf8f5] border-b border-[#e5e7eb] pb-4">
         <div className="flex gap-2">
           {[1, 2, 3, 4, 5].map((s) => (
             <div 
