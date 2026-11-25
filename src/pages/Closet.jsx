@@ -236,10 +236,15 @@ export default function Closet() {
       const user = await base44.auth.me();
       for (const file of files) {
         const { file_uri } = await base44.integrations.Core.UploadPrivateFile({ file });
-        const { signed_url: file_url } = await base44.integrations.Core.CreateFileSignedUrl({ file_uri });
-
-        const analysisRes = await base44.functions.invoke('analyzeClothingItem', { file_url });
-        const analysis = analysisRes.data || {};
+        let analysis = {};
+        let analysisUnavailable = false;
+        try {
+          const analysisRes = await base44.functions.invoke('analyzeClothingItem', { file_uri });
+          analysis = analysisRes.data || {};
+        } catch {
+          // The wardrobe photo must still be saved if optional AI analysis is unavailable.
+          analysisUnavailable = true;
+        }
 
         const newItem = await base44.entities.ClosetItem.create({
           user_id: user.id,
@@ -254,6 +259,7 @@ export default function Closet() {
         
         setOwnedItems(prev => [newItem, ...prev]);
         setEditingItem(newItem);
+        if (analysisUnavailable) window.alert('Photo saved. Automatic clothing analysis is unavailable; you can enter the details manually.');
       }
     } catch (error) {
       console.error(error);
