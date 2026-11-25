@@ -18,14 +18,39 @@ const STYLE_CATEGORIES = [
   { id: 'nightlife', label: 'Nightlife' }
 ];
 
-export default function ClosetItemEditor({ item, onSave, onCancel, saving = false }) {
+export default function ClosetItemEditor({ item, onSave, onCancel, onAnalyze, saving = false }) {
   const [formData, setFormData] = useState({
     item_type: item?.item_type || '',
     size: item?.size || '',
     width_code: item?.width_code || '',
     color: item?.color || '',
-    style_category: item?.style_category || ''
+    style_category: item?.style_category || '',
+    description: item?.description || ''
   });
+
+  const [analyzing, setAnalyzing] = useState(false);
+  const [analysisMessage, setAnalysisMessage] = useState('');
+  const handleAnalyze = async () => {
+    if (!onAnalyze || analyzing || saving) return;
+    setAnalyzing(true);
+    setAnalysisMessage('');
+    try {
+      const result = await onAnalyze();
+      const color = COLORS.find(value => value.toLowerCase() === String(result.color).trim().toLowerCase());
+      const style = STYLE_CATEGORIES.find(value => value.id === String(result.style_category).trim().toLowerCase());
+      setFormData(prev => ({ ...prev,
+        item_type: prev.item_type || result.item_type.trim(),
+        color: prev.color || color || '',
+        style_category: prev.style_category && prev.style_category !== 'other' ? prev.style_category : (style?.id || prev.style_category),
+        description: prev.description || String(result.description || '')
+      }));
+      setAnalysisMessage('Suggested details are ready. Review them and tap Save Item.');
+    } catch {
+      setAnalysisMessage('Automatic analysis is unavailable. Your saved photo and existing details are unchanged.');
+    } finally {
+      setAnalyzing(false);
+    }
+  };
 
   const handleSave = () => {
     onSave(formData);
@@ -59,6 +84,16 @@ export default function ClosetItemEditor({ item, onSave, onCancel, saving = fals
           {item?.image && (
             <div className="w-full aspect-square rounded-xl overflow-hidden bg-[var(--color-background-secondary)]">
               <img src={item.image} alt="Item" className="w-full h-full object-cover" />
+            </div>
+          )}
+
+          {onAnalyze && (
+            <div className="space-y-2">
+              <Button type="button" variant="outline" className="w-full" disabled={analyzing || saving} onClick={handleAnalyze}>
+                {analyzing ? 'Analyzing photo…' : 'Analyze saved photo'}
+              </Button>
+              <p className="text-xs text-muted-foreground">Sends this clothing photo to the AI service to suggest details. Review before saving.</p>
+              {analysisMessage && <p role="status" className="text-sm text-foreground">{analysisMessage}</p>}
             </div>
           )}
 
@@ -131,6 +166,11 @@ export default function ClosetItemEditor({ item, onSave, onCancel, saving = fals
             </div>
           </div>
 
+          <div>
+            <Label className="text-xs tracking-wide uppercase mb-2 block">Description</Label>
+            <textarea value={formData.description} onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))} className="w-full rounded-xl border p-3 bg-background text-foreground" rows={3} />
+          </div>
+
           {/* Style Category */}
           <div>
             <Label className="text-[var(--color-text-secondary)] text-xs tracking-wide uppercase mb-2 block">
@@ -158,7 +198,7 @@ export default function ClosetItemEditor({ item, onSave, onCancel, saving = fals
         <div className="sticky bottom-0 bg-[var(--color-surface)] px-6 py-4 border-t border-[var(--color-border-light)]">
           <Button
             onClick={handleSave}
-            disabled={saving}
+            disabled={saving || analyzing}
             className="w-full h-12 bg-[var(--color-text-primary)] hover:bg-[var(--color-text-primary)]/90 text-[var(--color-background)] rounded-xl select-none"
           >
             {saving ? (

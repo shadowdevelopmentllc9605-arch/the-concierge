@@ -63,10 +63,11 @@ function OwnedItemCard({ item, idx, onRemove, onEdit }) {
           <p className="text-white/70 text-xs capitalize">{item.size && `${item.size}${item.width_code ? ' ' + item.width_code : ''} • `}{item.style_category || 'No category'}</p>
         </div>
       </div>
-      <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+      <div className="absolute top-2 right-2 flex gap-1 opacity-100 transition-opacity">
         <button
           onClick={() => onEdit(item)}
-          className="w-6 h-6 bg-black/50 rounded-full flex items-center justify-center"
+          aria-label="Edit clothing details"
+          className="w-9 h-9 bg-black/60 rounded-full flex items-center justify-center"
         >
           <Pencil className="w-3 h-3 text-white" />
         </button>
@@ -398,7 +399,7 @@ export default function Closet() {
                     <h3 className="text-sm font-medium text-[var(--color-text-secondary)] mb-3">My Items</h3>
                     <div className="grid grid-cols-3 gap-3">
                       {ownedItems.map((item, idx) => (
-                        <OwnedItemCard key={item.id} item={displayOwnedItem(item)} idx={idx} onRemove={removeItem} onEdit={setEditingItem} />
+                        <OwnedItemCard key={item.id} item={displayOwnedItem(item)} idx={idx} onRemove={removeItem} onEdit={() => setEditingItem(item)} />
                       ))}
                     </div>
                   </div>
@@ -423,7 +424,7 @@ export default function Closet() {
             ) : (
               <div className="grid grid-cols-3 gap-3">
                 {ownedItems.map((item, idx) => (
-                  <OwnedItemCard key={item.id} item={displayOwnedItem(item)} idx={idx} onRemove={removeItem} onEdit={setEditingItem} />
+                  <OwnedItemCard key={item.id} item={displayOwnedItem(item)} idx={idx} onRemove={removeItem} onEdit={() => setEditingItem(item)} />
                 ))}
               </div>
             )}
@@ -448,7 +449,14 @@ export default function Closet() {
         {editingItem && (
           <ClosetItemEditor
             item={displayOwnedItem(editingItem)}
+            key={editingItem.id}
             onSave={updateItem}
+            onAnalyze={editingItem.image?.startsWith('concierge-sensitive/') ? async () => {
+              const result = await base44.functions.invoke('analyzeClothingItem', { file_uri: editingItem.image });
+              const analysis = result.data;
+              if (!analysis?.success || !analysis.item_type?.trim() || !analysis.color?.trim()) throw new Error('No reliable clothing details returned.');
+              return analysis;
+            } : undefined}
             onCancel={() => setEditingItem(null)}
             saving={savingEdit}
           />
