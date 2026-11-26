@@ -6,6 +6,7 @@ import { ArrowLeft, ChevronLeft, ChevronRight, Heart, Sparkles } from 'lucide-re
 import { getCategoryGroup, getEffectiveSizeChart, getFitRecommendationPresentation, recommendFromSizeChart } from '@/lib/fitRecommendation';
 import { parseTryOnProductId, resolveTryOnProduct, getTryOnPriceLabel } from '@/lib/tryOnFoundation';
 import TryOnDemo from '@/components/tryon/TryOnDemo';
+import OutfitPreview from '@/components/tryon/OutfitPreview';
 import LocalPhotoPreparation from '@/components/tryon/LocalPhotoPreparation';
 import GarmentAssetStatus from '@/components/tryon/GarmentAssetStatus';
 
@@ -100,6 +101,6 @@ export default function TryOn() {
       {state.products.length>1&&<div className="flex items-center justify-between"><button type="button" disabled={busy} onClick={()=>browse(-1)} aria-label="Previous product" className="p-3 rounded-full bg-white/10"><ChevronLeft/></button><span className="text-sm text-white/60">{index+1} of {state.products.length}</span><button type="button" disabled={busy} onClick={()=>browse(1)} aria-label="Next product" className="p-3 rounded-full bg-white/10"><ChevronRight/></button></div>}
     </section>:<p role="status" className="py-4">No catalog products are available.</p>}
     {!state.loading&&!state.error&&state.userId&&<LocalPhotoPreparation key={state.userId+':'+(product?.id||'none')}/>}
-    {!state.loading&&<div className="mt-5">{showDemo?<TryOnDemo/>:<button type="button" onClick={()=>setShowDemo(true)} className="w-full rounded-xl border border-white/20 py-3 text-sm">Open sample mannequin demonstration</button>}</div>}
+    {!state.loading&&<div className="mt-5">{showDemo?<><TryOnDemo/><OutfitPreview/></>:<button type="button" onClick={()=>setShowDemo(true)} className="w-full rounded-xl border border-white/20 py-3 text-sm">Open sample mannequin demonstration</button>}</div>}
   </main>;
 }
