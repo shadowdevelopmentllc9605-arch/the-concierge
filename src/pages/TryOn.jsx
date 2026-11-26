@@ -6,6 +6,7 @@ import { ArrowLeft, ChevronLeft, ChevronRight, Heart, Sparkles } from 'lucide-re
 import { getCategoryGroup, getEffectiveSizeChart, getFitRecommendationPresentation, recommendFromSizeChart } from '@/lib/fitRecommendation';
 import { parseTryOnProductId, resolveTryOnProduct, getTryOnProductState, getTryOnPriceLabel } from '@/lib/tryOnFoundation';
 import TryOnDemo from '@/components/tryon/TryOnDemo';
+import LocalPhotoPreparation from '@/components/tryon/LocalPhotoPreparation';
 
 export default function TryOn() {
   const navigate=useNavigate();
@@ -89,7 +90,7 @@ export default function TryOn() {
       <h1 className="flex items-center gap-2 text-lg"><Sparkles className="w-5 h-5 text-[#c9a962]"/>Virtual Try-On</h1>
       <button type="button" onClick={()=>navigate(createPageUrl('Shop'))} className="text-sm text-[#c9a962] py-3">Shop</button>
     </header>
-    <p className="text-sm text-white/70 mb-4">Personal photo previews are temporarily paused. Visual previews do not guarantee garment fit.</p>
+    <p className="text-sm text-white/70 mb-4">Generated try-on previews are temporarily paused. Visual previews do not guarantee garment fit.</p>
     {state.loading?<p role="status" className="py-8 text-center">Loading catalog…</p>:state.error?<section className="rounded-xl bg-white/5 p-4"><p role="alert">{state.error}</p>{state.retryable&&<button type="button" onClick={()=>setRetry(n=>n+1)} className="mt-3 text-[#c9a962]">Retry</button>}<button type="button" onClick={()=>navigate(createPageUrl('Shop'))} className="block mt-3 text-[#c9a962]">Back to Shop</button></section>:product?<section className="rounded-2xl border border-white/15 bg-white/5 p-4 space-y-4">
       <div className="flex justify-between items-start gap-3"><div className="min-w-0"><p className="text-sm text-white/60">{product.brand}</p><h2 className="text-xl break-words">{product.name}</h2><p className="text-[#c9a962] mt-1">{getTryOnPriceLabel(product)}</p>{product.in_stock!==true&&<p className="text-xs text-white/60">Availability not verified</p>}</div><button type="button" disabled={busy} onClick={toggleWishlist} aria-label={saved?'Remove from wishlist':'Add to wishlist'} className="rounded-full bg-white/10 p-3 disabled:opacity-50"><Heart className={'w-5 h-5 '+(saved?'fill-[#c9a962] text-[#c9a962]':'')}/></button></div>
       <div className="rounded-xl border border-white/10 p-4 text-center"><Sparkles className="w-7 h-7 mx-auto mb-2 text-[#c9a962]"/><p className="font-medium">Virtual try-on unavailable for this item</p><p className="mt-1 text-sm text-white/70">{status==='asset_review_required'?'The garment asset still requires review and renderer support.':'No approved garment preview asset is available.'}</p></div>
@@ -98,6 +99,7 @@ export default function TryOn() {
       {message&&<p role="status" className="text-sm">{message}</p>}
       {state.products.length>1&&<div className="flex items-center justify-between"><button type="button" disabled={busy} onClick={()=>browse(-1)} aria-label="Previous product" className="p-3 rounded-full bg-white/10"><ChevronLeft/></button><span className="text-sm text-white/60">{index+1} of {state.products.length}</span><button type="button" disabled={busy} onClick={()=>browse(1)} aria-label="Next product" className="p-3 rounded-full bg-white/10"><ChevronRight/></button></div>}
     </section>:<p role="status" className="py-4">No catalog products are available.</p>}
+    {!state.loading&&!state.error&&state.userId&&<LocalPhotoPreparation key={state.userId+':'+(product?.id||'none')}/>}
     {!state.loading&&<div className="mt-5">{showDemo?<TryOnDemo/>:<button type="button" onClick={()=>setShowDemo(true)} className="w-full rounded-xl border border-white/20 py-3 text-sm">Open sample mannequin demonstration</button>}</div>}
   </main>;
 }
