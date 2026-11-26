@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
-import { speakOnboardingMessage } from '@/lib/onboardingVoices';
+import React, { useState, useRef, useEffect } from 'react';
+import { speakOnboardingMessage, stopOnboardingSpeech } from '@/lib/onboardingVoices';
 import { motion } from 'framer-motion';
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Volume2, VolumeX } from 'lucide-react';
@@ -10,6 +10,11 @@ export default function ConciergeIntro({ user, onComplete, onSelectConcierge }) 
   const [showContinue, setShowContinue] = useState(false);
   const [voiceNotice, setVoiceNotice] = useState('');
   const speechRequestRef = useRef(0);
+
+  useEffect(() => () => {
+    ++speechRequestRef.current;
+    stopOnboardingSpeech();
+  }, []);
 
   const concierges = [
     {
@@ -30,7 +35,7 @@ export default function ConciergeIntro({ user, onComplete, onSelectConcierge }) 
 
   const handleSelect = async (concierge) => {
     const requestId = ++speechRequestRef.current;
-    window.speechSynthesis?.cancel();
+    stopOnboardingSpeech();
     setSelectedConcierge(concierge);
     setVoiceNotice('');
     setShowContinue(false);
@@ -46,12 +51,14 @@ export default function ConciergeIntro({ user, onComplete, onSelectConcierge }) 
     try {
       const result = await speakOnboardingMessage({
         concierge, message: concierge.greeting, isCurrent: current,
-        onend: done, onerror: done
+        onend: done, onerror: () => { if (current()) setVoiceNotice('Narration could not play. Tap the speaker to replay.'); done(); }
       });
       if (!current()) return;
       if (!result.spoken) {
-        if (result.reason === 'masculine_voice_unavailable') {
-          setVoiceNotice("Tyler's masculine voice is not available in this browser. Enable an English male text-to-speech voice on your device to hear him. You can still continue.");
+        if (result.reason === 'audio_playback_blocked') {
+          setVoiceNotice('Tap the speaker to play Tyler’s voice.');
+        } else if (result.reason === 'audio_unavailable' || result.reason === 'masculine_voice_unavailable') {
+          setVoiceNotice('Tyler’s narration is unavailable. Tap the speaker to retry, or continue reading.');
         }
         done();
       }
@@ -62,16 +69,19 @@ export default function ConciergeIntro({ user, onComplete, onSelectConcierge }) 
   };
 
   const toggleMute = () => {
-    if (!isPlaying) return;
+    if (!isPlaying) {
+      if (selectedConcierge) void handleSelect(selectedConcierge);
+      return;
+    }
     ++speechRequestRef.current;
-    window.speechSynthesis?.cancel();
+    stopOnboardingSpeech();
     setIsPlaying(false);
     setShowContinue(true);
   };
 
   const handleContinue = () => {
     ++speechRequestRef.current;
-    window.speechSynthesis?.cancel();
+    stopOnboardingSpeech();
     onSelectConcierge(selectedConcierge);
     onComplete();
   };
@@ -159,6 +169,7 @@ export default function ConciergeIntro({ user, onComplete, onSelectConcierge }) 
             </div>
             <button
               onClick={toggleMute}
+              aria-label={isPlaying ? 'Stop welcome narration' : 'Replay welcome narration'}
               className="w-10 h-10 rounded-full bg-[#f8f5f0] flex items-center justify-center shrink-0"
             >
               {isPlaying ? (
