@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useMemo,useState} from 'react';
 import {DEMO_GARMENTS} from '@/lib/tryOnFoundation';
 import {FITTING_PRESETS,syntheticPose,svgPoints} from '@/lib/virtualFittingGeometry';
 import {buildGarmentRenderPlan} from '@/lib/garmentRenderPlan';
@@ -10,10 +10,9 @@ export default function TryOnDemo(){
   const [landmarks,setLandmarks]=useState(false);
   const garments=[...DEMO_GARMENTS,{id:'layered',label:'Shirt + open jacket'}];
   const garment=garments.find(item=>item.id===selected)||garments[0];
-  const pose=syntheticPose(preset);
-  const fit=buildGarmentRenderPlan(pose,300,390,garment.id);
+  const fit=useMemo(()=>buildGarmentRenderPlan(syntheticPose(preset),300,390,garment.id),[preset,garment.id]);
   const f=fit.frame;
-  const button=(active)=>'rounded-xl px-3 py-2 text-sm border border-white/20 '+(active?'bg-[#c9a962] text-[#1a1a1a]':'bg-white/5 text-white');
+  const button=(active)=>'min-h-11 rounded-xl px-3 py-2 text-sm border border-white/20 '+(active?'bg-[#c9a962] text-[#1a1a1a]':'bg-white/5 text-white');
   return <section className="rounded-2xl border border-white/15 bg-white/5 p-4 space-y-3" aria-label="Virtual fitting demonstration">
     <div>
       <p className="text-xs uppercase tracking-widest text-[#c9a962]">Illustrative demo · not a catalog item</p>
