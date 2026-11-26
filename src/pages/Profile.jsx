@@ -10,6 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import DeleteAccountDialog from '@/components/DeleteAccountDialog';
 import MeasurementsEditor from '@/components/profile/MeasurementsEditor';
+import ProfileBodyPhotos from '@/components/profile/ProfileBodyPhotos';
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -164,6 +165,8 @@ export default function Profile() {
           onSaved={(updatedProfile) => setProfile(updatedProfile)}
         />
       </div>
+
+      {profile&&user&&<div className="px-6 mt-6"><ProfileBodyPhotos key={user.id+':'+profile.id} profile={profile} userId={user.id} onSaved={setProfile}/></div>}
 
       {/* Menu Sections */}
       <div className="px-6 mt-8 space-y-6">
