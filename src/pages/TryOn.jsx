@@ -4,9 +4,10 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { ArrowLeft, ChevronLeft, ChevronRight, Heart, Sparkles } from 'lucide-react';
 import { getCategoryGroup, getEffectiveSizeChart, getFitRecommendationPresentation, recommendFromSizeChart } from '@/lib/fitRecommendation';
-import { parseTryOnProductId, resolveTryOnProduct, getTryOnProductState, getTryOnPriceLabel } from '@/lib/tryOnFoundation';
+import { parseTryOnProductId, resolveTryOnProduct, getTryOnPriceLabel } from '@/lib/tryOnFoundation';
 import TryOnDemo from '@/components/tryon/TryOnDemo';
 import LocalPhotoPreparation from '@/components/tryon/LocalPhotoPreparation';
+import GarmentAssetStatus from '@/components/tryon/GarmentAssetStatus';
 
 export default function TryOn() {
   const navigate=useNavigate();
@@ -48,7 +49,6 @@ export default function TryOn() {
   },[search,retry]);
   const product=state.products?.[index];
   const saved=state.wishlist?.some(w=>w.product_id===product?.id);
-  const status=getTryOnProductState(product);
   let size='',width='',presentation=null;
   if(product&&state.fit){
     const profile=state.fit;
@@ -93,7 +93,7 @@ export default function TryOn() {
     <p className="text-sm text-white/70 mb-4">Generated try-on previews are temporarily paused. Visual previews do not guarantee garment fit.</p>
     {state.loading?<p role="status" className="py-8 text-center">Loading catalog…</p>:state.error?<section className="rounded-xl bg-white/5 p-4"><p role="alert">{state.error}</p>{state.retryable&&<button type="button" onClick={()=>setRetry(n=>n+1)} className="mt-3 text-[#c9a962]">Retry</button>}<button type="button" onClick={()=>navigate(createPageUrl('Shop'))} className="block mt-3 text-[#c9a962]">Back to Shop</button></section>:product?<section className="rounded-2xl border border-white/15 bg-white/5 p-4 space-y-4">
       <div className="flex justify-between items-start gap-3"><div className="min-w-0"><p className="text-sm text-white/60">{product.brand}</p><h2 className="text-xl break-words">{product.name}</h2><p className="text-[#c9a962] mt-1">{getTryOnPriceLabel(product)}</p>{product.in_stock!==true&&<p className="text-xs text-white/60">Availability not verified</p>}</div><button type="button" disabled={busy} onClick={toggleWishlist} aria-label={saved?'Remove from wishlist':'Add to wishlist'} className="rounded-full bg-white/10 p-3 disabled:opacity-50"><Heart className={'w-5 h-5 '+(saved?'fill-[#c9a962] text-[#c9a962]':'')}/></button></div>
-      <div className="rounded-xl border border-white/10 p-4 text-center"><Sparkles className="w-7 h-7 mx-auto mb-2 text-[#c9a962]"/><p className="font-medium">Virtual try-on unavailable for this item</p><p className="mt-1 text-sm text-white/70">{status==='asset_review_required'?'The garment asset still requires review and renderer support.':'No approved garment preview asset is available.'}</p></div>
+      <GarmentAssetStatus key={product.id} product={product}/>
       {size&&presentation&&<div className="text-sm"><p>{presentation.label}: {size}{width?' · '+width:''}</p><p className="text-xs text-white/60">{presentation.detail}</p></div>}
       <button type="button" onClick={()=>navigate(createPageUrl('ProductDetail?id='+product.id))} className="w-full rounded-xl py-3 bg-[#c9a962] text-[#1a1a1a] font-medium">View product details</button>
       {message&&<p role="status" className="text-sm">{message}</p>}
