@@ -48,7 +48,7 @@ test('local photo flow has explicit consent, bounded preview and cleanup without
  assert.match(source,/inspectPhotoHeader/);assert.match(source,/createImageBitmap/);
  assert.match(source,/URL\.revokeObjectURL/);assert.match(source,/pagehide/);
  assert.match(source,/generation/);assert.match(source,/bitmap\?\.close/);
- assert.match(source,/1200\/Math\.max/);
+ assert.match(source,/previewDimensions\(bitmap\.width,bitmap\.height\)/);
  assert.doesNotMatch(source,/fetch\(|axios|localStorage|sessionStorage|indexedDB|UploadPrivateFile|supabase|https?:/);
  assert.match(source,/Pose, lighting and fit have not been assessed/);
 });
