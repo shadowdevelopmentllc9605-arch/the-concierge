@@ -1,10 +1,16 @@
 import React,{useId} from 'react';
 import {FABRICS} from '@/lib/garmentRenderPlan';
 
+const tint=(hex,target,amount)=>{
+  const rgb=[1,3,5].map(i=>parseInt(hex.slice(i,i+2),16));
+  return '#'+rgb.map(n=>Math.round(n+(target-n)*amount).toString(16).padStart(2,'0')).join('');
+};
 export default function GarmentLayers({layers}){
   const prefix=useId().replace(/[^a-zA-Z0-9_-]/g,'');
   return layers.map((layer,i)=>{
-    const material=FABRICS[layer.type],id=prefix+'-'+i;
+    const fabric=FABRICS[layer.type],id=prefix+'-'+i;
+    const base=layer.baseColor;
+    const material=typeof base==='string'&&/^#[0-9a-f]{6}$/i.test(base)?{...fabric,base,light:tint(base,255,.35),dark:tint(base,0,.35),seam:tint(base,0,.42)}:fabric;
     const shapes=[...layer.sleeves,...layer.panels];
     const fill='url(#'+id+'-light)';
     return <g key={i}>
