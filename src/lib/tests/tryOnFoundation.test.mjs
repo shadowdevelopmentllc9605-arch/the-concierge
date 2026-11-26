@@ -39,3 +39,8 @@ test('try-on route fetches requested product directly and does not access privat
  assert.match(source,/Generated try-on previews are temporarily paused/);
  assert.match(source,/LocalPhotoPreparation key=\{state\.userId/);
 });
+
+test('conflicting and duplicate product link parameters fail closed',()=>{
+ for(const query of ['?id='+id+'&id='+id,'?id='+id+'&product='+id,'?product='+id+'&product=other'])assert.equal(parseTryOnProductId(query).invalid,true);
+ assert.equal(resolveTryOnProduct(null,id),null);
+});
