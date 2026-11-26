@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Volume2, VolumeX } from 'lucide-react';
-import { speakOnboardingMessage } from '@/lib/onboardingVoices';
+import { speakOnboardingMessage, stopOnboardingSpeech } from '@/lib/onboardingVoices';
 
 export default function ConciergeGuide({ concierge, message, autoPlay = true }) {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -19,13 +19,15 @@ export default function ConciergeGuide({ concierge, message, autoPlay = true }) 
       const result = await speakOnboardingMessage({
         concierge, message, isCurrent,
         onend: () => { if (isCurrent()) setIsPlaying(false); },
-        onerror: () => { if (isCurrent()) setIsPlaying(false); }
+        onerror: () => { if (isCurrent()) { setIsPlaying(false); setVoiceNotice('Narration could not play. Tap the speaker to retry.'); } }
       });
       if (!isCurrent()) return;
       if (!result.spoken) {
         setIsPlaying(false);
-        if (result.reason === 'masculine_voice_unavailable') {
-          setVoiceNotice("Tyler's masculine voice is unavailable in this browser. His instructions are shown on screen.");
+        if (result.reason === 'audio_playback_blocked') {
+          setVoiceNotice('Tap the speaker to play the narration.');
+        } else if (result.reason === 'audio_unavailable' || result.reason === 'narration_missing') {
+          setVoiceNotice('Narration is unavailable. Tap the speaker to retry.');
         }
       }
     } catch (error) {
@@ -38,14 +40,14 @@ export default function ConciergeGuide({ concierge, message, autoPlay = true }) 
     if (autoPlay && message && concierge) void speakMessage();
     return () => {
       ++requestRef.current;
-      window.speechSynthesis?.cancel();
+      stopOnboardingSpeech();
     };
   }, [message, concierge?.id, autoPlay]);
 
   const togglePlay = () => {
     if (isPlaying) {
       ++requestRef.current;
-      window.speechSynthesis?.cancel();
+      stopOnboardingSpeech();
       setIsPlaying(false);
     } else {
       void speakMessage();
