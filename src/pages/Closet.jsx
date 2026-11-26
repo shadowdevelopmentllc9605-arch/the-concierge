@@ -175,6 +175,7 @@ function PurchaseCard({ item, idx }) {
 export default function Closet() {
   const navigate = useNavigate();
   const [purchases, setPurchases] = useState([]);
+  const [shopperId,setShopperId]=useState(null);
   const [ownedItems, setOwnedItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
@@ -214,6 +215,7 @@ export default function Closet() {
   const loadData = async () => {
     try {
       const user = await base44.auth.me();
+      setShopperId(user.id);
       const [userPurchases, closetItems] = await Promise.all([
         base44.entities.Purchase.filter({ user_id: user.id }, '-created_date'),
         base44.entities.ClosetItem.filter({ user_id: user.id }, '-created_date')
@@ -355,7 +357,7 @@ export default function Closet() {
       </div>
 
       {/* Outfit builder uses only the signed-in user's saved closet records. */}
-      <div className="px-6 pt-4"><OutfitBuilder items={ownedItems.map(displayOwnedItem)} onAddItem={()=>setEditingItem({id:'new-manual'})}/></div>
+      <div className="px-6 pt-4"><OutfitBuilder userId={shopperId} items={ownedItems.map(displayOwnedItem)} onAddItem={()=>setEditingItem({id:'new-manual'})}/></div>
       {/* Tabs */}
       <div className="px-6 pt-4">
         <Tabs defaultValue="all" className="w-full" onValueChange={setActiveTab}>
