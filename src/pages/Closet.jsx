@@ -6,6 +6,7 @@ import { ArrowLeft, Package, Calendar, Store, MapPin, Camera, Loader2, X, Shirt,
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { format } from 'date-fns';
 import ClosetItemEditor from '@/components/closet/ClosetItemEditor';
+import OutfitBuilder from '@/components/closet/OutfitBuilder';
 import PullToRefresh from '@/components/PullToRefresh';
 
 const wardrobeUploadsEnabled = import.meta.env.VITE_PRIVATE_UPLOADS_ENABLED === 'true';
@@ -20,7 +21,7 @@ function EmptyState({ onTakePhoto = null, onUploadImage = null, uploading = fals
         {type === 'purchased' ? 'No purchases yet' : 'Start building your digital wardrobe'}
       </h2>
       <p className="text-[var(--color-text-secondary)] text-center mb-6">
-        {type === 'purchased' ? 'Items you buy will appear here' : 'Add your clothes to get AI-powered outfit suggestions and perfect-fit recommendations'}
+        {type === 'purchased' ? 'Items you buy will appear here' : 'Add clothing details to build outfits from your own wardrobe'}
       </p>
       {type !== 'purchased' && wardrobeUploadsEnabled && onTakePhoto && onUploadImage && (
         <div className="flex gap-3">
@@ -54,11 +55,7 @@ function OwnedItemCard({ item, idx, onRemove, onEdit }) {
       transition={{ delay: idx * 0.03 }}
       className="relative aspect-square rounded-xl overflow-hidden bg-[var(--color-placeholder)] group"
     >
-      <img 
-        src={item.image}
-        alt={item.item_type}
-        className="w-full h-full object-cover"
-      />
+      {item.image ? <img src={item.image} alt={item.item_type} className="w-full h-full object-cover" /> : <div className="h-full flex flex-col justify-center items-center p-2 text-center text-xs text-[var(--color-text-primary)]"><Shirt className="w-6 h-6 mb-2" aria-hidden="true"/>{item.item_type || 'Untitled'}<span className="text-[var(--color-text-secondary)]">{item.color || ''}</span></div>}
       <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
         <div className="absolute bottom-2 left-2 right-2">
           <p className="text-white text-xs font-medium truncate">{item.item_type || 'Untitled'}</p>
@@ -284,13 +281,22 @@ export default function Closet() {
 
   const updateItem = async (data) => {
     if (!editingItem) return;
+    if (!data.item_type?.trim()) { window.alert('Enter a clothing item name.'); return; }
     setSavingEdit(true);
     try {
-      await base44.entities.ClosetItem.update(editingItem.id, data);
-      setOwnedItems(prev => prev.map(i => i.id === editingItem.id ? { ...i, ...data } : i));
+      if (editingItem.id === 'new-manual') {
+        const user = await base44.auth.me();
+        // Existing uploaded source bucket also stores user-entered wardrobe metadata.
+        const created = await base44.entities.ClosetItem.create({...data,item_type:data.item_type.trim(),user_id:user.id,source:'uploaded'});
+        setOwnedItems(prev=>[created,...prev]);
+      } else {
+        await base44.entities.ClosetItem.update(editingItem.id, data);
+        setOwnedItems(prev => prev.map(i => i.id === editingItem.id ? { ...i, ...data } : i));
+      }
       setEditingItem(null);
     } catch (error) {
       console.error(error);
+      window.alert('Clothing details could not be saved. Please try again.');
     } finally {
       setSavingEdit(false);
     }
@@ -348,6 +354,8 @@ export default function Closet() {
         />
       </div>
 
+      {/* Outfit builder uses only the signed-in user's saved closet records. */}
+      <div className="px-6 pt-4"><OutfitBuilder items={ownedItems.map(displayOwnedItem)} onAddItem={()=>setEditingItem({id:'new-manual'})}/></div>
       {/* Tabs */}
       <div className="px-6 pt-4">
         <Tabs defaultValue="all" className="w-full" onValueChange={setActiveTab}>
