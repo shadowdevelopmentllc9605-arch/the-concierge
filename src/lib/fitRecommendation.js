@@ -3,7 +3,8 @@ import {
   evaluateMeasurementReadiness,
   requirementAlternatives,
   requirementLabel,
-} from './measurementDefinitions';
+  isPositiveMeasurement,
+} from './measurementDefinitions.js';
 
 const CATEGORY_GROUPS = {
   tops: new Set(['vests', 'dress_shirts', 'blouse', 'tshirts', 'polos', 'jackets', 'pattern_shirts', 'graphic_tees', 'sports_jackets']),
@@ -192,8 +193,10 @@ function applyHalfSizeAdjustment(size, steps = 0) {
 export function recommendFromSizeChart(sizeChart = [], measurementsCm = {}, options = {}) {
   if (!Array.isArray(sizeChart) || sizeChart.length === 0) return null;
 
-  const shoeSize = normalizedUsShoeSize(options.shoeSize);
-  const footWidth = finiteNumber(measurementsCm.foot_width);
+  const categoryGroup = getCategoryGroup(options.category);
+  const shoeSize = categoryGroup === 'footwear' ? normalizedUsShoeSize(options.shoeSize) : '';
+  const measurement = key => isPositiveMeasurement(measurementsCm[key]) ? Number(measurementsCm[key]) : Number.NaN;
+  const footWidth = measurement('foot_width');
   if (shoeSize) {
     let identityCandidates = [];
     if (options.gender === 'female') {
@@ -234,7 +237,7 @@ export function recommendFromSizeChart(sizeChart = [], measurementsCm = {}, opti
     }
   }
 
-  const braSize = normalizedSizeValue(options.braSize);
+  const braSize = options.category === 'bras' ? normalizedSizeValue(options.braSize) : '';
   if (braSize) {
     const identityMatch = sizeChart.find(row =>
       normalizedSizeValue(row?.size) === braSize ||
@@ -257,22 +260,22 @@ export function recommendFromSizeChart(sizeChart = [], measurementsCm = {}, opti
     }
   }
 
-  const chest = finiteNumber(measurementsCm.chest);
-  const bust = finiteNumber(measurementsCm.bust);
+  const chest = measurement('chest');
+  const bust = measurement('bust');
   const user = {
     chest: Number.isFinite(chest) ? chest : bust,
     bust: Number.isFinite(bust) ? bust : chest,
-    underbust: finiteNumber(measurementsCm.underbust),
-    waist: finiteNumber(measurementsCm.waist),
-    hips: finiteNumber(measurementsCm.hips),
-    inseam: finiteNumber(measurementsCm.inseam),
-    foot_length: finiteNumber(measurementsCm.foot_length),
+    underbust: measurement('underbust'),
+    waist: measurement('waist'),
+    hips: measurement('hips'),
+    inseam: measurement('inseam'),
+    foot_length: measurement('foot_length'),
     foot_width: footWidth,
-    calf_circumference: finiteNumber(measurementsCm.calf_circumference),
-    head_circumference: finiteNumber(measurementsCm.head_circumference),
-    height: finiteNumber(measurementsCm.height),
-    neck: finiteNumber(measurementsCm.neck),
-    arm_length: finiteNumber(measurementsCm.arm_length),
+    calf_circumference: measurement('calf_circumference'),
+    head_circumference: measurement('head_circumference'),
+    height: measurement('height'),
+    neck: measurement('neck'),
+    arm_length: measurement('arm_length'),
   };
 
   const measurementKeys = ['chest', 'bust', 'underbust', 'waist', 'hips', 'inseam', 'foot_length', 'foot_width', 'calf_circumference', 'head_circumference', 'height', 'neck', 'arm_length'];
@@ -554,11 +557,11 @@ export function getFitRecommendationPresentation(source = '', matchType = '') {
 
   if (normalizedSource === 'product_size_chart' || normalizedSource === 'brand_size_chart') {
     return {
-      label: nearest ? 'Closest verified fit' : 'Verified fit',
+      label: nearest ? 'Closest chart match' : 'Size chart match',
       detail: normalizedSource === 'product_size_chart'
-        ? 'Based on this product’s sizing chart and your body measurements'
-        : 'Based on verified brand sizing and your body measurements',
-      verified: true,
+        ? 'Based on this product’s sizing chart and your body measurements; actual fit is not guaranteed'
+        : 'Based on brand sizing and your body measurements; actual fit is not guaranteed',
+      verified: false,
     };
   }
 

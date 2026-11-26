@@ -124,13 +124,18 @@ export function requirementLabel(requirement) {
     .join(' or ');
 }
 
+export function isPositiveMeasurement(value) {
+  return (typeof value === 'number' || (typeof value === 'string' && value.trim() !== '')) &&
+    Number.isFinite(Number(value)) && Number(value) > 0;
+}
+
 export function evaluateMeasurementReadiness(category, measurements = {}) {
   const requirements = CATEGORY_MEASUREMENT_REQUIREMENTS[category] || [];
   const missing = [];
   const present = [];
   for (const requirement of requirements) {
     const alternatives = requirementAlternatives(requirement);
-    const satisfied = alternatives.find(key => Number.isFinite(Number(measurements?.[key])));
+    const satisfied = alternatives.find(key => isPositiveMeasurement(measurements?.[key]));
     if (satisfied) present.push(satisfied);
     else missing.push(requirement);
   }
