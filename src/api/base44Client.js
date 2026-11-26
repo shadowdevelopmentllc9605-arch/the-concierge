@@ -1,6 +1,7 @@
 import { supabase } from '@/api/supabaseClient';
 import { normalizeShopperPurchase } from '@/lib/shopperPurchases';
 import { isSellableOffer } from '@/lib/cartVariantSelection';
+import { productMatchesStyle } from '@/lib/stylePersonalization';
 import { validateImageUpload, MAX_PUBLIC_IMAGE_BYTES, MAX_PRIVATE_IMAGE_BYTES } from '@/lib/imageUploadValidation';
 
 const directTables = {
@@ -178,6 +179,8 @@ const saveProfile = async (id, payload, create = false) => {
 const loadProducts = async (filters = {}, sort = '-created_date', limit = 100) => {
   let query = supabase.from('product_master').select('*').eq('active', true);
   const mapped = { ...filters };
+  const requestedStyle = mapped.style_type;
+  delete mapped.style_type;
   if (mapped.brand !== undefined) { mapped.brand_name = mapped.brand; delete mapped.brand; }
   if (mapped.name !== undefined) { mapped.product_name = mapped.name; delete mapped.name; }
   query = applyFilters(query, 'Product', mapped);
@@ -198,7 +201,7 @@ const loadProducts = async (filters = {}, sort = '-created_date', limit = 100) =
     variants = variantResult.data || [];
     offers = offerResult.data || [];
   }
-  return (products || []).map(p => {
+  return (products || []).filter(p => !requestedStyle || productMatchesStyle(p, requestedStyle)).map(p => {
     const pv = variants.filter(v => v.product_master_id === p.id);
     const po = offers.filter(o => o.product_master_id === p.id);
     const sellable = po.filter(o => isSellableOffer(o));
