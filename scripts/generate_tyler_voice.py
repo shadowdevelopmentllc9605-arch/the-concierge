@@ -5,7 +5,7 @@ import pathlib
 import subprocess
 import tempfile
 import numpy as np
-import soundfile as sf
+import wave
 from kokoro_onnx import Kokoro
 
 prompts = json.loads(pathlib.Path("src/lib/tylerVoicePrompts.json").read_text())
@@ -16,10 +16,14 @@ with tempfile.TemporaryDirectory() as folder:
         seconds = len(samples) / rate
         if not 1.5 < seconds < 35 or not np.isfinite(samples).all() or float(np.max(np.abs(samples))) < 0.02:
             raise RuntimeError(f"Invalid audio: {name}")
-        wave = pathlib.Path(folder) / (name + ".wav")
+        wav_path = pathlib.Path(folder) / (name + ".wav")
         mp3 = pathlib.Path(folder) / (name + ".mp3")
-        sf.write(wave, samples, rate)
-        subprocess.run(["ffmpeg","-v","error","-y","-i",str(wave),"-ac","1","-b:a","40k",str(mp3)],check=True)
+        with wave.open(str(wav_path), "wb") as wav:
+            wav.setnchannels(1)
+            wav.setsampwidth(2)
+            wav.setframerate(rate)
+            wav.writeframes((np.clip(samples, -1.0, 1.0) * 32767).astype("<i2").tobytes())
+        subprocess.run(["ffmpeg","-v","error","-y","-i",str(wav_path),"-ac","1","-b:a","40k",str(mp3)],check=True)
         data = mp3.read_bytes()
         if not 1000 < len(data) < 250000:
             raise RuntimeError(f"Invalid MP3 size: {name}")
