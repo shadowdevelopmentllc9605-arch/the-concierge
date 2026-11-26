@@ -36,5 +36,6 @@ test('try-on route fetches requested product directly and does not access privat
  const source=readFileSync(new URL('../../pages/TryOn.jsx',import.meta.url),'utf8');
  assert.match(source,/Product\.filter\(\{id\}/);
  assert.doesNotMatch(source,/resolveFileUrl|downloadPrivateImagePreview|CreateFileSignedUrl|UploadPrivateFile|body_scan_front|<input[^>]*type="file"/);
- assert.match(source,/Personal photo previews are temporarily paused/);
+ assert.match(source,/Generated try-on previews are temporarily paused/);
+ assert.match(source,/LocalPhotoPreparation key=\{state\.userId/);
 });
