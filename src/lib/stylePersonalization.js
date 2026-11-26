@@ -1,4 +1,5 @@
 // Explainable local personalization; no remote AI calls or inferred inventory.
+import { productFeedbackScore } from './styleFeedback.js';
 export const STYLE_CATEGORIES = Object.freeze({
   business: ['suits','vests','dress_shirts','pants','blouse','dress_skirts','sports_jackets','collar_stays','cufflinks','tie_bar','tie_chain','tie_pin','pocket_square','lapel_pin'],
   casual: ['polos','tshirts','jackets','jeans','shorts','khakis','dresses','skirts','jumpers','swimwear'],
@@ -17,7 +18,7 @@ export function productMatchesStyle(product, style) {
   const explicit = [...list(product?.occasion_tags), ...list(product?.activity_tags), token(product?.style_type), token(product?.style_category)];
   return explicit.includes(key) || STYLE_CATEGORIES[key].includes(token(product?.category));
 }
-export function rankStyleProducts(products = [], profile = {}, closet = [], purchases = [], wishlist = []) {
+export function rankStyleProducts(products = [], profile = {}, closet = [], purchases = [], wishlist = [], feedback = null) {
   const preferences = [...new Set(list(profile.style_preferences))].filter(x=>Object.hasOwn(STYLE_CATEGORIES,x));
   const wardrobeStyles = [...new Set(closet.map(x=>token(x.style_category)))].filter(x=>Object.hasOwn(STYLE_CATEGORIES,x));
   const byId = new Map(products.map(p=>[p.id,p]));
@@ -34,6 +35,9 @@ export function rankStyleProducts(products = [], profile = {}, closet = [], purc
     if (saved.has(product.id)) {score+=3;reasons.push('Saved in your wishlist');}
     if (bought.has(product.id)) score-=4;
     if (product.is_new===true) score+=1;
+    const learned=productFeedbackScore(feedback,product,products);
+    score+=learned;
+    if(learned>0)reasons.unshift('Based on your style feedback');
     return {product,score,reasons};
   }).sort((a,b)=>b.score-a.score || String(a.product.id).localeCompare(String(b.product.id)));
 }

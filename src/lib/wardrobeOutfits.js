@@ -1,5 +1,6 @@
 // Deterministic wardrobe coordination from saved item names, colors and styles.
 // No generated product claims, images, remote AI calls or fit guarantees.
+import { outfitFeedbackScore } from './styleFeedback.js';
 export const OUTFIT_OCCASIONS = ['business','casual','formal','evening','outdoor','active','nightlife','trendy'];
 const token = v => String(v ?? '').trim().toLowerCase();
 const neutral = new Set(['black','white','gray','grey','navy','brown','beige','cream','tan','ivory']);
@@ -29,7 +30,7 @@ function styleScore(item,occasion) {
   if(nearby[occasion]?.includes(s)) return 1;
   return !s||s==='other'?0:-5;
 }
-export function buildWardrobeOutfits(items=[],occasion='casual') {
+export function buildWardrobeOutfits(items=[],occasion='casual',feedback=null) {
   if(!OUTFIT_OCCASIONS.includes(occasion)) occasion='casual';
   const seen=new Set(), groups={top:[],bottom:[],onepiece:[],shoes:[],layer:[]};
   for(const item of items) {
@@ -58,6 +59,7 @@ export function buildWardrobeOutfits(items=[],occasion='casual') {
         const missing=shoe?[]:['Footwear'];
         if(occasion==='outdoor'&&!layer) missing.push('Weather-appropriate outerwear (if needed)');
         const signature=parts.map(x=>String(x.item.id)).sort().join('|');
+        score+=outfitFeedbackScore(feedback,occasion,parts.map(x=>String(x.item.id)));
         candidates.push({id:signature,occasion,items:parts.map(x=>x.item),missing,score,complete:missing.length===0});
       }
     }

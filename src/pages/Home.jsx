@@ -7,6 +7,8 @@ import { motion } from 'framer-motion';
 import PullToRefresh from '@/components/PullToRefresh';
 import { STYLE_IMAGE_URLS } from '@/lib/styleImages';
 import { rankStyleProducts } from '@/lib/stylePersonalization';
+import { buildStyleFeedback } from '@/lib/styleFeedback';
+import { loadStyleVotes, saveStyleVote } from '@/lib/styleFeedbackService';
 import { getCategoryGroup, getEffectiveSizeChart, getFitRecommendationPresentation, recommendFromSizeChart } from '@/lib/fitRecommendation';
 
 export default function Home() {
@@ -16,6 +18,10 @@ export default function Home() {
   const [recommendationError, setRecommendationError] = useState(false);
   const [user, setUser] = useState(null);
   const [recommendedItems, setRecommendedItems] = useState([]);
+  const [productVotes,setProductVotes]=useState(new Map());
+  const [feedbackReady,setFeedbackReady]=useState(false);
+  const [feedbackBusy,setFeedbackBusy]=useState(false);
+  const [feedbackMessage,setFeedbackMessage]=useState('');
 
   useEffect(() => {
     checkOnboarding();
@@ -46,8 +52,12 @@ export default function Home() {
         base44.entities.WishlistItem.filter({ user_id: currentUser.id })
       ]);
 
+      const votes=await loadStyleVotes(currentUser.id).catch(()=>null);
+      const model=buildStyleFeedback(votes||[],currentUser.id);
+      setProductVotes(model.products);
+      setFeedbackReady(votes!==null);
       const vendorNames = new Map(vendors.map(vendor => [vendor.id, vendor.business_name]));
-      const ranked = rankStyleProducts(products, profile, closet, purchases, wishlist)
+      const ranked = rankStyleProducts(products, profile, closet, purchases, wishlist,model)
         .map(({ product, score, reasons }) => {
           const effectiveChart = getEffectiveSizeChart(product, profile, brandCharts);
           const chartMatch = recommendFromSizeChart(
@@ -121,6 +131,18 @@ export default function Home() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const rateProduct=async(item,value)=>{
+    if(feedbackBusy||!feedbackReady||!user?.id)return;
+    setFeedbackBusy(true);setFeedbackMessage('');
+    try{
+      const next=productVotes.get(item.id)===value?0:value;
+      await saveStyleVote(user.id,{kind:'product',productId:item.id},next);
+      setFeedbackMessage(next===0?'Rating cleared.':'Saved. Recommendations will reflect your feedback.');
+      await checkOnboarding();
+    }catch{setFeedbackMessage('Could not save feedback. Please try again.');}
+    finally{setFeedbackBusy(false);}
   };
 
   const outfitSuggestions = [
@@ -240,6 +262,7 @@ export default function Home() {
             See all <ChevronRight className="w-4 h-4" />
           </button>
         </div>
+        {feedbackMessage && <p role="status" className="text-xs mb-2 text-[var(--color-text-secondary)]">{feedbackMessage}</p>}
         {recommendedItems.length === 0 && (
           <div className="rounded-xl border border-[var(--color-border)] p-4 text-sm text-[var(--color-text-secondary)]">
             {recommendationError ? 'Recommendations could not be loaded. Pull down to retry.' : 'No verified shopping offers are available right now. You can still explore your preferred styles and save items for later.'}
@@ -247,14 +270,14 @@ export default function Home() {
         )}
         <div className="flex gap-4 overflow-x-auto no-scrollbar pb-2">
           {recommendedItems.map((item, idx) => (
-            <motion.button
+            <motion.article
               key={item.id}
               initial={{ x: 20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ delay: 0.6 + idx * 0.1 }}
-              onClick={() => navigate(createPageUrl(`ProductDetail?id=${item.id}`))}
               className="shrink-0 w-44 text-left select-none group"
             >
+              <button type="button" onClick={() => navigate(createPageUrl(`ProductDetail?id=${item.id}`))} className="block w-full text-left" aria-label={'View '+item.name}>
               <div className="relative aspect-[3/4] rounded-2xl overflow-hidden bg-[var(--color-placeholder)] mb-2">
                 {item.image ? <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" /> : <div className="h-full flex items-center justify-center text-xs text-[var(--color-text-secondary)]">No image</div>}
                 {item.size && (
@@ -267,14 +290,7 @@ export default function Home() {
                     </div>
                   </div>
                 )}
-                {item.tryOnAvailable && (
-                  <button
-                    onClick={(e) => { e.stopPropagation(); navigate(createPageUrl(`TryOn?id=${item.id}`)); }}
-                    className="absolute top-2 right-2 bg-[var(--color-text-primary)]/80 backdrop-blur text-[var(--color-background)] text-[10px] px-2 py-1 rounded-full font-medium"
-                  >
-                    Try On
-                  </button>
-                )}
+
               </div>
               <p className="text-sm font-medium text-[var(--color-text-primary)] truncate">{item.name}</p>
               <p className="text-xs text-[var(--color-text-secondary)]">{item.brand}</p>
@@ -287,7 +303,10 @@ export default function Home() {
                   </span>
                 )}
               </div>
-            </motion.button>
+              </button>
+              {item.tryOnAvailable&&<button type="button" onClick={()=>navigate(createPageUrl(`TryOn?id=${item.id}`))} className="text-xs py-2 text-[var(--color-text-primary)]">Try On</button>}
+              <div className="flex gap-1 mt-2">{[[1,'Like'],[-1,'Not my style']].map(([value,label])=><button key={value} type="button" disabled={!feedbackReady||feedbackBusy} aria-pressed={(productVotes.get(item.id)||0)===value} aria-label={label+': '+item.name} onClick={()=>rateProduct(item,value)} className={'flex-1 border rounded-lg py-2 text-xs disabled:opacity-50 '+((productVotes.get(item.id)||0)===value?'bg-black text-white':'text-[var(--color-text-primary)]')}>{label}</button>)}</div>
+            </motion.article>
           ))}
         </div>
       </div>
