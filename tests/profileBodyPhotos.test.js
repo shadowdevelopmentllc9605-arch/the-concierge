@@ -5,8 +5,8 @@ const read=path=>readFileSync(new URL('../'+path,import.meta.url),'utf8');
 test('saved profile exposes body photo preparation without restarting onboarding',()=>{
  const profile=read('src/pages/Profile.jsx'),panel=read('src/components/profile/ProfileBodyPhotos.jsx');
  assert.match(profile,/<ProfileBodyPhotos key=/);
- assert.match(panel,/Body Photos/);assert.match(panel,/Prepare or test a photo/);
- assert.match(panel,/<LocalPhotoPreparation\/>/);
+ assert.match(panel,/Body Photos/);assert.match(panel,/Prepare or test body photos/);
+ assert.match(panel,/<GuidedBodyPhotoPreparation\/>/);
  assert.doesNotMatch(panel,/onboarding_completed|onboarding_step|UserProfile\.create/);
 });
 test('stored scan reentry requires both gates, consent and matching account',()=>{
@@ -23,4 +23,20 @@ test('stored scan reentry requires both gates, consent and matching account',()=
 test('paused body scan does not resolve existing private photo links',()=>{
  const source=read('src/components/onboarding/BodyScan.jsx');
  assert.match(source,/useEffect\(\(\) => \{\s*if \(!privateScansEnabled\) return;/);
+});
+
+test('guided body views offer front side and back with separate retained previews',()=>{
+ const s=read('src/components/profile/GuidedBodyPhotoPreparation.jsx');
+ const input=read('src/components/tryon/LocalPhotoPreparation.jsx');
+ assert.match(s,/BODY_PHOTO_VIEWS\.map/);
+ assert.match(s,/hidden=\{selected!==view.id\}/);
+ assert.match(s,/consent\?BODY_PHOTO_VIEWS\.map/);
+ assert.match(s,/sharedConsent=\{consent\}/);
+ assert.match(s,/pagehide/);
+ assert.match(input,/capture="environment"/);
+ assert.match(input,/Take new photo/);
+ assert.match(input,/Choose saved photo/);
+ assert.match(input,/view\?\.instruction/);
+ assert.match(input,/URL\.revokeObjectURL/);
+ assert.doesNotMatch(s,/fetch\(|localStorage|sessionStorage|indexedDB|UploadPrivateFile/);
 });

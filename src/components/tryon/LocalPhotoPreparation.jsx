@@ -1,14 +1,18 @@
-import React,{useEffect,useRef,useState} from 'react';
+import React,{useEffect,useId,useRef,useState} from 'react';
 import {checkPhotoFile,checkPhotoDimensions,inspectPhotoHeader,PHOTO_MESSAGES} from '@/lib/tryOnPhoto';
 import {photoJobGate,previewDimensions} from '@/lib/tryOnMobile';
 
-export default function LocalPhotoPreparation(){
- const [consent,setConsent]=useState(false);
+export default function LocalPhotoPreparation({view=null,embedded=false,sharedConsent=false,onReady=null}){
+ const [ownConsent,setConsent]=useState(false);
+ const consent=embedded?sharedConsent:ownConsent;
+ const inputId=useId();
  const [preview,setPreview]=useState(null);
  const [busy,setBusy]=useState(false);
  const [message,setMessage]=useState('');
  const current=useRef({generation:0,url:null});
  const input=useRef(null);
+ const camera=useRef(null);
+ useEffect(()=>{if(onReady&&view)onReady(view.id,Boolean(preview));},[onReady,view,preview]);
  function release(){
   current.current.generation++;
   if(current.current.url)URL.revokeObjectURL(current.current.url);
@@ -17,6 +21,7 @@ export default function LocalPhotoPreparation(){
  function clear(){
   release();setPreview(null);setBusy(false);setMessage('');
   if(input.current)input.current.value='';
+  if(camera.current)camera.current.value='';
  }
  useEffect(()=>{
   const record=current.current;
@@ -26,6 +31,7 @@ export default function LocalPhotoPreparation(){
    record.url=null;
    setPreview(null);setBusy(false);setMessage('');setConsent(false);
    if(input.current)input.current.value='';
+  if(camera.current)camera.current.value='';
   };
   window.addEventListener('pagehide',leave);
   return ()=>{
@@ -81,17 +87,21 @@ export default function LocalPhotoPreparation(){
    finally{unlock();if(active())setBusy(false);}
   }
  }
- return <section aria-label="Private photo preparation" className="mt-5 rounded-2xl border border-white/15 bg-white/5 p-4 space-y-3">
-  <h2 className="text-lg font-medium">Prepare your photo</h2>
-  <p className="text-sm text-white/75">Optional, device-only preview. No photo is uploaded, saved to your profile or sent to a rendering service. Real garment previews are not available yet.</p>
-  <p className="text-sm text-white/75">Use a well-lit photo of yourself, fully clothed, standing facing the camera with your arms relaxed. Choose a still JPEG or PNG (up to 10 MB).</p>
-  <label className="flex gap-3 items-start text-sm"><input type="checkbox" checked={consent} onChange={e=>{clear();setConsent(e.target.checked);}} className="mt-1 accent-[#c9a962]"/><span>I agree to open my own photo on this device for this temporary preview only.</span></label>
-  <label className="block text-sm font-medium" htmlFor="tryon-local-photo">Choose photo</label>
-  <input id="tryon-local-photo" ref={input} type="file" accept="image/jpeg,image/png" disabled={!consent||busy} onChange={choose} className="block w-full min-h-11 text-sm file:mr-3 file:rounded-lg file:border-0 file:bg-[#c9a962] file:px-3 file:py-2 file:text-[#1a1a1a] disabled:opacity-50"/>
+ return <section aria-label="Private photo preparation" className={embedded?'space-y-3':'mt-5 rounded-2xl border border-white/15 bg-white/5 p-4 space-y-3'}>
+  <h2 className="text-lg font-medium">{view?.label||'Prepare your photo'}</h2>
+  {!embedded&&<p className="text-sm text-white/75">Optional, device-only preview. No photo is uploaded, saved to your profile or sent to a rendering service. Real garment previews are not available yet.</p>}
+  <p className="text-sm text-white/75">{view?.instruction||'Use a well-lit photo of yourself, fully clothed, standing facing the camera with your arms relaxed.'} Choose a still JPEG or PNG (up to 10 MB).</p>
+  {!embedded&&<label className="flex gap-3 items-start text-sm"><input type="checkbox" checked={consent} onChange={e=>{clear();setConsent(e.target.checked);}} className="mt-1 accent-[#c9a962]"/><span>I agree to open my own photo on this device for this temporary preview only.</span></label>}
+  <div className="grid grid-cols-1 gap-2 min-[360px]:grid-cols-2">
+   <button type="button" disabled={!consent||busy} onClick={()=>camera.current?.click()} className="min-h-12 rounded-xl bg-[#c9a962] text-[#1a1a1a] px-3 py-2 font-medium disabled:opacity-50">Take new photo</button>
+   <button type="button" disabled={!consent||busy} onClick={()=>input.current?.click()} className="min-h-12 rounded-xl border border-white/30 text-white px-3 py-2 disabled:opacity-50">Choose saved photo</button>
+  </div>
+  <input id={inputId+'-camera'} ref={camera} type="file" accept="image/*" capture="environment" disabled={!consent||busy} onChange={choose} className="hidden" aria-label="Take new photo"/>
+  <input id={inputId+'-gallery'} ref={input} type="file" accept="image/jpeg,image/png" disabled={!consent||busy} onChange={choose} className="hidden" aria-label="Choose saved photo"/>
   {busy&&<p role="status" className="text-sm">Checking photo on this device…</p>}
-  {preview&&<div className="space-y-2"><img src={preview.url} alt="Your temporary local photo preview" className="mx-auto max-h-80 max-w-full rounded-xl object-contain"/><p className="text-xs text-white/70">{preview.width} × {preview.height} pixels · Local preview only</p></div>}
+  {preview&&<div className="space-y-2"><img src={preview.url} alt={view?view.label+' temporary photo preview':'Your temporary local photo preview'} className="mx-auto max-h-80 max-w-full rounded-xl object-contain"/><p className="text-xs text-white/70">{preview.width} × {preview.height} pixels · Local preview only</p></div>}
   {message&&<p role="status" className="text-sm text-white/80">{message}</p>}
   {(busy||preview||message)&&<button type="button" onClick={clear} className="w-full min-h-11 rounded-xl border border-white/30 py-3 text-sm">{busy?'Cancel photo check':'Remove photo'}</button>}
-  <p className="text-xs text-white/60">Leaving this screen or withdrawing consent clears the app preview. Your original photo stays on your device.</p>
+  {!embedded&&<p className="text-xs text-white/60">Leaving this screen or withdrawing consent clears the app preview. Your original photo stays on your device.</p>}
  </section>;
 }
