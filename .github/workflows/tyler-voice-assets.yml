@@ -1,0 +1,34 @@
+name: Tyler voice asset generation (one-time)
+on:
+  push:
+    branches: [phase2/tyler-voice]
+    paths:
+      - '.github/workflows/tyler-voice-assets.yml'
+      - 'scripts/generate_tyler_voice.py'
+      - 'src/lib/tylerVoicePrompts.json'
+permissions:
+  contents: read
+jobs:
+  generate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Install isolated open-source voice tools
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq espeak-ng ffmpeg
+          python3 -m venv /tmp/tyler-voice-env
+          /tmp/tyler-voice-env/bin/pip install 'kokoro-onnx==0.4.9'
+      - name: Fetch versioned model files
+        run: |
+          mkdir -p /tmp/tyler-model
+          curl -fL --retry 2 https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/kokoro-v1.0.onnx -o /tmp/tyler-model/kokoro-v1.0.onnx
+          curl -fL --retry 2 https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/voices-v1.0.bin -o /tmp/tyler-model/voices-v1.0.bin
+          sha256sum /tmp/tyler-model/*
+      - name: Generate and validate narration
+        env:
+          OMP_NUM_THREADS: '2'
+        run: /tmp/tyler-voice-env/bin/python scripts/generate_tyler_voice.py
