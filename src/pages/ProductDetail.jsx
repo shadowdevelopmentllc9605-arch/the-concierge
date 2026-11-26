@@ -3,7 +3,7 @@ import { base44 } from '@/api/base44Client';
 import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Heart, ShoppingBag, Sparkles, Check, Loader2 } from 'lucide-react';
+import { ArrowLeft, Heart, ShoppingBag, Sparkles, Check, Loader2, ImageOff } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { buildVerifiedCartLine, getSingleVerifiedVariantSelection } from '@/lib/cartVariantSelection';
 import { deriveGenericFallbackSize, getCategoryGroup, getEffectiveSizeChart, getFitRecommendationPresentation, normalizeBrandKey, recommendFromSizeChart } from '@/lib/fitRecommendation';
@@ -350,7 +350,7 @@ export default function ProductDetail() {
       <motion.div 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="aspect-square bg-[var(--color-placeholder)]"
+        className={product.images?.[0] ? "aspect-square bg-[var(--color-placeholder)]" : "min-h-36 pt-20 pb-8 px-6 bg-[var(--color-placeholder)] flex items-center justify-center"}
       >
         {product.images?.[0] ? (
           <img 
@@ -359,8 +359,9 @@ export default function ProductDetail() {
             className="w-full h-full object-cover"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-[var(--color-text-secondary)]">
-            No image
+          <div className="flex flex-col items-center gap-2 text-center text-[var(--color-text-secondary)]">
+            <ImageOff className="w-8 h-8" aria-hidden="true"/>
+            <p className="text-sm">Product image unavailable</p>
           </div>
         )}
       </motion.div>
@@ -371,12 +372,10 @@ export default function ProductDetail() {
         animate={{ y: 0, opacity: 1 }}
         className="px-6 pt-6"
       >
-        <div className="flex justify-between items-start mb-2">
-          <div>
-            <p className="text-sm text-[var(--color-text-secondary)] mb-1">{product.brand}</p>
-            <h1 className="text-2xl font-medium text-[var(--color-text-primary)]">{product.name}</h1>
-          </div>
-          <p className="text-2xl font-semibold text-[var(--color-text-primary)]">{Number.isFinite(product.price) ? (<><span>$</span>{product.price.toFixed(2)}</>) : 'Price unavailable'}</p>
+        <div className="min-w-0 space-y-2 mb-2">
+          <p className="text-sm break-words text-[var(--color-text-secondary)]">{product.brand}</p>
+          <h1 className="text-2xl font-medium break-words text-[var(--color-text-primary)]">{product.name}</h1>
+          <p className="text-lg font-semibold break-words text-[var(--color-text-primary)]">{Number.isFinite(product.price) && product.price > 0 ? (<><span>$</span>{product.price.toFixed(2)}</>) : 'Price unavailable'}</p>
         </div>
 
         {product.description && (
@@ -506,7 +505,7 @@ export default function ProductDetail() {
         {product.colors?.length > 0 && (
           <div className="mt-6">
             <p className="text-sm font-medium text-[var(--color-text-primary)] mb-3">Color</p>
-            <div className="flex gap-3">
+            <div className="flex flex-wrap gap-3">
               {product.colors.map(color => (
                 <button
                   key={color}
