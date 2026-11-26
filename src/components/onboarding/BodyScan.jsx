@@ -84,6 +84,7 @@ export default function BodyScan({ profile, concierge, onComplete }) {
   const galleryInputRef = useRef(null);
 
   useEffect(() => {
+    if (!privateScansEnabled) return;
     let cancelled = false;
     (async () => {
       for (const key of ['front', 'side', 'back']) {
