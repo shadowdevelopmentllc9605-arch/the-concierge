@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { chooseOnboardingVoice, loadOnboardingVoices, speakOnboardingMessage } from '../onboardingVoices.js';
+import { chooseOnboardingVoice, loadOnboardingVoices, speakOnboardingMessage, stopOnboardingSpeech, tylerAudioPath } from '../onboardingVoices.js';
 
 const voice = (name, lang = 'en-US', voiceURI = name) => ({ name, lang, voiceURI });
 
@@ -71,4 +71,59 @@ test('intro and profile guide use shared voice selector; pitch alone is not the 
     assert.match(source, /masculine_voice_unavailable/);
   }
   assert.match(profile, /<ConciergeGuide concierge={concierge}/);
+});
+
+
+test('fixed Tyler onboarding narration uses the same audio regardless of installed browser voices', async () => {
+  const oldWindow = globalThis.window;
+  const prompts = JSON.parse(readFileSync('src/lib/tylerVoicePrompts.json', 'utf8'));
+  let played = [];
+  let ended = 0;
+  let cancelled = 0;
+  class Audio {
+    constructor(path) { this.path = path; }
+    play() { played.push(this); return Promise.resolve(); }
+    pause() { cancelled++; }
+  }
+  globalThis.window = { Audio };
+  try {
+    for (const [key, message] of Object.entries(prompts)) {
+      const result = await speakOnboardingMessage({ concierge: { id: 'tyler' }, message, onend: () => ended++ });
+      assert.equal(result.spoken, true);
+      assert.equal(tylerAudioPath(message), '/audio/tyler/' + key + '.mp3');
+      assert.equal(played.at(-1).path, tylerAudioPath(message));
+    }
+    assert.equal(cancelled, played.length - 1);
+    played.at(-1).onended();
+    assert.equal(ended, 1);
+  } finally { stopOnboardingSpeech(); globalThis.window = oldWindow; }
+});
+
+test('autoplay restriction is recoverable and never substitutes browser voice', async () => {
+  const oldWindow = globalThis.window;
+  const prompts = JSON.parse(readFileSync('src/lib/tylerVoicePrompts.json', 'utf8'));
+  let browserSpoken = 0;
+  globalThis.window = {
+    Audio: class { play() { return Promise.reject({ name: 'NotAllowedError' }); } pause() {} },
+    speechSynthesis: { cancel() {}, speak() { browserSpoken++; } }
+  };
+  try {
+    const result = await speakOnboardingMessage({ concierge: { id: 'tyler' }, message: prompts.profile });
+    assert.equal(result.reason, 'audio_playback_blocked');
+    assert.equal(browserSpoken, 0);
+  } finally { stopOnboardingSpeech(); globalThis.window = oldWindow; }
+});
+
+
+test('all seven Tyler prompts have bundled MP3 assets and match onboarding copy', () => {
+  const prompts = JSON.parse(readFileSync('src/lib/tylerVoicePrompts.json', 'utf8'));
+  const sources = ['ConciergeIntro','ProfileSetup','BodyScan','StylePreferences','ClosetUpload','AddFriends']
+    .map(name => readFileSync('src/components/onboarding/' + name + '.jsx', 'utf8'));
+  assert.equal(Object.keys(prompts).length, 7);
+  for (const [id, text] of Object.entries(prompts)) {
+    assert.ok(sources.some(source => source.includes(text)), 'Unmatched narration: ' + id);
+    const mp3 = readFileSync('public/audio/tyler/' + id + '.mp3');
+    assert.ok(mp3.length > 1000 && mp3.length < 250000, 'Invalid asset size: ' + id);
+    assert.equal(mp3.subarray(0,3).toString('ascii'), 'ID3');
+  }
 });

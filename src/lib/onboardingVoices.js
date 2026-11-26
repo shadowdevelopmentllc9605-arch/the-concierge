@@ -1,3 +1,50 @@
+import tylerPrompts from './tylerVoicePrompts.json' with { type: 'json' };
+
+let activeAudio = null;
+
+export function stopOnboardingSpeech() {
+  if (activeAudio) {
+    const audio = activeAudio;
+    activeAudio = null;
+    audio.onended = null;
+    audio.onerror = null;
+    audio.pause();
+  }
+  if (typeof window !== 'undefined') window.speechSynthesis?.cancel();
+}
+
+export function tylerAudioPath(message) {
+  const key = Object.keys(tylerPrompts).find(id => tylerPrompts[id] === message);
+  return key ? '/audio/tyler/' + key + '.mp3' : null;
+}
+
+async function playTylerClip({ path, onend, onerror, isCurrent }) {
+  if (!isCurrent()) return { spoken: false, reason: 'cancelled' };
+  if (typeof window.Audio !== 'function') return { spoken: false, reason: 'audio_unavailable' };
+  stopOnboardingSpeech();
+  const audio = new window.Audio(path);
+  activeAudio = audio;
+  const finish = callback => {
+    if (activeAudio !== audio) return;
+    activeAudio = null;
+    if (isCurrent()) callback?.();
+  };
+  audio.onended = () => finish(onend);
+  audio.onerror = () => finish(onerror);
+  try {
+    // Call play synchronously before yielding to preserve the user's mobile tap.
+    await audio.play();
+    if (!isCurrent()) {
+      if (activeAudio === audio) stopOnboardingSpeech();
+      return { spoken: false, reason: 'cancelled' };
+    }
+    return { spoken: true, voiceName: 'Tyler' };
+  } catch (error) {
+    if (activeAudio === audio) stopOnboardingSpeech();
+    return { spoken: false, reason: error?.name === 'NotAllowedError' ? 'audio_playback_blocked' : 'audio_unavailable' };
+  }
+}
+
 // Browser speech voices expose a name and language, but no reliable gender field.
 // Never silently use the browser's default (often feminine) when Tyler is selected.
 const maleNames = [
@@ -65,8 +112,14 @@ export function loadOnboardingVoices(synth, timeoutMs = 1200) {
 export async function speakOnboardingMessage({
   concierge, message, onend, onerror, isCurrent = () => true
 }) {
-  if (!message || !concierge || typeof window === 'undefined' ||
-      !window.speechSynthesis || typeof SpeechSynthesisUtterance === 'undefined') {
+  if (!message || !concierge || typeof window === 'undefined') {
+    return { spoken: false, reason: 'speech_unavailable' };
+  }
+  if (concierge.id === 'tyler') {
+    const path = tylerAudioPath(message);
+    if (path) return playTylerClip({ path, onend, onerror, isCurrent });
+  }
+  if (!window.speechSynthesis || typeof SpeechSynthesisUtterance === 'undefined') {
     return { spoken: false, reason: 'speech_unavailable' };
   }
   const synth = window.speechSynthesis;
@@ -77,7 +130,7 @@ export async function speakOnboardingMessage({
     synth.cancel();
     return { spoken: false, reason: 'masculine_voice_unavailable' };
   }
-  synth.cancel();
+  stopOnboardingSpeech();
   const utterance = new SpeechSynthesisUtterance(message);
   if (voice) utterance.voice = voice;
   utterance.lang = voice?.lang || 'en-US';
