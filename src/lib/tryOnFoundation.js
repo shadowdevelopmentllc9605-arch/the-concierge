@@ -1,13 +1,15 @@
 // Catalog availability is distinct from demonstration rendering.
 export function parseTryOnProductId(search='') {
   const params=new URLSearchParams(search);
-  const raw=params.get('id')??params.get('product');
+  const ids=[...params.getAll('id'),...params.getAll('product')];
+  if(ids.length>1)return {id:null,invalid:true};
+  const raw=ids[0]??null;
   if(raw===null)return {id:null,invalid:false};
   if(!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(raw))return {id:null,invalid:true};
   return {id:raw.toLowerCase(),invalid:false};
 }
 export function resolveTryOnProduct(rows=[],id) {
-  return id?(rows.find(p=>String(p?.id).toLowerCase()===id&&p.active!==false&&p.discontinued!==true)||null):null;
+  return id&&Array.isArray(rows)?(rows.find(p=>String(p?.id).toLowerCase()===id&&p.active!==false&&p.discontinued!==true)||null):null;
 }
 export function getTryOnProductState(product) {
   if(!product)return 'missing';

@@ -56,3 +56,26 @@ test('caller cancellation aborts provider and does not display late results',asy
  const pending=a.render(request,{signal:controller.signal});await Promise.resolve();controller.abort();
  assert.equal((await pending).reason,'cancelled');assert.equal(seen.aborted,true);finish(output);
 });
+
+test('approval revocation after construction blocks subsequent inference',async()=>{
+ let calls=0;const c=setup(()=>{calls++;return output;});const a=createOfflineRenderer(c);
+ c.report.rights.parser.status='revoked';assert.equal(a.available,false);
+ assert.equal((await a.render(request)).reason,'renderer_not_qualified');assert.equal(calls,0);
+});
+test('cancellation before provider dispatch avoids inference',async()=>{
+ let calls=0;const controller=new AbortController();const a=createOfflineRenderer(setup(()=>{calls++;return output;}));
+ const pending=a.render(request,{signal:controller.signal});controller.abort();
+ assert.equal((await pending).reason,'cancelled');assert.equal(calls,0);
+});
+test('revocation while inference is running prevents result acceptance',async()=>{
+ let finish;const c=setup(()=>new Promise(resolve=>{finish=resolve;}));const a=createOfflineRenderer(c);
+ const pending=a.render(request);await Promise.resolve();c.report.rights.model.status='revoked';finish(output);
+ assert.equal((await pending).reason,'renderer_not_qualified');
+});
+test('mixed case input digest reuse and inherited case identifiers are rejected',async()=>{
+ const c=setup(()=>({...output,outputSha256:'A'.repeat(64)}));
+ c.report.cases[0].personSha256='a'.repeat(64);c.fixtures.get(request.caseId).personSha256='a'.repeat(64);
+ const a=createOfflineRenderer(c);
+ assert.equal((await a.render(request)).reason,'invalid_provider_output');
+ assert.equal((await a.render(Object.create(request))).reason,'invalid_case');
+});

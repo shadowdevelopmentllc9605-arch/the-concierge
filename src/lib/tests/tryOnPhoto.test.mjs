@@ -52,3 +52,20 @@ test('local photo flow has explicit consent, bounded preview and cleanup without
  assert.doesNotMatch(source,/fetch\(|axios|localStorage|sessionStorage|indexedDB|UploadPrivateFile|supabase|https?:/);
  assert.match(source,/Pose, lighting and fit have not been assessed/);
 });
+
+test('trailing PNG data and oversized raw input are rejected',()=>{
+ const source=png(1000,1500);const trailing=new Uint8Array(source.length+1);trailing.set(source);
+ assert.equal(inspectPhotoHeader(trailing).ok,false);
+ assert.equal(inspectPhotoHeader(new Uint8Array(PHOTO_LIMITS.maxBytes+1)).ok,false);
+});
+test('deterministic malformed image header stress does not throw',()=>{
+ let seed=123456789;
+ const next=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed;};
+ for(let i=0;i<10000;i++){
+  const bytes=new Uint8Array(next()%256);
+  for(let j=0;j<bytes.length;j++)bytes[j]=next()>>>24;
+  if(i%3===0&&bytes.length>=8)bytes.set([137,80,78,71,13,10,26,10]);
+  if(i%3===1&&bytes.length>=2)bytes.set([255,216]);
+  const result=inspectPhotoHeader(bytes);assert.equal(typeof result.ok,'boolean');
+ }
+});
