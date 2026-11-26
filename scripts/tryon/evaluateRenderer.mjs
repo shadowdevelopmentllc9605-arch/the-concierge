@@ -15,7 +15,7 @@ const RIGHTS=['model','weights','parser','dependencies','inputOutput'];
 export function evaluateRenderer(report,limits={maxLatencyMs:30000,maxCostUsd:0.10}){
  const issues=[];
  if(!report||typeof report!=='object')return {eligible:false,issues:['missing report']};
- if(!finitePositive(limits.maxLatencyMs)||!finiteNonnegative(limits.maxCostUsd))return {eligible:false,issues:['invalid limits']};
+ if(!limits||!finitePositive(limits.maxLatencyMs)||!finiteNonnegative(limits.maxCostUsd))return {eligible:false,issues:['invalid limits']};
  if(!nonempty(report.renderer)||!nonempty(report.version)||!nonempty(report.hardware)||!hash(report.configSha256))issues.push('missing reproducibility metadata');
  for(const key of RIGHTS){
   const item=report.rights?.[key];
@@ -32,8 +32,8 @@ export function evaluateRenderer(report,limits={maxLatencyMs:30000,maxCostUsd:0.
   if(!finitePositive(row.latencyMs)||!finiteNonnegative(row.costUsd)||!finitePositive(row.peakMemoryMiB)){issues.push(row.id+': missing performance data');continue;}
   maxLatency=Math.max(maxLatency,row.latencyMs);maxCost=Math.max(maxCost,row.costUsd);peakMemory=Math.max(peakMemory,row.peakMemoryMiB);
   if(row.status!=='rendered'){failures++;issues.push(row.id+': rendering failed');continue;}
-  if(!hash(row.outputSha256)||artifacts.has(row.outputSha256)||row.outputSha256===row.personSha256||row.outputSha256===row.garmentSha256||!nonempty(row.reviewer)||!DIMENSIONS.every(k=>validScore(row.scores?.[k]))){issues.push(row.id+': missing or duplicate output/review evidence');continue;}
-  artifacts.add(row.outputSha256);
+  if(!hash(row.outputSha256)||artifacts.has(row.outputSha256.toLowerCase())||row.outputSha256.toLowerCase()===row.personSha256.toLowerCase()||row.outputSha256.toLowerCase()===row.garmentSha256.toLowerCase()||!nonempty(row.reviewer)||!DIMENSIONS.every(k=>validScore(row.scores?.[k]))){issues.push(row.id+': missing or duplicate output/review evidence');continue;}
+  artifacts.add(row.outputSha256.toLowerCase());
   if(row.criticalArtifact!==false||DIMENSIONS.some(k=>row.scores[k]<4)){issues.push(row.id+': quality threshold not met');continue;}
   passed++;
  }
