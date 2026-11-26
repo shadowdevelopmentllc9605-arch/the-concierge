@@ -113,3 +113,17 @@ test('autoplay restriction is recoverable and never substitutes browser voice', 
     assert.equal(browserSpoken, 0);
   } finally { stopOnboardingSpeech(); globalThis.window = oldWindow; }
 });
+
+
+test('all seven Tyler prompts have bundled MP3 assets and match onboarding copy', () => {
+  const prompts = JSON.parse(readFileSync('src/lib/tylerVoicePrompts.json', 'utf8'));
+  const sources = ['ConciergeIntro','ProfileSetup','BodyScan','StylePreferences','ClosetUpload','AddFriends']
+    .map(name => readFileSync('src/components/onboarding/' + name + '.jsx', 'utf8'));
+  assert.equal(Object.keys(prompts).length, 7);
+  for (const [id, text] of Object.entries(prompts)) {
+    assert.ok(sources.some(source => source.includes(text)), 'Unmatched narration: ' + id);
+    const mp3 = readFileSync('public/audio/tyler/' + id + '.mp3');
+    assert.ok(mp3.length > 1000 && mp3.length < 250000, 'Invalid asset size: ' + id);
+    assert.equal(mp3.subarray(0,3).toString('ascii'), 'ID3');
+  }
+});
