@@ -115,7 +115,7 @@ export default function Home() {
             recommendationSource,
             fitConfidence: chartMatch?.fitConfidence || (size ? 'low' : ''),
             fitConfidenceScore: chartMatch?.confidenceScore ?? null,
-            tryOnAvailable: Boolean(product.tryOn_image),
+            tryOnAvailable: false,
             score,
             reasons
           };
@@ -418,7 +418,7 @@ export default function Home() {
         >
           <div className="text-left">
             <p className="text-[var(--color-accent)] text-xs tracking-[0.2em] uppercase mb-1">Experience</p>
-            <p className="text-xl font-light">See it on your body</p>
+            <p className="text-xl font-light">Explore virtual styling</p>
             <p className="text-[var(--color-background)]/60 text-sm font-light">Virtual Try-On</p>
           </div>
           <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-colors">
