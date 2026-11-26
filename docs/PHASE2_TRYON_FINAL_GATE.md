@@ -1,0 +1,9 @@
+# Virtual try-on final framework gate
+Scope: source review and automated offline regression only, not a production certification. Mobile performance PR 54 passed GitHub validation before merge. Final hardening rechecks provider qualification before dispatch and before accepting output, prevents cancellation-before-dispatch from invoking provider, normalizes digest comparisons for duplicate/unchanged outputs, rejects ambiguous product links and bounds malformed PNG/JPEG header parsing. Regression coverage includes 10,000 deterministic malformed header cases, authorization revocation, cancellation, mixed-case digests, ambiguous identifiers and checks that offline rendering/review scripts are not wired into shopper UI. Existing CI covers npm tests, dependency audit, legacy runtime checks, encrypted backup test, build and lint. CI result must be verified independently; this document does not claim success in advance.
+## Deferred release gates
+- Commercial clearance of model, weights, parser, dependencies and derivative image rights; real 14-case renderer evaluation on licensed/synthetic photos and measured compute cost/latency.
+- Approved retailer assets, trusted reviewer authorization, persistent provenance/revocation, full byte decode, private storage and Concierge Pro submission.
+- Authenticated customer-photo rendering consent, isolated provider processing, storage and deletion, cross-account security checks. No real provider is wired.
+- Actual Android browser checks, orientation, memory/latency, repeated cancel/navigation, visual acceptance, network inspection; no physical device benchmark has been run.
+- Multi-garment photographic rendering and fit accuracy/retailer pilot.
+No extra infrastructure or fees, no production DB modifications. Do not certify live virtual try-on as complete. A successful final CI verifies the current limited framework only.
