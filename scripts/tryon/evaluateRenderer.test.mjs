@@ -11,3 +11,9 @@ test('uncleared parser and privacy risks block approval',()=>{const s=sample();s
 test('poor quality and renderer failures cannot pass',()=>{const s=sample();s.cases[0].scores.identity=3;s.cases[1].status='failed';assert.equal(evaluateRenderer(s).eligible,false);assert.equal(evaluateRenderer(s).failures,1);});
 test('unchanged person image and missing fixture provenance fail',()=>{const s=sample();s.cases[0].outputSha256=s.cases[0].personSha256;s.cases[1].provenance='customer';assert.equal(evaluateRenderer(s).eligible,false);});
 test('performance limits, missing measurements and invalid limits fail',()=>{const s=sample();s.cases[0].latencyMs=31000;s.cases[1].costUsd=.11;s.cases[2].peakMemoryMiB=NaN;assert.equal(evaluateRenderer(s).eligible,false);assert.equal(evaluateRenderer(sample(),{maxLatencyMs:0,maxCostUsd:0}).eligible,false);});
+
+test('digest casing cannot conceal duplicates or unchanged input',()=>{
+ const s=sample();s.cases[0].outputSha256='a'.repeat(64);s.cases[1].outputSha256='A'.repeat(64);assert.equal(evaluateRenderer(s).eligible,false);
+ const t=sample();t.cases[0].personSha256='b'.repeat(64);t.cases[0].outputSha256='B'.repeat(64);assert.equal(evaluateRenderer(t).eligible,false);
+ assert.equal(evaluateRenderer(sample(),null).eligible,false);
+});
