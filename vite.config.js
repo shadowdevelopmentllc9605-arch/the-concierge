@@ -10,4 +10,9 @@ export default defineConfig({
     }
   },
   plugins: [react()],
+  // Temporary independent narration review entry; remove before merging.
+  build: { rollupOptions: { input: {
+    main: fileURLToPath(new URL('./index.html', import.meta.url)),
+    tylerVoice: fileURLToPath(new URL('./tyler-voice-review.html', import.meta.url))
+  } } },
 });
