@@ -55,7 +55,7 @@ export const AuthProvider = ({ children }) => {
       const action=authEventAction(event,expectedId,verifiedId.current);
       if(action==='ignore')return;
       if(timer!==null)clearTimeout(timer);
-      epoch.current.advance();
+      const eventRevision=epoch.current.advance();
       if(action==='clear'){clearAuth();return;}
       if(action==='blocking'){
         verifiedId.current=null;
@@ -68,6 +68,7 @@ export const AuthProvider = ({ children }) => {
       // server verifies identity. Never call Supabase inside its callback.
       timer=setTimeout(()=>{
         timer=null;
+        if(!epoch.current.isCurrent(eventRevision))return;
         checkAppState({background:action==='background',expectedId});
       },0);
     });
