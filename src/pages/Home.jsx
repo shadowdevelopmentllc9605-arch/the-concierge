@@ -6,12 +6,14 @@ import { Sparkles, Search, Heart, ShoppingBag, ChevronRight, Store } from 'lucid
 import { motion } from 'framer-motion';
 import PullToRefresh from '@/components/PullToRefresh';
 import { STYLE_IMAGE_URLS } from '@/lib/styleImages';
+import { rankStyleProducts } from '@/lib/stylePersonalization';
 import { getCategoryGroup, getEffectiveSizeChart, getFitRecommendationPresentation, recommendFromSizeChart } from '@/lib/fitRecommendation';
 
 export default function Home() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [userProfile, setUserProfile] = useState(null);
+  const [recommendationError, setRecommendationError] = useState(false);
   const [user, setUser] = useState(null);
   const [recommendedItems, setRecommendedItems] = useState([]);
 
@@ -34,36 +36,19 @@ export default function Home() {
       const profile = profiles[0];
       setUserProfile(profile);
 
-      const [products, purchases, closet, vendors, brandCharts] = await Promise.all([
+      setRecommendationError(false);
+      const [products, purchases, closet, vendors, brandCharts, wishlist] = await Promise.all([
         base44.entities.Product.list('-created_date', 100),
         base44.entities.Purchase.filter({ user_id: currentUser.id }),
         base44.entities.ClosetItem.filter({ user_id: currentUser.id }),
         base44.entities.Vendor.list(),
-        base44.entities.BrandSizeChart.filter({ active: true })
+        base44.entities.BrandSizeChart.filter({ active: true }),
+        base44.entities.WishlistItem.filter({ user_id: currentUser.id })
       ]);
 
-      const purchasedProductIds = new Set(purchases.map(item => item.product_id).filter(Boolean));
-      const purchasedBrands = new Set();
-      const purchasedCategories = new Set();
-      for (const purchase of purchases) {
-        const product = products.find(item => item.id === purchase.product_id);
-        if (product?.brand) purchasedBrands.add(product.brand);
-        if (product?.category) purchasedCategories.add(product.category);
-      }
-      const closetStyles = new Set(closet.map(item => item.style_category).filter(Boolean));
       const vendorNames = new Map(vendors.map(vendor => [vendor.id, vendor.business_name]));
-
-      const ranked = products
-        .filter(product => product.in_stock !== false)
-        .map(product => {
-          let score = 0;
-          if (profile.style_preferences?.includes(product.style_type)) score += 5;
-          if (closetStyles.has(product.style_type)) score += 2;
-          if (purchasedBrands.has(product.brand)) score += 3;
-          if (purchasedCategories.has(product.category)) score += 2;
-          if (product.is_new) score += 1;
-          if (purchasedProductIds.has(product.id)) score -= 4;
-
+      const ranked = rankStyleProducts(products, profile, closet, purchases, wishlist)
+        .map(({ product, score, reasons }) => {
           const effectiveChart = getEffectiveSizeChart(product, profile, brandCharts);
           const chartMatch = recommendFromSizeChart(
             effectiveChart.entries,
@@ -121,7 +106,8 @@ export default function Home() {
             fitConfidence: chartMatch?.fitConfidence || (size ? 'low' : ''),
             fitConfidenceScore: chartMatch?.confidenceScore ?? null,
             tryOnAvailable: Boolean(product.tryOn_image),
-            score
+            score,
+            reasons
           };
         })
         .sort((a, b) => b.score - a.score)
@@ -130,6 +116,8 @@ export default function Home() {
       setRecommendedItems(ranked);
     } catch (error) {
       console.error(error);
+      setRecommendationError(true);
+      setRecommendedItems([]);
     } finally {
       setLoading(false);
     }
@@ -252,6 +240,11 @@ export default function Home() {
             See all <ChevronRight className="w-4 h-4" />
           </button>
         </div>
+        {recommendedItems.length === 0 && (
+          <div className="rounded-xl border border-[var(--color-border)] p-4 text-sm text-[var(--color-text-secondary)]">
+            {recommendationError ? 'Recommendations could not be loaded. Pull down to retry.' : 'No verified shopping offers are available right now. You can still explore your preferred styles and save items for later.'}
+          </div>
+        )}
         <div className="flex gap-4 overflow-x-auto no-scrollbar pb-2">
           {recommendedItems.map((item, idx) => (
             <motion.button
@@ -263,7 +256,7 @@ export default function Home() {
               className="shrink-0 w-44 text-left select-none group"
             >
               <div className="relative aspect-[3/4] rounded-2xl overflow-hidden bg-[var(--color-placeholder)] mb-2">
-                <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                {item.image ? <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" /> : <div className="h-full flex items-center justify-center text-xs text-[var(--color-text-secondary)]">No image</div>}
                 {item.size && (
                   <div className="absolute bottom-2 left-2 right-2">
                     <div className="bg-white/90 backdrop-blur-sm rounded-xl px-2 py-1.5">
@@ -285,6 +278,7 @@ export default function Home() {
               </div>
               <p className="text-sm font-medium text-[var(--color-text-primary)] truncate">{item.name}</p>
               <p className="text-xs text-[var(--color-text-secondary)]">{item.brand}</p>
+              {item.reasons?.length > 0 && <p className="text-[10px] text-[var(--color-text-muted)] mt-1">{item.reasons[0]}</p>}
               <div className="flex items-center justify-between mt-1">
                 <p className="text-sm font-semibold text-[var(--color-text-primary)]">${item.price.toFixed(2)}</p>
                 {item.store && (
@@ -316,13 +310,13 @@ export default function Home() {
             </div>
           </div>
           <div className="flex gap-2 flex-wrap">
-            {['Build an outfit', 'Date night look', 'Work attire', 'Something casual'].map(prompt => (
+            {[{label:'Build an outfit',path:'Closet'},{label:'Date night look',path:'Shop?style=evening'},{label:'Work attire',path:'Shop?style=business'},{label:'Something casual',path:'Shop?style=casual'}].map(prompt => (
               <button
-                key={prompt}
-                onClick={() => navigate(createPageUrl('Shop'))}
+                key={prompt.label}
+                onClick={() => navigate(createPageUrl(prompt.path))}
                 className="text-xs px-3 py-1.5 rounded-full bg-[var(--color-background-secondary)] text-[var(--color-text-primary)] hover:bg-[var(--color-border)] transition-colors select-none"
               >
-                {prompt}
+                {prompt.label}
               </button>
             ))}
           </div>
@@ -368,8 +362,8 @@ export default function Home() {
       <div className="px-6 mt-10">
         <div className="flex justify-between items-center mb-4">
           <div>
-            <h2 className="text-xl font-light text-[var(--color-text-primary)] tracking-tight">Complete the Look</h2>
-            <p className="text-xs text-[var(--color-text-secondary)] mt-0.5">Pair with these items</p>
+            <h2 className="text-xl font-light text-[var(--color-text-primary)] tracking-tight">Style Inspiration</h2>
+            <p className="text-xs text-[var(--color-text-secondary)] mt-0.5">Explore looks by occasion</p>
           </div>
         </div>
         <div className="flex gap-3 overflow-x-auto no-scrollbar pb-2">
